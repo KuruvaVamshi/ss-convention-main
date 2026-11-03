@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background-color: #4A0E17;
+    color: #FFFDF9;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  /* Royal Swan Gold & Maroon Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #3A0813;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #F59E0B;
+  }
+}
+
+/* Luxury Palace Velvet Glass Card */
+.glass-velvet-card {
+  background: #4A0E17;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.12);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (pointer: fine) {
+  .glass-velvet-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.65);
+    box-shadow: 0 24px 44px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.25);
+  }
+}
+
+/* Gold Gradient Typography for Royal Palace Theme */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FDE68A 0%, #D4AF37 50%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-shimmer-text {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FBBF24 50%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Celestial Accent Rings */
+.celestial-ring {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  pointer-events: none;
+}
+
+.celestial-ring::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background-color: #D4AF37;
+  box-shadow: 0 0 10px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.6);
+}
+
+/* Custom Royal Cursor Desktop Pointer Discipline */
+@media (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor [role="button"],
+  body.has-custom-cursor input[type="submit"],
+  body.has-custom-cursor select,
+  body.has-custom-cursor .cursor-pointer {
+    cursor: none !important;
+  }
+}
+
+/* Accessibility: Universal prefers-reduced-motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
