@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
-import RoyalCursor from './components/RoyalCursor';
 import GoldenDustCanvas from './components/GoldenDustCanvas';
 import AuspiciousBlessingsCanvas from './components/AuspiciousBlessingsCanvas';
 import Navbar from './components/Navbar';
@@ -51,9 +50,6 @@ export default function App() {
         <ScrollToTop />
 
         <div className="min-h-screen bg-gradient-to-b from-[#450B17] via-[#5F1524] to-[#3A0813] text-[#FFFDF9] flex flex-col selection:bg-[#D4AF37] selection:text-[#3D0A14] relative">
-          {/* Luxury Astrological Royal Cursor (Desktop fine-pointer only) */}
-          <RoyalCursor />
-
           {/* Subtle Ambient Drifting Golden Dust Particles */}
           <GoldenDustCanvas />
 

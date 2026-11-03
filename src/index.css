@@ -96,19 +96,6 @@
   box-shadow: 0 0 10px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.6);
 }
 
-/* Custom Royal Cursor Desktop Pointer Discipline */
-@media (pointer: fine) {
-  body.has-custom-cursor,
-  body.has-custom-cursor a,
-  body.has-custom-cursor button,
-  body.has-custom-cursor [role="button"],
-  body.has-custom-cursor input[type="submit"],
-  body.has-custom-cursor select,
-  body.has-custom-cursor .cursor-pointer {
-    cursor: none !important;
-  }
-}
-
 /* Accessibility: Universal prefers-reduced-motion fallback */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
