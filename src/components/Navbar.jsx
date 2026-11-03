@@ -23,11 +23,11 @@ export default function Navbar({ lang, setLang }) {
 
   const navLinks = [
     { name: lang === 'te' ? 'హోమ్' : 'HOME', path: '/' },
-    { name: lang === 'te' ? 'హాల్స్' : 'HALLS', path: '/spaces' },
+    { name: lang === 'te' ? 'మా హాల్స్' : 'OUR HALLS', path: '/spaces' },
+    { name: lang === 'te' ? 'గ్యాలరీ' : 'GALLERY', path: '/gallery' },
     { name: lang === 'te' ? 'వేడుకలు & థీమ్స్' : 'OCCASIONS', path: '/themes' },
     { name: lang === 'te' ? 'క్యాటరింగ్ మెనూ' : 'MENUS', path: '/menus' },
-    { name: lang === 'te' ? 'గ్యాలరీ' : 'GALLERY', path: '/gallery' },
-    { name: lang === 'te' ? 'నిబంధనలు' : 'POLICIES', path: '/policies' },
+    { name: lang === 'te' ? 'సదుపాయాలు' : 'FACILITIES', path: '/facilities' },
     { name: lang === 'te' ? 'సంప్రదించండి' : 'CONTACT', path: '/contact' },
   ];
 

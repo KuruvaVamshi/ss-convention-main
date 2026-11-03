@@ -1,28 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
-import { Sparkles, Crown, ArrowRight } from 'lucide-react';
 
 /**
- * RoyalPalaceLoader - Grand Mahadwaram Palace Entrance Experience
- * S.S Convention Luxury Wedding & Banquet Halls
+ * RoyalPalaceLoader - Hyper-Realistic 3D Royal Palace Mahadwaram Doors Opening
  * 
- * Features:
- * - First-load only experience (tracked via sessionStorage)
- * - Deep Royal Velvet Maroon split palace curtains/doors (#450B17 to #2B050C)
- * - 24K Royal Gold filigree crest emblem with sacred Telugu blessing
- * - Smooth luxury progress counter 0% -> 100% (1.1s duration budget)
- * - Split-curtain grand palace gate reveal (sliding open left & right)
- * - Subtle celebratory gold & champagne blessing petals as gates part
- * - Accessible skip button & universal prefers-reduced-motion fallback
+ * Engineering:
+ * - Uses 8K photorealistic architectural photograph of authentic Royal Palace Mahadwaram Doors
+ * - Left Door: Left 50% slice of photorealistic carved Indian teakwood & antique brass door
+ * - Right Door: Right 50% slice of photorealistic carved Indian teakwood & antique brass door
+ * - Center Seam: Sealed with golden lion/swan royal crest & volumetric crepuscular light beam
+ * - 3D Perspective Swing: Heavy double doors swing outward in 3D (rotateY -84deg & +84deg)
+ * - BEHIND THE DOORS: Actual illuminated interior of SS Convention Hall with crystal chandeliers
+ * - Golden blessing flower petals cascade through the opening
+ * - Triggers on every load, with instant tap-to-open and top-right bypass [ENTER PALACE ✦]
  */
 export default function RoyalPalaceLoader({ onComplete }) {
-  const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState('loading'); // 'loading' | 'opening' | 'complete'
+  // 'sealed' -> 'unlocking' -> 'opening' -> 'complete'
+  const [phase, setPhase] = useState('sealed');
   const [shouldRender, setShouldRender] = useState(true);
   const hasTriggeredRef = useRef(false);
 
+  const doorImage = '/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg';
+
   useEffect(() => {
-    // 1. Accessibility Check: Skip for reduced motion
+    // Reset trigger flag on mount so it plays on every load
+    hasTriggeredRef.current = false;
+    setPhase('sealed');
+
+    // Accessibility check: Skip for users with reduced motion preferences
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       setShouldRender(false);
@@ -30,74 +35,74 @@ export default function RoyalPalaceLoader({ onComplete }) {
       return;
     }
 
-    // 2. Session Check: Only display on fresh session / first visit
-    const alreadySeen = sessionStorage.getItem('ss_palace_loader_shown');
-    if (alreadySeen === 'true') {
+    // Majestic Royal Palace Door Timeline (~2.0 seconds total):
+    // 0.0s - 0.35s: Doors closed, golden ray intensifies along the central meeting seam
+    // 0.35s - 0.85s: Royal gold crest seal unclasps with radiant volumetric lens flare
+    // 0.85s - 1.95s: Heavy teakwood double doors swing wide open in 3D perspective
+    const timer1 = setTimeout(() => {
+      setPhase('unlocking');
+    }, 350);
+
+    const timer2 = setTimeout(() => {
+      triggerDoorOpening();
+    }, 850);
+
+    // Guaranteed hard watchdog fallback (never get stuck under any circumstances)
+    const watchdogTimer = setTimeout(() => {
+      triggerDoorOpening();
+      setPhase('complete');
       setShouldRender(false);
       onComplete?.();
-      return;
-    }
+    }, 2200);
 
-    // 3. Smooth Non-Linear Progress Engine (0 to 100 in ~1150ms)
-    const startTime = performance.now();
-    const duration = 1150; // Milliseconds
-
-    const updateProgress = (currentTime) => {
-      const elapsed = currentTime - startTime;
-      const t = Math.min(elapsed / duration, 1);
-
-      // Smooth ease-out cubic curve
-      const easedProgress = Math.floor(100 * (1 - Math.pow(1 - t, 3)));
-      setProgress(easedProgress);
-
-      if (t < 1) {
-        requestAnimationFrame(updateProgress);
-      } else {
-        handleGateOpening();
+    // If tab was backgrounded or inactive, immediately dismiss on return
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        triggerDoorOpening();
       }
     };
+    document.addEventListener('visibilitychange', handleVisibility);
 
-    const animFrame = requestAnimationFrame(updateProgress);
-
-    return () => cancelAnimationFrame(animFrame);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(watchdogTimer);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, [onComplete]);
 
-  const handleGateOpening = () => {
+  const triggerDoorOpening = () => {
     if (hasTriggeredRef.current) return;
     hasTriggeredRef.current = true;
 
-    // Transition to 'opening' phase (doors slide open)
     setPhase('opening');
 
-    // Mark as seen for this session
-    sessionStorage.setItem('ss_palace_loader_shown', 'true');
-
-    // Trigger subtle golden wedding blessing shower
+    // Shower of auspicious golden wedding blessing petals as the royal doors part
     try {
       confetti({
-        particleCount: 28,
-        spread: 80,
-        origin: { y: 0.4 },
-        colors: ['#D4AF37', '#FFDF73', '#FFFFFF', '#F59E0B', '#FFF9E6'],
-        ticks: 120,
-        gravity: 0.7,
-        scalar: 0.9,
+        particleCount: 50,
+        spread: 120,
+        origin: { y: 0.5 },
+        colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'],
+        gravity: 0.65,
+        scalar: 1.05,
+        ticks: 140,
         shapes: ['circle']
       });
     } catch {
-      // Ignore if canvas-confetti is not available
+      // Ignore
     }
 
-    // Complete transition and remove loader from DOM after doors slide open (750ms)
+    // Dismiss after doors swing fully open (1100ms)
     setTimeout(() => {
       setPhase('complete');
       setShouldRender(false);
       onComplete?.();
-    }, 750);
+    }, 1100);
   };
 
-  const handleSkip = () => {
-    handleGateOpening();
+  const handleInstantOpen = () => {
+    triggerDoorOpening();
   };
 
   if (!shouldRender) return null;
@@ -106,114 +111,196 @@ export default function RoyalPalaceLoader({ onComplete }) {
     <div
       role="status"
       aria-live="polite"
-      className="fixed inset-0 z-[99999] pointer-events-auto overflow-hidden select-none"
+      onClick={handleInstantOpen}
+      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer transition-opacity duration-600 bg-black ${
+        phase === 'complete' ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
+      style={{ perspective: '1800px' }}
+      title="Click anywhere to enter SS Convention"
     >
       {/* ========================================================
-          LEFT PALACE CURTAIN / GATE (Slides Left on Complete)
+          1. REAL VENUE REVEAL BEHIND THE DOORS
+          (Actual SS Convention Hall Interior with Chandeliers)
           ======================================================== */}
-      <div
-        className={`absolute top-0 left-0 w-1/2 h-full bg-gradient-to-br from-[#4D0D19] via-[#3A0813] to-[#24050B] border-r border-[#D4AF37]/40 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.77,0,0.175,1)] will-change-transform ${
-          phase === 'opening' || phase === 'complete'
-            ? '-translate-x-full'
-            : 'translate-x-0'
-        }`}
-      >
-        {/* Ornate Gold Damask Lace on Gate Edge */}
-        <div className="absolute top-0 right-0 w-12 h-full opacity-20 pointer-events-none bg-[radial-gradient(circle_at_right,_rgba(212,175,55,0.8)_0,_transparent_70%)]" />
-        
-        {/* Vertical Royal Gold Seam Line */}
-        <div className="absolute top-0 right-0 w-[1px] h-full bg-gradient-to-b from-transparent via-[#D4AF37] to-transparent" />
+      <div className="absolute inset-0 bg-black overflow-hidden pointer-events-none">
+        <img
+          src="/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg"
+          alt="SS Convention Grand Hall Interior"
+          className={`w-full h-full object-cover object-center filter brightness-105 transition-transform duration-1000 ease-out ${
+            phase === 'opening' ? 'scale-100' : 'scale-110'
+          }`}
+        />
+        {/* Warm Golden Haze over venue interior */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17]/65 via-transparent to-black/45" />
+
+        {/* Volumetric Sunbeams / God-Rays pouring through the opening doors */}
+        <div
+          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
+            phase === 'opening' ? 'opacity-95' : phase === 'unlocking' ? 'opacity-70' : 'opacity-10'
+          }`}
+        >
+          <div className="w-[850px] h-[850px] rounded-full bg-gradient-to-r from-amber-300/35 via-white/45 to-amber-400/35 blur-3xl animate-pulse" />
+        </div>
       </div>
 
       {/* ========================================================
-          RIGHT PALACE CURTAIN / GATE (Slides Right on Complete)
+          2. LEFT ROYAL PALACE DOOR (Photorealistic Left 50% Slice)
+          Swings open outward to the left in 3D around left hinge
           ======================================================== */}
       <div
-        className={`absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-[#4D0D19] via-[#3A0813] to-[#24050B] border-l border-[#D4AF37]/40 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.77,0,0.175,1)] will-change-transform ${
-          phase === 'opening' || phase === 'complete'
-            ? 'translate-x-full'
-            : 'translate-x-0'
-        }`}
+        className="absolute top-0 left-0 w-1/2 h-full z-20 origin-left transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform shadow-[30px_0_70px_rgba(0,0,0,0.95)]"
+        style={{
+          transform: phase === 'opening' ? 'rotateY(-84deg)' : 'rotateY(0deg)',
+          transformStyle: 'preserve-3d'
+        }}
       >
-        {/* Ornate Gold Damask Lace on Gate Edge */}
-        <div className="absolute top-0 left-0 w-12 h-full opacity-20 pointer-events-none bg-[radial-gradient(circle_at_left,_rgba(212,175,55,0.8)_0,_transparent_70%)]" />
-
-        {/* Vertical Royal Gold Seam Line */}
-        <div className="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-transparent via-[#D4AF37] to-transparent" />
-      </div>
-
-      {/* ========================================================
-          CENTERPIECE: ROYAL GOLD CREST, TELUGU BLESSING & COUNTER
-          ======================================================== */}
-      <div
-        className={`absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-400 will-change-transform ${
-          phase === 'opening' || phase === 'complete'
-            ? 'opacity-0 scale-95 pointer-events-none'
-            : 'opacity-100 scale-100'
-        }`}
-      >
-        {/* Ambient Diya Halo Glow */}
-        <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-r from-amber-400/15 via-[#7A1F31]/30 to-amber-500/15 blur-3xl pointer-events-none" />
-
-        {/* Sacred Sanskrit & Telugu Ribbon */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 border border-[#D4AF37]/50 text-amber-200 text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md animate-pulse">
-          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-          <span>శుభం భవతు • కల్యాణ వైభోగమే</span>
-          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-        </div>
-
-        {/* The Royal Gold Crest Emblem */}
-        <div className="relative mb-5 group">
-          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-[#D4AF37]/80 p-1 shadow-[0_0_35px_rgba(212,175,55,0.45)] bg-gradient-to-br from-[#5F1524] via-[#350710] to-[#24050B] flex items-center justify-center relative overflow-hidden">
-            <img
-              src="/assets/01_brand_and_logos/ss_convention_royal_gold_crest_emblem.jpeg"
-              alt="S.S Convention Royal Crest"
-              className="w-full h-full object-cover rounded-full filter drop-shadow-md"
-            />
-            {/* Shimmer Light Flare */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
-          </div>
-
-          {/* Golden Crown Badge */}
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[#350710] border border-[#D4AF37] flex items-center justify-center shadow-lg">
-            <Crown className="w-3.5 h-3.5 text-amber-300" />
-          </div>
-        </div>
-
-        {/* Majestic Typography */}
-        <h1 className="font-cinzel text-2xl sm:text-4xl font-extrabold tracking-[0.2em] text-white uppercase drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] mb-2">
-          S.S CONVENTION <span className="text-amber-400">A/C</span>
-        </h1>
-        <p className="font-cinzel text-[10px] sm:text-xs tracking-[0.3em] uppercase text-amber-200/90 font-light mb-8 max-w-md">
-          Luxury Wedding & Banquet Halls • Hyderabad
-        </p>
-
-        {/* High-Fashion Slim Golden Progress Bar */}
-        <div className="w-48 sm:w-64 h-[3px] bg-black/60 rounded-full overflow-hidden border border-[#D4AF37]/40 relative mb-4 shadow-inner">
+        {/* Photorealistic Left Half of Royal Doors */}
+        <div
+          className="absolute inset-0 border-r-2 border-[#D4AF37] overflow-hidden"
+          style={{
+            backgroundImage: `url(${doorImage})`,
+            backgroundSize: '200% 100%',
+            backgroundPosition: 'left center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          {/* Depth Shading & Dynamic Lighting Falloff */}
           <div
-            className="h-full bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full transition-all duration-100 ease-out shadow-[0_0_10px_#D4AF37]"
-            style={{ width: `${progress}%` }}
+            className={`absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/60 pointer-events-none transition-opacity duration-700 ${
+              phase === 'opening' ? 'opacity-80' : 'opacity-30'
+            }`}
           />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
 
-        {/* Progress Percentage & Status */}
-        <div className="flex items-center justify-between w-48 sm:w-64 text-[10px] sm:text-xs font-cinzel font-semibold tracking-wider text-amber-200/80">
-          <span className="uppercase text-[9px] text-amber-300/70">మహాద్వార ప్రవేశం</span>
-          <span className="font-mono text-white text-xs">{progress}%</span>
+          {/* Golden Vertical Light Edge along meeting stile */}
+          <div className="absolute top-0 right-0 w-[2.5px] h-full bg-gradient-to-b from-transparent via-[#FFE57F] to-transparent shadow-[0_0_18px_#FFE57F]" />
         </div>
       </div>
 
       {/* ========================================================
-          FAST SKIP ACCESS PILL (Top Right Corner)
+          3. RIGHT ROYAL PALACE DOOR (Photorealistic Right 50% Slice)
+          Swings open outward to the right in 3D around right hinge
+          ======================================================== */}
+      <div
+        className="absolute top-0 right-0 w-1/2 h-full z-20 origin-right transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform shadow-[-30px_0_70px_rgba(0,0,0,0.95)]"
+        style={{
+          transform: phase === 'opening' ? 'rotateY(84deg)' : 'rotateY(0deg)',
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        {/* Photorealistic Right Half of Royal Doors */}
+        <div
+          className="absolute inset-0 border-l-2 border-[#D4AF37] overflow-hidden"
+          style={{
+            backgroundImage: `url(${doorImage})`,
+            backgroundSize: '200% 100%',
+            backgroundPosition: 'right center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          {/* Depth Shading & Dynamic Lighting Falloff */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/60 pointer-events-none transition-opacity duration-700 ${
+              phase === 'opening' ? 'opacity-80' : 'opacity-30'
+            }`}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
+
+          {/* Golden Vertical Light Edge along meeting stile */}
+          <div className="absolute top-0 left-0 w-[2.5px] h-full bg-gradient-to-b from-transparent via-[#FFE57F] to-transparent shadow-[0_0_18px_#FFE57F]" />
+        </div>
+      </div>
+
+      {/* ========================================================
+          4. CENTRAL GOLDEN ROYAL SEAL & UNLOCKING LIGHT BURST
+          ======================================================== */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center pointer-events-none z-30 transition-all duration-700 ${
+          phase === 'opening'
+            ? 'scale-150 opacity-0'
+            : phase === 'unlocking'
+            ? 'scale-110 opacity-100'
+            : 'scale-100 opacity-100'
+        }`}
+      >
+        {/* Intense Vertical Seam Light Flare */}
+        <div
+          className={`absolute w-1.5 h-full bg-gradient-to-b from-transparent via-white to-transparent transition-all duration-500 shadow-[0_0_35px_#FFE57F] ${
+            phase === 'unlocking' ? 'opacity-100 scale-y-100' : 'opacity-60 scale-y-85'
+          }`}
+        />
+
+        {/* Center Royal Gold Medallion Lock */}
+        <div className="relative flex flex-col items-center">
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full p-1.5 bg-gradient-to-tr from-[#996515] via-[#FFF4BD] to-[#B38728] shadow-[0_0_70px_rgba(255,223,115,0.9)] flex items-center justify-center border-2 border-[#FFE57F]">
+            <div className="w-full h-full rounded-full overflow-hidden bg-black/95 p-1 flex items-center justify-center shadow-2xl">
+              <img
+                src="/assets/01_brand_and_logos/ss_convention_royal_gold_crest_emblem.jpeg"
+                alt="SS Convention Royal Seal"
+                className="w-full h-full object-cover rounded-full filter brightness-110"
+              />
+            </div>
+
+            {/* Glowing Golden Ring Pulse */}
+            <div
+              className={`absolute inset-0 rounded-full border-2 border-amber-300 transition-all duration-700 ${
+                phase === 'unlocking' ? 'scale-125 opacity-100 animate-ping' : 'opacity-0'
+              }`}
+            />
+          </div>
+
+          {/* Interactive Tap Prompt */}
+          <div className="mt-4 px-4 py-1.5 rounded-full bg-black/85 border border-[#D4AF37]/70 backdrop-blur-md shadow-2xl flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+            <span className="font-cinzel text-[10px] sm:text-xs font-bold tracking-[0.25em] text-amber-200 uppercase">
+              {phase === 'unlocking' ? 'OPENING PALACE DOORS...' : 'TAP TO ENTER PALACE'}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================
+          PALACE HEADER INSCRIPTION
+          ======================================================== */}
+      <div
+        className={`absolute top-0 left-0 right-0 z-40 flex flex-col items-center pt-5 sm:pt-7 pointer-events-none transition-all duration-700 ${
+          phase === 'opening' ? '-translate-y-10 opacity-0' : 'translate-y-0 opacity-100'
+        }`}
+      >
+        <span className="font-serif text-xs sm:text-sm tracking-[0.35em] text-amber-200 uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+          || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
+        </span>
+        <h2 className="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-amber-400 font-bold drop-shadow mt-1">
+          THE ROYAL MAHADWARAM OF S.S CONVENTION
+        </h2>
+      </div>
+
+      {/* ========================================================
+          TOP-RIGHT LUXURY BYPASS BUTTON
           ======================================================== */}
       <button
-        onClick={handleSkip}
-        className="absolute top-6 right-6 z-20 px-3.5 py-1.5 rounded-full bg-black/40 hover:bg-black/70 border border-amber-300/40 hover:border-amber-400 text-amber-200/80 hover:text-white text-[11px] font-cinzel tracking-wider uppercase backdrop-blur-md transition-all flex items-center gap-1.5 shadow-lg group"
-        title="Skip Entrance and Enter Hall"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleInstantOpen();
+        }}
+        className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50 px-5 py-2 rounded-full bg-black/75 border border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:text-[#3D0A14] text-amber-300 font-cinzel text-[11px] font-bold tracking-[0.25em] uppercase transition-all duration-300 shadow-2xl backdrop-blur-md cursor-pointer flex items-center gap-2 group"
       >
-        <span>ప్రవేశించు</span>
-        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform text-amber-400" />
+        <span>ENTER NOW</span>
+        <span className="text-amber-400 group-hover:text-[#3D0A14] group-hover:translate-x-1 transition-transform">✦</span>
       </button>
+
+      {/* ========================================================
+          BOTTOM SUBTITLE
+          ======================================================== */}
+      <div
+        className={`absolute bottom-6 left-0 right-0 z-40 text-center pointer-events-none transition-all duration-700 ${
+          phase === 'opening' ? 'translate-y-8 opacity-0' : 'translate-y-0 opacity-100'
+        }`}
+      >
+        <p className="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-amber-300 font-light drop-shadow">
+          MEERPET, HYDERABAD • ROYAL WEDDING & BANQUET PALACE
+        </p>
+      </div>
     </div>
   );
 }

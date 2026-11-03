@@ -48,27 +48,35 @@ export default function Footer({ lang }) {
             </ul>
           </div>
 
-          {/* Col 3: Three Named Halls */}
+          {/* Col 3: Dedicated Hall Experiences */}
           <div>
             <h4 className="font-cinzel text-xs font-bold text-amber-300 uppercase tracking-[0.2em] mb-4 border-b border-[#D4AF37]/30 pb-1.5 inline-block">
-              OUR PREMIUM HALLS
+              OUR PREMIER HALLS
             </h4>
-            <ul className="space-y-2.5 text-xs font-normal text-amber-100/90">
+            <ul className="space-y-3 text-xs font-normal text-amber-100/90">
               <li>
-                <strong className="text-white block font-bold">Hall Vasishta (300–600 Pax)</strong>
-                <span className="text-[11px] text-amber-200/80">Grand Weddings, Sangeet & Large Receptions</span>
+                <Link to="/halls/hall-vasishta" className="group block">
+                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Vasishta (300–600 Pax) →</strong>
+                  <span className="text-[11px] text-amber-200/80">Grand Weddings, Sangeet & Large Receptions</span>
+                </Link>
               </li>
               <li>
-                <strong className="text-white block font-bold">Hall Agasthya (200–300 Pax)</strong>
-                <span className="text-[11px] text-amber-200/80">Weddings, Receptions & Engagements</span>
+                <Link to="/halls/hall-agasthya" className="group block">
+                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Agasthya (200–350 Pax) →</strong>
+                  <span className="text-[11px] text-amber-200/80">Weddings, Receptions & Engagements</span>
+                </Link>
               </li>
               <li>
-                <strong className="text-white block font-bold">Hall Koundinya (100–200 Pax)</strong>
-                <span className="text-[11px] text-amber-200/80">1st Birthdays, Cradle (Barasala) & Corporate</span>
+                <Link to="/halls/hall-koundinya" className="group block">
+                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Koundinya (100–200 Pax) →</strong>
+                  <span className="text-[11px] text-amber-200/80">1st Birthdays, Cradle (Barasala) & Corporate</span>
+                </Link>
               </li>
               <li>
-                <strong className="text-white block font-bold">Banquet Dining Hall (250+ Pax)</strong>
-                <span className="text-[11px] text-amber-200/80">Separate Floor for Royal Feasts & Buffets</span>
+                <Link to="/halls/dining-hall" className="group block">
+                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Banquet Dining Hall (250+ Pax) →</strong>
+                  <span className="text-[11px] text-amber-200/80">Separate Floor for Royal Feasts & Buffets</span>
+                </Link>
               </li>
             </ul>
           </div>

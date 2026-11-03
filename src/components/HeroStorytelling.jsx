@@ -41,15 +41,15 @@ import { themesData } from '../data/themesData';
 import { cateringMenus } from '../data/menusData';
 
 export default function HeroStorytelling({ lang, onOpenLightbox }) {
-  // Master Single-View Console Active Tab: 'halls' | 'themes' | 'menus' | 'contact'
-  const [activeConsoleTab, setActiveConsoleTab] = useState('halls');
+  // Master Single-View Console Active Tab: 'banquet' | 'halls' | 'themes' | 'menus' | 'contact'
+  const [activeConsoleTab, setActiveConsoleTab] = useState('banquet');
 
-  // Video / Visual Theater State
+  // Video / Visual Theater State: Initialized with the Royal Banquet Dining Hall (Maroon & Gold Damask)
   const [currentMedia, setCurrentMedia] = useState({
-    type: 'video',
-    src: '/assets/11_event_videos/video_highlight_01_walkthrough.mp4',
-    title: lang === 'te' ? 'గ్రాండ్ హాల్ వాక్‌త్రూ (లైవ్ 4K వీడియో)' : 'Grand Chandelier Hall Walkthrough',
-    caption: lang === 'te' ? 'ఎస్.ఎస్ కన్వెన్షన్ ప్రధాన హాల్ మరియు క్రిస్టల్ షాండ్లియర్స్' : 'Main Chandelier Hall & Red Carpet Aisle'
+    type: 'image',
+    src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
+    title: lang === 'te' ? 'రాయల్ బాంక్వెట్ డైనింగ్ హాల్ (స్వర్ణ భోజనం - 250+ సీట్లు)' : 'Royal Banquet Dining Hall (Swarna Bhojanam)',
+    caption: lang === 'te' ? 'రాయల్ మెరూన్ & గోల్డ్ డామాస్క్ రౌండ్ టేబుల్స్ • ప్రత్యేక డైనింగ్ ఫ్లోర్ • జీరో మండప వాసన' : '250+ Concurrent Round-Table Seats • Maroon & Gold Damask Linens • Zero Aroma in Mandap'
   });
 
   const [isMuted, setIsMuted] = useState(true);
@@ -59,7 +59,46 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   const audioContextRef = useRef(null);
   const audioOscillatorsRef = useRef([]);
 
-  // Tab 1: Halls state
+  // Palace Venue Spotlight Quick Selector Options
+  const banquetShowcaseOptions = [
+    {
+      id: 'dining-hall',
+      title: lang === 'te' ? 'రాయల్ బాంక్వెట్ డైనింగ్ హాల్ (250+ సీట్లు)' : 'Royal Banquet Dining Hall (250+ Seats)',
+      shortTitle: 'Royal Banquet Hall',
+      badge: '250+ Seats',
+      src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
+      desc: lang === 'te' ? 'రాచరిక మెరూన్ & గోల్డ్ డామాస్క్ రౌండ్ టేబుల్స్ మరియు గోల్డ్ ఓర్గాంజా చైర్ బోస్.' : 'Round banquet tables in royal maroon & gold damask with golden organza chair ties.'
+    },
+    {
+      id: 'hall-vasishta',
+      title: lang === 'te' ? 'హాల్ వశిష్ట – గ్రాండ్ కళ్యాణ మండపం (600 Pax)' : 'Hall Vasishta – Grand Kalyana Mandapam (600 Pax)',
+      shortTitle: 'Grand Kalyana Mandapam',
+      badge: '600 Pax',
+      src: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
+      desc: lang === 'te' ? 'డబుల్-టైర్ క్రిస్టల్ షాండ్లియర్స్, ఇటాలియన్ టైల్స్ & 70 అడుగుల బ్రైడల్ ఐల్.' : 'Double-tier crystal chandeliers, Italian vitrified reflections & 70-ft bridal walk.'
+    },
+    {
+      id: 'hall-agasthya',
+      title: lang === 'te' ? 'హాల్ అగస్త్య – ఈవెనింగ్ రిసెప్షన్ స్టేజ్ (350 Pax)' : 'Hall Agasthya – Royal Reception Stage (350 Pax)',
+      shortTitle: 'Evening Reception Stage',
+      badge: '350 Pax',
+      src: '/assets/09_reception_engagement_stages/stage_floral_ring_arch_royal_sofa_clean.jpeg',
+      desc: lang === 'te' ? 'ఇంపీరియల్ వెల్వెట్ సోఫా, ఫ్లోరల్ రింగ్ ఆర్చ్ & డిజిటల్ స్టేజ్ లైటింగ్.' : 'Imperial velvet sofa, modern floral ring arch & intelligent stage lighting.'
+    },
+    {
+      id: 'hall-koundinya',
+      title: lang === 'te' ? 'హాల్ కౌండిన్య – మైల్‌స్టోన్ సెలబ్రేషన్స్ హాల్ (200 Pax)' : 'Hall Koundinya – Celebrations Hall (200 Pax)',
+      shortTitle: 'Cradle & Birthday Hall',
+      badge: '200 Pax',
+      src: '/assets/06_main_hall_seating/mini_hall_seating_central_aisle_stage.jpeg',
+      desc: lang === 'te' ? '1వ పుట్టినరోజులు, బారసాల మరియు సన్నిహిత కుటుంబ వేడుకలకు వుడ్ స్లాట్ సీలింగ్ హాల్.' : 'Intimate boutique hall with wood slat ceiling, milestone stage & crisp acoustics.'
+    }
+  ];
+
+  // Tab 1: Banquet Hall state
+  const [banquetSeatingBatch, setBanquetSeatingBatch] = useState(250);
+
+  // Tab 2: Halls state
   const [selectedHallIdx, setSelectedHallIdx] = useState(0); // Hall Vasishta default
   const [hallViewAngle, setHallViewAngle] = useState('hall'); // 'hall' | 'foyer'
 
@@ -163,7 +202,14 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   // Switch console tab and dynamically sync visual theater
   const handleSwitchTab = (tab) => {
     setActiveConsoleTab(tab);
-    if (tab === 'halls') {
+    if (tab === 'banquet') {
+      setCurrentMedia({
+        type: 'image',
+        src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
+        title: lang === 'te' ? 'రాయల్ బాంక్వెట్ డైనింగ్ హాల్ (స్వర్ణ భోజనం - 250+ సీట్లు)' : 'Royal Banquet Dining Hall (Swarna Bhojanam)',
+        caption: lang === 'te' ? 'రాయల్ మెరూన్ & గోల్డ్ డామాస్క్ రౌండ్ టేబుల్స్ • ప్రత్యేక డైనింగ్ ఫ్లోర్ • జీరో మండప వాసన' : '250+ Concurrent Round-Table Seats • Maroon & Gold Damask Linens • Zero Aroma in Mandap'
+      });
+    } else if (tab === 'halls') {
       const hall = spacesData[selectedHallIdx] || spacesData[0];
       const targetImage = hallViewAngle === 'hall' ? (hall.hallImage || hall.image) : hall.image;
       setCurrentMedia({
@@ -231,12 +277,14 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
     setSelectedHallIdx(idx);
     setHallViewAngle(angle);
     const hall = spacesData[idx];
-    const targetImage = angle === 'hall' ? (hall.hallImage || hall.image) : hall.image;
+    const targetImage = angle === 'hall' 
+      ? (hall.hallImage || hall.image) 
+      : (hall.gallery?.[1]?.src || hall.image);
     setCurrentMedia({
       type: 'image',
       src: targetImage,
       title: hall.name,
-      caption: angle === 'hall' ? `${hall.name} - Chandelier Seating View` : `${hall.name} - Entrance & Foyer View`
+      caption: angle === 'hall' ? `${hall.name} - Chandelier Seating Overview` : `${hall.name} - Stage & Aisle Perspective`
     });
   };
 
@@ -344,17 +392,30 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   };
 
   return (
-    <section className="relative pt-24 sm:pt-28 pb-12 sm:pb-16 bg-gradient-to-b from-[#4A0E17] via-[#5F1524] to-[#3A0813] text-white overflow-hidden border-b-2 border-[#D4AF37]/35">
-      {/* Background Royal Velvet Ambience */}
-      <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-[#2E070F] to-transparent pointer-events-none" />
-      <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-amber-500/15 via-[#D4AF37]/20 to-amber-500/15 rounded-full blur-[100px] pointer-events-none" />
+    <section className="relative pt-24 sm:pt-28 pb-12 sm:pb-16 text-white overflow-hidden border-b-2 border-[#D4AF37]/35 min-h-[92vh]">
+      {/* ========================================================
+          PANORAMIC AMBIENT ROYAL BANQUET HALL BACKDROP
+          (Featuring Authentic Round Tables with Maroon & Gold Damask Linens)
+          ======================================================== */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+        <img
+          src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
+          alt="SS Convention Royal Banquet Hall Atmosphere"
+          className="w-full h-full object-cover object-center filter brightness-[0.22] saturate-[1.25] contrast-[1.12] scale-105"
+        />
+        {/* Layered Imperial Velvet Gradients & Golden Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2E070F]/95 via-[#450B17]/90 to-[#2A060E]/98" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_20%,_rgba(212,175,55,0.18),transparent_70%)]" />
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#1C0308] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#1C0308] to-transparent" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* ========================================================
             1. PALACE CREST & ROYAL INSIGNIA BANNER
             ======================================================== */}
-        <div className="text-center max-w-4xl mx-auto mb-8 sm:mb-10">
+        <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8">
           
           {/* Sacred Telugu Heritage Insignia Ribbon */}
           <div className="inline-flex items-center gap-2 sm:gap-3 px-4 py-1.5 rounded-full bg-[#350710]/90 border border-[#D4AF37]/50 shadow-[0_4px_20px_rgba(212,175,55,0.25)] backdrop-blur-md mb-4 group hover:border-amber-400 transition-all">
@@ -390,7 +451,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           </p>
 
           {/* 5 Pillars of Prestige Badge Bar */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs mb-6">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3A0813] border border-[#D4AF37]/40 text-amber-200 font-semibold shadow-sm">
               <Users className="w-3.5 h-3.5 text-amber-400" />
               <span>600+ Pax Capacity</span>
@@ -399,9 +460,9 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               <Snowflake className="w-3.5 h-3.5 text-amber-400" />
               <span>100% Central Cassette A/C</span>
             </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3A0813] border border-[#D4AF37]/40 text-amber-200 font-semibold shadow-sm">
-              <UtensilsCrossed className="w-3.5 h-3.5 text-amber-400" />
-              <span>Separate 250+ Dining Floor</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/20 border border-amber-300 text-amber-200 font-bold shadow-sm">
+              <UtensilsCrossed className="w-3.5 h-3.5 text-amber-300" />
+              <span>Dedicated 250+ Banquet Dining</span>
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3A0813] border border-[#D4AF37]/40 text-amber-200 font-semibold shadow-sm">
               <Building className="w-3.5 h-3.5 text-amber-400" />
@@ -411,6 +472,58 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               <Car className="w-3.5 h-3.5 text-amber-400" />
               <span>Dedicated On-Premise Parking</span>
             </div>
+          </div>
+
+          {/* PALACE VENUE SPOTLIGHT QUICK SELECTOR (Direct Instant Switcher) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+            <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest mr-1 hidden sm:inline">
+              Instant Spotlight:
+            </span>
+            {banquetShowcaseOptions.map((item) => {
+              const isSelected = currentMedia.src === item.src;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setCurrentMedia({
+                      type: 'image',
+                      src: item.src,
+                      title: item.title,
+                      caption: item.desc
+                    });
+                    if (item.id === 'dining-hall') setActiveConsoleTab('banquet');
+                    else if (item.id === 'hall-agasthya') setActiveConsoleTab('themes');
+                    else setActiveConsoleTab('halls');
+                  }}
+                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md shadow-md transition-all duration-300 border ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] border-amber-300 font-bold scale-105'
+                      : 'bg-black/60 hover:bg-[#4D0D19] border-[#D4AF37]/50 text-white'
+                  }`}
+                >
+                  <div className="w-4 h-4 rounded-full overflow-hidden border border-amber-300/80 flex-shrink-0">
+                    <img src={item.src} alt={item.shortTitle} className="w-full h-full object-cover" />
+                  </div>
+                  <span className="font-cinzel text-[11px]">
+                    {item.shortTitle}
+                  </span>
+                  <span className={`text-[9px] px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-[#3D0A14] text-amber-300' : 'bg-black/40 text-amber-300'}`}>
+                    {item.badge}
+                  </span>
+                </button>
+              );
+            })}
+            <button
+              onClick={() => handleSelectVideo(venueVideos[0])}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold font-cinzel shadow-md transition-all border ${
+                currentMedia.type === 'video'
+                  ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] border-amber-300 scale-105'
+                  : 'bg-black/60 text-amber-300 border-amber-400/60 hover:bg-[#4D0D19]'
+              }`}
+            >
+              <Play className="w-3 h-3 fill-current" />
+              <span>4K Walkthrough</span>
+            </button>
           </div>
         </div>
 
@@ -422,6 +535,21 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           {/* Top Master Options Switcher Bar */}
           <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-5 border-b border-[#D4AF37]/35">
             <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => handleSwitchTab('banquet')}
+                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  activeConsoleTab === 'banquet'
+                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg shadow-amber-500/30 scale-105 font-extrabold'
+                    : 'bg-[#4D0D19] text-amber-100/90 hover:bg-[#631422] border border-[#D4AF37]/40'
+                }`}
+              >
+                <UtensilsCrossed className="w-3.5 h-3.5" />
+                <span>{lang === 'te' ? 'రాయల్ బాంక్వెట్ హాల్ (250+ సీట్లు)' : 'Royal Banquet Dining (250+ Seats)'}</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#3D0A14] text-amber-300 font-extrabold">
+                  ★
+                </span>
+              </button>
+
               <button
                 onClick={() => handleSwitchTab('halls')}
                 className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
@@ -454,8 +582,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                     : 'bg-[#4D0D19] text-amber-100/90 hover:bg-[#631422] border border-[#D4AF37]/40'
                 }`}
               >
-                <UtensilsCrossed className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'విందు భోజనం (Banquet Feasts)' : 'Banquet Menus (Dum Biryani & Veg)'}</span>
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>{lang === 'te' ? 'విందు భోజనం మెనూలు' : 'Banquet Menus (Dum Biryani & Veg)'}</span>
               </button>
 
               <button
@@ -648,6 +776,127 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
             <div className="lg:col-span-5 flex flex-col justify-between h-full bg-[#2E070F] p-5 sm:p-6 rounded-2xl border-2 border-[#D4AF37]/45 overflow-hidden text-white shadow-xl">
               <AnimatePresence mode="wait">
                 
+                {/* PANEL 0: ROYAL BANQUET DINING HALL (SWARNA BHOJANAM) */}
+                {activeConsoleTab === 'banquet' && (
+                  <motion.div
+                    key="banquet"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.28, ease: "easeOut" }}
+                    className="space-y-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-amber-300 tracking-[0.22em] uppercase flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Dedicated Dining Sanctuary</span>
+                      </span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/50 border border-amber-400/50 text-amber-300 text-[10px] font-bold shadow-sm">
+                        <UtensilsCrossed className="w-3 h-3 text-amber-400" />
+                        <span>250+ Seats Concurrently</span>
+                      </span>
+                    </div>
+
+                    {/* Banquet Highlight Card */}
+                    <div className="p-4 rounded-xl bg-[#3A0813] border border-[#D4AF37]/40 shadow-sm space-y-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <h4 className="font-cinzel text-lg font-bold text-white leading-tight">
+                            {lang === 'te' ? 'స్వర్ణ భోజనం – రాయల్ బాంక్వెట్ హాల్' : 'Swarna Bhojanam – Royal Banquet Floor'}
+                          </h4>
+                          <span className="text-xs text-amber-300 font-medium block mt-0.5">
+                            Round Tables with Royal Maroon & Gold Damask Linens
+                          </span>
+                        </div>
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-black/40 text-amber-200 border border-[#D4AF37]/30 whitespace-nowrap">
+                          3,500 sq.ft
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-amber-100/90 font-light leading-relaxed">
+                        {lang === 'te'
+                          ? 'ప్రత్యేక అంతస్తులో ఏర్పాటు చేయబడిన ఈ విశాలమైన డైనింగ్ హాల్‌లో 250+ మంది ఒకేసారి రౌండ్ టేబుల్స్‌పై కూర్చుని విందు ఆరగించవచ్చు. పవిత్ర వివాహ మండపంలోకి ఎటువంటి వంట వాసనలు రాకుండా ప్రత్యేక ఎగ్జాస్ట్ వ్యవస్థ కలదు.'
+                          : 'Engineered on an independent floor with 250+ concurrent round-table seats draped in imperial maroon and shimmering gold organza. Physically isolated with high-velocity odor exhaust so zero cooking aromas enter the sacred marriage mandap.'}
+                      </p>
+
+                      {/* 4 Distinct Banquet Pillars */}
+                      <div className="grid grid-cols-2 gap-2 text-xs pt-1">
+                        <div className="p-2.5 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <strong className="text-white block text-[11px]">Zero Mandap Aroma</strong>
+                            <span className="text-[10px] text-amber-200/80">Dedicated Floor & Exhaust</span>
+                          </div>
+                        </div>
+                        <div className="p-2.5 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <strong className="text-white block text-[11px]">12-Tap Granite Handwash</strong>
+                            <span className="text-[10px] text-amber-200/80">Pure RO Purified Water</span>
+                          </div>
+                        </div>
+                        <div className="p-2.5 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <strong className="text-white block text-[11px]">Catering Service Lift</strong>
+                            <span className="text-[10px] text-amber-200/80">Fast hot food delivery</span>
+                          </div>
+                        </div>
+                        <div className="p-2.5 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <strong className="text-white block text-[11px]">1,500+ Feasts Capacity</strong>
+                            <span className="text-[10px] text-amber-200/80">Rolling batches ~25 mins</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Interactive Guest Count & Batch Estimator */}
+                    <div className="p-3.5 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35 space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-amber-300">
+                          Estimate Seating Batches:
+                        </span>
+                        <strong className="text-white">
+                          {banquetSeatingBatch} Attendees = {Math.ceil(banquetSeatingBatch / 250)} Batch{Math.ceil(banquetSeatingBatch / 250) > 1 ? 'es' : ''}
+                        </strong>
+                      </div>
+                      <div className="grid grid-cols-4 gap-1.5">
+                        {[150, 250, 500, 750].map((count) => (
+                          <button
+                            key={count}
+                            onClick={() => setBanquetSeatingBatch(count)}
+                            className={`py-1 px-2 rounded-lg text-[10px] font-bold transition-all border ${
+                              banquetSeatingBatch === count
+                                ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] border-amber-300 shadow-sm'
+                                : 'bg-[#24050B] text-amber-200 hover:text-white border-[#D4AF37]/30'
+                            }`}
+                          >
+                            {count} Guests
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Banquet CTAs */}
+                    <div className="grid grid-cols-2 gap-2 pt-1">
+                      <Link
+                        to="/halls/dining-hall"
+                        className="block text-center py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:scale-105"
+                      >
+                        Explore Banquet Floor Specs →
+                      </Link>
+                      <Link
+                        to="/menus"
+                        className="block text-center py-2.5 rounded-full border border-amber-400/80 text-amber-300 hover:bg-white/10 font-cinzel text-xs font-bold uppercase tracking-wider transition-all"
+                      >
+                        View Catering Feasts & Menus →
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+
                 {/* PANEL 1: THE 3 HALLS */}
                 {activeConsoleTab === 'halls' && (
                   <motion.div
@@ -716,22 +965,12 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                       </div>
                     </div>
 
-                    {/* Dual Perspective Angle Switcher */}
+                    {/* Dual Interior Perspective Angle Switcher */}
                     <div className="flex items-center justify-between p-2 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35">
                       <span className="text-xs font-bold text-amber-300">
-                        Switch View:
+                        Interior Angle:
                       </span>
                       <div className="flex gap-1.5">
-                        <button
-                          onClick={() => handleSelectHall(selectedHallIdx, 'foyer')}
-                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                            hallViewAngle === 'foyer' && currentMedia.type === 'image'
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] shadow-sm'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
-                        >
-                          Foyer & Entrance
-                        </button>
                         <button
                           onClick={() => handleSelectHall(selectedHallIdx, 'hall')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
@@ -740,17 +979,35 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                               : 'bg-[#24050B] text-amber-200 hover:text-white'
                           }`}
                         >
-                          Chandelier Hall
+                          Chandelier Overview
+                        </button>
+                        <button
+                          onClick={() => handleSelectHall(selectedHallIdx, 'foyer')}
+                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                            hallViewAngle === 'foyer' && currentMedia.type === 'image'
+                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] shadow-sm'
+                              : 'bg-[#24050B] text-amber-200 hover:text-white'
+                          }`}
+                        >
+                          Stage & Aisle
                         </button>
                       </div>
                     </div>
 
-                    <Link
-                      to="/spaces"
-                      className="block text-center py-2.5 rounded-full border-2 border-amber-400 text-amber-300 hover:bg-gradient-to-r hover:from-amber-400 hover:to-amber-500 hover:text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md"
-                    >
-                      View All 3D Hall Architectural Specs →
-                    </Link>
+                    <div className="grid grid-cols-2 gap-2 pt-1">
+                      <Link
+                        to={`/halls/${currentHall.id}`}
+                        className="block text-center py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:scale-105"
+                      >
+                        Explore {currentHall.name} Details →
+                      </Link>
+                      <Link
+                        to="/spaces"
+                        className="block text-center py-2.5 rounded-full border border-amber-400/80 text-amber-300 hover:bg-white/10 font-cinzel text-xs font-bold uppercase tracking-wider transition-all"
+                      >
+                        Compare All Halls →
+                      </Link>
+                    </div>
                   </motion.div>
                 )}
 

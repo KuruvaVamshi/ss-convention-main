@@ -13,6 +13,7 @@ import LightboxModal from './components/LightboxModal';
 // Multi-Page Views
 import HomePage from './pages/HomePage';
 import SpacesPage from './pages/SpacesPage';
+import HallDetailPage from './pages/HallDetailPage';
 import ThemesPage from './pages/ThemesPage';
 import MenusPage from './pages/MenusPage';
 import GalleryPage from './pages/GalleryPage';
@@ -73,6 +74,22 @@ export default function App() {
             <Route
               path="/spaces"
               element={<SpacesPage onOpenLightbox={openLightbox} lang={lang} />}
+            />
+            <Route
+              path="/halls"
+              element={<SpacesPage onOpenLightbox={openLightbox} lang={lang} />}
+            />
+            <Route
+              path="/halls/:id"
+              element={<HallDetailPage onOpenLightbox={openLightbox} lang={lang} />}
+            />
+            <Route
+              path="/spaces/:id"
+              element={<HallDetailPage onOpenLightbox={openLightbox} lang={lang} />}
+            />
+            <Route
+              path="/facilities"
+              element={<PoliciesPage lang={lang} setLang={setLang} />}
             />
             <Route
               path="/themes"

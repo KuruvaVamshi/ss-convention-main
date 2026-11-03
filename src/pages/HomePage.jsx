@@ -14,10 +14,10 @@ import { venueData } from '../data/venueData';
 import { spacesData } from '../data/spacesData';
 
 export default function HomePage({ onOpenLightbox, lang }) {
-  // Top 3 named halls directly from screenshot 1: Hall Agasthya, Hall Vasishta, Hall Koundinya
+  // Top named halls ordered hierarchically: Hall Vasishta (Flagship), Hall Agasthya, Hall Koundinya
   const premierHalls = [
-    spacesData.find(s => s.id === 'hall-agasthya') || spacesData[1],
     spacesData.find(s => s.id === 'hall-vasishta') || spacesData[0],
+    spacesData.find(s => s.id === 'hall-agasthya') || spacesData[1],
     spacesData.find(s => s.id === 'hall-koundinya') || spacesData[2],
   ];
 
@@ -58,14 +58,26 @@ export default function HomePage({ onOpenLightbox, lang }) {
             ))}
           </div>
 
-          {/* Direct CTA to view all spaces and 3D architectural tilt */}
-          <div className="text-center mt-12">
+          {/* Clear Luxury CTAs */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-12">
             <Link
               to="/spaces"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-amber-400 text-amber-300 hover:bg-gradient-to-r hover:from-amber-400 hover:to-amber-500 hover:text-[#3D0A14] font-cinzel font-bold text-xs tracking-[0.2em] uppercase transition-all duration-300 shadow-lg"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel font-bold text-xs tracking-[0.18em] uppercase transition-all duration-300 shadow-xl hover:scale-105"
             >
-              <span>View All Spaces & Dining Hall</span>
+              <span>Explore All Halls & Specs</span>
               <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/gallery"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-amber-400/70 text-amber-300 hover:bg-white/10 font-cinzel font-bold text-xs tracking-[0.18em] uppercase transition-all duration-300 shadow-md"
+            >
+              <span>View Gallery</span>
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/40 text-white hover:text-amber-300 hover:border-amber-400 font-cinzel font-semibold text-xs tracking-[0.18em] uppercase transition-all duration-300 shadow-md"
+            >
+              <span>Enquire Now</span>
             </Link>
           </div>
         </div>

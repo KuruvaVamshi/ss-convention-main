@@ -74,7 +74,7 @@ export default function SpacesSection({ onSelectSpace, lang }) {
 
                 {/* Features List */}
                 <div className="space-y-2.5 mb-8">
-                  {currentSpace.features.map((feature, idx) => (
+                  {(currentSpace.features || currentSpace.highlights || []).map((feature, idx) => (
                     <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-200">
                       <div className="w-4 h-4 rounded-full bg-emerald-900/60 border border-emerald-500/40 flex items-center justify-center text-emerald-400 flex-shrink-0 mt-0.5">
                         <Check className="w-2.5 h-2.5" />

@@ -178,7 +178,7 @@ export default function SpacesExplorer3D({ onOpenLightbox, lang }) {
                   <h4 className="text-[11px] font-bold text-amber-300 uppercase tracking-widest">
                     Hall Specifications
                   </h4>
-                  {currentSpace.features.map((feat, idx) => (
+                  {(currentSpace.features || currentSpace.highlights || []).map((feat, idx) => (
                     <div key={idx} className="flex items-start gap-2.5 text-xs text-amber-100/90 font-normal">
                       <div className="w-4 h-4 rounded-full bg-[#4D0D19] border border-[#D4AF37]/40 flex items-center justify-center text-amber-300 flex-shrink-0 mt-0.5">
                         <Check className="w-3 h-3 text-amber-400" />
