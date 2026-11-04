@@ -35,17 +35,17 @@ export default function RoyalPalaceLoader({ onComplete }) {
       return;
     }
 
-    // Majestic Royal Palace Door Timeline (~2.0 seconds total):
-    // 0.0s - 0.35s: Doors closed, golden ray intensifies along the central meeting seam
-    // 0.35s - 0.85s: Royal gold crest seal unclasps with radiant volumetric lens flare
-    // 0.85s - 1.95s: Heavy teakwood double doors swing wide open in 3D perspective
+    // Majestic Royal Palace Door Timeline (Balanced & Regal - 10% Faster Calibration):
+    // 0.0s - 1.08s: Doors closed, golden ray intensifies along the central meeting seam
+    // 1.08s - 2.16s: Royal gold crest seal unclasps with radiant volumetric lens flare
+    // 2.16s - 5.04s: Heavy teakwood double doors swing wide open majestically (2.88s physical swing)
     const timer1 = setTimeout(() => {
       setPhase('unlocking');
-    }, 350);
+    }, 1080);
 
     const timer2 = setTimeout(() => {
       triggerDoorOpening();
-    }, 850);
+    }, 2160);
 
     // Guaranteed hard watchdog fallback (never get stuck under any circumstances)
     const watchdogTimer = setTimeout(() => {
@@ -53,7 +53,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
       setPhase('complete');
       setShouldRender(false);
       onComplete?.();
-    }, 2200);
+    }, 7000);
 
     // If tab was backgrounded or inactive, immediately dismiss on return
     const handleVisibility = () => {
@@ -80,25 +80,27 @@ export default function RoyalPalaceLoader({ onComplete }) {
     // Shower of auspicious golden wedding blessing petals as the royal doors part
     try {
       confetti({
-        particleCount: 50,
-        spread: 120,
+        particleCount: 80,
+        spread: 140,
         origin: { y: 0.5 },
         colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'],
-        gravity: 0.65,
-        scalar: 1.05,
-        ticks: 140,
+        gravity: 0.38,
+        scalar: 1.15,
+        ticks: 280,
         shapes: ['circle']
       });
     } catch {
       // Ignore
     }
 
-    // Dismiss after doors swing fully open (1100ms)
+    // Dismiss after doors swing open over 2.88s (3100ms hold + 720ms fadeout)
     setTimeout(() => {
       setPhase('complete');
-      setShouldRender(false);
-      onComplete?.();
-    }, 1100);
+      setTimeout(() => {
+        setShouldRender(false);
+        onComplete?.();
+      }, 720);
+    }, 3100);
   };
 
   const handleInstantOpen = () => {
@@ -112,46 +114,41 @@ export default function RoyalPalaceLoader({ onComplete }) {
       role="status"
       aria-live="polite"
       onClick={handleInstantOpen}
-      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer transition-opacity duration-600 bg-black ${
+      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer ${
         phase === 'complete' ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
-      style={{ perspective: '1800px' }}
+      style={{
+        perspective: '1800px',
+        transition: 'opacity 720ms ease-out'
+      }}
       title="Click anywhere to enter SS Convention"
     >
       {/* ========================================================
-          1. REAL VENUE REVEAL BEHIND THE DOORS
-          (Actual SS Convention Hall Interior with Chandeliers)
+          1. VOLUMETRIC SUNBEAMS POURING THROUGH THE PARTING DOORS
+          Reveals the Live Homepage Hero Section Directly Underneath
           ======================================================== */}
-      <div className="absolute inset-0 bg-black overflow-hidden pointer-events-none">
-        <img
-          src="/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg"
-          alt="SS Convention Grand Hall Interior"
-          className={`w-full h-full object-cover object-center filter brightness-105 transition-transform duration-1000 ease-out ${
-            phase === 'opening' ? 'scale-100' : 'scale-110'
-          }`}
-        />
-        {/* Warm Golden Haze over venue interior */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17]/65 via-transparent to-black/45" />
-
-        {/* Volumetric Sunbeams / God-Rays pouring through the opening doors */}
-        <div
-          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
-            phase === 'opening' ? 'opacity-95' : phase === 'unlocking' ? 'opacity-70' : 'opacity-10'
-          }`}
-        >
-          <div className="w-[850px] h-[850px] rounded-full bg-gradient-to-r from-amber-300/35 via-white/45 to-amber-400/35 blur-3xl animate-pulse" />
-        </div>
+      <div
+        className={`absolute inset-0 flex items-center justify-center pointer-events-none ${
+          phase === 'opening' ? 'opacity-75' : phase === 'unlocking' ? 'opacity-40' : 'opacity-0'
+        }`}
+        style={{
+          transition: 'opacity 1080ms ease-out'
+        }}
+      >
+        <div className="w-[850px] h-[850px] rounded-full bg-gradient-to-r from-amber-300/30 via-white/40 to-amber-400/30 blur-3xl animate-pulse" />
       </div>
 
       {/* ========================================================
           2. LEFT ROYAL PALACE DOOR (Photorealistic Left 50% Slice)
           Swings open outward to the left in 3D around left hinge
+          Majestic 2.88s swing (10% faster calibration)
           ======================================================== */}
       <div
-        className="absolute top-0 left-0 w-1/2 h-full z-20 origin-left transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform shadow-[30px_0_70px_rgba(0,0,0,0.95)]"
+        className="absolute top-0 left-0 w-1/2 h-full z-20 origin-left will-change-transform shadow-[30px_0_70px_rgba(0,0,0,0.95)]"
         style={{
-          transform: phase === 'opening' ? 'rotateY(-84deg)' : 'rotateY(0deg)',
-          transformStyle: 'preserve-3d'
+          transform: phase === 'opening' ? 'rotateY(-85deg)' : 'rotateY(0deg)',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 2880ms cubic-bezier(0.4, 0, 0.25, 1)'
         }}
       >
         {/* Photorealistic Left Half of Royal Doors */}
@@ -166,7 +163,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
         >
           {/* Depth Shading & Dynamic Lighting Falloff */}
           <div
-            className={`absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/60 pointer-events-none transition-opacity duration-700 ${
+            className={`absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/60 pointer-events-none transition-opacity duration-1000 ${
               phase === 'opening' ? 'opacity-80' : 'opacity-30'
             }`}
           />
@@ -180,12 +177,14 @@ export default function RoyalPalaceLoader({ onComplete }) {
       {/* ========================================================
           3. RIGHT ROYAL PALACE DOOR (Photorealistic Right 50% Slice)
           Swings open outward to the right in 3D around right hinge
+          Majestic 2.88s unhurried swing (10% faster calibration)
           ======================================================== */}
       <div
-        className="absolute top-0 right-0 w-1/2 h-full z-20 origin-right transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform shadow-[-30px_0_70px_rgba(0,0,0,0.95)]"
+        className="absolute top-0 right-0 w-1/2 h-full z-20 origin-right will-change-transform shadow-[-30px_0_70px_rgba(0,0,0,0.95)]"
         style={{
-          transform: phase === 'opening' ? 'rotateY(84deg)' : 'rotateY(0deg)',
-          transformStyle: 'preserve-3d'
+          transform: phase === 'opening' ? 'rotateY(85deg)' : 'rotateY(0deg)',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 2880ms cubic-bezier(0.4, 0, 0.25, 1)'
         }}
       >
         {/* Photorealistic Right Half of Royal Doors */}
@@ -200,7 +199,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
         >
           {/* Depth Shading & Dynamic Lighting Falloff */}
           <div
-            className={`absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/60 pointer-events-none transition-opacity duration-700 ${
+            className={`absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/60 pointer-events-none transition-opacity duration-1000 ${
               phase === 'opening' ? 'opacity-80' : 'opacity-30'
             }`}
           />
@@ -215,13 +214,16 @@ export default function RoyalPalaceLoader({ onComplete }) {
           4. CENTRAL GOLDEN ROYAL SEAL & UNLOCKING LIGHT BURST
           ======================================================== */}
       <div
-        className={`absolute inset-0 flex items-center justify-center pointer-events-none z-30 transition-all duration-700 ${
+        className={`absolute inset-0 flex items-center justify-center pointer-events-none z-30 ${
           phase === 'opening'
             ? 'scale-150 opacity-0'
             : phase === 'unlocking'
             ? 'scale-110 opacity-100'
             : 'scale-100 opacity-100'
         }`}
+        style={{
+          transition: 'all 900ms cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
       >
         {/* Intense Vertical Seam Light Flare */}
         <div
@@ -281,7 +283,9 @@ export default function RoyalPalaceLoader({ onComplete }) {
       <button
         onClick={(e) => {
           e.stopPropagation();
-          handleInstantOpen();
+          setPhase('complete');
+          setShouldRender(false);
+          onComplete?.();
         }}
         className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50 px-5 py-2 rounded-full bg-black/75 border border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:text-[#3D0A14] text-amber-300 font-cinzel text-[11px] font-bold tracking-[0.25em] uppercase transition-all duration-300 shadow-2xl backdrop-blur-md cursor-pointer flex items-center gap-2 group"
       >

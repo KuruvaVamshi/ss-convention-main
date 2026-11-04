@@ -139,23 +139,11 @@ export default function AuspiciousBlessingsCanvas() {
   }, []);
 
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        aria-hidden="true"
-        className="fixed inset-0 pointer-events-none z-[9990]"
-      />
-
-      {/* Interactive Trigger Button Floating in Bottom Right */}
-      <button
-        onClick={triggerBlessings}
-        className="fixed bottom-24 right-6 z-40 px-3.5 py-2 rounded-full bg-[#3A0813]/95 backdrop-blur-md border-2 border-[#D4AF37] text-amber-200 font-bold text-xs shadow-2xl flex items-center gap-1.5 hover:bg-gradient-to-r hover:from-amber-400 hover:to-amber-500 hover:text-[#3D0A14] transition-all group hover:scale-105"
-        title="Shower Auspicious Floral Blessings"
-      >
-        <Flower2 className="w-3.5 h-3.5 text-amber-300 group-hover:text-[#3D0A14] animate-spin-slow" />
-        <span className="hidden sm:inline">Shower Blessings</span>
-      </button>
-    </>
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className="fixed inset-0 pointer-events-none z-[9990]"
+    />
   );
 }
 

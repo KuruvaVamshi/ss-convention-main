@@ -8,10 +8,36 @@ export default function InteractiveHomeBanquet({ onOpenLightbox, lang }) {
   const [dietaryType, setDietaryType] = useState('nonVeg');
   const [selectedTierIdx, setSelectedTierIdx] = useState(1); // Premium default
   const [guestCount, setGuestCount] = useState(250);
+  const [activeDiningPhotoIdx, setActiveDiningPhotoIdx] = useState(0);
 
   const currentMenus = cateringMenus[dietaryType];
   const activeMenu = currentMenus[selectedTierIdx] || currentMenus[0];
   const activeDishes = activeMenu.sections?.flatMap(s => s.items) || [];
+
+  const diningGallery = [
+    {
+      src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
+      title: 'Swarna Bhojanam – 250+ Round Table Seats',
+      tag: 'Round Tables'
+    },
+    {
+      src: '/assets/03_food_and_catering_menus/menu_06_premium_non_veg_200pax.jpeg',
+      title: 'Grand Hyderabadi Dum Biryani Feast Spread',
+      tag: 'Biryani Feast'
+    },
+    {
+      src: '/assets/03_food_and_catering_menus/menu_03_premium_veg_200pax.jpeg',
+      title: 'South Indian Pure Vegetarian Vindhu Bhojanam',
+      tag: 'Pure Veg Feast'
+    },
+    {
+      src: activeMenu.image,
+      title: `${activeMenu.title} – Official Printed Rate Card`,
+      tag: 'Printed Rate Card'
+    }
+  ];
+
+  const currentPhoto = diningGallery[activeDiningPhotoIdx] || diningGallery[0];
 
   // Calculate concurrent dining batches (250 capacity)
   const diningBatches = Math.ceil(guestCount / 250);
@@ -168,50 +194,79 @@ export default function InteractiveHomeBanquet({ onOpenLightbox, lang }) {
               </div>
             </div>
 
-            {/* Dining Hall Photo Showcase (Right 5 Cols) */}
-            <div className="lg:col-span-5 relative">
+            {/* Dining Hall & Feasts Photo Showcase (Right 5 Cols) */}
+            <div className="lg:col-span-5 relative space-y-3">
               <div
-                className="rounded-2xl overflow-hidden border-2 border-[#D4AF37]/40 shadow-2xl aspect-[4/3] group cursor-pointer relative bg-black"
-                onClick={() => onOpenLightbox('/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg', 'SS Convention Dedicated Banquet Dining Hall')}
+                className="rounded-2xl overflow-hidden border-2 border-[#D4AF37]/45 shadow-2xl aspect-[4/3] group cursor-pointer relative bg-black"
+                onClick={() => onOpenLightbox(currentPhoto.src, currentPhoto.title)}
               >
                 <img
-                  src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
-                  alt="SS Convention Dedicated Dining Hall"
+                  key={currentPhoto.src}
+                  src={currentPhoto.src}
+                  alt={currentPhoto.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-80" />
 
                 {/* Floating Lightbox Trigger */}
                 <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 border border-white/40 text-white flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-all shadow-md">
                   <Maximize2 className="w-4 h-4" />
                 </div>
 
-                <div className="absolute bottom-4 left-5 right-5">
-                  <span className="inline-block px-3 py-1 rounded-full bg-black/70 border border-amber-300/40 text-amber-200 text-[10px] font-bold uppercase tracking-wider mb-2">
-                    Separate Dining Level
+                <div className="absolute top-4 left-4">
+                  <span className="inline-block px-3 py-1 rounded-full bg-black/75 border border-[#D4AF37]/50 text-amber-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
+                    {currentPhoto.tag}
                   </span>
-                  <h4 className="font-cinzel text-xl font-bold text-white drop-shadow">
-                    Banquet Dining Hall
+                </div>
+
+                <div className="absolute bottom-4 left-5 right-5">
+                  <h4 className="font-cinzel text-lg sm:text-xl font-bold text-white drop-shadow">
+                    {currentPhoto.title}
                   </h4>
-                  <p className="text-[11px] text-amber-100/90 font-light mt-1">
-                    250+ Round Table Seats with Maroon & Gold Linen • Zero Aroma in Mandap
+                  <p className="text-[11px] text-amber-100/90 font-light mt-0.5">
+                    Click to zoom in 4K resolution
                   </p>
                 </div>
               </div>
 
+              {/* 4 Authentic Photo Switcher Strip */}
+              <div className="grid grid-cols-4 gap-2">
+                {diningGallery.map((photo, idx) => {
+                  const isSel = activeDiningPhotoIdx === idx;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveDiningPhotoIdx(idx)}
+                      className={`relative rounded-xl overflow-hidden aspect-[4/3] border transition-all ${
+                        isSel
+                          ? 'border-amber-400 ring-2 ring-amber-400/60 scale-102'
+                          : 'border-[#D4AF37]/30 opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={photo.src} alt={photo.tag} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/30 flex items-end p-1">
+                        <span className="text-[8px] font-bold text-white uppercase tracking-wider line-clamp-1">
+                          {photo.tag}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
               {/* 3 Quick Assurance Badges */}
-              <div className="grid grid-cols-3 gap-2.5 mt-4">
+              <div className="grid grid-cols-3 gap-2 pt-1">
                 <div className="p-2.5 rounded-xl bg-[#24050B] border border-[#D4AF37]/35 text-center shadow-sm">
                   <span className="block text-[11px] font-bold text-amber-300">250+ Seats</span>
                   <span className="text-[9px] text-amber-200/70">Concurrent</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-[#24050B] border border-[#D4AF37]/35 text-center shadow-sm">
-                  <span className="block text-[11px] font-bold text-amber-300">Pure Ghee</span>
-                  <span className="text-[9px] text-amber-200/70">Authentic Taste</span>
+                  <span className="block text-[11px] font-bold text-amber-300">Zero Odor</span>
+                  <span className="text-[9px] text-amber-200/70">Separate Floor</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-[#24050B] border border-[#D4AF37]/35 text-center shadow-sm">
-                  <span className="block text-[11px] font-bold text-amber-300">RO Water</span>
-                  <span className="text-[9px] text-amber-200/70">Pure Drinking</span>
+                  <span className="block text-[11px] font-bold text-amber-300">Pure RO Water</span>
+                  <span className="text-[9px] text-amber-200/70">12-Tap Counter</span>
                 </div>
               </div>
             </div>

@@ -52,7 +52,7 @@ export default function App() {
         <ScrollToTop />
 
         <div className="min-h-screen bg-gradient-to-b from-[#450B17] via-[#5F1524] to-[#3A0813] text-[#FFFDF9] flex flex-col selection:bg-[#D4AF37] selection:text-[#3D0A14] relative">
-          {/* Grand Mahadwaram Palace Entrance Loader (First load of session) */}
+          {/* Grand 3D Royal Mahadwaram Doors Opening Reveal (Opens directly onto Homepage Hero) */}
           <RoyalPalaceLoader />
 
           {/* Subtle Ambient Drifting Golden Dust Particles */}

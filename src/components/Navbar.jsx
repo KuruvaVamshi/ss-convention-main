@@ -35,23 +35,27 @@ export default function Navbar({ lang, setLang }) {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#450B17]/95 backdrop-blur-md border-b border-[#D4AF37]/40 py-3 shadow-2xl'
-          : 'bg-[#450B17]/85 backdrop-blur-sm border-b border-[#D4AF37]/25 py-4 sm:py-5'
+          ? 'bg-[#350710]/95 backdrop-blur-md border-b border-[#D4AF37]/40 py-2.5 shadow-2xl'
+          : 'bg-gradient-to-b from-black/80 via-black/35 to-transparent backdrop-blur-[4px] border-b border-[#D4AF37]/25 py-2.5 sm:py-3.5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Brand Logo & Name */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-full border-2 border-[#D4AF37]/80 flex items-center justify-center text-amber-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-[#3D0A14] transition-all shadow-sm bg-white/10">
-              <Heart className="w-4 h-4 fill-[#D4AF37]/30 text-amber-300" />
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#D4AF37] p-0.5 flex items-center justify-center bg-black/40 shadow-[0_0_15px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-all overflow-hidden">
+              <img
+                src="/assets/01_brand_and_logos/ss_convention_royal_gold_crest_emblem.jpeg"
+                alt="SS Convention Royal Crest"
+                className="w-full h-full object-cover rounded-full filter brightness-110"
+              />
             </div>
             <div className="flex flex-col">
-              <span className="font-cinzel text-lg sm:text-xl font-bold tracking-[0.16em] text-white group-hover:text-amber-300 transition-colors">
+              <span className="font-cinzel text-lg sm:text-xl font-bold tracking-[0.16em] text-white group-hover:text-amber-300 transition-colors drop-shadow">
                 S.S CONVENTION
               </span>
               <span className="text-[9px] tracking-[0.25em] text-amber-300 font-bold uppercase -mt-0.5">
-                Wedding & Banquet Halls
+                Royal Wedding & Banquet Halls
               </span>
             </div>
           </Link>
@@ -98,7 +102,7 @@ export default function Navbar({ lang, setLang }) {
             <Link
               to="/contact"
               onClick={() => window.triggerBlessings?.()}
-              className="px-5 py-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold tracking-[0.18em] uppercase transition-all duration-300 shadow-md hover:scale-105"
+              className="px-5 py-2 rounded-full bg-gradient-to-r from-[#B8860B] via-[#FFE57F] to-[#D4AF37] hover:from-[#FFE57F] hover:to-[#B8860B] text-[#24040A] font-cinzel text-xs font-black tracking-[0.18em] uppercase transition-all duration-300 shadow-[0_2px_15px_rgba(212,175,55,0.45)] hover:scale-105 border border-[#FFF9E6]"
             >
               BOOK VISIT
             </Link>

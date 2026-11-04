@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import HeroStorytelling from '../components/HeroStorytelling';
 import QuickProofBar from '../components/QuickProofBar';
+import GrandVisualMosaic from '../components/GrandVisualMosaic';
 import GrandCelebrationJourney from '../components/GrandCelebrationJourney';
 import SwiperMenuShowcase from '../components/SwiperMenuShowcase';
 import SplitHeading from '../components/SplitHeading';
@@ -82,6 +83,9 @@ export default function HomePage({ onOpenLightbox, lang }) {
           </div>
         </div>
       </section>
+
+      {/* Chapter 3: Moments of Grandeur – Authentic Palace Photography Wall (32 Real Photos) */}
+      <GrandVisualMosaic onOpenLightbox={onOpenLightbox} lang={lang} />
 
       {/* 8-Point Instant Verification Bar */}
       <QuickProofBar lang={lang} />

@@ -101,21 +101,34 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
 
         {/* Interactive Stage Canvas Card */}
         <div className="bg-[#3A0813] rounded-[32px] overflow-hidden border border-[#D4AF37]/45 shadow-2xl p-6 sm:p-8 lg:p-10 mb-10 text-white">
-          {/* Occasion Switcher Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8">
-            {themesData.map((theme) => (
-              <button
-                key={theme.id}
-                onClick={() => setActiveThemeId(theme.id)}
-                className={`px-4 sm:px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 ${
-                  activeThemeId === theme.id
-                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg scale-105'
-                    : 'bg-[#24050B] text-amber-200 hover:text-white border border-[#D4AF37]/35'
-                }`}
-              >
-                {theme.category}
-              </button>
-            ))}
+          {/* Visual Stage Selector Strip with Authentic Photo Thumbnails */}
+          <div className="flex items-center gap-3 overflow-x-auto pb-4 mb-8">
+            {themesData.map((theme) => {
+              const isSelected = activeThemeId === theme.id;
+              return (
+                <button
+                  key={theme.id}
+                  onClick={() => setActiveThemeId(theme.id)}
+                  className={`flex items-center gap-2.5 p-2 pr-4 rounded-2xl border transition-all flex-shrink-0 text-left ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] font-bold border-amber-300 shadow-lg scale-102'
+                      : 'bg-[#24050B] text-amber-100 hover:bg-[#420B16] border-[#D4AF37]/35'
+                  }`}
+                >
+                  <div className="w-12 h-10 rounded-xl overflow-hidden border border-white/20 flex-shrink-0 bg-black">
+                    <img src={theme.image} alt={theme.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <span className="block font-cinzel text-xs font-bold leading-tight">
+                      {theme.title.split('(')[0].slice(0, 24)}
+                    </span>
+                    <span className={`text-[10px] block mt-0.5 ${isSelected ? 'text-[#3D0A14]' : 'text-amber-300'}`}>
+                      {theme.badge || theme.category}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           {/* Active Stage Display Grid */}
@@ -199,6 +212,46 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
                   <span>Customize Décor</span>
                 </Link>
               </div>
+            </div>
+          </div>
+
+          {/* More Authentic Reception & Mandap Stage Inspirations (Photo Strip) */}
+          <div className="mt-8 pt-6 border-t border-[#D4AF37]/25">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] font-bold text-amber-300 tracking-[0.2em] uppercase">
+                Explore More Authentic Stage Designs:
+              </span>
+              <span className="text-[10px] text-amber-200/80">
+                Click any photo to zoom
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {[
+                { title: "Boho Triple-Arch Pastel Garden", src: "/assets/09_reception_engagement_stages/stage_triple_arch_boho_garden_warm_yellow.jpeg" },
+                { title: "Romantic Candle Wall & Amber Glow", src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_candle_rods_wide.jpeg" },
+                { title: "Edison Vintage Bulbs & Filigree", src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_edison_bulbs.jpeg" },
+                { title: "Peach Drapes & Fairy Lights Divan", src: "/assets/09_reception_engagement_stages/stage_peach_drapes_fairy_lights_divan_sofa.jpeg" },
+                { title: "Magenta & White Floral Pedestals", src: "/assets/09_reception_engagement_stages/stage_magenta_white_drapes_floral_pedestals.jpeg" },
+                { title: "Pink Floral Monogram Arch", src: "/assets/09_reception_engagement_stages/stage_pink_drapes_floral_arch_as_monogram.jpeg" }
+              ].map((stage, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => onOpenLightbox(stage.src, stage.title)}
+                  className="group/st relative rounded-xl overflow-hidden border border-[#D4AF37]/35 bg-black cursor-pointer aspect-[4/3] hover:border-amber-400 transition-all shadow-md"
+                >
+                  <img
+                    src={stage.src}
+                    alt={stage.title}
+                    className="w-full h-full object-cover group-hover/st:scale-108 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-80" />
+                  <div className="absolute bottom-1.5 left-2 right-2">
+                    <span className="text-[9px] font-medium text-white line-clamp-1 drop-shadow">
+                      {stage.title}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
