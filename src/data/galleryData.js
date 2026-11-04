@@ -335,6 +335,70 @@ export const galleryItems = [
     categoryLabel: "Exterior & Foyer",
     image: "/assets/05_reception_and_lobby/reception_helpdesk_booking_counter.jpeg",
     featured: false
+  },
+  {
+    id: 42,
+    title: "Official SS Convention Event Brochure & Package Overview",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/02_marketing_brochure/ss_convention_official_brochure_poster.jpeg",
+    featured: true
+  },
+  {
+    id: 43,
+    title: "Floral Ring Arch with Velvet Royal Sofa (Portrait View)",
+    category: "reception",
+    categoryLabel: "Receptions",
+    image: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_sofa_portrait.jpeg",
+    featured: false
+  },
+  {
+    id: 44,
+    title: "Ceremonial Stage with Pink Drapes & Monogram Arch (Wide Angle)",
+    category: "reception",
+    categoryLabel: "Receptions",
+    image: "/assets/09_reception_engagement_stages/stage_pink_drapes_floral_arch_as_monogram_wide.jpeg",
+    featured: false
+  },
+  {
+    id: 45,
+    title: "Milestone Celebration Grand Aisle with Balloon Pillars",
+    category: "birthday",
+    categoryLabel: "Cradle & Birthday",
+    image: "/assets/10_cradle_and_birthday_decor/birthday_event_aisle_balloon_pillars_portrait.jpeg",
+    featured: false
+  },
+  {
+    id: 46,
+    title: "Sunshine Birthday Theme Stage Decor (Angled Perspective)",
+    category: "birthday",
+    categoryLabel: "Cradle & Birthday",
+    image: "/assets/10_cradle_and_birthday_decor/birthday_sunshine_theme_stage_angled_shot.jpeg",
+    featured: false
+  },
+  {
+    id: 47,
+    title: "Sunshine Celebration Pastel Backdrop with Marquee Lights",
+    category: "birthday",
+    categoryLabel: "Cradle & Birthday",
+    image: "/assets/10_cradle_and_birthday_decor/birthday_sunshine_theme_stage_vertical.jpeg",
+    featured: false
+  },
+  {
+    id: 48,
+    title: "Intimate Milestone Birthday Stage & Aisle Celebration",
+    category: "birthday",
+    categoryLabel: "Cradle & Birthday",
+    image: "/assets/10_cradle_and_birthday_decor/birthday_celebration_milestone_event.jpeg",
+    featured: false
+  },
+  {
+    id: 49,
+    title: "Welcoming Palace Lobby & Guest Reception Perspective",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/05_reception_and_lobby/lobby_interior_signage_perspective.jpeg",
+    featured: false
   }
 ];
 
