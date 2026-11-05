@@ -1,61 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 
 /**
  * RoyalPalaceLoader - Hyper-Realistic 3D Royal Palace Mahadwaram Doors Opening
  * 
  * Engineering:
- * - Only mounts on root path '/' and only once per session via sessionStorage.
- * - Complies with Core Motion Standard #2: Never Gate Content (interactive in <1s).
- * - Instant tap-to-open and top-right bypass [ENTER NOW ✦].
- * - Automatically unloads so subsequent navigation never freezes or blocks pages.
+ * - 3D Perspective Swing: Heavy double teakwood doors swing outward in 3D
+ * - 10% Faster Calibrated Timing: Swift & regal ceremonial entrance
+ * - Golden blessing flower petals cascade through the opening
+ * - Instant tap-to-open anywhere and top-right bypass [ENTER NOW ✦]
  */
 export default function RoyalPalaceLoader({ onComplete }) {
-  const location = useLocation();
-
-  // Only run on homepage and only if not seen in current session
-  const isHomePage = location.pathname === '/';
-  const hasSeen = typeof window !== 'undefined' && window.sessionStorage?.getItem('ss_palace_loader_seen') === 'true';
-
+  // 'sealed' -> 'unlocking' -> 'opening' -> 'complete'
   const [phase, setPhase] = useState('sealed');
-  const [shouldRender, setShouldRender] = useState(!hasSeen && isHomePage);
+  const [shouldRender, setShouldRender] = useState(true);
   const hasTriggeredRef = useRef(false);
 
   const doorImage = '/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg';
 
   useEffect(() => {
-    if (!isHomePage || hasSeen) {
-      setShouldRender(false);
-      onComplete?.();
-      return;
-    }
+    hasTriggeredRef.current = false;
+    setPhase('sealed');
 
     // Accessibility check: Skip for users with reduced motion preferences
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      try { window.sessionStorage?.setItem('ss_palace_loader_seen', 'true'); } catch (_) {}
       setShouldRender(false);
       onComplete?.();
       return;
     }
 
-    // Swift, majestic auto-timeline (content visible in ~1.2s):
+    // Majestic Royal Palace Door Timeline (10% Faster Calibration):
+    // 0.0s - 0.9s: Doors sealed, volumetric ray along central seam
+    // 0.9s - 1.8s: Royal crest seal unclasps with radiant lens flare
+    // 1.8s - 4.2s: Doors swing open wide in 3D with auspicious petal shower
     const timer1 = setTimeout(() => {
       setPhase('unlocking');
-    }, 600);
+    }, 900);
 
     const timer2 = setTimeout(() => {
       triggerDoorOpening();
-    }, 1300);
+    }, 1800);
 
     // Hard fallback watchdog
     const watchdogTimer = setTimeout(() => {
-      try { window.sessionStorage?.setItem('ss_palace_loader_seen', 'true'); } catch (_) {}
       setPhase('complete');
       setShouldRender(false);
       onComplete?.();
-    }, 3800);
+    }, 5500);
 
     const handleVisibility = () => {
       if (document.visibilityState === 'visible') {
@@ -70,25 +62,24 @@ export default function RoyalPalaceLoader({ onComplete }) {
       clearTimeout(watchdogTimer);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, [isHomePage, hasSeen, onComplete]);
+  }, [onComplete]);
 
   const triggerDoorOpening = () => {
     if (hasTriggeredRef.current) return;
     hasTriggeredRef.current = true;
-    try { window.sessionStorage?.setItem('ss_palace_loader_seen', 'true'); } catch (_) {}
 
     setPhase('opening');
 
     // Shower of auspicious golden wedding blessing petals as royal doors part
     try {
       confetti({
-        particleCount: 70,
-        spread: 120,
+        particleCount: 80,
+        spread: 130,
         origin: { y: 0.5 },
         colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'],
-        gravity: 0.45,
-        scalar: 1.1,
-        ticks: 200,
+        gravity: 0.4,
+        scalar: 1.15,
+        ticks: 240,
         shapes: ['circle']
       });
     } catch {
@@ -101,8 +92,8 @@ export default function RoyalPalaceLoader({ onComplete }) {
       setTimeout(() => {
         setShouldRender(false);
         onComplete?.();
-      }, 500);
-    }, 1800);
+      }, 550);
+    }, 2400);
   };
 
   const handleInstantOpen = () => {
@@ -285,7 +276,6 @@ export default function RoyalPalaceLoader({ onComplete }) {
       <button
         onClick={(e) => {
           e.stopPropagation();
-          try { window.sessionStorage?.setItem('ss_palace_loader_seen', 'true'); } catch (_) {}
           setPhase('complete');
           setShouldRender(false);
           onComplete?.();
