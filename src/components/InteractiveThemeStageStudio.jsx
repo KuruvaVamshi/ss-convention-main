@@ -41,7 +41,7 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
   const lighting = getLightingStyles();
 
   return (
-    <section className="py-24 bg-[#3D0A14] relative overflow-hidden border-t border-b border-[#D4AF37]/30 text-white">
+    <section id="occasions" className="py-24 bg-[#3D0A14] relative overflow-hidden border-t border-b border-[#D4AF37]/30 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
@@ -188,7 +188,7 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
                 <span className="text-[11px] font-bold text-amber-300 tracking-wider uppercase block">
                   Décor Highlights Included
                 </span>
-                {activeTheme.features?.map((f, i) => (
+                {(activeTheme.highlights || activeTheme.features || []).map((f, i) => (
                   <div key={i} className="flex items-center gap-2.5 text-xs text-amber-100/90 font-normal">
                     <CheckCircle2 className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
                     <span>{f}</span>
@@ -199,15 +199,15 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
               {/* Action Buttons */}
               <div className="pt-4 flex flex-wrap items-center gap-3">
                 <Link
-                  to="/themes"
+                  to="/occasions"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider shadow-md hover:scale-105 transition-all"
                 >
-                  <span>Explore All 12 Stages</span>
-                  <ArrowRight className="w-4 h-4 text-white" />
+                  <span>Explore All Occasions & Themes</span>
+                  <ArrowRight className="w-4 h-4 text-[#3D0A14]" />
                 </Link>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full border-2 border-[#7A1F31] text-[#7A1F31] hover:bg-[#7A1F31] hover:text-white font-cinzel font-bold text-xs uppercase tracking-wider transition-all bg-white"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-amber-400/50 text-amber-200 hover:bg-amber-400 hover:text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider transition-all"
                 >
                   <span>Customize Décor</span>
                 </Link>

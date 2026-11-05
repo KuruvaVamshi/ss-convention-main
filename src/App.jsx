@@ -92,6 +92,10 @@ export default function App() {
               element={<PoliciesPage lang={lang} setLang={setLang} />}
             />
             <Route
+              path="/occasions"
+              element={<ThemesPage onOpenLightbox={openLightbox} lang={lang} />}
+            />
+            <Route
               path="/themes"
               element={<ThemesPage onOpenLightbox={openLightbox} lang={lang} />}
             />

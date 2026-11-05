@@ -1252,10 +1252,10 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                     </div>
 
                     <Link
-                      to="/themes"
+                      to="/occasions"
                       className="block text-center py-2.5 rounded-full border-2 border-amber-400 text-amber-300 hover:bg-gradient-to-r hover:from-amber-400 hover:to-amber-500 hover:text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md"
                     >
-                      Explore All 12 Décor Themes & Stages →
+                      Explore All Occasions & Décor Stages →
                     </Link>
                   </motion.div>
                 )}

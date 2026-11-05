@@ -40,7 +40,7 @@ export default function Footer({ lang }) {
             <ul className="space-y-2 text-xs font-normal text-amber-100/90">
               <li><Link to="/" className="hover:text-amber-300 transition-colors">Home & Single-View Overview</Link></li>
               <li><Link to="/spaces" className="hover:text-amber-300 transition-colors">Halls & Spaces (Vasishta, Agasthya, Koundinya)</Link></li>
-              <li><Link to="/themes" className="hover:text-amber-300 transition-colors">Occasions & Stage Décor Themes</Link></li>
+              <li><Link to="/occasions" className="hover:text-amber-300 transition-colors">Occasions & Stage Décor Themes</Link></li>
               <li><Link to="/menus" className="hover:text-amber-300 transition-colors">7-Tier Banquet Catering Menus</Link></li>
               <li><Link to="/gallery" className="hover:text-amber-300 transition-colors">Photo Gallery & HD Video Tours</Link></li>
               <li><Link to="/policies" className="hover:text-amber-300 transition-colors">Official Telugu & English Policies</Link></li>
