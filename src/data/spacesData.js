@@ -153,17 +153,17 @@ export const spacesData = [
         category: "Interior View"
       },
       {
-        src: "/assets/09_reception_engagement_stages/stage_better_together_neon_floral_arch.jpeg",
+        src: "/assets/09_reception_engagement_stages/stage_better_together_neon_wide_shot.jpeg",
         title: "Modern Neon Floral Ring Arch Stage for Receptions",
         category: "Reception Stage"
       },
       {
-        src: "/assets/09_reception_engagement_stages/stage_triple_arch_boho_garden_pastel.jpeg",
+        src: "/assets/09_reception_engagement_stages/stage_triple_arch_boho_garden_front.jpeg",
         title: "Pastel Boho Triple-Arch Engagement Stage Setup",
         category: "Engagement Decor"
       },
       {
-        src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_candle_wall.jpeg",
+        src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_candle_rods_wide.jpeg",
         title: "Warm Romantic Candle Wall Stage Illumination",
         category: "Stage Lighting"
       },
@@ -173,12 +173,12 @@ export const spacesData = [
         category: "Contemporary Decor"
       },
       {
-        src: "/assets/09_reception_engagement_stages/stage_peach_drapes_fairy_lights.jpeg",
+        src: "/assets/09_reception_engagement_stages/stage_peach_drapes_fairy_lights_divan_sofa.jpeg",
         title: "Peach Draping with Cascading Fairy Light Canopy",
         category: "Drapes & Canopy"
       },
       {
-        src: "/assets/09_reception_engagement_stages/stage_haldi_mehendi_yellow_drapes.jpeg",
+        src: "/assets/09_reception_engagement_stages/stage_haldi_mehendi_yellow_canopy_wisteria.jpeg",
         title: "Festive Haldi & Mehendi Yellow Floral Stage",
         category: "Haldi / Mehendi"
       },
@@ -282,17 +282,17 @@ export const spacesData = [
         category: "1st Birthday"
       },
       {
-        src: "/assets/10_cradle_and_birthday_decor/birthday_event_aisle_balloon_pillars.jpeg",
+        src: "/assets/10_cradle_and_birthday_decor/birthday_event_aisle_balloon_pillars_live.jpeg",
         title: "Festive Aisle Entry with Balloon Pillars & Custom Cutouts",
         category: "Aisle Decoration"
       },
       {
-        src: "/assets/10_cradle_and_birthday_decor/birthday_sunshine_theme_stage_full_view.jpeg",
+        src: "/assets/10_cradle_and_birthday_decor/birthday_sunshine_theme_stage_wide_shot.jpeg",
         title: "Sunshine Theme Stage Full Width View & Cake Cutting Area",
         category: "Cake Cutting Stage"
       },
       {
-        src: "/assets/10_cradle_and_birthday_decor/birthday_ocean_under_the_sea_blue_theme.jpeg",
+        src: "/assets/10_cradle_and_birthday_decor/birthday_ocean_under_the_sea_theme_stage.jpeg",
         title: "Under The Sea Ocean Blue Theme Setup with Balloon Arches",
         category: "Thematic Birthday"
       },

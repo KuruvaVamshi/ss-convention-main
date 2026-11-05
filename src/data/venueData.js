@@ -16,6 +16,8 @@ export const venueData = {
     pincode: "500097",
     full: "Raghavendra Nagar Colony, Jillelaguda, Meerpet, Hyderabad, Telangana 500097"
   },
+  googleMapsEmbedUrl: "https://maps.google.com/maps?q=SS+Convention+Hall,+Raghavendra+Nagar+Colony,+Jillelaguda,+Meerpet,+Hyderabad,+Telangana+500097&t=&z=16&ie=UTF8&iwloc=&output=embed",
+  googleMapsDirectionsUrl: "https://www.google.com/maps/dir/?api=1&destination=SS+Convention+Hall,+Raghavendra+Nagar+Colony,+Jillelaguda,+Meerpet,+Hyderabad,+Telangana+500097",
   capacity: {
     min: 50,
     max: 500,

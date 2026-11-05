@@ -118,15 +118,35 @@ export default function ContactLocationSection({ lang }) {
           </div>
 
           {/* Interactive Google Map Frame */}
-          <div className="lg:col-span-7 rounded-[32px] overflow-hidden border-2 border-[#D4AF37]/45 shadow-2xl min-h-[380px] relative bg-[#2E070F]">
-            <iframe
-              title="SS Convention Hall Meerpet Map"
-              src={venueData.googleMapsEmbedUrl}
-              className="w-full h-full min-h-[420px] border-0"
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <div className="lg:col-span-7 rounded-[32px] overflow-hidden border-2 border-[#D4AF37]/45 shadow-2xl min-h-[420px] relative bg-[#2E070F] flex flex-col">
+            {venueData.googleMapsEmbedUrl ? (
+              <iframe
+                title="SS Convention Hall Meerpet Map"
+                src={venueData.googleMapsEmbedUrl}
+                className="w-full h-full min-h-[440px] flex-1 border-0 rounded-[30px]"
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            ) : (
+              <div className="w-full h-full min-h-[440px] flex flex-col items-center justify-center p-8 text-center bg-[#2E070F]">
+                <MapPin className="w-12 h-12 text-amber-400 mb-3 animate-bounce" />
+                <h4 className="font-cinzel text-xl font-bold text-white mb-2">
+                  SS Convention Hall
+                </h4>
+                <p className="text-sm text-amber-100/80 max-w-md mb-6">
+                  {venueData.address.full}
+                </p>
+                <a
+                  href={venueData.googleMapsDirectionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider shadow-lg hover:brightness-110"
+                >
+                  Open in Google Maps App
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
