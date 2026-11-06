@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   Snowflake,
   DoorClosed,
@@ -18,6 +19,8 @@ import {
 import { venueData } from '../data/venueData';
 
 export default function FacilitiesPage({ lang }) {
+  const shouldReduceMotion = useReducedMotion();
+
   const facilitiesList = [
     {
       title: "Centralized Cassette Air Conditioning",
@@ -102,11 +105,20 @@ export default function FacilitiesPage({ lang }) {
     }
   ];
 
+  const easeLuxury = [0.22, 1, 0.36, 1];
+
   return (
-    <div className="bg-[#450B17] text-white min-h-screen pt-24">
+    <div className="bg-[#450B17] text-white min-h-screen pt-24 overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
       {/* Page Header */}
-      <section className="py-20 bg-gradient-to-b from-[#350710] to-[#450B17] border-b border-[#D4AF37]/30 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-20 bg-gradient-to-b from-[#350710] to-[#450B17] border-b border-[#D4AF37]/30 text-white relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-32 bg-amber-500/10 rounded-full blur-[110px] pointer-events-none" />
+        
+        <motion.div 
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: easeLuxury }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+        >
           <span className="font-serif text-xs sm:text-sm tracking-[0.35em] text-amber-300 uppercase block mb-2 drop-shadow">
             || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
           </span>
@@ -122,40 +134,65 @@ export default function FacilitiesPage({ lang }) {
               ? 'సెంట్రల్ ఎసి, విఐపి గ్రీన్ రూమ్స్, ఆటోమేటిక్ జనరేటర్ మరియు విశాలమైన పార్కింగ్ – మీ అతిథులకు అత్యుత్తమ సౌకర్యాలు.'
               : 'Engineered for seamless guest comfort. From Daikin central climate control and two VIP bridal suites to 100% power generator backup and 150+ parking slots.'}
           </p>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Facilities Grid */}
-      <section className="py-24 bg-[#3D0A14] border-b border-[#D4AF37]/30 text-white">
+      {/* Facilities Grid with Staggered Scroll Entrance */}
+      <section className="py-24 bg-[#3D0A14] border-b border-[#D4AF37]/30 text-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: easeLuxury }}
+            className="text-center max-w-3xl mx-auto mb-16"
+          >
             <h2 className="font-cinzel text-3xl sm:text-5xl font-bold text-white tracking-wide mb-3">
               Uncompromising Standards for Your Special Day
             </h2>
             <p className="text-amber-100/80 text-xs sm:text-sm font-normal">
               Every system is professionally maintained and tested prior to each celebration to guarantee zero glitches.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1 } }
+            }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {facilitiesList.map((item, idx) => {
               const IconComp = item.icon;
               return (
-                <div
+                <motion.div
                   key={idx}
-                  className="p-7 rounded-[32px] bg-[#450B17] border-2 border-[#D4AF37]/40 shadow-2xl hover:border-amber-400 transition-all flex flex-col justify-between group"
+                  variants={{
+                    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30, scale: 0.96 },
+                    visible: { 
+                      opacity: 1, 
+                      y: 0, 
+                      scale: 1,
+                      transition: { duration: 0.7, ease: easeLuxury } 
+                    }
+                  }}
+                  whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.015 }}
+                  className="p-7 rounded-[32px] bg-[#450B17] border-2 border-[#D4AF37]/40 shadow-2xl hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(212,175,55,0.22)] transition-all flex flex-col justify-between group cursor-default"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-13 h-13 rounded-2xl bg-[#32060E] border border-[#D4AF37]/50 flex items-center justify-center text-amber-300 shadow-md group-hover:scale-105 transition-transform p-3">
                         <IconComp className="w-7 h-7 text-amber-400" />
                       </div>
-                      <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-black/60 border border-[#D4AF37]/40 text-amber-300 uppercase tracking-wider">
+                      <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-black/60 border border-[#D4AF37]/40 text-amber-300 uppercase tracking-wider font-cinzel">
                         {item.badge}
                       </span>
                     </div>
 
-                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest block mb-1">
+                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest block mb-1 font-cinzel">
                       {item.category}
                     </span>
                     <h3 className="font-cinzel text-xl font-bold text-white mb-2 leading-snug">
@@ -179,19 +216,25 @@ export default function FacilitiesPage({ lang }) {
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Guidelines & Slot Timings Teaser */}
-      <section className="py-20 bg-[#350710] border-b border-[#D4AF37]/30 text-white">
+      <section className="py-20 bg-[#350710] border-b border-[#D4AF37]/30 text-white relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="p-8 sm:p-10 rounded-[32px] bg-[#450B17] border-2 border-[#D4AF37]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.75, ease: easeLuxury }}
+            className="p-8 sm:p-10 rounded-[32px] bg-[#450B17] border-2 border-[#D4AF37]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6"
+          >
             <div>
-              <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest block mb-1">
+              <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest block mb-1 font-cinzel">
                 Transparency & Rules
               </span>
               <h3 className="font-cinzel text-2xl font-bold text-white mb-2">
@@ -203,17 +246,23 @@ export default function FacilitiesPage({ lang }) {
             </div>
             <Link
               to="/policies"
-              className="px-6 py-3.5 rounded-full bg-[#32060E] border border-amber-400/60 text-amber-300 hover:bg-amber-400 hover:text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider transition-all whitespace-nowrap shadow-md"
+              className="px-6 py-3.5 rounded-full bg-[#32060E] border border-amber-400/60 text-amber-300 hover:bg-amber-400 hover:text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider transition-all whitespace-nowrap shadow-md hover:scale-105"
             >
               View Venue Policies →
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Quick Inquiries CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-white text-center border-t border-[#D4AF37]/30 shadow-2xl">
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-white text-center border-t border-[#D4AF37]/30 shadow-2xl relative overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.75, ease: easeLuxury }}
+          className="max-w-4xl mx-auto px-4 relative z-10"
+        >
           <h2 className="font-cinzel text-2xl sm:text-4xl font-bold text-white mb-3 tracking-wide">
             Experience Our Facilities in Person
           </h2>
@@ -236,9 +285,8 @@ export default function FacilitiesPage({ lang }) {
               <span>Call +91 89857 00044</span>
             </a>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
 }
-

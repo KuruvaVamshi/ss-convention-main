@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Eye, Sparkles, Filter, Maximize2, Heart, Camera, ChevronRight } from 'lucide-react';
 import SplitHeading from './SplitHeading';
 
@@ -290,8 +291,14 @@ export default function GrandVisualMosaic({ onOpenLightbox, lang }) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        {/* Section Header with Scroll Entrance */}
+        <motion.div 
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/50 border border-[#D4AF37]/50 text-amber-300 text-xs font-bold tracking-widest uppercase mb-4 shadow-md backdrop-blur-sm">
             <Camera className="w-3.5 h-3.5 text-amber-400" />
             <span>{lang === 'te' ? 'నిజమైన ఛాయాచిత్రాలు' : 'Verified Authentic Venue Photography'}</span>
@@ -336,13 +343,31 @@ export default function GrandVisualMosaic({ onOpenLightbox, lang }) {
           <div className="mt-4 text-[11px] font-mono tracking-wider text-amber-300/80 uppercase">
             Showing {filteredPhotos.length} Authentic Photographs • Click Any Photo to Zoom Fullscreen
           </div>
-        </div>
+        </motion.div>
 
-        {/* Dynamic Bento Photo Mosaic Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+        {/* Dynamic Bento Photo Mosaic Grid with Staggered Scroll Entrance */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.05 } }
+          }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"
+        >
           {filteredPhotos.map((photo) => (
-            <div
+            <motion.div
               key={photo.id}
+              variants={{
+                hidden: { opacity: 0, y: 24, scale: 0.96 },
+                visible: { 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
+                }
+              }}
               onClick={() => onOpenLightbox(photo.src, photo.title)}
               className={`group relative rounded-2xl overflow-hidden border-2 border-[#D4AF37]/35 bg-black shadow-xl cursor-pointer hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(212,175,55,0.25)] transition-all duration-500 ${
                 activeCategory === 'all' ? photo.span : 'col-span-1'
@@ -382,9 +407,9 @@ export default function GrandVisualMosaic({ onOpenLightbox, lang }) {
                   <ChevronRight className="w-3 h-3 text-amber-400" />
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Bottom Banner */}
         <div className="mt-14 text-center">

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import HeroStorytelling from '../components/HeroStorytelling';
+import AboutStorytellingSection from '../components/AboutStorytellingSection';
 import QuickProofBar from '../components/QuickProofBar';
 import GrandVisualMosaic from '../components/GrandVisualMosaic';
 import GrandCelebrationJourney from '../components/GrandCelebrationJourney';
@@ -27,11 +29,20 @@ export default function HomePage({ onOpenLightbox, lang }) {
       {/* Chapter 1: Grand Foyer Hero with Video & Atmosphere Switcher */}
       <HeroStorytelling lang={lang} onOpenLightbox={onOpenLightbox} />
 
-      {/* Chapter 2: "OUR PREMIUM HALLS." */}
+      {/* PHASE 4: Premium Editorial Storytelling Section (The Story of S.S. Convention) */}
+      <AboutStorytellingSection lang={lang} onOpenLightbox={onOpenLightbox} />
+
+      {/* Chapter 2: "OUR PREMIUM HALLS." with Staggered Entrance Animations */}
       <section id="halls" className="py-24 lg:py-32 relative bg-[#3D0A14] overflow-hidden border-t border-b border-[#D4AF37]/30 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Section Heading styled in Royal Maroon & Imperial Gold aesthetic */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          {/* Section Heading with Scroll Entrance */}
+          <motion.div 
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center max-w-3xl mx-auto mb-16"
+          >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 border border-[#D4AF37]/50 text-amber-200 text-xs font-bold tracking-widest uppercase mb-3 shadow-md backdrop-blur-sm">
               <Building className="w-3.5 h-3.5 text-amber-300" />
               <span>Three Purpose-Built Spaces</span>
@@ -45,19 +56,44 @@ export default function HomePage({ onOpenLightbox, lang }) {
             <p className="text-amber-100/80 text-xs sm:text-sm md:text-base font-normal tracking-wide leading-relaxed">
               Discover our meticulously designed spaces, each offering unique character and capacity to perfectly match your celebration.
             </p>
-          </div>
+          </motion.div>
 
-          {/* 3 Interactive Premium Hall Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {/* 3 Interactive Premium Hall Cards with Staggered Slide-up Entrance */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.18
+                }
+              }
+            }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8"
+          >
             {premierHalls.map((hall) => (
-              <InteractiveHallCard
+              <motion.div
                 key={hall.id}
-                hall={hall}
-                onOpenLightbox={onOpenLightbox}
-                lang={lang}
-              />
+                variants={{
+                  hidden: { opacity: 0, y: 35, scale: 0.96 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } 
+                  }
+                }}
+              >
+                <InteractiveHallCard
+                  hall={hall}
+                  onOpenLightbox={onOpenLightbox}
+                  lang={lang}
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Clear Luxury CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-4 mt-12">
@@ -107,7 +143,13 @@ export default function HomePage({ onOpenLightbox, lang }) {
 
       {/* Chapter 8: Big Booking Invitation Banner (Royal Swan Maroon Velvet Feature) */}
       <section className="py-24 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-white relative overflow-hidden border-t border-[#D4AF37]/35 shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+        >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/30 border border-[#D4AF37]/50 text-amber-200 text-xs font-bold tracking-widest uppercase mb-4 backdrop-blur-sm">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span>Begin Your Auspicious Chapter</span>
@@ -139,7 +181,7 @@ export default function HomePage({ onOpenLightbox, lang }) {
               <span>Call +91 89857 00044</span>
             </a>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
