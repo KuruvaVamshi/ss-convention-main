@@ -11,10 +11,13 @@ import {
   Utensils,
   CheckCircle2,
   ExternalLink,
-  ChevronRight,
   ShieldCheck,
   Building2,
-  HeartHandshake
+  Minus,
+  Plus,
+  User,
+  Check,
+  Compass
 } from 'lucide-react';
 import { venueData } from '../data/venueData';
 
@@ -123,14 +126,18 @@ export default function InteractiveBookingStudio({ lang }) {
   // Minimum date today
   const todayStr = new Date().toISOString().split('T')[0];
 
+  const handleGuestCountChange = (delta) => {
+    setGuestCount((prev) => Math.min(600, Math.max(50, prev + delta)));
+  };
+
   const handleWhatsAppInquiry = (e) => {
     e.preventDefault();
 
     // Trigger celebration confetti
     try {
       confetti({
-        particleCount: 85,
-        spread: 90,
+        particleCount: 90,
+        spread: 95,
         origin: { y: 0.6 },
         colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946']
       });
@@ -160,40 +167,49 @@ export default function InteractiveBookingStudio({ lang }) {
             Check Auspicious Dates & Availability
           </h2>
           <p className="text-amber-100/80 text-xs sm:text-sm font-normal leading-relaxed">
-            Configure your celebration specifications in real time. Our studio dynamically matches the optimal hall, calculates guest spatial comfort, and generates an official WhatsApp Booking Pass.
+            Configure your celebration specifications in real time. Our concierge dynamically matches the optimal hall, calculates guest spatial comfort, and generates an official WhatsApp Booking Pass.
           </p>
         </div>
 
         {/* 2-Column Luxury Console Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Shadcn-Inspired Modern Form Controls */}
+          {/* Left Column: Shadcn-Style Luxury Form Controls */}
           <div className="lg:col-span-7 bg-[#2A050D]/90 backdrop-blur-xl p-6 sm:p-9 rounded-[32px] border-2 border-[#D4AF37]/45 shadow-[0_20px_60px_rgba(0,0,0,0.7)] space-y-7">
             <form onSubmit={handleWhatsAppInquiry} className="space-y-7">
-              {/* 1. Host Contact Info (Floating Modern Inputs) */}
+              {/* 1. Host Contact Info */}
               <div>
-                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-1.5 mb-2.5">
-                  <span className="w-4 h-4 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black">1</span>
-                  Host Contact Information
+                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2 mb-3">
+                  <span className="w-5 h-5 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black shadow">1</span>
+                  <span>Host Contact Information</span>
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
+                  {/* Name Input with User Icon */}
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-amber-400/80">
+                      <User className="w-4 h-4" />
+                    </div>
                     <input
                       type="text"
                       required
                       placeholder="Your Full Name (e.g. Ramesh Reddy)"
                       value={clientName}
                       onChange={(e) => setClientName(e.target.value)}
-                      className="w-full px-4 py-3.5 rounded-2xl bg-[#3D0A14]/90 border border-[#D4AF37]/40 text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all shadow-inner"
+                      className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-[#3D0A14]/90 border border-[#D4AF37]/40 text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/25 transition-all shadow-inner"
                     />
                   </div>
-                  <div>
+
+                  {/* Phone Input with Prefix & Phone Icon */}
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-amber-400/80">
+                      <Phone className="w-4 h-4" />
+                    </div>
                     <input
                       type="tel"
                       required
                       placeholder="Mobile Number (e.g. 98765 43210)"
                       value={clientPhone}
                       onChange={(e) => setClientPhone(e.target.value)}
-                      className="w-full px-4 py-3.5 rounded-2xl bg-[#3D0A14]/90 border border-[#D4AF37]/40 text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all shadow-inner"
+                      className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-[#3D0A14]/90 border border-[#D4AF37]/40 text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/25 transition-all shadow-inner"
                     />
                   </div>
                 </div>
@@ -201,9 +217,9 @@ export default function InteractiveBookingStudio({ lang }) {
 
               {/* 2. Occasion Selector (Rich Interactive Cards) */}
               <div>
-                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-1.5 mb-2.5">
-                  <span className="w-4 h-4 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black">2</span>
-                  Select Auspicious Occasion
+                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2 mb-3">
+                  <span className="w-5 h-5 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black shadow">2</span>
+                  <span>Select Auspicious Occasion</span>
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {eventTypes.map((item) => {
@@ -213,7 +229,7 @@ export default function InteractiveBookingStudio({ lang }) {
                         type="button"
                         key={item.id}
                         onClick={() => setEventType(item.id)}
-                        className={`p-3 rounded-2xl text-left border transition-all relative flex flex-col justify-between group ${
+                        className={`p-3 rounded-2xl text-left border transition-all relative flex flex-col justify-between group cursor-pointer ${
                           isSelected
                             ? 'bg-gradient-to-br from-[#5A1220] to-[#7A192C] border-amber-400 shadow-[0_0_15px_rgba(212,175,55,0.35)] scale-[1.02]'
                             : 'bg-[#3D0A14]/70 border-[#D4AF37]/25 hover:border-[#D4AF37]/60 hover:bg-[#4D0D19]'
@@ -241,66 +257,92 @@ export default function InteractiveBookingStudio({ lang }) {
                 </div>
               </div>
 
-              {/* 3. Guest Count & Capacity Slider with Presets */}
+              {/* 3. Guest Count Stepper & Capacity Meter */}
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-1.5">
-                    <span className="w-4 h-4 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black">3</span>
-                    Expected Guests: <strong className="text-amber-300 text-sm ml-1">{guestCount} Pax</strong>
+                <div className="flex items-center justify-between mb-2.5">
+                  <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black shadow">3</span>
+                    <span>Expected Guests: <strong className="text-amber-300 text-sm ml-1">{guestCount} Pax</strong></span>
                   </label>
-                  <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-[#4D0D19] border border-[#D4AF37]/45 text-amber-300">
-                    Auto-Matched: {currentHall.name}
+                  <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-[#4D0D19] border border-[#D4AF37]/45 text-amber-300 shadow-sm">
+                    Recommended: {currentHall.name}
                   </span>
                 </div>
 
-                {/* Slider */}
-                <input
-                  type="range"
-                  min="50"
-                  max="600"
-                  step="25"
-                  value={guestCount}
-                  onChange={(e) => setGuestCount(Number(e.target.value))}
-                  className="w-full h-2.5 bg-[#4D0D19] rounded-lg appearance-none cursor-pointer accent-amber-400"
-                />
-
-                {/* Preset Buttons */}
-                <div className="flex items-center justify-between mt-3 gap-2">
-                  {[100, 200, 300, 450, 600].map((count) => (
+                {/* Shadcn-Style Interactive Stepper Console */}
+                <div className="p-3.5 rounded-2xl bg-[#3D0A14]/80 border border-[#D4AF37]/35 space-y-3">
+                  <div className="flex items-center justify-between gap-4">
                     <button
                       type="button"
-                      key={count}
-                      onClick={() => setGuestCount(count)}
-                      className={`flex-1 py-1.5 rounded-xl text-[11px] font-bold border transition-all ${
-                        guestCount === count
-                          ? 'bg-amber-400 text-[#3D0A14] border-amber-300 shadow-sm'
-                          : 'bg-[#3D0A14]/70 border-[#D4AF37]/25 text-amber-200 hover:bg-[#4D0D19]'
-                      }`}
+                      onClick={() => handleGuestCountChange(-25)}
+                      className="w-10 h-10 rounded-xl bg-black/40 border border-[#D4AF37]/40 text-amber-300 hover:bg-amber-400 hover:text-[#3D0A14] transition-all flex items-center justify-center shadow cursor-pointer active:scale-95"
+                      title="Decrease by 25 guests"
                     >
-                      {count} Pax
+                      <Minus className="w-4 h-4" />
                     </button>
-                  ))}
+
+                    <div className="flex-1 text-center">
+                      <input
+                        type="range"
+                        min="50"
+                        max="600"
+                        step="25"
+                        value={guestCount}
+                        onChange={(e) => setGuestCount(Number(e.target.value))}
+                        className="w-full h-2.5 bg-black/50 rounded-lg appearance-none cursor-pointer accent-amber-400"
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleGuestCountChange(25)}
+                      className="w-10 h-10 rounded-xl bg-black/40 border border-[#D4AF37]/40 text-amber-300 hover:bg-amber-400 hover:text-[#3D0A14] transition-all flex items-center justify-center shadow cursor-pointer active:scale-95"
+                      title="Increase by 25 guests"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Preset Pills */}
+                  <div className="flex items-center justify-between gap-2">
+                    {[100, 200, 300, 450, 600].map((count) => (
+                      <button
+                        type="button"
+                        key={count}
+                        onClick={() => setGuestCount(count)}
+                        className={`flex-1 py-1.5 rounded-xl text-[11px] font-bold border transition-all cursor-pointer ${
+                          guestCount === count
+                            ? 'bg-amber-400 text-[#3D0A14] border-amber-300 shadow-sm'
+                            : 'bg-black/30 border-[#D4AF37]/25 text-amber-200 hover:bg-[#4D0D19]'
+                        }`}
+                      >
+                        {count} Pax
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {/* 4. Event Date & Slot Timing */}
               <div>
-                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-1.5 mb-2.5">
-                  <span className="w-4 h-4 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black">4</span>
-                  Auspicious Date & Celebration Slot
+                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2 mb-3">
+                  <span className="w-5 h-5 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black shadow">4</span>
+                  <span>Auspicious Date & Celebration Slot</span>
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
                   <div>
                     <label className="block text-[10px] text-amber-200/80 uppercase font-bold tracking-wider mb-1">
                       Choose Desired Date
                     </label>
-                    <input
-                      type="date"
-                      min={todayStr}
-                      value={eventDate}
-                      onChange={(e) => setEventDate(e.target.value)}
-                      className="w-full px-4 py-3 rounded-2xl bg-[#3D0A14]/90 border border-[#D4AF37]/40 text-white text-sm focus:outline-none focus:border-amber-400"
-                    />
+                    <div className="relative">
+                      <input
+                        type="date"
+                        min={todayStr}
+                        value={eventDate}
+                        onChange={(e) => setEventDate(e.target.value)}
+                        className="w-full px-4 py-3 rounded-2xl bg-[#3D0A14]/90 border border-[#D4AF37]/40 text-white text-sm focus:outline-none focus:border-amber-400 shadow-inner"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-[10px] text-amber-200/80 uppercase font-bold tracking-wider mb-1">
@@ -322,7 +364,7 @@ export default function InteractiveBookingStudio({ lang }) {
                         type="button"
                         key={opt.id}
                         onClick={() => setSlot(opt.id)}
-                        className={`p-3 rounded-2xl text-left border transition-all ${
+                        className={`p-3 rounded-2xl text-left border transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-gradient-to-br from-[#5A1220] to-[#7A192C] border-amber-400 shadow-[0_0_12px_rgba(212,175,55,0.35)] ring-1 ring-amber-400'
                             : 'bg-[#3D0A14]/70 border-[#D4AF37]/25 hover:border-[#D4AF37]/50 hover:bg-[#4D0D19]'
@@ -350,9 +392,9 @@ export default function InteractiveBookingStudio({ lang }) {
 
               {/* 5. Curated Catering Menu Experience */}
               <div>
-                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-1.5 mb-2.5">
-                  <span className="w-4 h-4 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black">5</span>
-                  Catering & Banquet Dining Preference
+                <label className="text-[11px] font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2 mb-3">
+                  <span className="w-5 h-5 rounded-full bg-amber-400 text-[#3D0A14] flex items-center justify-center text-[10px] font-black shadow">5</span>
+                  <span>Catering & Banquet Dining Preference</span>
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {menuTiers.map((tier) => {
@@ -362,7 +404,7 @@ export default function InteractiveBookingStudio({ lang }) {
                         type="button"
                         key={tier.id}
                         onClick={() => setMenuChoice(tier.id)}
-                        className={`p-3.5 rounded-2xl text-left border transition-all flex flex-col justify-between ${
+                        className={`p-3.5 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
                           isSelected
                             ? 'bg-gradient-to-br from-[#5A1220] to-[#7A192C] border-amber-400 shadow-[0_0_12px_rgba(212,175,55,0.35)] ring-1 ring-amber-400'
                             : 'bg-[#3D0A14]/70 border-[#D4AF37]/25 hover:border-[#D4AF37]/50 hover:bg-[#4D0D19]'

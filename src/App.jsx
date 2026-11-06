@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
 import RoyalPalaceLoader from './components/RoyalPalaceLoader';
@@ -12,9 +12,10 @@ import LightboxModal from './components/LightboxModal';
 
 // Multi-Page Views
 import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
 import SpacesPage from './pages/SpacesPage';
 import HallDetailPage from './pages/HallDetailPage';
-import ThemesPage from './pages/ThemesPage';
+import FacilitiesPage from './pages/FacilitiesPage';
 import MenusPage from './pages/MenusPage';
 import GalleryPage from './pages/GalleryPage';
 import PoliciesPage from './pages/PoliciesPage';
@@ -51,7 +52,7 @@ export default function App() {
         {/* Scroll to Top on every route change */}
         <ScrollToTop />
 
-        <div className="min-h-screen bg-gradient-to-b from-[#450B17] via-[#5F1524] to-[#3A0813] text-[#FFFDF9] flex flex-col selection:bg-[#D4AF37] selection:text-[#3D0A14] relative">
+        <div className="min-h-screen bg-gradient-to-b from-[#1C0409] via-[#24060C] to-[#120104] text-[#FAF6F0] flex flex-col selection:bg-[#C5A059] selection:text-[#0D0204] relative">
           {/* Grand 3D Royal Mahadwaram Doors Opening Reveal (Opens directly onto Homepage Hero) */}
           <RoyalPalaceLoader />
 
@@ -72,6 +73,10 @@ export default function App() {
               element={<HomePage onOpenLightbox={openLightbox} lang={lang} />}
             />
             <Route
+              path="/about"
+              element={<AboutPage lang={lang} />}
+            />
+            <Route
               path="/spaces"
               element={<SpacesPage onOpenLightbox={openLightbox} lang={lang} />}
             />
@@ -89,15 +94,20 @@ export default function App() {
             />
             <Route
               path="/facilities"
-              element={<PoliciesPage lang={lang} setLang={setLang} />}
+              element={<FacilitiesPage lang={lang} />}
             />
+            {/* Deprecated occasions routes redirect seamlessly to gallery */}
             <Route
               path="/occasions"
-              element={<ThemesPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<Navigate to="/gallery" replace />}
             />
             <Route
               path="/themes"
-              element={<ThemesPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<Navigate to="/gallery" replace />}
+            />
+            <Route
+              path="/dining"
+              element={<MenusPage onOpenLightbox={openLightbox} lang={lang} />}
             />
             <Route
               path="/menus"

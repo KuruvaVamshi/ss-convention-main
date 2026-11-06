@@ -41,7 +41,7 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
   const lighting = getLightingStyles();
 
   return (
-    <section id="occasions" className="py-24 bg-[#3D0A14] relative overflow-hidden border-t border-b border-[#D4AF37]/30 text-white">
+    <section id="stage-studio" className="py-24 bg-[#3D0A14] relative overflow-hidden border-t border-b border-[#D4AF37]/30 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
@@ -199,10 +199,10 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
               {/* Action Buttons */}
               <div className="pt-4 flex flex-wrap items-center gap-3">
                 <Link
-                  to="/occasions"
+                  to="/gallery"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider shadow-md hover:scale-105 transition-all"
                 >
-                  <span>Explore All Occasions & Themes</span>
+                  <span>View Grand Gallery</span>
                   <ArrowRight className="w-4 h-4 text-[#3D0A14]" />
                 </Link>
                 <Link

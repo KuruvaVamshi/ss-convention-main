@@ -7,26 +7,48 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Approved S.S. Convention Luxury Architectural Palette
+        palace: {
+          obsidian: '#0D0204', // Deepest foundation tone (modals, dropdowns, backing plates)
+          burgundy: '#1C0409', // Primary page canvas & sticky navbar base
+          wine: '#2E060F',     // Primary royal section background
+          velvet: '#29070E',   // Card & surface background
+          card: '#29070E',     // Elevated card surface
+          cardHover: '#340A13' // Card hover elevated surface
+        },
+        champagne: {
+          gold: '#C5A059',          // Primary brushed champagne gold metallic accent
+          light: '#EED9A6',         // Pale leaf gold highlight
+          muted: '#8A6B32',         // Antique bronze / muted structural metal
+          hairline: 'rgba(197, 160, 89, 0.22)',      // Architectural 1px hairline border
+          hairlineHover: 'rgba(197, 160, 89, 0.45)' // Hover border state
+        },
+        luxury: {
+          ivory: '#FAF6F0',                          // Primary typography (soft warm white)
+          parchment: '#CBBDA8',                      // Secondary typography (body copy, descriptions)
+          muted: 'rgba(203, 189, 168, 0.65)'        // Tertiary typography (metadata, specs)
+        },
+        // Backward-compatible aliases mapped to the approved palette
         velvet: {
-          950: '#140407', // Deepest palace backdrop
-          900: '#1C070C', // Main rich wine background from screenshot
-          850: '#260B12', // Rich card background
-          800: '#350E18', // Card hover border/background
-          700: '#5F1524', // Official Logo Swan Maroon
-          600: '#7A1F31', // Bright rich maroon accent
+          950: '#0D0204',
+          900: '#1C0409',
+          850: '#29070E',
+          800: '#340A13',
+          700: '#5F1524',
+          600: '#7A1F31',
           500: '#92283C',
           400: '#B85065',
         },
         gold: {
-          50: '#FFFDF5',
-          100: '#FFF8DE',
-          200: '#FFEDB3',
-          300: '#FFE082',
-          400: '#E6BF48',
-          500: '#D4AF37', // Imperial Gold
-          600: '#C5A059',
-          700: '#A98018',
-          800: '#84600E',
+          50: '#FFFEFA',
+          100: '#FAF6F0',
+          200: '#EED9A6',
+          300: '#DEC58C',
+          400: '#D4AF37',
+          500: '#C5A059', // Primary Champagne Gold
+          600: '#B8860B',
+          700: '#8A6B32',
+          800: '#694F1E',
         },
         ivory: {
           50: '#FFFEFA',
@@ -35,29 +57,39 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
         cinzel: ['"Cinzel"', 'serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        telugu: ['"Ramabhadra"', '"Noto Sans Telugu"', 'sans-serif'],
+        'telugu-body': ['"Noto Sans Telugu"', 'sans-serif'],
+      },
+      maxWidth: {
+        '7xl': '1280px',
+        '6xl': '1152px',
+        '5xl': '1080px',
+        '4xl': '840px',
+      },
+      borderRadius: {
+        '2xl': '16px',
+        'xl': '12px',
+        '3xl': '20px',
+      },
+      transitionTimingFunction: {
+        'luxury': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'luxury-settle': 'cubic-bezier(0.25, 1, 0.5, 1)',
+      },
+      transitionDuration: {
+        'fast': '180ms',
+        'normal': '300ms',
+        'hover': '420ms',
+        'reveal': '720ms',
+        'settle': '850ms',
       },
       backgroundImage: {
-        'royal-velvet': 'linear-gradient(180deg, #1C070C 0%, #140407 100%)',
-        'velvet-card': 'linear-gradient(145deg, rgba(38, 11, 18, 0.9) 0%, rgba(22, 6, 10, 0.95) 100%)',
-        'gold-shimmer': 'linear-gradient(135deg, #FFF0B8 0%, #D4AF37 50%, #9E7D2B 100%)',
-        'gold-text': 'linear-gradient(135deg, #FFF8DE 0%, #E6BF48 45%, #C5A059 80%, #FFE082 100%)',
-      },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-6px)' },
-        },
-        pulseGlow: {
-          '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
-          '50%': { opacity: 1, transform: 'scale(1.05)' },
-        }
-      },
-      animation: {
-        float: 'float 5s ease-in-out infinite',
-        pulseGlow: 'pulseGlow 4s ease-in-out infinite',
+        'royal-velvet': 'linear-gradient(180deg, #1C0409 0%, #0D0204 100%)',
+        'velvet-card': 'linear-gradient(145deg, #29070E 0%, #1C0409 100%)',
+        'gold-shimmer': 'linear-gradient(135deg, #EED9A6 0%, #C5A059 50%, #8A6B32 100%)',
+        'gold-cta': 'linear-gradient(135deg, #B8860B 0%, #EED9A6 50%, #C5A059 100%)',
       }
     },
   },
