@@ -4,12 +4,11 @@ import confetti from 'canvas-confetti';
 /**
  * RoyalPalaceLoader - Hyper-Realistic 3D Royal Palace Mahadwaram Doors Opening
  * 
- * Perfected Experience:
- * - Plays automatically on initial load & refresh with cinematic royal timing
- * - NO "Enter Now", NO "Open Now", NO "Tap to Enter" buttons
- * - NO artificial black circle or lingering center obstruction
- * - Clean 3D door swing that parts seamlessly directly into the homepage hero
- * - Unmounts completely from the DOM as soon as doors open
+ * Refined Experience:
+ * - Warm, regal, auspicious traditional greeting (Namaste / Swagatham)
+ * - Automatic ceremonial door opening (No "Enter Now" or "Tap to enter" buttons)
+ * - Greeting gracefully dissolves as the doors swing open, leaving the homepage hero 100% clean
+ * - Swift unmounting from the DOM with zero lingering center obstructions
  */
 export default function RoyalPalaceLoader({ onComplete }) {
   // 'sealed' -> 'opening' -> 'complete'
@@ -28,8 +27,8 @@ export default function RoyalPalaceLoader({ onComplete }) {
     // Shower of auspicious golden flower petals as doors part
     try {
       confetti({
-        particleCount: 50,
-        spread: 100,
+        particleCount: 55,
+        spread: 110,
         origin: { y: 0.35 },
         colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'],
         gravity: 0.5,
@@ -47,8 +46,8 @@ export default function RoyalPalaceLoader({ onComplete }) {
       setTimeout(() => {
         setShouldRender(false);
         onComplete?.();
-      }, 500);
-    }, 2000);
+      }, 400);
+    }, 1800);
   };
 
   useEffect(() => {
@@ -64,12 +63,12 @@ export default function RoyalPalaceLoader({ onComplete }) {
       return;
     }
 
-    // Automatic Regal Timeline:
-    // 0.0s - 0.7s: Palace doors stand majestically sealed
-    // 0.7s+: Doors smoothly swing open outward in 3D perspective
+    // Automatic Regal Welcome Timeline:
+    // 0.0s - 0.85s: Royal greeting & palace doors stand with auspicious blessing
+    // 0.85s+: Greeting dissolves and doors smoothly swing open in 3D perspective
     const openTimer = setTimeout(() => {
       triggerDoorOpening();
-    }, 700);
+    }, 850);
 
     // Failsafe watchdog timer (3.5s max)
     const watchdogTimer = setTimeout(() => {
@@ -107,9 +106,9 @@ export default function RoyalPalaceLoader({ onComplete }) {
         className="absolute top-0 left-0 w-1/2 h-full z-20 origin-left will-change-transform shadow-[30px_0_70px_rgba(0,0,0,0.95)]"
         style={{
           transform: phase === 'opening' ? 'rotateY(-92deg)' : 'rotateY(0deg)',
-          opacity: phase === 'opening' ? 0 : 1,
+          opacity: phase === 'opening' ? 0.05 : 1,
           transformStyle: 'preserve-3d',
-          transition: 'transform 2000ms cubic-bezier(0.25, 1, 0.5, 1), opacity 1800ms ease-out'
+          transition: 'transform 1800ms cubic-bezier(0.25, 1, 0.5, 1), opacity 1600ms ease-out'
         }}
       >
         <div
@@ -138,9 +137,9 @@ export default function RoyalPalaceLoader({ onComplete }) {
         className="absolute top-0 right-0 w-1/2 h-full z-20 origin-right will-change-transform shadow-[-30px_0_70px_rgba(0,0,0,0.95)]"
         style={{
           transform: phase === 'opening' ? 'rotateY(92deg)' : 'rotateY(0deg)',
-          opacity: phase === 'opening' ? 0 : 1,
+          opacity: phase === 'opening' ? 0.05 : 1,
           transformStyle: 'preserve-3d',
-          transition: 'transform 2000ms cubic-bezier(0.25, 1, 0.5, 1), opacity 1800ms ease-out'
+          transition: 'transform 1800ms cubic-bezier(0.25, 1, 0.5, 1), opacity 1600ms ease-out'
         }}
       >
         <div
@@ -162,34 +161,56 @@ export default function RoyalPalaceLoader({ onComplete }) {
       </div>
 
       {/* ========================================================
-          3. ROYAL PALACE TOP INSCRIPTION
-          Fades out gracefully as the doors swing open
+          3. REGAL AUSPICIOUS GREETING (Dissolves Cleanly as Doors Open)
+          Warm traditional greeting welcoming every royal guest
           ======================================================== */}
       <div
-        className={`absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-6 sm:pt-8 pointer-events-none transition-all duration-700 ${
-          phase === 'opening' ? '-translate-y-8 opacity-0' : 'translate-y-0 opacity-100'
+        className={`absolute inset-0 z-30 flex flex-col items-center justify-center px-4 pointer-events-none transition-all duration-500 ease-out ${
+          phase === 'opening'
+            ? 'scale-105 opacity-0'
+            : 'scale-100 opacity-100'
         }`}
       >
-        <span className="font-serif text-xs sm:text-sm tracking-[0.35em] text-amber-200 uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-          || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
-        </span>
-        <h2 className="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-amber-300 font-bold drop-shadow mt-1">
-          THE ROYAL MAHADWARAM OF S.S CONVENTION
-        </h2>
+        {/* Floating Greeting Backdrop Plaque */}
+        <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-black/75 backdrop-blur-md border border-[#D4AF37]/50 shadow-[0_0_60px_rgba(0,0,0,0.85)] max-w-md mx-auto">
+          
+          {/* Auspicious Vedic Shloka Header */}
+          <span className="font-serif text-xs sm:text-sm tracking-[0.3em] text-amber-200 uppercase drop-shadow block mb-2">
+            || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
+          </span>
+
+          {/* Traditional Telugu & English Greeting */}
+          <span className="font-cinzel text-xs font-bold tracking-[0.28em] text-amber-300 uppercase block mb-1">
+            నమస్కారం · NAMASTE
+          </span>
+
+          <h1 className="font-cinzel text-2xl sm:text-3xl font-bold tracking-[0.14em] text-white uppercase drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] mb-2">
+            WELCOME TO S.S. CONVENTION
+          </h1>
+
+          <div className="w-16 h-[1.5px] bg-gradient-to-r from-transparent via-[#FFE57F] to-transparent my-2" />
+
+          <p className="font-cinzel text-[11px] sm:text-xs tracking-[0.22em] text-amber-100/90 uppercase font-light">
+            Royal Wedding & Banquet Palace · Meerpet, Hyderabad
+          </p>
+
+          <span className="text-[10px] text-amber-300/80 tracking-widest uppercase mt-3 font-mono">
+            ✦ An Auspicious Celebration Awaits ✦
+          </span>
+        </div>
       </div>
 
       {/* ========================================================
-          4. BOTTOM SUBTITLE
-          Fades out gracefully as doors open
+          4. TOP INVOCATION HEADER
           ======================================================== */}
       <div
-        className={`absolute bottom-6 left-0 right-0 z-30 text-center pointer-events-none transition-all duration-700 ${
-          phase === 'opening' ? 'translate-y-6 opacity-0' : 'translate-y-0 opacity-100'
+        className={`absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-6 pointer-events-none transition-all duration-500 ${
+          phase === 'opening' ? '-translate-y-6 opacity-0' : 'translate-y-0 opacity-80'
         }`}
       >
-        <p className="font-cinzel text-[11px] sm:text-xs tracking-[0.3em] uppercase text-amber-200/90 font-light drop-shadow">
-          MEERPET, HYDERABAD • ROYAL WEDDING & BANQUET PALACE
-        </p>
+        <span className="font-cinzel text-[10px] tracking-[0.3em] uppercase text-amber-200 drop-shadow">
+          THE ROYAL MAHADWARAM
+        </span>
       </div>
     </div>
   );
