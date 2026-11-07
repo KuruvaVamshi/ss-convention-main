@@ -46,8 +46,8 @@ export default function RoyalPalaceLoader({ onComplete }) {
       setTimeout(() => {
         setShouldRender(false);
         onComplete?.();
-      }, 900);
-    }, 4500);
+      }, 600);
+    }, 2800);
   };
 
   useEffect(() => {
@@ -64,18 +64,18 @@ export default function RoyalPalaceLoader({ onComplete }) {
     }
 
     // Automatic Regal Welcome Timeline:
-    // 0.0s - 2.2s: Royal greeting & palace doors stand with auspicious blessing
-    // 2.2s+: Greeting dissolves and doors smoothly swing open in 3D perspective
+    // 0.0s - 1.2s: Royal greeting & palace doors stand with auspicious blessing
+    // 1.2s+: Greeting dissolves and doors smoothly swing open in 3D perspective
     const openTimer = setTimeout(() => {
       triggerDoorOpening();
-    }, 2200);
+    }, 1200);
 
-    // Failsafe watchdog timer (9s max)
+    // Failsafe watchdog timer (6s max)
     const watchdogTimer = setTimeout(() => {
       setPhase('complete');
       setShouldRender(false);
       onComplete?.();
-    }, 9000);
+    }, 6000);
 
     return () => {
       clearTimeout(openTimer);
@@ -90,7 +90,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
       role="status"
       aria-label="S.S. Convention Royal Palace Mahadwaram Doors Opening"
       onClick={triggerDoorOpening}
-      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer transition-opacity duration-[900ms] ease-out ${
+      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer transition-opacity duration-[600ms] ease-out ${
         phase === 'complete' ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
       style={{
@@ -108,7 +108,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
           transform: phase === 'opening' ? 'rotateY(-92deg)' : 'rotateY(0deg)',
           opacity: phase === 'opening' ? 0.05 : 1,
           transformStyle: 'preserve-3d',
-          transition: 'transform 4500ms cubic-bezier(0.45, 0.05, 0.25, 1), opacity 1800ms ease-in 2700ms'
+          transition: 'transform 2800ms cubic-bezier(0.45, 0.05, 0.25, 1), opacity 1200ms ease-in 1600ms'
         }}
       >
         <div
@@ -139,7 +139,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
           transform: phase === 'opening' ? 'rotateY(92deg)' : 'rotateY(0deg)',
           opacity: phase === 'opening' ? 0.05 : 1,
           transformStyle: 'preserve-3d',
-          transition: 'transform 4500ms cubic-bezier(0.45, 0.05, 0.25, 1), opacity 1800ms ease-in 2700ms'
+          transition: 'transform 2800ms cubic-bezier(0.45, 0.05, 0.25, 1), opacity 1200ms ease-in 1600ms'
         }}
       >
         <div
@@ -165,7 +165,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
           Warm traditional greeting welcoming every royal guest
           ======================================================== */}
       <div
-        className={`absolute inset-0 z-30 flex flex-col items-center justify-center px-4 pointer-events-none transition-all duration-[1200ms] ease-out ${
+        className={`absolute inset-0 z-30 flex flex-col items-center justify-center px-4 pointer-events-none transition-all duration-[700ms] ease-out ${
           phase === 'opening'
             ? 'scale-105 opacity-0'
             : 'scale-100 opacity-100'
@@ -204,7 +204,7 @@ export default function RoyalPalaceLoader({ onComplete }) {
           4. TOP INVOCATION HEADER
           ======================================================== */}
       <div
-        className={`absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-6 pointer-events-none transition-all duration-[1200ms] ${
+        className={`absolute top-0 left-0 right-0 z-30 flex flex-col items-center pt-6 pointer-events-none transition-all duration-[700ms] ${
           phase === 'opening' ? '-translate-y-6 opacity-0' : 'translate-y-0 opacity-80'
         }`}
       >

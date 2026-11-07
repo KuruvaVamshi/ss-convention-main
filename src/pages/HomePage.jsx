@@ -5,6 +5,7 @@ import HeroStorytelling from '../components/HeroStorytelling';
 import HomeStory from '../components/HomeStory';
 import HomeHalls from '../components/HomeHalls';
 import ExperienceStrip from '../components/ExperienceStrip';
+import PhotoScroll3D from '../components/PhotoScroll3D';
 import Reveal from '../components/Reveal';
 import { venueData } from '../data/venueData';
 
@@ -15,7 +16,8 @@ export default function HomePage({ onOpenLightbox, lang }) {
     <div className="bg-[#450B17] text-latte min-h-screen">
       <HeroStorytelling lang={lang} onOpenLightbox={onOpenLightbox} />
       <HomeStory />
-      <HomeHalls />
+      <HomeHalls onOpenLightbox={onOpenLightbox} />
+      <PhotoScroll3D onOpenLightbox={onOpenLightbox} />
       <ExperienceStrip />
 
       <Suspense fallback={<div className="h-96 bg-[#3D0A14]" />}>

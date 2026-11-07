@@ -26,7 +26,7 @@ export const venueData = {
     diningHall: 250
   },
   highlights: [
-    { id: "capacity", label: "50 to 500 Guests", desc: "Dual Halls (Grand Hall & Mini Hall)", icon: "Users" },
+    { id: "capacity", label: "50 to 600 Guests", desc: "Three halls, from intimate to grand", icon: "Users" },
     { id: "ac", label: "Central Cassette A/C", desc: "Even climate control throughout", icon: "Snowflake" },
     { id: "dining", label: "Separate Dining Hall", desc: "Round banquet tables & buffet counters", icon: "UtensilsCrossed" },
     { id: "parking", label: "Ample Car Parking", desc: "Spacious on-premises parking space", icon: "Car" },
