@@ -1,190 +1,236 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import PolicyFlipCards from '../components/PolicyFlipCards';
-import { ShieldAlert, Clock, ChevronDown, AlertCircle } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Utensils, CreditCard, Sparkles, Clock, Plus, AlertCircle, Phone } from 'lucide-react';
 import { venueData } from '../data/venueData';
+import { teluguTranslations } from '../data/teluguData';
+import Reveal from '../components/Reveal';
+
+const rules = [
+  {
+    icon: Utensils,
+    badge: 'Hygiene standard',
+    title: 'Food Consumption',
+    teluguTitle: teluguTranslations.guidelines.foodTitle,
+    en: 'Food prepared for celebrations is to be consumed strictly within the venue premises. Packing and carrying leftover food outside is strictly prohibited to comply with health, hygiene, and venue norms. Hosts and guests are kindly requested to cooperate with management.',
+    te: teluguTranslations.guidelines.foodDesc,
+  },
+  {
+    icon: CreditCard,
+    badge: 'Mandatory term',
+    title: 'Payment Settlement',
+    teluguTitle: teluguTranslations.guidelines.paymentTitle,
+    en: 'The full payment for the event must be settled strictly 2 days before the scheduled event date. This rule is strictly enforced by management with no exceptions entertained. Thank you for your cooperation.',
+    te: teluguTranslations.guidelines.paymentDesc,
+  },
+  {
+    icon: Sparkles,
+    badge: 'In-house only',
+    title: 'Decoration Exclusivity',
+    teluguTitle: teluguTranslations.guidelines.decorTitle,
+    en: 'Outside decoration vendors are strictly NOT allowed. All stage, mandap, floral, balloon, and lighting arrangements are managed exclusively by our verified in-house decor teams to ensure safety and preserve hall aesthetics.',
+    te: teluguTranslations.guidelines.decorDesc,
+  },
+];
+
+const slots = [
+  {
+    label: 'Daytime slot',
+    title: 'Lunch Parties & Muhurthams',
+    text: 'All lunch events, dining service and guest departures must be completed and vacated strictly by',
+    time: '03:00 PM',
+  },
+  {
+    label: 'Evening slot',
+    title: 'Dinner Parties & Receptions',
+    text: 'All evening receptions, dinner banquets and music programs must conclude and vacate strictly by',
+    time: '11:00 PM',
+  },
+];
+
+const faqs = [
+  {
+    q: 'Why are outside decorators not permitted at S.S Convention?',
+    a: "Outside decorators often use nails, unverified tape, and excessive wiring that damage the hall's false ceilings, Italian marble floor, and wall paneling. Additionally, external vendors frequently fail to complete stage setup before auspicious muhurthams. Our verified in-house decor teams guarantee punctual completion, safety standards, and flawless aesthetics.",
+  },
+  {
+    q: 'Why is takeaway / packing of catered food strictly prohibited?',
+    a: 'In accordance with municipal health, sanitation, and banquet hygiene regulations, all food prepared for events must be served and consumed exclusively within the venue premises. Packing leftover food for outside transport poses health and spoilage hazards and is strictly against venue policy.',
+  },
+  {
+    q: 'What is the payment clearance timeline for booking an event?',
+    a: 'The complete event payment must be settled strictly two (2) days before the scheduled event date. This policy is strictly enforced by management with no exceptions entertained, ensuring all catering, decor, and operational staff are provisioned in advance.',
+  },
+  {
+    q: 'What are the strict slot vacation timings for lunch and dinner?',
+    a: 'Lunch slots must be vacated strictly by 03:00 PM. Dinner slots must be vacated strictly by 11:00 PM. These strict timings allow our housekeeping and maintenance teams to thoroughly sanitize the halls, reset the air conditioning, and prepare for the subsequent booking.',
+  },
+  {
+    q: 'Is there power backup in case of electricity outage?',
+    a: 'Yes. S.S Convention is equipped with heavy-duty commercial silent diesel generators providing 100% automatic power backup for central air conditioning, chandeliers, stage lighting, and sound systems.',
+  },
+  {
+    q: 'What parking arrangements are provided for guests?',
+    a: 'We have dedicated on-premises parking for four-wheelers and two-wheelers with security personnel and 24/7 CCTV surveillance monitoring.',
+  },
+];
 
 export default function PoliciesPage({ lang, setLang }) {
-  const [openFaq, setOpenFaq] = useState(null);
-
-  const toggleFaq = (idx) => {
-    setOpenFaq(openFaq === idx ? null : idx);
-  };
-
-  const faqs = [
-    {
-      q: "Why are outside decorators not permitted at S.S Convention?",
-      a: "Outside decorators often use nails, unverified tape, and excessive wiring that damage the hall's false ceilings, Italian marble floor, and wall paneling. Additionally, external vendors frequently fail to complete stage setup before auspicious muhurthams. Our verified in-house decor teams guarantee punctual completion, safety standards, and flawless aesthetics."
-    },
-    {
-      q: "Why is takeaway / packing of catered food strictly prohibited?",
-      a: "In accordance with municipal health, sanitation, and banquet hygiene regulations, all food prepared for events must be served and consumed exclusively within the venue premises. Packing leftover food for outside transport poses health and spoilage hazards and is strictly against venue policy."
-    },
-    {
-      q: "What is the payment clearance timeline for booking an event?",
-      a: "The complete event payment must be settled strictly two (2) days before the scheduled event date. This policy is strictly enforced by management with no exceptions entertained, ensuring all catering, decor, and operational staff are provisioned in advance."
-    },
-    {
-      q: "What are the strict slot vacation timings for lunch and dinner?",
-      a: "Lunch slots must be vacated strictly by 03:00 PM. Dinner slots must be vacated strictly by 11:00 PM. These strict timings allow our housekeeping and maintenance teams to thoroughly sanitize the halls, reset the air conditioning, and prepare for the subsequent booking."
-    },
-    {
-      q: "Is there power backup in case of electricity outage?",
-      a: "Yes. S.S Convention is equipped with heavy-duty commercial silent diesel generators providing 100% automatic power backup for central air conditioning, chandeliers, stage lighting, and sound systems."
-    },
-    {
-      q: "What parking arrangements are provided for guests?",
-      a: "We have dedicated on-premises parking for four-wheelers and two-wheelers with security personnel and 24/7 CCTV surveillance monitoring."
-    }
-  ];
+  const [openFaq, setOpenFaq] = useState(0);
+  const te = lang === 'te';
 
   return (
-    <div className="bg-[#450B17] text-white min-h-screen pt-24">
-      {/* Page Header */}
-      <section className="py-20 bg-gradient-to-b from-[#450B17] via-[#5F1524] to-[#450B17] border-b border-[#D4AF37]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3A0813] border border-[#D4AF37]/40 text-amber-300 text-xs font-bold tracking-widest uppercase mb-4 shadow-sm">
-            <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
-            <span>Official Rules & Agreements</span>
-          </div>
-          <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-[0.12em] text-white uppercase mb-4 drop-shadow">
-            TRANSPARENT GUIDELINES
-          </h1>
-          <p className="text-amber-100/80 text-xs sm:text-sm md:text-base max-w-3xl mx-auto leading-relaxed font-normal">
-            Crystal-clear policies are the foundation of stress-free celebrations. Review our official English and Telugu guidelines (*ముఖ్యగమనిక*, *ఆహార నిబంధనలు*) regarding catering, payments, stage decor, and party slot timings.
+    <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
+      {/* Header */}
+      <section className="relative pt-36 pb-16 bg-gradient-to-b from-[#2E060F] to-[#450B17] border-b border-[#D4AF37]/30">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-40 bg-amber-500/10 rounded-full blur-[110px] pointer-events-none" />
+        <Reveal className="relative max-w-3xl mx-auto px-4 text-center">
+          <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Official Rules & Agreements</p>
+          <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide">Transparent Guidelines</h1>
+          <div className="mx-auto mt-5 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
+          <p className="mt-5 text-base sm:text-lg text-mocha leading-relaxed">
+            Clear policies make for stress-free celebrations. Read the terms for catering, payments, stage decor and slot timings in English or Telugu.
           </p>
-        </div>
-      </section>
 
-      {/* 3D Flip Cards Section */}
-      <PolicyFlipCards lang={lang} setLang={setLang} />
-
-      {/* Official Timings Detailed Banner */}
-      <section className="py-24 bg-[#3D0A14] border-t border-b border-[#D4AF37]/30">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="p-8 sm:p-10 rounded-[32px] bg-[#350710] border-2 border-[#D4AF37]/45 shadow-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-[#4D0D19] border border-[#D4AF37]/40 flex items-center justify-center text-amber-300">
-                <Clock className="w-6 h-6 text-amber-300" />
-              </div>
-              <div>
-                <h3 className="font-cinzel text-2xl font-bold text-white">
-                  Strict Slot Vacation Schedule
-                </h3>
-                <span className="text-xs font-bold text-amber-300">
-                  ఈవెంట్ ముగింపు సమయాలు (దయచేసి గమనించగలరు)
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-[24px] bg-[#4D0D19] border border-[#D4AF37]/35 shadow-md">
-                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#3A0813] text-amber-300 border border-[#D4AF37]/40 uppercase tracking-wider block w-fit mb-2 shadow-sm">
-                  Daytime Slot
-                </span>
-                <h4 className="font-cinzel text-lg font-bold text-white mb-1">
-                  Lunch Parties & Muhurthams
-                </h4>
-                <p className="text-xs text-amber-100/80 mb-3 leading-relaxed font-normal">
-                  All lunch events, dining service, and guest departures must be completed and vacated strictly by:
-                </p>
-                <div className="text-3xl font-extrabold text-amber-400 font-cinzel">
-                  03:00 PM Sharp
-                </div>
-              </div>
-
-              <div className="p-6 rounded-[24px] bg-[#4D0D19] border border-[#D4AF37]/35 shadow-md">
-                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#3A0813] text-amber-300 border border-[#D4AF37]/40 uppercase tracking-wider block w-fit mb-2 shadow-sm">
-                  Evening Slot
-                </span>
-                <h4 className="font-cinzel text-lg font-bold text-white mb-1">
-                  Dinner Parties & Receptions
-                </h4>
-                <p className="text-xs text-amber-100/80 mb-3 leading-relaxed font-normal">
-                  All evening receptions, dinner banquets, and music programs must conclude and vacate strictly by:
-                </p>
-                <div className="text-3xl font-extrabold text-amber-400 font-cinzel">
-                  11:00 PM Sharp
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 p-4 rounded-xl bg-[#2E070F] border border-amber-500/40 text-xs text-amber-100/90 flex items-start gap-2.5 font-normal">
-              <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-              <span>
-                <strong className="text-amber-300 font-bold">Note to Hosts:</strong> Please schedule rituals, cake cuttings, and banquet service with your guests to comfortably conclude prior to these cut-off hours. Management deeply appreciates your cooperation.
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Frequently Asked Questions */}
-      <section className="py-24 bg-[#450B17]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-16">
-            <h2 className="font-cinzel text-3xl sm:text-5xl font-bold text-white tracking-wide mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-amber-100/80 text-xs sm:text-sm font-normal">
-              Clear answers to help you plan your event with complete confidence.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="rounded-[20px] border-2 border-[#D4AF37]/35 bg-[#3A0813] overflow-hidden transition-all shadow-lg"
+          {/* Language switch */}
+          <div role="group" aria-label="Language" className="mt-8 inline-flex p-1 rounded-full border border-[#D4AF37]/40 bg-black/30">
+            {[
+              ['en', 'English'],
+              ['te', 'తెలుగు'],
+            ].map(([code, label]) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setLang?.(code)}
+                aria-pressed={lang === code}
+                className={`px-6 py-2 rounded-full text-sm font-cinzel tracking-wider transition-colors ${
+                  lang === code ? 'bg-gradient-to-r from-[#B8860B] via-[#EED9A6] to-[#C5A059] text-[#1C0409] font-bold' : 'text-mocha hover:text-latte'
+                }`}
               >
-                <button
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-[#4D0D19] transition-colors"
-                >
-                  <span className="font-bold text-sm text-white leading-snug">
-                    {faq.q}
-                  </span>
-                  <ChevronDown
-                    className={`w-5 h-5 text-amber-400 flex-shrink-0 transition-transform duration-300 ${
-                      openFaq === idx ? 'rotate-180 text-amber-300' : ''
-                    }`}
-                  />
-                </button>
-                {openFaq === idx && (
-                  <div className="p-5 pt-0 text-xs text-amber-100/90 leading-relaxed border-t border-[#D4AF37]/25 bg-[#2E070F] font-normal">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
+                {label}
+              </button>
             ))}
           </div>
+        </Reveal>
+      </section>
+
+      {/* Core rules */}
+      <section id="guidelines" className="py-20 sm:py-28 bg-[#3D0A14] border-b border-[#D4AF37]/25">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {rules.map((r, i) => {
+            const Icon = r.icon;
+            return (
+              <Reveal key={r.title} delay={i * 0.1} className="h-full">
+                <article className="group relative h-full rounded-2xl bg-[#450B17] border border-[#D4AF37]/30 hover:border-amber-400/70 p-7 sm:p-8 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(212,175,55,0.14)]">
+                  <span className="absolute top-5 right-6 font-cinzel text-5xl font-bold text-amber-300/10 group-hover:text-amber-300/20 transition-colors">
+                    0{i + 1}
+                  </span>
+                  <span className="w-12 h-12 rounded-xl bg-[#350710] border border-[#D4AF37]/40 flex items-center justify-center">
+                    <Icon className="w-6 h-6 text-amber-300" />
+                  </span>
+                  <p className="mt-5 text-[11px] tracking-[0.25em] uppercase text-amber-300">{r.badge}</p>
+                  <h3 className="mt-1 font-cinzel text-xl font-bold">{te ? r.teluguTitle : r.title}</h3>
+                  {!te && <p className="mt-0.5 text-sm text-amber-300/80">{r.teluguTitle}</p>}
+                  <p className="mt-4 text-mocha leading-relaxed">{te ? r.te : r.en}</p>
+                </article>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
-      {/* Policy Clarification CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-white text-center border-t border-[#D4AF37]/30 shadow-2xl">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="font-cinzel text-2xl sm:text-4xl font-bold text-white mb-2 tracking-wide">
-            Need Clarification on Any Policy?
-          </h2>
-          <p className="text-amber-100/90 text-xs sm:text-sm max-w-lg mx-auto mb-8 font-light">
-            We are always here to assist you and explain every detail before you place your booking.
+      {/* Slot timings */}
+      <section className="py-20 sm:py-28 bg-[#350710] border-b border-[#D4AF37]/25">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <Reveal className="text-center mb-12">
+            <span className="inline-flex w-12 h-12 rounded-xl bg-[#450B17] border border-[#D4AF37]/40 items-center justify-center">
+              <Clock className="w-6 h-6 text-amber-300" />
+            </span>
+            <h2 className="mt-4 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Slot Vacation Schedule</h2>
+            <p className="mt-2 text-sm text-amber-300">{teluguTranslations.guidelines.timingsTitle}</p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#D4AF37]/25 rounded-2xl overflow-hidden border border-[#D4AF37]/25">
+            {slots.map((s, i) => (
+              <Reveal key={s.label} delay={i * 0.1}>
+                <div className="bg-[#450B17] p-8 sm:p-10 h-full">
+                  <p className="text-[11px] tracking-[0.25em] uppercase text-amber-300">{s.label}</p>
+                  <h3 className="mt-1 font-cinzel text-lg font-bold">{s.title}</h3>
+                  <p className="mt-3 text-sm text-mocha leading-relaxed">{s.text}</p>
+                  <p className="mt-4 font-cinzel text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] to-[#C5A059]">
+                    {s.time} <span className="text-base font-normal text-mocha">sharp</span>
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <p className="mt-6 flex items-start gap-2.5 text-sm text-mocha leading-relaxed">
+            <AlertCircle className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+            <span>
+              <strong className="text-latte">Note to hosts:</strong> please plan rituals, cake cutting and banquet service to finish before these cut-off hours.
+              {te && <span className="block mt-2 text-amber-200">{teluguTranslations.guidelines.timingsDesc}</span>}
+            </span>
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`tel:${venueData.phones[0].raw}`}
-              className="px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all"
-            >
-              Speak to Management (+91 89857 00044)
-            </a>
-            <Link
-              to="/contact"
-              className="px-8 py-3.5 rounded-full border border-amber-300/60 text-white hover:bg-white/10 font-cinzel font-bold text-xs uppercase tracking-wider transition-all"
-            >
-              Go to Booking Studio
-            </Link>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-20 sm:py-28 bg-[#450B17]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <Reveal className="text-center mb-12">
+            <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Frequently Asked Questions</h2>
+            <div className="mx-auto mt-4 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
+          </Reveal>
+
+          <div className="border-t border-[#D4AF37]/25">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div key={faq.q} className="border-b border-[#D4AF37]/25">
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? -1 : idx)}
+                    aria-expanded={isOpen}
+                    className="w-full flex items-center justify-between gap-4 py-5 text-left group"
+                  >
+                    <span className="font-semibold text-base text-latte group-hover:text-amber-200 transition-colors leading-snug">{faq.q}</span>
+                    <Plus className={`w-5 h-5 text-amber-300 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <p className="pb-6 pr-8 text-mocha leading-relaxed">{faq.a}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-center border-t border-[#D4AF37]/30">
+        <Reveal className="max-w-3xl mx-auto px-4">
+          <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Need clarification on any policy?</h2>
+          <p className="mt-4 text-mocha leading-relaxed">
+            We are happy to explain every detail before you place your booking.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <a href={`tel:${venueData.phones[0].raw}`} className="btn-gold">
+              <Phone className="w-4 h-4" /> Speak to management
+            </a>
+            <Link to="/contact" className="btn-outline-gold">Go to booking studio</Link>
+          </div>
+        </Reveal>
       </section>
     </div>
   );
