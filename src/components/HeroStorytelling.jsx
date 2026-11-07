@@ -240,6 +240,10 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
     }
   };
 
+  // Scroll-driven console: the topic in the middle of the screen drives the pinned viewer.
+  // Refs keep the observer callback pointing at the latest handler and media.
+  const switchTabRef = useRef(null);
+  const mediaRef = useRef(null);
   // Switch console tab and dynamically sync visual theater
   const handleSwitchTab = (tab) => {
     setActiveConsoleTab(tab);
@@ -420,6 +424,28 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
     };
   }, []);
 
+  switchTabRef.current = handleSwitchTab;
+  mediaRef.current = currentMedia;
+
+  useEffect(() => {
+    const blocks = document.querySelectorAll('[data-console-block]');
+    if (!blocks.length) return undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          const id = en.target.getAttribute('data-console-block');
+          // Don't replace a video the visitor is watching; only move the highlight
+          if (mediaRef.current?.type === 'video') setActiveConsoleTab(id);
+          else switchTabRef.current?.(id);
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px' }
+    );
+    blocks.forEach((b) => io.observe(b));
+    return () => io.disconnect();
+  }, []);
+
   const triggerFlowerShower = () => {
     try {
       confetti({
@@ -433,7 +459,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   };
 
   return (
-    <div className="relative text-white overflow-hidden border-b-2 border-[#D4AF37]/35">
+    <div className="relative text-white overflow-x-clip border-b-2 border-[#D4AF37]/35">
       {/* ========================================================
           CHAPTER 1: FULL-SCREEN CINEMATIC LUXURY HERO SECTION
           (Grand Royal Symmetrical Palace Hero with Open Architectural Stage)
@@ -559,124 +585,130 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
 
       {/* ========================================================
           CHAPTER 2: EXPLORE THE VENUE (interactive console)
-          Full-bleed stage: the photo or video fills the section, a numbered menu
-          sits on the left and a glass panel with details on the right.
+          Scroll-driven: the viewer stays pinned on the left while the five
+          topics scroll past on the right and switch what the viewer shows.
           ======================================================== */}
-      <section id="interactive-console" className="relative z-10 overflow-hidden bg-black border-t border-[#D4AF37]/30 min-h-[720px] lg:min-h-[780px] flex flex-col">
-        {/* Background media */}
-        <div className="absolute inset-0">
-          {currentMedia.type === 'video' ? (
-            <video
-              ref={videoRef}
-              key={currentMedia.src}
-              src={currentMedia.src}
-              autoPlay
-              loop
-              muted={isMuted}
-              playsInline
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <AnimatePresence mode="sync">
-              <motion.img
-                key={currentMedia.src}
-                src={currentMedia.src}
-                alt={currentMedia.title}
-                style={getLightingFilter()}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.9, ease: 'easeOut' }}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </AnimatePresence>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#140205]/90 via-[#140205]/45 to-[#140205]/25" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140205]/85 via-transparent to-[#140205]/40" />
+      <section id="interactive-console" className="relative z-10 bg-[#2A060E] border-t border-[#D4AF37]/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
+          <div className="max-w-2xl">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Take a closer look</p>
+            <h2 className="font-cinzel text-3xl sm:text-5xl font-bold tracking-wide text-latte">Explore the Venue</h2>
+            <div className="mt-4 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
+          </div>
         </div>
 
-        {/* Media controls */}
-        <div className="absolute top-5 right-5 z-20 flex items-center gap-2">
-          {currentMedia.type === 'video' && (
-            <>
-              <button
-                onClick={togglePlayPause}
-                aria-label={isPlayingVideo ? 'Pause video' : 'Play video'}
-                className="w-10 h-10 rounded-full bg-black/55 backdrop-blur border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
-              >
-                {isPlayingVideo ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
-              </button>
-              <button
-                onClick={toggleSound}
-                aria-label={isMuted ? 'Unmute' : 'Mute'}
-                className="w-10 h-10 rounded-full bg-black/55 backdrop-blur border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
-              >
-                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-              </button>
-            </>
-          )}
-          <button
-            onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
-            aria-label="View full screen"
-            className="w-10 h-10 rounded-full bg-black/55 backdrop-blur border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
-          >
-            <Maximize2 className="w-4 h-4" />
-          </button>
-        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14 items-start">
+          {/* Pinned viewer */}
+          <div className="lg:col-span-6 sticky top-[72px] lg:top-24 z-20 pt-4 pb-3 lg:py-8 bg-[#2A060E] lg:bg-transparent">
+            <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black h-[34vh] sm:h-[44vh] lg:h-auto lg:aspect-[4/5] lg:max-h-[72vh] w-full">
+              {currentMedia.type === 'video' ? (
+                <video
+                  ref={videoRef}
+                  key={currentMedia.src}
+                  src={currentMedia.src}
+                  autoPlay
+                  loop
+                  muted={isMuted}
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <AnimatePresence mode="sync">
+                  <motion.img
+                    key={currentMedia.src}
+                    src={currentMedia.src}
+                    alt={currentMedia.title}
+                    style={getLightingFilter()}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+              )}
+              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/75 to-transparent pointer-events-none" />
 
-        {/* Content */}
-        <div className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Numbered menu */}
-          <div className="lg:col-span-5">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Take a closer look</p>
-            <h2 className="mt-2 font-cinzel text-3xl sm:text-5xl font-bold tracking-wide text-latte">Explore the Venue</h2>
-            <div role="tablist" aria-label="Explore the venue" className="mt-8 flex lg:flex-col gap-1 overflow-x-auto no-scrollbar">
-              {[
-                ['halls', 'Our Halls'],
-                ['banquet', 'Dining Floor'],
-                ['themes', 'Stage Themes'],
-                ['menus', 'Menus'],
-                ['contact', 'Book a Visit'],
-              ].map(([id, label], i) => {
-                const on = activeConsoleTab === id;
+              <div className="absolute top-3 right-3 flex items-center gap-2">
+                {currentMedia.type === 'video' && (
+                  <>
+                    <button
+                      onClick={togglePlayPause}
+                      aria-label={isPlayingVideo ? 'Pause video' : 'Play video'}
+                      className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+                    >
+                      {isPlayingVideo ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+                    </button>
+                    <button
+                      onClick={toggleSound}
+                      aria-label={isMuted ? 'Unmute' : 'Mute'}
+                      className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+                    >
+                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    </button>
+                  </>
+                )}
+                <button
+                  onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
+                  aria-label="View full screen"
+                  className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-5 right-4 sm:right-5">
+                <h3 className="font-cinzel text-base sm:text-lg font-bold text-latte drop-shadow line-clamp-1">{currentMedia.title}</h3>
+                <p className="text-xs text-mocha line-clamp-1">{currentMedia.caption}</p>
+              </div>
+            </div>
+
+            {/* Video tours */}
+            <div className="mt-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
+              <span className="text-[11px] tracking-[0.25em] uppercase text-amber-300 whitespace-nowrap pr-1">Video tours</span>
+              {venueVideos.map((v) => {
+                const on = currentMedia.src === v.src && currentMedia.type === 'video';
                 return (
                   <button
-                    key={id}
-                    role="tab"
-                    aria-selected={on}
-                    onClick={() => handleSwitchTab(id)}
-                    className="group flex items-center gap-4 py-2 sm:py-2.5 text-left whitespace-nowrap flex-shrink-0"
+                    key={v.id}
+                    onClick={() => handleSelectVideo(v)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${
+                      on ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-[#D4AF37]/35 text-mocha hover:text-latte hover:border-[#D4AF37]/70'
+                    }`}
                   >
-                    <span className={`font-cinzel text-sm transition-colors ${on ? 'text-amber-300' : 'text-latte/40 group-hover:text-latte/70'}`}>
-                      0{i + 1}
-                    </span>
-                    <span
-                      className={`font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide transition-all duration-300 ${
-                        on ? 'text-latte' : 'text-latte/45 group-hover:text-latte/80'
-                      }`}
-                    >
-                      {label}
-                    </span>
-                    <span className={`hidden lg:block h-px bg-amber-300 transition-all duration-500 ${on ? 'w-14 opacity-100' : 'w-0 opacity-0'}`} />
+                    <Play className="w-3 h-3 fill-current" /> {v.label}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Glass details panel */}
-          <div className="lg:col-span-7 lg:pl-10">
-            <div className="rounded-3xl bg-[#1C0409]/70 backdrop-blur-xl border border-[#D4AF37]/35 p-6 sm:p-8 shadow-2xl max-w-xl lg:ml-auto">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeConsoleTab}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        >
+          {/* Topics that scroll past the pinned viewer */}
+          <div className="lg:col-span-6">
+            {[
+              ['halls', '01', 'Our Halls'],
+              ['banquet', '02', 'Dining Floor'],
+              ['themes', '03', 'Stage Themes'],
+              ['menus', '04', 'Menus'],
+              ['contact', '05', 'Book a Visit'],
+            ].map(([id, num, label]) => {
+              const on = activeConsoleTab === id;
+              return (
+                <article
+                  key={id}
+                  data-console-block={id}
+                  className={`min-h-[55vh] lg:min-h-[78vh] flex flex-col justify-center py-10 border-b border-[#D4AF37]/15 last:border-b-0 transition-opacity duration-500 ${
+                    on ? 'opacity-100' : 'opacity-40 hover:opacity-80'
+                  }`}
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="font-cinzel text-sm text-amber-300">{num}</span>
+                    <span className="h-px w-10 bg-amber-300/60" />
+                    <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide text-latte">{label}</h3>
+                  </div>
+                  <div onClick={() => !on && handleSwitchTab(id)}>
           {/* HALLS */}
-          {activeConsoleTab === 'halls' && (
+          {id === 'halls' && (
             <div>
               <div className="flex gap-2">
                 {spacesData.slice(0, 3).map((hall, idx) => (
@@ -726,7 +758,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           )}
 
           {/* DINING */}
-          {activeConsoleTab === 'banquet' && (
+          {id === 'banquet' && (
             <div>
               <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Dedicated dining floor</p>
               <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">Swarna Bhojanam</h3>
@@ -755,7 +787,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           )}
 
           {/* THEMES */}
-          {activeConsoleTab === 'themes' && (
+          {id === 'themes' && (
             <div>
               <div className="flex flex-wrap gap-2">
                 {themesData.slice(0, 4).map((theme, idx) => (
@@ -806,7 +838,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           )}
 
           {/* MENUS */}
-          {activeConsoleTab === 'menus' && (
+          {id === 'menus' && (
             <div>
               <div className="inline-flex p-1 rounded-full border border-[#D4AF37]/35 bg-black/25">
                 {[['veg', 'Vegetarian', Leaf, 0], ['nonVeg', 'Non-Veg', Drumstick, 1]].map(([type, label, Icon, firstTier]) => (
@@ -859,7 +891,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           )}
 
           {/* BOOK */}
-          {activeConsoleTab === 'contact' && (
+          {id === 'contact' && (
             <div>
               <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Visit and book</p>
               <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">S.S Convention A/C</h3>
@@ -894,28 +926,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               </div>
             </div>
           )}
-        </motion.div>
-      </AnimatePresence>
-            </div>
-          </div>
-        </div>
-
-        {/* Video tours bar */}
-        <div className="relative z-10 border-t border-white/10 bg-black/45 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <span className="text-[11px] tracking-[0.25em] uppercase text-amber-300 whitespace-nowrap pr-2">Video tours</span>
-            {venueVideos.map((v) => {
-              const on = currentMedia.src === v.src && currentMedia.type === 'video';
-              return (
-                <button
-                  key={v.id}
-                  onClick={() => handleSelectVideo(v)}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${
-                    on ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-white/25 text-latte/80 hover:text-latte hover:border-white/60'
-                  }`}
-                >
-                  <Play className="w-3 h-3 fill-current" /> {v.label}
-                </button>
+                  </div>
+                </article>
               );
             })}
           </div>
