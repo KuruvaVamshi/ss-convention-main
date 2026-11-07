@@ -79,7 +79,9 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
 
       {/* Filters: floating pill bar that slides away on scroll down */}
       <div
-        className={}
+        className={`sticky top-[76px] sm:top-[80px] z-30 px-3 pointer-events-none transform transition-transform duration-300 ${
+          barVisible ? 'translate-y-0' : '-translate-y-[calc(100%+96px)]'
+        }`}
       >
         <div className="max-w-full mx-auto mt-4 flex justify-center">
           <div
@@ -95,7 +97,9 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
                   type="button"
                   onClick={() => setActive(cat.id)}
                   aria-pressed={on}
-                  className={}
+                  className={`relative flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-cinzel tracking-wider whitespace-nowrap transition-colors ${
+                    on ? 'text-[#1C0409] font-bold' : 'text-mocha hover:text-latte'
+                  }`}
                 >
                   {on && (
                     <motion.span
@@ -105,7 +109,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
                     />
                   )}
                   <span className="relative">{cat.label}</span>
-                  <span className={}>
+                  <span className={`relative text-[10px] px-1.5 py-0.5 rounded-full ${on ? 'bg-[#1C0409]/15' : 'bg-white/10 text-amber-300'}`}>
                     {counts[cat.id] || 0}
                   </span>
                 </button>
