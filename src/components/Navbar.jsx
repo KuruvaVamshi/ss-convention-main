@@ -14,6 +14,7 @@ import {
 import { venueData } from '../data/venueData';
 
 export default function Navbar({ lang, setLang }) {
+  const [isVisible, setIsVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopDropdown, setDesktopDropdown] = useState(null); // 'venue' | null
@@ -22,18 +23,70 @@ export default function Navbar({ lang, setLang }) {
   const location = useLocation();
   const dropdownTimeoutRef = useRef(null);
   const navContainerRef = useRef(null);
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
 
-  // Scroll detection for sticky navbar background transition
+  // 10px scroll threshold to filter out trackpad/wheel micro-jitter
+  const SCROLL_THRESHOLD = 10;
+
+  // Smart Auto-Hide on Scroll Down, Reveal on Scroll Up
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (!ticking.current) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = Math.max(0, window.scrollY);
+          const prevScrollY = lastScrollY.current;
+          const diff = currentScrollY - prevScrollY;
+
+          // 1. Scrolled background transition (solidifies past 20px)
+          setScrolled(currentScrollY > 20);
+
+          // 2. Always show navbar at the very top of the page
+          if (currentScrollY <= 20) {
+            setIsVisible(true);
+            lastScrollY.current = currentScrollY;
+            ticking.current = false;
+            return;
+          }
+
+          // 3. Keep navbar visible while mobile drawer menu is open
+          if (mobileMenuOpen) {
+            setIsVisible(true);
+            lastScrollY.current = currentScrollY;
+            ticking.current = false;
+            return;
+          }
+
+          // 4. Threshold check: ignore tiny jitter movements (< 10px)
+          if (Math.abs(diff) < SCROLL_THRESHOLD) {
+            ticking.current = false;
+            return;
+          }
+
+          // 5. Scroll DOWN -> smoothly slide navbar upwards and hide
+          if (diff > 0 && currentScrollY > 80) {
+            setIsVisible(false);
+            setDesktopDropdown(null); // Ensure dropdown menus close when navbar hides
+          }
+          // 6. Scroll UP -> smoothly slide navbar back into view from top
+          else if (diff < 0) {
+            setIsVisible(true);
+          }
+
+          lastScrollY.current = currentScrollY;
+          ticking.current = false;
+        });
+        ticking.current = true;
+      }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mobileMenuOpen]);
 
-  // Close menus and dropdowns on route changes
+  // Close menus and ensure navbar is visible on route changes
   useEffect(() => {
+    setIsVisible(true);
     setMobileMenuOpen(false);
     setDesktopDropdown(null);
   }, [location.pathname]);
@@ -116,7 +169,9 @@ export default function Navbar({ lang, setLang }) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 h-[68px] sm:h-[72px] transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 h-[68px] sm:h-[72px] transform transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none will-change-transform ${
+          isVisible ? 'translate-y-0 pointer-events-auto' : '-translate-y-full pointer-events-none'
+        } ${
           scrolled || mobileMenuOpen
             ? 'bg-[#120104]/96 backdrop-blur-md border-b border-[#D4AF37]/35 shadow-[0_8px_30px_rgba(0,0,0,0.85)]'
             : 'bg-gradient-to-b from-black/90 via-black/50 to-transparent backdrop-blur-[3px] border-b border-[#D4AF37]/20'
