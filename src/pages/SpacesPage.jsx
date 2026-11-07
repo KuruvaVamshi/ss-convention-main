@@ -284,9 +284,15 @@ function HallDecorationLightbox({
 }
 
 /**
- * Hall photo strip: expanding panels on desktop (hover to open a photo),
- * swipeable cards on phones. Clicking a photo opens the lightbox.
+ * Hall photo mosaic: a bento grid with one large feature photo.
+ * Layouts are tuned for 7 and 8 photos; other counts fall back to an even grid.
+ * Clicking a photo opens the lightbox.
  */
+const BENTO_SPANS = {
+  7: ['lg:col-span-2 lg:row-span-2', '', 'lg:row-span-2', '', '', 'lg:col-span-2', ''],
+  8: ['lg:col-span-2 lg:row-span-2', '', '', '', '', '', 'lg:col-span-2', '']
+};
+
 function HallGalleryStrip({
   hallName,
   eyebrow,
@@ -295,9 +301,8 @@ function HallGalleryStrip({
   images = [],
   onOpenLightbox
 }) {
-  const [active, setActive] = useState(0);
-
   if (!images.length) return null;
+  const spans = BENTO_SPANS[images.length];
 
   return (
     <div>
@@ -316,56 +321,43 @@ function HallGalleryStrip({
         </button>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-3 lg:pb-0 no-scrollbar">
-        {images.map((img, i) => {
-          const open = active === i;
-          return (
-            <button
-              key={img.src}
-              type="button"
-              onMouseEnter={() => window.matchMedia('(hover: hover)').matches && setActive(i)}
-              onFocus={() => setActive(i)}
-              onClick={() => {
-                if (open || !window.matchMedia('(hover: hover)').matches) onOpenLightbox(images, i, hallName);
-                else setActive(i);
-              }}
-              aria-label={`View photo ${i + 1} of ${images.length}: ${img.title}`}
-              className={`group relative flex-shrink-0 snap-center overflow-hidden rounded-2xl border text-left cursor-pointer h-[420px] lg:h-[520px] w-[78vw] sm:w-[52vw] lg:w-auto transition-[flex,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                open ? 'lg:flex-[4.5] border-amber-400/70' : 'lg:flex-1 border-[#D4AF37]/25'
-              }`}
-            >
-              <img
-                src={img.src}
-                alt={img.title}
-                loading="lazy"
-                draggable={false}
-                className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-out ${
-                  open ? 'scale-105 brightness-100' : 'lg:scale-100 lg:brightness-[0.55] lg:grayscale-[0.35]'
-                }`}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409] via-[#1C0409]/20 to-transparent" />
+      <div className={`grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 grid-flow-dense auto-rows-[170px] sm:auto-rows-[200px] lg:auto-rows-[210px] ${spans ? '' : 'lg:auto-rows-[260px]'}`}>
+        {images.map((img, i) => (
+          <button
+            key={img.src}
+            type="button"
+            onClick={() => onOpenLightbox(images, i, hallName)}
+            aria-label={`View photo ${i + 1} of ${images.length}: ${img.title}`}
+            className={`group relative overflow-hidden rounded-xl sm:rounded-2xl border border-[#D4AF37]/25 hover:border-amber-400/70 text-left cursor-pointer transition-colors duration-300 ${
+              i === 0 ? 'col-span-2 row-span-2' : ''
+            } ${spans ? spans[i] : ''}`}
+          >
+            <img
+              src={img.src}
+              alt={img.title}
+              loading="lazy"
+              draggable={false}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 via-transparent to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
 
-              <span className="absolute top-4 left-5 font-cinzel text-sm tracking-[0.3em] text-amber-300/90">
-                {String(i + 1).padStart(2, '0')}
+            <span className="absolute top-3 left-4 font-cinzel text-xs tracking-[0.3em] text-latte/80 drop-shadow">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/55 border border-white/25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <Maximize2 className="w-4 h-4 text-amber-200" />
+            </span>
+
+            <div className="absolute bottom-0 left-0 right-0 p-3.5 sm:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              {img.category && (
+                <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</span>
+              )}
+              <span className="mt-1 block font-cinzel text-sm sm:text-base font-bold text-latte leading-snug line-clamp-2">
+                {img.title}
               </span>
-
-              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
-                {/* Phones always show the caption; desktop shows it on the open panel */}
-                <div className={`transition-all duration-700 ${open ? 'lg:opacity-100 lg:translate-y-0' : 'lg:opacity-0 lg:translate-y-3'}`}>
-                  {img.category && (
-                    <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</span>
-                  )}
-                  <span className="mt-1 block font-cinzel text-base sm:text-lg font-bold text-latte leading-snug lg:max-w-md">
-                    {img.title}
-                  </span>
-                  <span className="mt-2 hidden lg:inline-flex items-center gap-1.5 text-xs text-mocha">
-                    <Maximize2 className="w-3.5 h-3.5" /> Click to enlarge
-                  </span>
-                </div>
-              </div>
-            </button>
-          );
-        })}
+            </div>
+          </button>
+        ))}
       </div>
     </div>
   );
