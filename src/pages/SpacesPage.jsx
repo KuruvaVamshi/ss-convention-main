@@ -738,9 +738,6 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
 
   const [lightboxState, setLightboxState] = useState({ isOpen: false, hallName: '', images: [], currentIndex: 0 });
 
-  const hall = spacesData.find((h) => h.id === activeNav) || spacesData[0];
-  const meta = HALL_META[hall.id] || HALL_META['hall-vasishta'];
-  const hallNumber = HALL_TABS.findIndex((t) => t.id === hall.id) + 1;
 
   const openGalleryModal = (images, index, hallName) =>
     setLightboxState({ isOpen: true, hallName, images, currentIndex: index });
@@ -777,20 +774,33 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Highlight the tab of the hall currently in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActiveNav(e.target.id);
+        });
+      },
+      { rootMargin: '-40% 0px -50% 0px' }
+    );
+    HALL_TABS.forEach((t) => {
+      const el = document.getElementById(t.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   const scrollToSection = (id) => {
-    if (HALL_TABS.some((t) => t.id === id)) {
-      setActiveNav(id);
-      setTimeout(() => {
-        const tabs = document.getElementById('hall-tabs');
-        if (tabs) window.scrollTo({ top: tabs.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-      }, 50);
-      return;
-    }
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   const easeLuxury = [0.22, 1, 0.36, 1];
+
+  const renderHall = (hall) => {
+    const meta = HALL_META[hall.id] || HALL_META['hall-vasishta'];
+    const hallNumber = HALL_TABS.findIndex((t) => t.id === hall.id) + 1;
   const specs = [
     ['Clear Span & Height', hall.specs?.ceilingHeight || meta.specFallback.ceilingHeight],
     ['Stage', hall.specs?.stageDimensions || meta.specFallback.stageDimensions],
@@ -799,87 +809,17 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
     ['VIP Green Rooms', hall.specs?.greenRooms || meta.specFallback.greenRooms],
     [meta.soundLabel, hall.specs?.[meta.specKey] || meta.specFallback.sound]
   ];
-
-  return (
-    <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
-      {/* Hero */}
-      <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
-        {/* Slowly scrolling strip of venue photos */}
-        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <div className="flex h-full w-max animate-marquee-x">
-            {[...HERO_PHOTOS, ...HERO_PHOTOS].map((src, i) => (
-              <img key={i} src={src} alt="" loading={i < 4 ? 'eager' : 'lazy'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
-            ))}
-          </div>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/60" />
-        <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: easeLuxury }}
-          >
-            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">
-              {lang === 'te' ? 'మా వేదికను కనుగొనండి' : 'Discover our venue'}
-            </p>
-            <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">
-              {lang === 'te' ? 'మూడు విశిష్ట వేదికలు.' : 'Three Unique Spaces.'}
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059]">
-                {lang === 'te' ? 'అంతులేని సంబరాలు.' : 'Endless Celebrations.'}
-              </span>
-            </h1>
-            <p className="mt-5 max-w-xl text-base sm:text-lg text-mocha leading-relaxed">
-              {lang === 'te'
-                ? 'మీ మరపురాని వేడుకలకు రూపకల్పన చేసిన వేదికలను అన్వేషించండి.'
-                : 'Explore the spaces designed to bring your most memorable celebrations to life.'}
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Hall switcher */}
-      <div
-        id="hall-tabs"
-        className={`sticky top-[68px] sm:top-[72px] z-30 w-full py-3 px-4 bg-[#1C0409]/95 backdrop-blur-xl border-b border-[#D4AF37]/25 transform transition-transform duration-300 ${
-          subnavVisible ? 'translate-y-0' : '-translate-y-[calc(100%+80px)] pointer-events-none'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
-            {HALL_TABS.map((t, i) => (
-              <button
-                key={t.id}
-                onClick={() => scrollToSection(t.id)}
-                className={`relative px-4 py-2 text-sm font-cinzel tracking-wider whitespace-nowrap transition-colors ${
-                  activeNav === t.id ? 'text-latte' : 'text-mocha hover:text-latte'
-                }`}
-              >
-                <span className="text-amber-300/70 mr-2 text-xs">0{i + 1}</span>
-                {t.label}
-                {activeNav === t.id && (
-                  <motion.span layoutId="hall-underline" className="absolute left-3 right-3 -bottom-0.5 h-0.5 bg-amber-300 rounded-full" />
-                )}
-              </button>
-            ))}
-          </div>
-          <button onClick={() => scrollToSection('enquire-cta')} className="hidden sm:inline-flex items-center gap-1.5 text-sm text-amber-300 hover:text-latte transition-colors">
-            Enquire <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-
-      {/* Selected hall */}
-      <AnimatePresence mode="wait">
-        <motion.section
-          key={hall.id}
-          id={hall.id}
-          aria-label={`${hall.name} showcase`}
-          initial={{ opacity: 0, y: shouldReduce ? 0 : 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.45, ease: easeLuxury }}
-          className="py-16 sm:py-24"
-        >
+    return (
+<motion.section
+      key={hall.id}
+      id={hall.id}
+      aria-label={`${hall.name} showcase`}
+      initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.7, ease: easeLuxury }}
+      className="py-16 sm:py-24 scroll-mt-32 border-b border-[#D4AF37]/15"
+    >
           <div className="w-full max-w-[96vw] xl:max-w-[1440px] mx-auto px-2 sm:px-4 lg:px-6">
             {/* Intro */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center mb-16 sm:mb-20">
@@ -988,7 +928,79 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
             />
           </div>
         </motion.section>
-      </AnimatePresence>
+    );
+  };
+
+  return (
+    <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
+      {/* Hero */}
+      <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
+        {/* Slowly scrolling strip of venue photos */}
+        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+          <div className="flex h-full w-max animate-marquee-x">
+            {[...HERO_PHOTOS, ...HERO_PHOTOS].map((src, i) => (
+              <img key={i} src={src} alt="" loading={i < 4 ? 'eager' : 'lazy'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
+            ))}
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/60" />
+        <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeLuxury }}
+          >
+            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">
+              {lang === 'te' ? 'మా వేదికను కనుగొనండి' : 'Discover our venue'}
+            </p>
+            <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">
+              {lang === 'te' ? 'మూడు విశిష్ట వేదికలు.' : 'Three Unique Spaces.'}
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059]">
+                {lang === 'te' ? 'అంతులేని సంబరాలు.' : 'Endless Celebrations.'}
+              </span>
+            </h1>
+            <p className="mt-5 max-w-xl text-base sm:text-lg text-mocha leading-relaxed">
+              {lang === 'te'
+                ? 'మీ మరపురాని వేడుకలకు రూపకల్పన చేసిన వేదికలను అన్వేషించండి.'
+                : 'Explore the spaces designed to bring your most memorable celebrations to life.'}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Hall switcher */}
+      <div
+        id="hall-tabs"
+        className={`sticky top-[68px] sm:top-[72px] z-30 w-full py-3 px-4 bg-[#1C0409]/95 backdrop-blur-xl border-b border-[#D4AF37]/25 transform transition-transform duration-300 ${
+          subnavVisible ? 'translate-y-0' : '-translate-y-[calc(100%+80px)] pointer-events-none'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+            {HALL_TABS.map((t, i) => (
+              <button
+                key={t.id}
+                onClick={() => scrollToSection(t.id)}
+                className={`relative px-4 py-2 text-sm font-cinzel tracking-wider whitespace-nowrap transition-colors ${
+                  activeNav === t.id ? 'text-latte' : 'text-mocha hover:text-latte'
+                }`}
+              >
+                <span className="text-amber-300/70 mr-2 text-xs">0{i + 1}</span>
+                {t.label}
+                {activeNav === t.id && (
+                  <motion.span layoutId="hall-underline" className="absolute left-3 right-3 -bottom-0.5 h-0.5 bg-amber-300 rounded-full" />
+                )}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => scrollToSection('enquire-cta')} className="hidden sm:inline-flex items-center gap-1.5 text-sm text-amber-300 hover:text-latte transition-colors">
+            Enquire <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {/* All three halls */}
+      {HALL_TABS.map((t) => renderHall(spacesData.find((h) => h.id === t.id) || spacesData[0]))}
 
       {/* Enquiry */}
       <section id="enquire-cta" aria-label="Enquire about S.S. Convention" className="py-24 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] border-t border-[#D4AF37]/30 text-center">
