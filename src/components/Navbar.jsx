@@ -257,15 +257,6 @@ export default function Navbar({ lang, setLang }) {
                     onMouseEnter={() => handleMouseEnter('venue')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    {/* Subtle Header Tag */}
-                    <div className="px-3 pt-2 pb-1.5 flex items-center justify-between border-b border-[#D4AF37]/20 mb-1">
-                      <span className="text-[9px] font-bold text-amber-300 tracking-[0.25em] uppercase font-cinzel">
-                        THE VENUE ARCHITECTURE
-                      </span>
-                      <span className="text-[9px] text-amber-200/60 font-medium">
-                        3 Distinct Spaces
-                      </span>
-                    </div>
 
                     <div className="divide-y divide-[#D4AF37]/15">
                       {venueSubLinks.map((item) => {
