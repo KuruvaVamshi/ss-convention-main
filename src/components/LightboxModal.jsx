@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { X, ZoomIn, Download } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { X, ZoomIn } from 'lucide-react';
 
 export default function LightboxModal({ isOpen, imageSrc, title, onClose }) {
   useEffect(() => {
@@ -17,19 +18,35 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose }) {
   }, [isOpen, onClose]);
 
   if (!isOpen || !imageSrc) return null;
+  if (typeof document === 'undefined') return null;
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-xl animate-fade-in"
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/98 backdrop-blur-2xl animate-fade-in select-none"
     >
+      {/* Prominent High-Visibility Floating Close Button */}
+      <button
+        onClick={onClose}
+        className="fixed top-4 right-4 sm:top-5 sm:right-6 z-[100000] flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#3D0A14] hover:bg-[#8A1828] border-2 border-[#D4AF37] text-amber-200 hover:text-white shadow-[0_4px_30px_rgba(0,0,0,0.95)] backdrop-blur-md transition-all hover:scale-105 active:scale-95 group cursor-pointer"
+        title="Close (Escape)"
+        aria-label="Close Lightbox"
+      >
+        <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-amber-200 group-hover:text-white">
+          CLOSE
+        </span>
+        <div className="w-5 h-5 rounded-full bg-amber-400/20 flex items-center justify-center border border-amber-400/50">
+          <X className="w-3.5 h-3.5 text-amber-300 group-hover:text-white" />
+        </div>
+      </button>
+
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative max-w-5xl max-h-[92vh] w-full flex flex-col rounded-[28px] overflow-hidden border-2 border-[#D4AF37]/50 bg-black shadow-2xl"
+        className="relative max-w-5xl max-h-[92vh] w-full flex flex-col rounded-[24px] sm:rounded-[28px] overflow-hidden border-2 border-[#D4AF37]/50 bg-black shadow-2xl"
       >
         {/* Top bar */}
-        <div className="p-4 px-6 border-b border-[#D4AF37]/30 flex items-center justify-between bg-[#3D0A14] text-white">
-          <h3 className="font-cinzel text-sm sm:text-base font-bold text-white truncate pr-4">
+        <div className="p-3.5 sm:p-4 px-5 sm:px-6 border-b border-[#D4AF37]/30 flex items-center justify-between bg-[#3D0A14] text-white pr-32 sm:pr-40">
+          <h3 className="font-cinzel text-xs sm:text-base font-bold text-white truncate pr-2">
             {title || 'SS Convention Hall Preview'}
           </h3>
           <div className="flex items-center gap-2">
@@ -37,30 +54,24 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose }) {
               href={imageSrc}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-gold-500/20 text-gold-300 hover:text-gold-200 transition-colors"
+              className="p-1.5 sm:p-2 rounded-full hover:bg-gold-500/20 text-gold-300 hover:text-gold-200 transition-colors"
               title="Open full resolution in new tab"
             >
-              <ZoomIn className="w-5 h-5" />
+              <ZoomIn className="w-4 h-4 sm:w-5 sm:h-5" />
             </a>
-            <button
-              onClick={onClose}
-              className="p-2 rounded-full hover:bg-gold-500/20 text-gold-300 hover:text-white transition-colors"
-              title="Close (Esc)"
-            >
-              <X className="w-5 h-5" />
-            </button>
           </div>
         </div>
 
         {/* Image Container */}
-        <div className="flex-1 overflow-auto flex items-center justify-center p-3 sm:p-6 bg-[#140407] max-h-[80vh]">
+        <div className="flex-1 overflow-auto flex items-center justify-center p-2 sm:p-6 bg-[#140407] max-h-[80vh]">
           <img
             src={imageSrc}
             alt={title || 'Enlarged Preview'}
-            className="max-h-[74vh] max-w-full object-contain rounded-2xl shadow-2xl border border-gold-500/30"
+            className="max-h-[72vh] sm:max-h-[76vh] max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30"
           />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
