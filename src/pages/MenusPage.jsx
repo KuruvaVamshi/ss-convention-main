@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Leaf, Drumstick, Eye, MessageSquare, AlertCircle, Users, Check } from 'lucide-react';
-import { cateringMenus, extraItemCharges } from '../data/menusData';
+import { Leaf, Drumstick, Eye, MessageSquare, AlertCircle, Users } from 'lucide-react';
+import { cateringMenus } from '../data/menusData';
 import { venueData } from '../data/venueData';
 import Reveal from '../components/Reveal';
 import SectionHeader from '../components/SectionHeader';
 
-const RATE_CARD = '/assets/03_food_and_catering_menus/menu_02_standard_veg_100pax_with_policies.jpeg';
 
 const printedCards = [
   { title: 'Menu 01 • Regular Veg (Min 100 Pax)', image: '/assets/03_food_and_catering_menus/menu_01_regular_veg_100pax.jpeg', desc: 'Authentic South Indian spread with Bagara Rice, Paneer Curry, Sambar & Sweet.' },
@@ -17,13 +16,6 @@ const printedCards = [
   { title: 'Menu 05 • Standard Non-Veg (Min 100 Pax)', image: '/assets/03_food_and_catering_menus/menu_05_standard_non_veg_100pax.jpeg', desc: 'Authentic Hyderabadi Chicken Dum Biryani with Chicken Curry & Double Ka Meeta.' },
   { title: 'Menu 06 • Premium Non-Veg (Min 200 Pax)', image: '/assets/03_food_and_catering_menus/menu_06_premium_non_veg_200pax.jpeg', desc: 'Our most popular package: Chicken Dum Biryani, Mutton Curry, Rumali Roti & Gulab Jamun.' },
   { title: 'Menu 07 • Special Non-Veg Royal (Min 250 Pax)', image: '/assets/03_food_and_catering_menus/menu_07_special_non_veg_250pax.jpeg', desc: 'The ultimate royal feast: Mutton Dum Biryani, Fish Fry, Chicken Curry, Roti & Ice Cream.' },
-  { title: 'Extra Items & Add-Ons Rate Card', image: RATE_CARD, desc: 'Transparent per-plate rates for Mutton Dalcha, Boti Curry, Fish Fry & Live Counters.' },
-];
-
-const VEG_EXTRAS = ['Welcome Drinks', 'Salad', 'Veg Starter', 'Paneer Starter', 'Veg Curry', 'Paneer Curry', 'Sweet'];
-const addOnGroups = [
-  { title: 'Vegetarian extras', icon: Leaf, color: 'text-emerald-400', items: extraItemCharges.filter((e) => VEG_EXTRAS.includes(e.item)) },
-  { title: 'Non-vegetarian extras', icon: Drumstick, color: 'text-amber-300', items: extraItemCharges.filter((e) => !VEG_EXTRAS.includes(e.item)) },
 ];
 
 const pillars = [
@@ -36,11 +28,6 @@ const pillars = [
 export default function MenusPage({ onOpenLightbox }) {
   const [diet, setDiet] = useState('nonVeg');
   const [idx, setIdx] = useState(1); // Premium Non-Veg is the most popular
-  const [picked, setPicked] = useState([]);
-  const [guests, setGuests] = useState(100);
-  const togglePick = (item) => setPicked((p) => (p.includes(item) ? p.filter((x) => x !== item) : [...p, item]));
-  const perPlate = extraItemCharges.filter((e) => picked.includes(e.item)).reduce((sum, e) => sum + e.price, 0);
-
   const list = cateringMenus[diet];
   const menu = list[idx] || list[0];
 
@@ -176,90 +163,14 @@ export default function MenusPage({ onOpenLightbox }) {
         </div>
       </section>
 
-      {/* Add-ons */}
-      <section className="py-20 sm:py-28 bg-[#350710] border-b border-[#D4AF37]/25">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <SectionHeader eyebrow="Per-plate extras" title="Add-Ons & Extra Items">
-            Tick the extras you want to add to any package and see the added cost for your guest count.
-          </SectionHeader>
-
-          <Reveal>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {addOnGroups.map((group) => {
-                const GroupIcon = group.icon;
-                return (
-                  <div key={group.title} className="rounded-2xl bg-[#450B17] border border-[#D4AF37]/30 p-5 sm:p-6">
-                    <h3 className="flex items-center gap-2.5 font-cinzel text-lg font-bold mb-3 pb-3 border-b border-[#D4AF37]/25">
-                      <GroupIcon className={`w-5 h-5 ${group.color}`} /> {group.title}
-                    </h3>
-                    <ul className="space-y-1">
-                      {group.items.map((e) => {
-                        const on = picked.includes(e.item);
-                        return (
-                          <li key={e.item}>
-                            <button
-                              type="button"
-                              onClick={() => togglePick(e.item)}
-                              aria-pressed={on}
-                              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
-                                on ? 'bg-[#5A1322]' : 'hover:bg-[#4A0E1B]'
-                              }`}
-                            >
-                              <span
-                                className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition-colors ${
-                                  on ? 'bg-amber-300 border-amber-300' : 'border-[#D4AF37]/50'
-                                }`}
-                              >
-                                {on && <Check className="w-3.5 h-3.5 text-[#3D0A14]" />}
-                              </span>
-                              <span className="flex-1 text-sm text-latte">{e.item}</span>
-                              <span className="font-cinzel text-sm font-bold text-amber-300">+₹{e.price}</span>
-                            </button>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Estimate */}
-            <div className="mt-6 rounded-2xl border border-[#D4AF37]/35 bg-gradient-to-r from-[#4A0E1B] to-[#350710] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-mocha">Guests</span>
-                <div className="inline-flex items-center rounded-full border border-[#D4AF37]/40 overflow-hidden">
-                  <button type="button" aria-label="Fewer guests" onClick={() => setGuests((g) => Math.max(50, g - 50))} className="w-9 h-9 text-lg text-latte hover:bg-[#5A1322]">−</button>
-                  <span className="w-14 text-center font-cinzel font-bold tabular-nums">{guests}</span>
-                  <button type="button" aria-label="More guests" onClick={() => setGuests((g) => Math.min(1000, g + 50))} className="w-9 h-9 text-lg text-latte hover:bg-[#5A1322]">+</button>
-                </div>
-              </div>
-              <div className="text-left sm:text-right">
-                <p className="text-xs text-mocha">
-                  {picked.length ? `${picked.length} extra${picked.length > 1 ? 's' : ''} · +₹${perPlate} per plate` : 'No extras selected'}
-                </p>
-                <p className="font-cinzel text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] to-[#C5A059] tabular-nums">
-                  +₹{(perPlate * guests).toLocaleString('en-IN')}
-                </p>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => onOpenLightbox(RATE_CARD, 'Official Extra Items Rate Card')}
-              className="mt-6 mx-auto flex items-center gap-2 text-sm text-amber-300 hover:text-latte transition-colors"
-            >
-              <Eye className="w-4 h-4" /> View the official rate card
-            </button>
-
-            <p className="mt-8 flex items-start gap-3 text-sm text-mocha leading-relaxed">
-              <AlertCircle className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
-              <span>
-                <strong className="text-latte">Dining & hygiene policy:</strong> all meals are consumed on the venue premises in the dedicated banquet dining hall. Packing food to take outside is not permitted, to ensure hygiene and food safety.
-              </span>
-            </p>
-          </Reveal>
-        </div>
+      {/* Dining policy note */}
+      <section className="py-10 bg-[#350710] border-b border-[#D4AF37]/25">
+        <p className="max-w-3xl mx-auto px-4 sm:px-6 flex items-start gap-3 text-sm text-mocha leading-relaxed">
+          <AlertCircle className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+          <span>
+            <strong className="text-latte">Dining & hygiene policy:</strong> all meals are consumed on the venue premises in the dedicated banquet dining hall. Packing food to take outside is not permitted, to ensure hygiene and food safety.
+          </span>
+        </p>
       </section>
 
       {/* Printed cards strip */}
