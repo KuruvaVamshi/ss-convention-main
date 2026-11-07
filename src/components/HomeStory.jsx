@@ -15,6 +15,15 @@ export default function HomeStory() {
           decor team and uninterrupted power backup, all under one roof.
         </SectionHeader>
 
+        <div className="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-14 text-center">
+          {[['50–600', 'Guests'], ['3', 'Halls'], ['250+', 'Dining seats']].map(([n, l], i) => (
+            <Reveal key={l} delay={i * 0.1}>
+              <div className="font-cinzel text-3xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] to-[#C5A059]">{n}</div>
+              <div className="mt-1 text-[11px] sm:text-xs tracking-[0.25em] uppercase text-mocha">{l}</div>
+            </Reveal>
+          ))}
+        </div>
+
         <dl className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#D4AF37]/20 rounded-2xl overflow-hidden border border-[#D4AF37]/25">
           {venueData.highlights.map((item, i) => {
             const Icon = icons[item.icon] || Sparkles;

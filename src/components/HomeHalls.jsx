@@ -16,9 +16,9 @@ export default function HomeHalls() {
           Choose the space that fits your guest list and occasion.
         </SectionHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {halls.map((hall, i) => (
-            <Reveal key={hall.id} delay={i * 0.12}>
+            <Reveal key={hall.id} delay={i * 0.12} className={i === 0 ? 'md:col-span-2 lg:col-span-1' : ''}>
               <Link
                 to={`/halls/${hall.id}`}
                 className="group block rounded-2xl overflow-hidden bg-[#450B17] border border-[#D4AF37]/30 hover:border-amber-400/80 shadow-xl hover:shadow-[0_14px_40px_rgba(212,175,55,0.18)] transition-all duration-500 hover:-translate-y-1"
@@ -32,7 +32,7 @@ export default function HomeHalls() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#2A0610] via-transparent to-transparent opacity-80" />
                   <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-sm border border-[#D4AF37]/40 text-xs text-amber-200">
-                    <Users className="w-3.5 h-3.5" /> {hall.capacity} guests
+                    <Users className="w-3.5 h-3.5" /> {hall.capacity} guests{i === 0 ? ' · Flagship' : ''}
                   </span>
                 </div>
                 <div className="p-6">

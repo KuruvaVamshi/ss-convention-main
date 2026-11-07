@@ -450,7 +450,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               key={item.id}
               src={item.src}
               alt={item.title}
-              className={`absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.92] contrast-[1.08] saturate-[1.12] transition-opacity duration-1000 ease-in-out ${
+              style={{ transform: activeSlideIdx === idx ? "scale(1.07)" : "scale(1)", transition: "opacity 1000ms ease-in-out, transform 8000ms linear" }}
+              className={`absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.92] contrast-[1.08] saturate-[1.12] transition-opacity duration-1000 ease-in-out will-change-transform ${
                 activeSlideIdx === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             />
@@ -462,168 +463,97 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           <div className="absolute bottom-0 left-0 right-0 h-56 sm:h-64 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10" />
         </div>
 
-        {/* ========================================================
-            UPPER TIER: SACRED VEDIC INSCRIPTION & IMPERIAL BRAND
-            ======================================================== */}
-        <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pt-2">
-          
-          {/* Sacred Telugu Inscription */}
-          <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-1 rounded-full bg-black/55 backdrop-blur-md border border-[#D4AF37]/50 shadow-[0_4px_20px_rgba(0,0,0,0.8)] mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300/50" />
-            <span className="font-serif text-xs sm:text-sm md:text-base font-bold tracking-[0.24em] text-[#FFF6D1] drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
-              || శ్రీరస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
-            </span>
-            <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300/50" />
-          </div>
+        {/* UPPER TIER: BRAND */}
+        <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pt-4">
+          <p className="font-serif text-xs sm:text-sm tracking-[0.3em] text-[#FFF6D1]/90 mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            || శ్రీరస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
+          </p>
 
-          {/* Grand Imperial Title */}
-          <h1 className="font-cinzel text-4xl sm:text-6xl md:text-7xl font-black tracking-[0.14em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF0] via-[#FFDF73] to-[#B38728] drop-shadow-[0_4px_20px_rgba(0,0,0,1)] leading-[1.05] mb-1">
+          <h1 className="font-cinzel text-4xl sm:text-6xl md:text-7xl font-bold tracking-[0.12em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] via-[#EED9A6] to-[#C5A059] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] leading-[1.05]">
             S.S CONVENTION
           </h1>
 
-          {/* Regal Location */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-1.5">
-            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent to-[#D4AF37]/70" />
-            <span className="text-[10px] sm:text-xs font-cinzel font-bold tracking-[0.32em] uppercase text-amber-200 drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
-              ROYAL WEDDING & BANQUET PALACE • MEERPET, HYDERABAD
+          <div className="flex items-center justify-center gap-3 mt-4">
+            <span className="h-px w-10 sm:w-20 bg-gradient-to-r from-transparent to-[#C5A059]/80" />
+            <span className="text-[11px] sm:text-sm font-cinzel tracking-[0.28em] uppercase text-latte drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+              Wedding & Banquet Halls · Meerpet, Hyderabad
             </span>
-            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent to-[#D4AF37]/70" />
+            <span className="h-px w-10 sm:w-20 bg-gradient-to-l from-transparent to-[#C5A059]/80" />
           </div>
 
-          {/* Heritage Motto */}
-          <p className="font-serif italic text-sm sm:text-lg text-[#FFF4BD] font-normal tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
-            {lang === 'te' 
-              ? '“మీ జీవితంలోని అత్యంత మధురమైన వేడుకలకు రాజభవనం వంటి వేదిక”' 
+          <p className="mt-4 font-serif italic text-sm sm:text-lg text-mocha tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            {lang === 'te'
+              ? '“మీ జీవితంలోని అత్యంత మధురమైన వేడుకలకు రాజభవనం వంటి వేదిక”'
               : '“Where Grand Traditions Meet Timeless Luxury”'}
           </p>
         </div>
 
-        {/* ========================================================
-            CENTER VIEWPORT: COMPLETELY OPEN FOR CHANDELIERS & STAGE
-            ======================================================== */}
         <div className="flex-1 min-h-[120px] sm:min-h-[200px] pointer-events-none" />
 
-        {/* ========================================================
-            LOWER TIER: CREDENTIALS, BOOKING BUTTONS & AUTO-SLIDER
-            ======================================================== */}
-        <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pb-2 w-full">
-          
-          {/* Slender Credentials Pill */}
-          <div className="inline-flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1 px-4 sm:px-6 py-1.5 rounded-full bg-black/65 backdrop-blur-md border border-[#D4AF37]/50 text-[11px] sm:text-xs font-medium text-amber-100 shadow-[0_4px_20px_rgba(0,0,0,0.8)] mb-3">
-            <span className="flex items-center gap-1.5 text-amber-200">
-              <Users className="w-3.5 h-3.5 text-amber-400" />
-              600+ Pax
-            </span>
-            <span className="text-amber-400/40">•</span>
-            <span className="flex items-center gap-1.5 text-amber-200">
-              <Snowflake className="w-3.5 h-3.5 text-amber-400" />
-              100% Central A/C
-            </span>
-            <span className="text-amber-400/40">•</span>
-            <span className="flex items-center gap-1.5 text-amber-300 font-bold">
-              <UtensilsCrossed className="w-3.5 h-3.5 text-amber-300" />
-              Dedicated 250+ Banquet Dining
-            </span>
-            <span className="text-amber-400/40 hidden sm:inline">•</span>
-            <span className="hidden sm:flex items-center gap-1.5 text-amber-200">
-              <Building className="w-3.5 h-3.5 text-amber-400" />
-              3 Halls
-            </span>
-            <span className="text-amber-400/40 hidden sm:inline">•</span>
-            <span className="hidden sm:flex items-center gap-1.5 text-amber-200">
-              <Car className="w-3.5 h-3.5 text-amber-400" />
-              Parking
-            </span>
-          </div>
+        {/* LOWER TIER: FACTS, ACTIONS, SLIDE CONTROLS */}
+        <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pb-3 w-full">
+          <ul className="flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-8 gap-y-1 text-xs sm:text-sm text-latte mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            {[
+              [Users, '50–600 guests'],
+              [Snowflake, 'Central A/C'],
+              [UtensilsCrossed, '250+ seat dining hall'],
+              [Building, '3 halls'],
+            ].map(([Icon, text], i) => (
+              <li key={text} className={`flex items-center gap-2 ${i > 2 ? 'hidden sm:flex' : ''}`}>
+                <Icon className="w-4 h-4 text-amber-300" />
+                {text}
+              </li>
+            ))}
+          </ul>
 
-          {/* Primary Action Buttons */}
-          <div className="flex items-center justify-center gap-2.5 sm:gap-3 mb-3">
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#B8860B] via-[#FFE57F] to-[#D4AF37] hover:from-[#FFE57F] hover:to-[#B8860B] text-[#24040A] font-cinzel font-black text-xs sm:text-sm tracking-[0.16em] uppercase shadow-[0_4px_30px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-300 cursor-pointer border border-[#FFF9E6]"
-            >
-              <CalendarCheck className="w-4 h-4 text-[#24040A]" />
-              <span>{lang === 'te' ? 'హాల్ విజిట్ బుక్ చేయండి' : 'Book Hall Visit / Check Dates'}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#24040A]" />
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+            <Link to="/contact" className="btn-gold">
+              <CalendarCheck className="w-4 h-4" />
+              <span>{lang === 'te' ? 'హాల్ విజిట్ బుక్ చేయండి' : 'Book a hall visit'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
-            <button
-              onClick={() => handleSelectVideo(venueVideos[0])}
-              className="inline-flex items-center gap-2 px-5 py-2.5 sm:py-3 rounded-full bg-[#200308]/85 hover:bg-[#3D0A14] border-2 border-[#D4AF37]/70 text-[#FFF4BD] font-cinzel font-bold text-xs sm:text-sm tracking-wider uppercase backdrop-blur-md transition-all shadow-md hover:scale-105 cursor-pointer"
-            >
-              <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
-              <span>4K Video Tour</span>
+            <button onClick={() => handleSelectVideo(venueVideos[0])} className="btn-outline-gold backdrop-blur-md bg-black/30">
+              <Play className="w-3.5 h-3.5 fill-current" />
+              <span>Video tour</span>
             </button>
 
             <button
               onClick={toggleTempleAudio}
-              className={`p-2.5 sm:p-3 rounded-full border-2 backdrop-blur-md transition-all shadow-lg hover:scale-105 cursor-pointer ${
+              aria-label={isTempleAudioActive ? 'Mute palace ambience' : 'Play palace ambience'}
+              className={`w-11 h-11 inline-flex items-center justify-center rounded-full border backdrop-blur-md transition-all cursor-pointer ${
                 isTempleAudioActive
-                  ? 'bg-amber-400 text-[#3D0A14] border-amber-300 shadow-amber-400/40 animate-pulse'
-                  : 'bg-[#200308]/85 text-amber-200 border-[#D4AF37]/70 hover:bg-[#4D0D19]'
+                  ? 'bg-amber-400 text-[#3D0A14] border-amber-300 animate-pulse'
+                  : 'bg-black/30 text-latte border-[#C5A059]/50 hover:border-[#C5A059]'
               }`}
-              title={isTempleAudioActive ? "Mute Palace Tanpura Aura" : "Play Auspicious Palace Tanpura Aura"}
             >
               <Music2 className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Minimal 5-Second Auto-Rotating Venue Ticker */}
-          <div className="inline-flex items-center gap-2 sm:gap-3 px-3.5 sm:px-4 py-1.5 rounded-full bg-black/75 border border-[#D4AF37]/50 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.85)] mb-1">
-            <button
-              onClick={handlePrevSlide}
-              className="w-5 h-5 rounded-full flex items-center justify-center text-amber-300 hover:text-white transition-colors text-sm font-bold cursor-pointer"
-              title="Previous View"
-            >
-              ‹
-            </button>
-
-            <span className="font-cinzel text-[11px] sm:text-xs font-bold text-amber-200 tracking-wider min-w-[170px] sm:min-w-[210px] text-center">
-              ✦ 0{activeSlideIdx + 1}/0{banquetShowcaseOptions.length} : {currentSlide.shortTitle}
-            </span>
-
-            <div className="flex items-center gap-1.5">
+          <div className="flex items-center justify-center gap-4">
+            <button onClick={handlePrevSlide} aria-label="Previous view" className="text-latte/80 hover:text-amber-300 transition-colors text-lg leading-none cursor-pointer">‹</button>
+            <div className="flex items-center gap-2">
               {banquetShowcaseOptions.map((item, idx) => (
                 <button
                   key={item.id}
                   onClick={() => handleSelectSlide(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
-                    activeSlideIdx === idx
-                      ? 'w-5 sm:w-6 bg-gradient-to-r from-amber-300 to-amber-500 shadow-[0_0_8px_#D4AF37]'
-                      : 'w-1.5 sm:w-2 bg-white/30 hover:bg-white/60'
-                  }`}
+                  aria-label={item.shortTitle}
                   title={item.shortTitle}
+                  className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${
+                    activeSlideIdx === idx ? 'w-8 bg-amber-300' : 'w-3 bg-white/35 hover:bg-white/60'
+                  }`}
                 />
               ))}
             </div>
-
-            <button
-              onClick={handleNextSlide}
-              className="w-5 h-5 rounded-full flex items-center justify-center text-amber-300 hover:text-white transition-colors text-sm font-bold cursor-pointer"
-              title="Next View"
-            >
-              ›
-            </button>
-
-            <button
-              onClick={() => setIsAutoPlayActive(!isAutoPlayActive)}
-              className="text-[10px] text-amber-300/80 hover:text-amber-200 px-1 font-mono transition-colors cursor-pointer"
-              title={isAutoPlayActive ? "Pause" : "Play"}
-            >
-              {isAutoPlayActive ? '❚❚' : '▶'}
-            </button>
+            <button onClick={handleNextSlide} aria-label="Next view" className="text-latte/80 hover:text-amber-300 transition-colors text-lg leading-none cursor-pointer">›</button>
+            <span className="hidden sm:inline text-xs font-cinzel tracking-widest text-mocha min-w-[140px] text-left">{currentSlide.shortTitle}</span>
           </div>
 
-          {/* Discreet Scroll Prompt */}
-          <div>
-            <a
-              href="#interactive-console"
-              className="inline-flex items-center gap-1 text-amber-200/70 hover:text-amber-300 transition-colors text-[9px] sm:text-[10px] tracking-[0.2em] uppercase font-cinzel group"
-            >
-              <span>{lang === 'te' ? 'ఇంటరాక్టివ్ స్పెక్స్ ↓' : 'Explore Console & Specs'}</span>
-              <ChevronDown className="w-3 h-3 animate-bounce text-amber-400" />
-            </a>
-          </div>
+          <a href="#interactive-console" aria-label="Scroll to explore" className="mt-4 inline-flex flex-col items-center text-amber-300/80 hover:text-amber-300">
+            <span className="block w-px h-8 bg-gradient-to-b from-amber-300/0 to-amber-300 animate-pulse" />
+            <ChevronDown className="w-4 h-4 -mt-1" />
+          </a>
         </div>
       </section>
 
