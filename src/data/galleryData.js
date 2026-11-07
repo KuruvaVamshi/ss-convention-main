@@ -405,20 +405,68 @@ export const galleryItems = [
 export const videoTours = [
   {
     id: "tour-1",
-    title: "Grand Convention Hall Walkthrough Tour",
-    description: "Step inside the air-conditioned main hall, showcasing the soaring false ceiling, crystal chandeliers, and center aisle.",
-    src: "/assets/11_event_videos/video_highlight_03_hall_interior_tour.mp4"
+    title: "Grand Marriage Hall & Aisle Walkthrough",
+    label: "Grand Hall",
+    category: "Main Hall",
+    description: "Step inside Hall Vasishta, our flagship air-conditioned marriage hall featuring double-tier golden crystal chandeliers and the grand 70-foot ceremonial bridal aisle.",
+    src: "/assets/11_event_videos/video_highlight_01_walkthrough.mp4",
+    thumbnail: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
+    duration: "0:30",
+    badge: "Flagship Venue"
   },
   {
     id: "tour-2",
-    title: "Stage Lighting & Ambience Experience",
-    description: "Experience the vibrant theatrical par lights and illuminated floral stage setups in motion.",
-    src: "/assets/11_event_videos/video_highlight_04_stage_lighting_walkthrough.mp4"
+    title: "Chandelier Ceiling & Stage Perspective",
+    label: "Chandeliers & Stage",
+    category: "Architecture",
+    description: "An architectural perspective highlighting the soaring 16-ft acoustic false ceiling, opulent golden crystal chandeliers, and unobstructed stage sightlines.",
+    src: "/assets/11_event_videos/video_highlight_03_hall_interior_tour.mp4",
+    thumbnail: "/assets/06_main_hall_seating/main_hall_seating_chandelier_perspective.jpeg",
+    duration: "0:45",
+    badge: "Interior Tour"
   },
   {
     id: "tour-3",
-    title: "Celebration & Banquet Live Atmosphere",
-    description: "Feel the real celebratory joy and energy inside SS Convention during live celebrations.",
-    src: "/assets/11_event_videos/video_highlight_06_banquet_celebration.mp4"
+    title: "Theatrical Stage Illumination & Light Show",
+    label: "Stage Lighting",
+    category: "Lighting & Decor",
+    description: "Experience dynamic RGB theatrical wash fixtures, focused follow-spots, and warm ambient backdrops that bring evening reception and sangeet stages to life.",
+    src: "/assets/11_event_videos/video_highlight_04_stage_lighting_walkthrough.mp4",
+    thumbnail: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_candle_rods_wide.jpeg",
+    duration: "0:40",
+    badge: "Theatrical Lighting"
+  },
+  {
+    id: "tour-4",
+    title: "Grand Reception Foyer & Welcoming Lobby",
+    label: "Reception Foyer",
+    category: "Entrance & Lobby",
+    description: "A walk through the auspicious Buddha fountain entrance, illuminated reception registration desk, and executive air-conditioned corridors.",
+    src: "/assets/11_event_videos/video_highlight_05_reception_tour.mp4",
+    thumbnail: "/assets/04_entrance_and_lobby/entrance_grand_double_doors_view.jpeg",
+    duration: "0:25",
+    badge: "Guest Welcome"
+  },
+  {
+    id: "tour-5",
+    title: "Royal Banquet Dining Level (Swarna Bhojanam)",
+    label: "Banquet Dining",
+    category: "Dining Floor",
+    description: "The dedicated 3,500 sq.ft banquet dining level in celebration mode, with 250+ concurrent round-table seats dressed in maroon and gold damask linens.",
+    src: "/assets/11_event_videos/video_highlight_06_banquet_celebration.mp4",
+    thumbnail: "/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg",
+    duration: "0:50",
+    badge: "Dining Level"
+  },
+  {
+    id: "tour-6",
+    title: "Auspicious Wedding Muhurtham Ambience",
+    label: "Event Ambience",
+    category: "Sacred Rituals",
+    description: "Feel the sacred joy and celebratory acoustic energy of live Vedic rituals, wedding shehnai melodies, and family blessings recorded inside SS Convention.",
+    src: "/assets/11_event_videos/video_highlight_02_event_ambience.mp4",
+    thumbnail: "/assets/08_wedding_mandap_and_rituals/wedding_rituals_groom_priests_balaji_mandap.jpeg",
+    duration: "0:20",
+    badge: "Live Ambience"
   }
 ];

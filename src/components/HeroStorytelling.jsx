@@ -161,52 +161,6 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   const currentMenu = currentMenus[selectedMenuTier] || currentMenus[0];
   const currentMenuDishes = currentMenu.sections?.flatMap(s => s.items) || [];
 
-  // 6 Real Venue Video Clips for Instant Walkthrough Navigation
-  const venueVideos = [
-    {
-      id: 'v1',
-      title: '01 Grand Walkthrough',
-      label: 'Grand Hall',
-      src: '/assets/11_event_videos/video_highlight_01_walkthrough.mp4',
-      caption: 'Full Central A/C Marriage Hall & Aisle'
-    },
-    {
-      id: 'v2',
-      title: '02 Interior Architecture',
-      label: 'Chandeliers & Stage',
-      src: '/assets/11_event_videos/video_highlight_03_hall_interior_tour.mp4',
-      caption: 'Crystal Chandeliers & Stage Architecture'
-    },
-    {
-      id: 'v3',
-      title: '03 Theatrical Stage Lighting',
-      label: 'Stage Lighting',
-      src: '/assets/11_event_videos/video_highlight_04_stage_lighting_walkthrough.mp4',
-      caption: 'Theatrical Stage Lighting & Backdrop'
-    },
-    {
-      id: 'v4',
-      title: '04 Welcoming Foyer Tour',
-      label: 'Reception Foyer',
-      src: '/assets/11_event_videos/video_highlight_05_reception_tour.mp4',
-      caption: 'Grand Reception & Guest Welcoming Lobby'
-    },
-    {
-      id: 'v5',
-      title: '05 Banquet Dining Celebration',
-      label: 'Dining & Feasts',
-      src: '/assets/11_event_videos/video_highlight_06_banquet_celebration.mp4',
-      caption: 'Dedicated 250+ Seating Dining Floor'
-    },
-    {
-      id: 'v6',
-      title: '06 Auspicious Celebration Ambience',
-      label: 'Event Ambience',
-      src: '/assets/11_event_videos/video_highlight_02_event_ambience.mp4',
-      caption: 'Joyous Wedding Muhurtham Ambience'
-    }
-  ];
-
   // Sound toggle handler for video
   const toggleSound = () => {
     if (videoRef.current) {
@@ -224,21 +178,6 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
         videoRef.current.pause();
         setIsPlayingVideo(false);
       }
-    }
-  };
-
-  // Switch video clip
-  const handleSelectVideo = (v) => {
-    setCurrentMedia({
-      type: 'video',
-      src: v.src,
-      title: v.title,
-      caption: v.caption
-    });
-    setIsPlayingVideo(true);
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {});
     }
   };
 
@@ -553,11 +492,6 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
-            <button onClick={() => { handleSelectVideo(venueVideos[0]); document.getElementById('interactive-console')?.scrollIntoView({ behavior: 'smooth' }); }} className="btn-outline-gold backdrop-blur-md bg-black/30">
-              <Play className="w-3.5 h-3.5 fill-current" />
-              <span>Video tour</span>
-            </button>
-
             <button
               onClick={toggleTempleAudio}
               aria-label={isTempleAudioActive ? 'Mute palace ambience' : 'Play palace ambience'}
@@ -676,25 +610,6 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 <h3 className="font-cinzel text-base sm:text-lg font-bold text-latte drop-shadow line-clamp-1">{currentMedia.title}</h3>
                 <p className="text-xs text-mocha line-clamp-1">{currentMedia.caption}</p>
               </div>
-            </div>
-
-            {/* Video tours */}
-            <div className="mt-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
-              <span className="text-[11px] tracking-[0.25em] uppercase text-amber-300 whitespace-nowrap pr-1">Video tours</span>
-              {venueVideos.map((v) => {
-                const on = currentMedia.src === v.src && currentMedia.type === 'video';
-                return (
-                  <button
-                    key={v.id}
-                    onClick={() => handleSelectVideo(v)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${
-                      on ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-[#D4AF37]/35 text-mocha hover:text-latte hover:border-[#D4AF37]/70'
-                    }`}
-                  >
-                    <Play className="w-3 h-3 fill-current" /> {v.label}
-                  </button>
-                );
-              })}
             </div>
           </div>
 

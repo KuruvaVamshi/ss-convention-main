@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Maximize2, Phone, Calendar } from 'lucide-react';
+import { Maximize2, Phone, Calendar, Film } from 'lucide-react';
 import { galleryItems, videoTours } from '../data/galleryData';
 import VideoReelsStory from '../components/VideoReelsStory';
 import Reveal from '../components/Reveal';
@@ -115,6 +115,23 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
                 </button>
               );
             })}
+
+            <div className="h-5 w-px bg-[#D4AF37]/30 mx-1" />
+
+            <button
+              type="button"
+              onClick={() => {
+                document.getElementById('videos')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="relative flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-cinzel tracking-wider whitespace-nowrap text-amber-300 hover:text-white border border-[#D4AF37]/40 hover:border-amber-400 bg-black/40 hover:bg-[#3D0A14] transition-all cursor-pointer shadow-sm"
+              title="Jump to video walkthrough tours"
+            >
+              <Film className="w-3.5 h-3.5 text-amber-400" />
+              <span>Video Tours</span>
+              <span className="relative text-[10px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
+                {videoTours.length}
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -161,7 +178,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
       </section>
 
       {/* Video tours */}
-      <VideoReelsStory lang={lang} />
+      <VideoReelsStory lang={lang} onOpenLightbox={onOpenLightbox} />
 
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-center border-t border-[#D4AF37]/30">

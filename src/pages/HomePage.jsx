@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarCheck, Phone } from 'lucide-react';
 import HeroStorytelling from '../components/HeroStorytelling';
@@ -9,8 +9,6 @@ import PhotoScroll3D from '../components/PhotoScroll3D';
 import Reveal from '../components/Reveal';
 import { venueData } from '../data/venueData';
 
-const VideoReelsStory = lazy(() => import('../components/VideoReelsStory'));
-
 export default function HomePage({ onOpenLightbox, lang }) {
   return (
     <div className="bg-[#450B17] text-latte min-h-screen">
@@ -19,10 +17,6 @@ export default function HomePage({ onOpenLightbox, lang }) {
       <HomeHalls />
       <PhotoScroll3D onOpenLightbox={onOpenLightbox} />
       <ExperienceStrip />
-
-      <Suspense fallback={<div className="h-96 bg-[#3D0A14]" />}>
-        <VideoReelsStory lang={lang} />
-      </Suspense>
 
       <section className="py-24 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] border-t border-[#D4AF37]/35">
         <Reveal className="max-w-5xl mx-auto px-4 text-center">

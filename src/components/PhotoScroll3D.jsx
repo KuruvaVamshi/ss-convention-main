@@ -1,4 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Images } from 'lucide-react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { galleryItems } from '../data/galleryData';
 import SectionHeader from './SectionHeader';
@@ -42,10 +44,21 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
   return (
     <section ref={ref} className={`relative bg-[#2A060E] border-t border-[#D4AF37]/25 ${reduce ? '' : 'h-[320vh]'}`}>
       <div className={`${reduce ? 'py-20' : 'sticky top-0 h-screen'} overflow-hidden flex flex-col justify-center`}>
-        <div className="px-4 pt-20 sm:pt-16">
+        <div className="px-4 pt-16 sm:pt-12 text-center">
           <SectionHeader compact eyebrow="Moments of Grandeur" title="Walk Through the Palace">
             Scroll to turn the gallery. Tap any photo to view it full screen.
           </SectionHeader>
+          <div className="mt-3.5 flex justify-center">
+            <Link
+              to="/gallery"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[#D4AF37]/50 hover:border-amber-300 bg-black/40 hover:bg-[#3D0A14] text-amber-200 hover:text-white font-cinzel text-xs font-bold tracking-[0.16em] uppercase shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 group"
+              title="Explore all venue photos and videos"
+            >
+              <Images className="w-3.5 h-3.5 text-amber-400" />
+              <span>Explore Full Gallery</span>
+              <ArrowRight className="w-3.5 h-3.5 text-amber-400 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </div>
 
         <div className="relative" style={{ perspective: '1100px', height: cardH + 140 }}>

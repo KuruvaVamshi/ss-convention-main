@@ -98,11 +98,21 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev
               </button>
             </>
           )}
-          <img
-            src={imageSrc}
-            alt={title || 'Enlarged Preview'}
-            className="max-h-[72vh] sm:max-h-[76vh] max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30"
-          />
+          {imageSrc.endsWith('.mp4') ? (
+            <video
+              src={imageSrc}
+              controls
+              autoPlay
+              playsInline
+              className="max-h-[72vh] sm:max-h-[76vh] max-w-full rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30 bg-black"
+            />
+          ) : (
+            <img
+              src={imageSrc}
+              alt={title || 'Enlarged Preview'}
+              className="max-h-[72vh] sm:max-h-[76vh] max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30"
+            />
+          )}
         </div>
       </div>
     </div>,
