@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { venueData } from '../data/venueData';
-import { CalendarCheck, MessageSquare, ArrowUp, ArrowUpRight } from 'lucide-react';
+import { MapPin, Phone, Heart, CalendarCheck, MessageSquare, ArrowUp, Clock } from 'lucide-react';
 
 const pages = [
   ['/', 'Home'],
@@ -15,30 +15,36 @@ const pages = [
 ];
 
 const halls = [
-  ['/halls/hall-vasishta', 'Hall Vasishta'],
-  ['/halls/hall-agasthya', 'Hall Agasthya'],
-  ['/halls/hall-koundinya', 'Hall Koundinya'],
-  ['/halls/dining-hall', 'Banquet Dining Hall'],
+  ['/halls/hall-vasishta', 'Hall Vasishta', '300–600'],
+  ['/halls/hall-agasthya', 'Hall Agasthya', '200–350'],
+  ['/halls/hall-koundinya', 'Hall Koundinya', '100–200'],
+  ['/halls/dining-hall', 'Banquet Dining', '250+ seats'],
 ];
 
-const heading = 'text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-5';
-const link = 'inline-flex items-center gap-1 text-mocha hover:text-latte transition-colors';
+const heading = 'font-cinzel text-xs font-bold tracking-[0.28em] uppercase text-[#8A6B32] mb-5';
+const link = 'text-[#5F1524] hover:text-[#B8860B] transition-colors';
 
+// A light footer: cosmic latte background with maroon text, to close the dark pages with contrast.
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[#140205] border-t border-[#C5A059]/25 text-latte">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-          {/* Statement + actions */}
-          <div className="lg:col-span-5">
-            <p className="font-cinzel text-2xl sm:text-3xl lg:text-4xl font-bold leading-snug tracking-wide">
-              We make your celebrations{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059]">unforgettable.</span>
+    <footer className="relative bg-latte text-[#450B17] border-t-4 border-[#C5A059]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+          {/* Brand */}
+          <div className="lg:col-span-4">
+            <div className="flex items-center gap-3">
+              <span className="w-11 h-11 rounded-full border border-[#8A6B32]/50 flex items-center justify-center bg-white/60">
+                <Heart className="w-5 h-5 text-[#B8860B] fill-[#C5A059]/30" />
+              </span>
+              <div>
+                <p className="font-cinzel text-xl font-bold tracking-[0.14em]">S.S CONVENTION</p>
+                <p className="text-[11px] tracking-[0.25em] uppercase text-[#8A6B32] font-semibold">Wedding & Banquet Halls</p>
+              </div>
+            </div>
+            <p className="mt-5 text-sm leading-relaxed text-[#5F1524] max-w-sm">
+              We make your celebrations unforgettable: weddings, receptions, birthdays, cradle ceremonies and grand banquets in Meerpet, Hyderabad.
             </p>
-            <p className="mt-4 text-mocha max-w-md leading-relaxed">
-              Weddings, receptions, birthdays, cradle ceremonies and grand banquets in Meerpet, Hyderabad.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link to="/contact" className="btn-gold">
                 <CalendarCheck className="w-4 h-4" /> Book a visit
               </Link>
@@ -46,77 +52,70 @@ export default function Footer() {
                 href={`https://wa.me/${venueData.whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-outline-gold"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#450B17]/40 text-[#450B17] font-cinzel text-xs font-bold tracking-[0.18em] uppercase hover:bg-[#450B17] hover:text-latte transition-colors"
               >
                 <MessageSquare className="w-4 h-4" /> WhatsApp
               </a>
             </div>
           </div>
 
-          {/* Link columns */}
-          <nav aria-label="Pages" className="lg:col-span-2 lg:col-start-7">
+          <nav aria-label="Pages" className="lg:col-span-2 lg:col-start-6">
             <h4 className={heading}>Pages</h4>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-2.5 text-sm">
               {pages.map(([to, label]) => (
                 <li key={to}><Link to={to} className={link}>{label}</Link></li>
               ))}
             </ul>
           </nav>
 
-          <div className="lg:col-span-2">
-            <h4 className={heading}>Halls</h4>
-            <ul className="space-y-3 text-sm">
-              {halls.map(([to, label]) => (
-                <li key={to}><Link to={to} className={link}>{label}</Link></li>
+          <div className="lg:col-span-3">
+            <h4 className={heading}>Our halls</h4>
+            <ul className="space-y-2.5 text-sm">
+              {halls.map(([to, name, size]) => (
+                <li key={to}>
+                  <Link to={to} className={`group flex items-baseline justify-between gap-4 max-w-[15rem] ${link}`}>
+                    <span>{name}</span>
+                    <span className="text-xs text-[#8A6B32]">{size}</span>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
 
-          <div className="lg:col-span-2">
-            <h4 className={heading}>Contact</h4>
-            <ul className="space-y-3 text-sm text-mocha">
-              {venueData.phones.map((p) => (
-                <li key={p.raw}>
-                  <a href={`tel:${p.raw}`} className="font-semibold text-latte hover:text-amber-300 transition-colors">{p.display}</a>
-                </li>
-              ))}
-              <li className="leading-relaxed">
-                {venueData.address.line1}, {venueData.address.locality}, {venueData.address.city} – {venueData.address.pincode}
+          <div className="lg:col-span-3">
+            <h4 className={heading}>Visit us</h4>
+            <ul className="space-y-3.5 text-sm text-[#5F1524]">
+              <li className="flex gap-3">
+                <MapPin className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                <span>{venueData.address.line1}, {venueData.address.locality}, {venueData.address.city} – {venueData.address.pincode}</span>
               </li>
-              <li>
-                <a
-                  href={venueData.googleMapsDirectionsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-amber-300 hover:text-latte transition-colors"
-                >
-                  Directions <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
+              <li className="flex gap-3">
+                <Phone className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                <span className="flex flex-col">
+                  {venueData.phones.map((p) => (
+                    <a key={p.raw} href={`tel:${p.raw}`} className="font-semibold hover:text-[#B8860B] transition-colors">{p.display}</a>
+                  ))}
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <Clock className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                <span>Lunch slots end 3:00 PM · Dinner slots end 11:00 PM</span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 pt-6 border-t border-[#C5A059]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-mocha">
-          <p>© {new Date().getFullYear()} S.S Convention A/C · Lunch slots end 3 PM, dinner slots end 11 PM</p>
+        <div className="mt-12 pt-6 border-t border-[#450B17]/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#5F1524]">
+          <p>© {new Date().getFullYear()} S.S Convention A/C. All rights reserved.</p>
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="inline-flex items-center gap-2 hover:text-amber-300 transition-colors"
+            className="inline-flex items-center gap-2 hover:text-[#B8860B] transition-colors"
           >
             Back to top <ArrowUp className="w-4 h-4" />
           </button>
         </div>
       </div>
-
-      {/* Oversized wordmark */}
-      <p
-        aria-hidden="true"
-        className="mt-4 select-none text-center font-cinzel font-bold leading-none tracking-[0.06em] whitespace-nowrap text-[13.5vw] sm:text-[11vw] text-transparent bg-clip-text bg-gradient-to-b from-[#C5A059]/35 to-transparent translate-y-[18%]"
-      >
-        S.S CONVENTION
-      </p>
     </footer>
   );
 }
