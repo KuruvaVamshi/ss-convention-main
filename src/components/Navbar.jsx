@@ -18,7 +18,6 @@ export default function Navbar({ lang, setLang }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopDropdown, setDesktopDropdown] = useState(null); // 'venue' | null
-  const [venuePreview, setVenuePreview] = useState(0);
   const [mobileExpanded, setMobileExpanded] = useState({ venue: false });
 
   const location = useLocation();
@@ -146,21 +145,18 @@ export default function Navbar({ lang, setLang }) {
       title: lang === 'te' ? 'మా గురించి' : 'About Us',
       desc: lang === 'te' ? 'మా చరిత్ర, సంప్రదాయం & లొకేషన్' : 'Heritage story, Buddha foyer & architecture',
       path: '/about',
-      img: '/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg',
       icon: Heart
     },
     {
       title: lang === 'te' ? 'మా హాల్స్' : 'Our Halls',
       desc: lang === 'te' ? 'వశిష్ట, అగస్త్య & కౌండిన్య హాల్స్' : 'Hall Vasishta, Agasthya, Koundinya & Dining',
       path: '/spaces',
-      img: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
       icon: Building
     },
     {
       title: lang === 'te' ? 'సదుపాయాలు' : 'Facilities',
       desc: lang === 'te' ? 'సెంట్రల్ ఎసి, విఐపి సూట్స్ & జనరేటర్' : 'Central Daikin A/C, 2 VIP suites, 100% DG backup',
       path: '/facilities',
-      img: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
       icon: Sparkles
     }
   ];
@@ -254,60 +250,68 @@ export default function Navbar({ lang, setLang }) {
                   )}
                 </button>
 
-                {/* Dropdown: full-width editorial panel, photo fades in behind the hovered link */}
+                {/* Dropdown Card (Solid Opaque Velvet Background, Centered under Trigger, Zero Hero Text Bleed) */}
                 {desktopDropdown === 'venue' && (
                   <div
-                    className="fixed left-0 right-0 top-16 sm:top-20 z-50 overflow-hidden bg-[#140205] border-y border-[#D4AF37]/30 shadow-[0_30px_60px_rgba(0,0,0,0.8)] animate-panel-drop"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[360px] sm:w-[400px] rounded-2xl bg-[#140205] border border-[#D4AF37]/50 shadow-[0_25px_60px_rgba(0,0,0,0.95)] p-2.5 z-50 animate-dropdown-slide before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']"
                     onMouseEnter={() => handleMouseEnter('venue')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    {venueSubLinks.map((item, i) => (
-                      <img
-                        key={item.path}
-                        src={item.img}
-                        alt=""
-                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-                          venuePreview === i ? 'opacity-30' : 'opacity-0'
-                        }`}
-                      />
-                    ))}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#140205] via-[#140205]/85 to-[#140205]/60" />
+                    {/* Subtle Header Tag */}
+                    <div className="px-3 pt-2 pb-1.5 flex items-center justify-between border-b border-[#D4AF37]/20 mb-1">
+                      <span className="text-[9px] font-bold text-amber-300 tracking-[0.25em] uppercase font-cinzel">
+                        THE VENUE ARCHITECTURE
+                      </span>
+                      <span className="text-[9px] text-amber-200/60 font-medium">
+                        3 Distinct Spaces
+                      </span>
+                    </div>
 
-                    <div className="relative max-w-7xl mx-auto px-8 py-10 grid grid-cols-12 gap-10 items-center">
-                      <div className="col-span-3">
-                        <p className="text-[11px] font-cinzel font-bold tracking-[0.3em] uppercase text-amber-300">The Venue</p>
-                        <p className="mt-3 font-cinzel text-2xl text-latte leading-snug">Where your celebration comes to life</p>
-                        <a
-                          href={`tel:${venueData.phones[0].raw}`}
-                          className="mt-5 inline-flex items-center gap-2 text-sm text-amber-300 hover:text-latte transition-colors"
-                        >
-                          <Phone className="w-4 h-4" />
-                          <span>{venueData.phones[0].display}</span>
-                        </a>
-                      </div>
-
-                      <div className="col-span-9 grid grid-cols-3 gap-8">
-                        {venueSubLinks.map((item, i) => (
+                    <div className="divide-y divide-[#D4AF37]/15">
+                      {venueSubLinks.map((item) => {
+                        const IconComp = item.icon;
+                        return (
                           <NavLink
                             key={item.path}
                             to={item.path}
                             onClick={closeAllMenus}
-                            onMouseEnter={() => setVenuePreview(i)}
-                            onFocus={() => setVenuePreview(i)}
-                            className="group block"
+                            className={({ isActive }) =>
+                              `group flex items-center justify-between p-3 rounded-xl transition-all duration-200 ${
+                                isActive
+                                  ? 'bg-[#29050D] border-l-4 border-amber-400 pl-3.5'
+                                  : 'hover:bg-[#25050C] hover:border-l-4 hover:border-amber-400 hover:pl-3.5 text-amber-100/90'
+                              }`
+                            }
                           >
-                            <span className="font-cinzel text-sm tracking-[0.3em] text-amber-300/80">0{i + 1}</span>
-                            <span className="mt-2 flex items-center gap-2 font-cinzel text-xl font-bold text-latte">
-                              {item.title}
-                              <ArrowRight className="w-4 h-4 text-amber-300 -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
-                            </span>
-                            <span className="mt-1 block text-sm text-mocha leading-snug">{item.desc}</span>
-                            <span className="mt-4 block h-px w-full bg-[#D4AF37]/25 overflow-hidden">
-                              <span className="block h-full w-full bg-amber-300 -translate-x-full transition-transform duration-500 ease-out group-hover:translate-x-0" />
-                            </span>
+                            <div className="flex items-center gap-3.5">
+                              <div className="w-9 h-9 rounded-xl bg-black/60 border border-[#D4AF37]/35 flex items-center justify-center text-amber-400 group-hover:border-amber-400 group-hover:bg-[#3D0A14] transition-all flex-shrink-0 shadow-inner">
+                                <IconComp className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <span className="font-cinzel text-xs sm:text-sm font-bold text-white group-hover:text-amber-200 block transition-colors">
+                                  {item.title}
+                                </span>
+                                <span className="text-[11px] text-amber-200/70 block leading-tight mt-0.5 font-normal">
+                                  {item.desc}
+                                </span>
+                              </div>
+                            </div>
+                            <ArrowRight className="w-3.5 h-3.5 text-amber-400/50 group-hover:text-amber-300 group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
                           </NavLink>
-                        ))}
-                      </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Bottom Concierge Helper Strip */}
+                    <div className="mt-1.5 pt-2 border-t border-[#D4AF37]/20 px-3 flex items-center justify-between text-[10px] text-amber-200/80">
+                      <span>Need instant date confirmation?</span>
+                      <a
+                        href={`tel:${venueData.phones[0].raw}`}
+                        className="text-amber-300 hover:text-white font-bold flex items-center gap-1 transition-colors"
+                      >
+                        <Phone className="w-3 h-3 text-amber-400" />
+                        <span>Call Venue</span>
+                      </a>
                     </div>
                   </div>
                 )}
