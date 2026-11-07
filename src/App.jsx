@@ -26,25 +26,26 @@ export default function App() {
   const [lang, setLang] = useState('en'); // 'en' or 'te'
   const [lightbox, setLightbox] = useState({
     isOpen: false,
-    imageSrc: '',
-    title: ''
+    items: [],
+    index: 0
   });
 
-  const openLightbox = (src, title) => {
-    setLightbox({
-      isOpen: true,
-      imageSrc: src,
-      title: title || 'SS Convention Hall View'
-    });
+  // items (optional): [{ src, title }] lets the viewer step through a set of photos
+  const openLightbox = (src, title, items) => {
+    const list = Array.isArray(items) && items.length ? items : [{ src, title: title || 'SS Convention Hall View' }];
+    const found = list.findIndex((i) => i.src === src);
+    setLightbox({ isOpen: true, items: list, index: found >= 0 ? found : 0 });
   };
 
-  const closeLightbox = () => {
-    setLightbox({
-      isOpen: false,
-      imageSrc: '',
-      title: ''
-    });
-  };
+  const closeLightbox = () => setLightbox({ isOpen: false, items: [], index: 0 });
+
+  const stepLightbox = (delta) =>
+    setLightbox((prev) => ({
+      ...prev,
+      index: (prev.index + delta + prev.items.length) % prev.items.length
+    }));
+
+  const current = lightbox.items[lightbox.index];
 
   return (
     <BrowserRouter>
@@ -146,8 +147,12 @@ export default function App() {
         {/* High-Resolution Zoom Lightbox Modal */}
         <LightboxModal
           isOpen={lightbox.isOpen}
-          imageSrc={lightbox.imageSrc}
-          title={lightbox.title}
+          imageSrc={current?.src}
+          title={current?.title}
+          index={lightbox.index}
+          total={lightbox.items.length}
+          onPrev={() => stepLightbox(-1)}
+          onNext={() => stepLightbox(1)}
           onClose={closeLightbox}
         />
       </div>

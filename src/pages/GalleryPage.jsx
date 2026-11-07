@@ -49,6 +49,8 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
   }, []);
 
   const items = active === 'all' ? galleryItems : galleryItems.filter((g) => g.category === active);
+  // The photos currently shown, so the viewer can step left and right through them
+  const lightboxItems = items.map((g) => ({ src: g.image, title: g.title }));
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
@@ -118,7 +120,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => onOpenLightbox(item.image, item.title)}
+                  onClick={() => onOpenLightbox(item.image, item.title, lightboxItems)}
                   aria-label={`View photo: ${item.title}`}
                   className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl border border-[#D4AF37]/25 hover:border-amber-400/70 bg-[#350710] text-left cursor-pointer transition-colors duration-300"
                 >

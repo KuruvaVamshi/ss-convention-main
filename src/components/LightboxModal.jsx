@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, ZoomIn } from 'lucide-react';
+import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function LightboxModal({ isOpen, imageSrc, title, onClose }) {
+export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev, onNext, index = 0, total = 1 }) {
+  const touchStartX = React.useRef(null);
+  const multiple = total > 1;
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
+      if (multiple && e.key === 'ArrowLeft') onPrev?.();
+      if (multiple && e.key === 'ArrowRight') onNext?.();
     };
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -15,7 +19,7 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose }) {
       document.body.style.overflow = 'auto';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, onPrev, onNext, multiple]);
 
   if (!isOpen || !imageSrc) return null;
   if (typeof document === 'undefined') return null;
@@ -49,6 +53,9 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose }) {
           <h3 className="font-cinzel text-xs sm:text-base font-bold text-white truncate pr-2">
             {title || 'SS Convention Hall Preview'}
           </h3>
+          {multiple && (
+            <span className="text-xs text-amber-200 whitespace-nowrap tabular-nums mr-2">{index + 1} / {total}</span>
+          )}
           <div className="flex items-center gap-2">
             <a
               href={imageSrc}
@@ -63,7 +70,34 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose }) {
         </div>
 
         {/* Image Container */}
-        <div className="flex-1 overflow-auto flex items-center justify-center p-2 sm:p-6 bg-[#140407] max-h-[80vh]">
+        <div
+          className="relative flex-1 overflow-auto flex items-center justify-center p-2 sm:p-6 bg-[#140407] max-h-[80vh]"
+          onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={(e) => {
+            if (!multiple || touchStartX.current === null) return;
+            const dx = e.changedTouches[0].clientX - touchStartX.current;
+            if (Math.abs(dx) > 50) (dx < 0 ? onNext : onPrev)?.();
+            touchStartX.current = null;
+          }}
+        >
+          {multiple && (
+            <>
+              <button
+                onClick={onPrev}
+                aria-label="Previous photo"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/60 border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={onNext}
+                aria-label="Next photo"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/60 border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
           <img
             src={imageSrc}
             alt={title || 'Enlarged Preview'}
