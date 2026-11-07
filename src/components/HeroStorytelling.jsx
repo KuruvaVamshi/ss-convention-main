@@ -325,7 +325,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
       type: 'image',
       src: targetImage,
       title: hall.name,
-      caption: angle === 'hall' ? `${hall.name} - Chandelier Seating Overview` : `${hall.name} - Stage & Aisle Perspective`
+      caption: angle === 'hall' ? `${hall.name} - Chandelier Seating Overview` : `${hall.name} - Stage Perspective`
     });
   };
 
@@ -646,10 +646,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 }`}
               >
                 <Building className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'గ్రాండ్ కళ్యాణ మండపం (హాల్స్)' : 'Flagship Kalyana Mandapam (The 3 Halls)'}</span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#3D0A14] text-amber-300 font-extrabold">
-                  ★ Flagship
-                </span>
+                <span>{lang === 'te' ? 'గ్రాండ్ కళ్యాణ మండపం (హాల్స్)' : 'Our Halls'}</span>
               </button>
 
               <button
@@ -661,7 +658,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 }`}
               >
                 <UtensilsCrossed className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'రాయల్ బాంక్వెట్ హాల్ (250+ సీట్లు)' : 'Royal Banquet Dining (250+ Seats)'}</span>
+                <span>{lang === 'te' ? 'రాయల్ బాంక్వెట్ హాల్ (250+ సీట్లు)' : 'Banquet Dining'}</span>
               </button>
 
               <button
@@ -673,7 +670,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 }`}
               >
                 <Palette className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'స్టేజ్ డెకర్ & లైట్స్' : 'Themes & Stage Lighting'}</span>
+                <span>{lang === 'te' ? 'స్టేజ్ డెకర్ & లైట్స్' : 'Stage Themes'}</span>
               </button>
 
               <button
@@ -685,7 +682,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'విందు భోజనం మెనూలు' : 'Banquet Menus (Dum Biryani & Veg)'}</span>
+                <span>{lang === 'te' ? 'విందు భోజనం మెనూలు' : 'Menus'}</span>
               </button>
 
               <button
@@ -697,7 +694,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 }`}
               >
                 <CalendarCheck className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'ముహూర్తం & బుకింగ్' : 'Instant Date Pass & WhatsApp'}</span>
+                <span>{lang === 'te' ? 'ముహూర్తం & బుకింగ్' : 'Book a Date'}</span>
               </button>
             </div>
 
@@ -713,8 +710,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 title="Toggle Auspicious Palace Tanpura Harmony"
               >
                 <Music2 className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Palace Aura Sound</span>
-                <span className="sm:hidden">Aura</span>
+                <span className="hidden sm:inline">Sound</span>
+                
                 {isTempleAudioActive ? (
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-700 animate-ping" />
                 ) : null}
@@ -730,7 +727,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 }`}
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
-                <span>{lang === 'te' ? 'లైవ్ వీడియో థియేటర్' : 'Stream 4K Walkthrough'}</span>
+                <span>{lang === 'te' ? 'లైవ్ వీడియో థియేటర్' : 'Video Tour'}</span>
               </button>
             </div>
           </div>
@@ -771,10 +768,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
 
                 {/* Theater Overlay HUD Top Bar */}
                 <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/25 text-white text-[11px] font-semibold shadow-md">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                    <span>{currentMedia.type === 'video' ? 'Real 4K Walkthrough Video' : 'Real Venue Dimension View'}</span>
-                  </div>
+                  <span />
 
                   <div className="flex items-center gap-2">
                     {currentMedia.type === 'video' && (
@@ -832,26 +826,17 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 <div className="absolute bottom-3 left-4 right-4 z-20 flex items-end justify-between">
                   <div>
                     <h3 className="font-cinzel text-lg sm:text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-                      {currentMedia.title}
+                      {currentMedia.title.split(' – ')[0]}
                     </h3>
-                    <p className="text-xs text-amber-200 font-medium drop-shadow">
+                    <p className="text-xs text-amber-200 font-medium drop-shadow line-clamp-1">
                       {currentMedia.caption}
                     </p>
                   </div>
-
-                  {currentMedia.type === 'video' && (
-                    <span className="px-2.5 py-1 rounded-full bg-black/75 border border-[#D4AF37]/50 text-amber-300 text-[10px] font-mono font-bold shadow-md">
-                      4K Ultra HD
-                    </span>
-                  )}
                 </div>
               </div>
 
               {/* 6 Video Walkthrough Reels Selector Ribbon */}
               <div className="p-2 rounded-2xl bg-[#2A060E] border border-[#D4AF37]/40 flex items-center justify-between gap-1.5 overflow-x-auto">
-                <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider px-2 whitespace-nowrap">
-                  6 Video Tours:
-                </span>
                 {venueVideos.map((v) => {
                   const isCurrent = currentMedia.src === v.src && currentMedia.type === 'video';
                   return (
@@ -1038,14 +1023,6 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                     transition={{ duration: 0.28, ease: "easeOut" }}
                     className="space-y-4"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-amber-300 tracking-[0.22em] uppercase">
-                        Select Hall to Inspect
-                      </span>
-                      <span className="text-[11px] font-bold text-amber-200">
-                        3 Dedicated Spaces
-                      </span>
-                    </div>
 
                     {/* 3 Named Hall Buttons */}
                     <div className="grid grid-cols-3 gap-2">
@@ -1102,31 +1079,21 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                           >
                             <img src={photo.src} alt={photo.title} className="w-full h-full object-cover group-hover/hphoto:scale-108 transition-transform duration-500" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                            <div className="absolute bottom-1.5 left-2 right-2">
-                              <span className="text-[10px] font-bold text-white block line-clamp-1 drop-shadow">
-                                {photo.title}
-                              </span>
-                            </div>
+
                           </div>
                         ))}
                       </div>
 
                       <div className="pt-2 border-t border-[#D4AF37]/25 flex items-center justify-between text-xs">
-                        <span className="text-amber-300 font-semibold flex items-center gap-1">
-                          <Snowflake className="w-3.5 h-3.5 text-amber-300" />
-                          <span>Cassette A/C + Genset</span>
-                        </span>
+                        <span className="text-amber-300 font-semibold flex items-center gap-1"><Snowflake className="w-3.5 h-3.5 text-amber-300" /> A/C</span>
                         <strong className="text-amber-200 font-medium text-[11px]">
-                          Best: {currentHall.bestFor}
+                          {currentHall.bestFor}
                         </strong>
                       </div>
                     </div>
 
                     {/* Dual Interior Perspective Angle Switcher */}
                     <div className="flex items-center justify-between p-2 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35">
-                      <span className="text-xs font-bold text-amber-300">
-                        Interior Angle:
-                      </span>
                       <div className="flex gap-1.5">
                         <button
                           onClick={() => handleSelectHall(selectedHallIdx, 'hall')}
@@ -1136,7 +1103,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                               : 'bg-[#24050B] text-amber-200 hover:text-white'
                           }`}
                         >
-                          Chandelier Overview
+                          Hall
                         </button>
                         <button
                           onClick={() => handleSelectHall(selectedHallIdx, 'foyer')}
@@ -1156,13 +1123,13 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                         to={`/halls/${currentHall.id}`}
                         className="block text-center py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:scale-105"
                       >
-                        Explore {currentHall.name} Details →
+                        View hall →
                       </Link>
                       <Link
                         to="/spaces"
                         className="block text-center py-2.5 rounded-full border border-amber-400/80 text-amber-300 hover:bg-white/10 font-cinzel text-xs font-bold uppercase tracking-wider transition-all"
                       >
-                        Compare All Halls →
+                        Compare halls →
                       </Link>
                     </div>
                   </motion.div>

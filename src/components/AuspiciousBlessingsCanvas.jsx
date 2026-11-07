@@ -7,6 +7,7 @@ export default function AuspiciousBlessingsCanvas() {
   const particlesRef = useRef([]);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const rafId = useRef(null);
+  const startLoop = useRef(() => {});
 
   // Trigger burst of 45 auspicious petals and golden coins
   const triggerBlessings = () => {
@@ -29,9 +30,10 @@ export default function AuspiciousBlessingsCanvas() {
         type: types[Math.floor(Math.random() * types.length)],
         opacity: 1,
         life: 1.0,
-        decay: Math.random() * 0.005 + 0.003
+        decay: Math.random() * 0.005 + 0.003,
       });
     }
+    startLoop.current();
   };
 
   useEffect(() => {
@@ -120,12 +122,16 @@ export default function AuspiciousBlessingsCanvas() {
 
       if (particlesRef.current.length === 0) {
         setIsActive(false);
+        rafId.current = null;
+        return;
       }
 
       rafId.current = requestAnimationFrame(animate);
     };
 
-    rafId.current = requestAnimationFrame(animate);
+    startLoop.current = () => {
+      if (!rafId.current) rafId.current = requestAnimationFrame(animate);
+    };
 
     // Expose trigger globally so any booking or contact button can call it
     window.triggerBlessings = triggerBlessings;

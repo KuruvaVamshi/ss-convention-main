@@ -334,26 +334,16 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
     }));
   };
 
-  // Scroll spy to highlight active hall in floating navigator
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['hall-vasishta', 'hall-agasthya', 'hall-koundinya', 'dining-floor', 'enquire-cta'];
-      const scrollPos = window.scrollY + 300;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveNav(sections[i]);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const scrollToSection = (id) => {
+    if (['hall-vasishta', 'hall-agasthya', 'hall-koundinya', 'dining-floor'].includes(id)) {
+      setActiveNav(id);
+      setTimeout(() => {
+        const tabs = document.getElementById('hall-tabs');
+        if (tabs) window.scrollTo({ top: tabs.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+      }, 50);
+      return;
+    }
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -524,7 +514,7 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
       {/* ========================================================
           STICKY MINIMAL NAVIGATOR PILL (DESKTOP & TABLET)
           ======================================================== */}
-      <div className="sticky top-20 z-30 w-full py-2.5 px-4 bg-[#1C0409]/90 backdrop-blur-xl border-y border-champagne-hairline/50 transition-all shadow-md">
+      <div id="hall-tabs" className="sticky top-20 z-30 w-full py-2.5 px-4 bg-[#1C0409]/90 backdrop-blur-xl border-y border-champagne-hairline/50 transition-all shadow-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-champagne-gold flex-shrink-0">
             <Building className="w-3.5 h-3.5" />
@@ -566,6 +556,7 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
           PART 2 – HALL 01: HALL VASISHTA SHOWCASE
           Layout: Image LEFT (~58%), Text & Specs RIGHT
           ======================================================== */}
+      {activeNav === 'hall-vasishta' && (
       <section
         id="hall-vasishta"
         aria-label="Hall Vasishta Showcase"
@@ -872,30 +863,17 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ========================================================
           ROYAL HALL TRANSITION DIVIDER 01 -> 02
           ======================================================== */}
-      <div className="relative py-12 flex items-center justify-center">
-        <div className="w-full max-w-7xl mx-auto px-4 flex items-center">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-champagne-gold/30 to-transparent" />
-          <div className="px-6 flex items-center gap-3">
-            <span className="text-champagne-gold text-xs font-bold tracking-[0.25em] uppercase font-cinzel">
-              HALL 01 / 03
-            </span>
-            <div className="w-2 h-2 rotate-45 border border-champagne-gold bg-palace-wine" />
-            <span className="text-luxury-parchment/60 text-xs font-medium tracking-wider">
-              NEXT: HALL AGASTHYA
-            </span>
-          </div>
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-champagne-gold/30 to-transparent" />
-        </div>
-      </div>
 
       {/* ========================================================
           PART 2 – HALL 02: HALL AGASTHYA SHOWCASE
           Layout: Text & Specs LEFT, Image RIGHT (~58% desktop)
           ======================================================== */}
+      {activeNav === 'hall-agasthya' && (
       <section
         id="hall-agasthya"
         aria-label="Hall Agasthya Showcase"
@@ -1202,30 +1180,17 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ========================================================
           ROYAL HALL TRANSITION DIVIDER 02 -> 03
           ======================================================== */}
-      <div className="relative py-12 flex items-center justify-center">
-        <div className="w-full max-w-7xl mx-auto px-4 flex items-center">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-champagne-gold/30 to-transparent" />
-          <div className="px-6 flex items-center gap-3">
-            <span className="text-champagne-gold text-xs font-bold tracking-[0.25em] uppercase font-cinzel">
-              HALL 02 / 03
-            </span>
-            <div className="w-2 h-2 rotate-45 border border-champagne-gold bg-palace-wine" />
-            <span className="text-luxury-parchment/60 text-xs font-medium tracking-wider">
-              NEXT: HALL KOUNDINYA
-            </span>
-          </div>
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-champagne-gold/30 to-transparent" />
-        </div>
-      </div>
 
       {/* ========================================================
           PART 2 – HALL 03: HALL KOUNDINYA SHOWCASE
           Layout: Image LEFT (~58%), Text & Specs RIGHT
           ======================================================== */}
+      {activeNav === 'hall-koundinya' && (
       <section
         id="hall-koundinya"
         aria-label="Hall Koundinya Showcase"
@@ -1532,10 +1497,12 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ========================================================
           DEDICATED BANQUET DINING FLOOR SHOWCASE
           ======================================================== */}
+      {activeNav === 'dining-floor' && (
       <section
         id="dining-floor"
         aria-label="Banquet Dining Floor"
@@ -1604,6 +1571,7 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ========================================================
           PART 5 – FINAL VENUE ENQUIRY CTA SECTION

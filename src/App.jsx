@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
@@ -9,17 +9,18 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingContactBar from './components/FloatingContactBar';
 import LightboxModal from './components/LightboxModal';
+import ScrollProgress from './components/ScrollProgress';
 
 // Multi-Page Views
 import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import SpacesPage from './pages/SpacesPage';
-import HallDetailPage from './pages/HallDetailPage';
-import FacilitiesPage from './pages/FacilitiesPage';
-import MenusPage from './pages/MenusPage';
-import GalleryPage from './pages/GalleryPage';
-import PoliciesPage from './pages/PoliciesPage';
-import ContactPage from './pages/ContactPage';
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const SpacesPage = lazy(() => import('./pages/SpacesPage'));
+const HallDetailPage = lazy(() => import('./pages/HallDetailPage'));
+const FacilitiesPage = lazy(() => import('./pages/FacilitiesPage'));
+const MenusPage = lazy(() => import('./pages/MenusPage'));
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const PoliciesPage = lazy(() => import('./pages/PoliciesPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 export default function App() {
   const [lang, setLang] = useState('en'); // 'en' or 'te'
@@ -63,10 +64,12 @@ export default function App() {
           <AuspiciousBlessingsCanvas />
 
           {/* Global Fixed Header with Language Toggle */}
+          <ScrollProgress />
           <Navbar lang={lang} setLang={setLang} />
 
         {/* Multi-Page Routes */}
         <main className="flex-1 relative z-10">
+          <Suspense fallback={<div className="min-h-screen" />}>
           <Routes>
             <Route
               path="/"
@@ -131,6 +134,7 @@ export default function App() {
               element={<HomePage onOpenLightbox={openLightbox} lang={lang} />}
             />
           </Routes>
+          </Suspense>
         </main>
 
         {/* Global Footer */}

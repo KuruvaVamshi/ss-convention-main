@@ -24,10 +24,12 @@ export default {
           hairlineHover: 'rgba(197, 160, 89, 0.45)' // Hover border state
         },
         luxury: {
-          ivory: '#FAF6F0',                          // Primary typography (soft warm white)
-          parchment: '#CBBDA8',                      // Secondary typography (body copy, descriptions)
-          muted: 'rgba(203, 189, 168, 0.65)'        // Tertiary typography (metadata, specs)
+          ivory: '#FFF8E7',                          // Primary typography (soft warm white)
+          parchment: '#D2B79B',                      // Secondary typography (body copy, descriptions)
+          muted: 'rgba(210, 183, 155, 0.65)'        // Tertiary typography (metadata, specs)
         },
+        latte: '#FFF8E7', // Cosmic latte - primary text on maroon
+        mocha: '#D2B79B', // Mocha cream - secondary text and soft accents
         // Backward-compatible aliases mapped to the approved palette
         velvet: {
           950: '#0D0204',
@@ -41,7 +43,7 @@ export default {
         },
         gold: {
           50: '#FFFEFA',
-          100: '#FAF6F0',
+          100: '#FFF8E7',
           200: '#EED9A6',
           300: '#DEC58C',
           400: '#D4AF37',
@@ -52,7 +54,7 @@ export default {
         },
         ivory: {
           50: '#FFFEFA',
-          100: '#FAF6F0',
+          100: '#FFF8E7',
           200: '#F5ECE2',
         }
       },

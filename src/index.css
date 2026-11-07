@@ -14,9 +14,9 @@
     --champagne-muted: #8A6B32;
     --champagne-hairline: rgba(197, 160, 89, 0.22);
     --champagne-hairline-hover: rgba(197, 160, 89, 0.45);
-    --text-ivory: #FAF6F0;
-    --text-parchment: #CBBDA8;
-    --text-muted: rgba(203, 189, 168, 0.65);
+    --text-ivory: #FFF8E7;
+    --text-parchment: #D2B79B;
+    --text-muted: rgba(210, 183, 155, 0.65);
     
     /* Easing Tokens */
     --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
@@ -182,7 +182,7 @@
 }
 
 .form-input-luxury::placeholder {
-  color: rgba(203, 189, 168, 0.45);
+  color: rgba(210, 183, 155, 0.45);
 }
 
 .form-input-luxury:focus {
