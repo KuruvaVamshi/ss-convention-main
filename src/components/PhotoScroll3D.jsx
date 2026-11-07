@@ -3,11 +3,11 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion
 import { galleryItems } from '../data/galleryData';
 import SectionHeader from './SectionHeader';
 
-const COUNT = 12;
+const COUNT = 6;
 
 // Evenly sample photos across the whole gallery so every area of the venue appears.
 function pickPhotos() {
-  const pool = galleryItems.filter((g) => !g.image.includes('edison_bulbs'));
+  const pool = galleryItems.filter((g) => !['edison_bulbs', 'official_brochure'].some((k) => g.image.includes(k)));
   const step = pool.length / COUNT;
   return Array.from({ length: COUNT }, (_, i) => pool[Math.floor(i * step)]);
 }

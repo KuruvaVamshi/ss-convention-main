@@ -18,6 +18,7 @@ export default function Navbar({ lang, setLang }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopDropdown, setDesktopDropdown] = useState(null); // 'venue' | null
+  const [venuePreview, setVenuePreview] = useState(0);
   const [mobileExpanded, setMobileExpanded] = useState({ venue: false });
 
   const location = useLocation();
@@ -145,18 +146,21 @@ export default function Navbar({ lang, setLang }) {
       title: lang === 'te' ? 'మా గురించి' : 'About Us',
       desc: lang === 'te' ? 'మా చరిత్ర, సంప్రదాయం & లొకేషన్' : 'Heritage story, Buddha foyer & architecture',
       path: '/about',
+      img: '/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg',
       icon: Heart
     },
     {
       title: lang === 'te' ? 'మా హాల్స్' : 'Our Halls',
       desc: lang === 'te' ? 'వశిష్ట, అగస్త్య & కౌండిన్య హాల్స్' : 'Hall Vasishta, Agasthya, Koundinya & Dining',
       path: '/spaces',
+      img: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
       icon: Building
     },
     {
       title: lang === 'te' ? 'సదుపాయాలు' : 'Facilities',
       desc: lang === 'te' ? 'సెంట్రల్ ఎసి, విఐపి సూట్స్ & జనరేటర్' : 'Central Daikin A/C, 2 VIP suites, 100% DG backup',
       path: '/facilities',
+      img: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
       icon: Sparkles
     }
   ];
@@ -250,67 +254,79 @@ export default function Navbar({ lang, setLang }) {
                   )}
                 </button>
 
-                {/* Dropdown Card (Solid Opaque Velvet Background, Centered under Trigger, Zero Hero Text Bleed) */}
+                {/* Dropdown: link list on the left, photo preview on the right */}
                 {desktopDropdown === 'venue' && (
                   <div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[360px] sm:w-[400px] rounded-2xl bg-[#140205] border border-[#D4AF37]/50 shadow-[0_25px_60px_rgba(0,0,0,0.95)] p-2.5 z-50 animate-dropdown-slide before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[560px] rounded-2xl bg-[#140205]/98 backdrop-blur-xl border border-[#D4AF37]/40 shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden z-50 animate-dropdown-slide before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']"
                     onMouseEnter={() => handleMouseEnter('venue')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    {/* Subtle Header Tag */}
-                    <div className="px-3 pt-2 pb-1.5 flex items-center justify-between border-b border-[#D4AF37]/20 mb-1">
-                      <span className="text-[9px] font-bold text-amber-300 tracking-[0.25em] uppercase font-cinzel">
-                        THE VENUE ARCHITECTURE
-                      </span>
-                      <span className="text-[9px] text-amber-200/60 font-medium">
-                        3 Distinct Spaces
-                      </span>
-                    </div>
+                    <div className="flex">
+                      <div className="w-[55%] p-3">
+                        <p className="px-3 pt-1 pb-2 text-[10px] font-cinzel font-bold tracking-[0.28em] uppercase text-amber-300">
+                          The Venue
+                        </p>
+                        {venueSubLinks.map((item, i) => {
+                          const IconComp = item.icon;
+                          return (
+                            <NavLink
+                              key={item.path}
+                              to={item.path}
+                              onClick={closeAllMenus}
+                              onMouseEnter={() => setVenuePreview(i)}
+                              onFocus={() => setVenuePreview(i)}
+                              className={({ isActive }) =>
+                                `group relative flex items-center gap-3 px-3 py-3 rounded-xl transition-colors duration-200 ${
+                                  isActive || venuePreview === i ? 'bg-[#2A0710]' : ''
+                                }`
+                              }
+                            >
+                              <span
+                                className={`absolute left-0 top-3 bottom-3 w-0.5 rounded-full bg-amber-400 transition-opacity duration-200 ${
+                                  venuePreview === i ? 'opacity-100' : 'opacity-0'
+                                }`}
+                              />
+                              <IconComp className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                              <span className="flex-1 min-w-0">
+                                <span className="font-cinzel text-sm font-bold text-latte block">{item.title}</span>
+                                <span className="text-xs text-mocha block leading-snug mt-0.5">{item.desc}</span>
+                              </span>
+                              <ArrowRight
+                                className={`w-3.5 h-3.5 text-amber-300 flex-shrink-0 transition-all duration-200 ${
+                                  venuePreview === i ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'
+                                }`}
+                              />
+                            </NavLink>
+                          );
+                        })}
+                      </div>
 
-                    <div className="divide-y divide-[#D4AF37]/15">
-                      {venueSubLinks.map((item) => {
-                        const IconComp = item.icon;
-                        return (
-                          <NavLink
+                      <div className="relative w-[45%] min-h-[230px] bg-black">
+                        {venueSubLinks.map((item, i) => (
+                          <img
                             key={item.path}
-                            to={item.path}
-                            onClick={closeAllMenus}
-                            className={({ isActive }) =>
-                              `group flex items-center justify-between p-3 rounded-xl transition-all duration-200 ${
-                                isActive
-                                  ? 'bg-[#29050D] border-l-4 border-amber-400 pl-3.5'
-                                  : 'hover:bg-[#25050C] hover:border-l-4 hover:border-amber-400 hover:pl-3.5 text-amber-100/90'
-                              }`
-                            }
-                          >
-                            <div className="flex items-center gap-3.5">
-                              <div className="w-9 h-9 rounded-xl bg-black/60 border border-[#D4AF37]/35 flex items-center justify-center text-amber-400 group-hover:border-amber-400 group-hover:bg-[#3D0A14] transition-all flex-shrink-0 shadow-inner">
-                                <IconComp className="w-4 h-4" />
-                              </div>
-                              <div>
-                                <span className="font-cinzel text-xs sm:text-sm font-bold text-white group-hover:text-amber-200 block transition-colors">
-                                  {item.title}
-                                </span>
-                                <span className="text-[11px] text-amber-200/70 block leading-tight mt-0.5 font-normal">
-                                  {item.desc}
-                                </span>
-                              </div>
-                            </div>
-                            <ArrowRight className="w-3.5 h-3.5 text-amber-400/50 group-hover:text-amber-300 group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
-                          </NavLink>
-                        );
-                      })}
+                            src={item.img}
+                            alt=""
+                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                              venuePreview === i ? 'opacity-100' : 'opacity-0'
+                            }`}
+                          />
+                        ))}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#140205] via-transparent to-[#140205]/40" />
+                        <p className="absolute bottom-3 left-4 right-4 font-cinzel text-sm text-latte drop-shadow">
+                          {venueSubLinks[venuePreview].title}
+                        </p>
+                      </div>
                     </div>
 
-                    {/* Bottom Concierge Helper Strip */}
-                    <div className="mt-1.5 pt-2 border-t border-[#D4AF37]/20 px-3 flex items-center justify-between text-[10px] text-amber-200/80">
+                    <div className="px-5 py-2.5 border-t border-[#D4AF37]/20 flex items-center justify-between text-xs text-mocha">
                       <span>Need instant date confirmation?</span>
                       <a
                         href={`tel:${venueData.phones[0].raw}`}
-                        className="text-amber-300 hover:text-white font-bold flex items-center gap-1 transition-colors"
+                        className="text-amber-300 hover:text-latte font-bold flex items-center gap-1.5 transition-colors"
                       >
-                        <Phone className="w-3 h-3 text-amber-400" />
-                        <span>Call Venue</span>
+                        <Phone className="w-3.5 h-3.5" />
+                        <span>Call venue</span>
                       </a>
                     </div>
                   </div>
