@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Maximize2, Phone, Calendar } from 'lucide-react';
@@ -18,6 +18,27 @@ const categories = [
 
 export default function GalleryPage({ onOpenLightbox, lang }) {
   const [active, setActive] = useState('all');
+
+  // Filter bar hides when scrolling down and returns when scrolling up
+  const [barVisible, setBarVisible] = useState(true);
+  const lastY = useRef(0);
+  const ticking = useRef(false);
+  useEffect(() => {
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+      window.requestAnimationFrame(() => {
+        const y = Math.max(0, window.scrollY);
+        const diff = y - lastY.current;
+        if (y <= 20) setBarVisible(true);
+        else if (Math.abs(diff) >= 10) setBarVisible(diff < 0);
+        if (y <= 20 || Math.abs(diff) >= 10) lastY.current = y;
+        ticking.current = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const counts = useMemo(() => {
     const c = { all: galleryItems.length };
@@ -55,7 +76,11 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
       </section>
 
       {/* Filters */}
-      <div className="sticky top-[68px] sm:top-[72px] z-30 bg-[#1C0409]/95 backdrop-blur-xl border-b border-[#D4AF37]/25">
+      <div
+        className={`sticky top-[68px] sm:top-[72px] z-30 bg-[#1C0409]/95 backdrop-blur-xl border-b border-[#D4AF37]/25 transform transition-transform duration-300 ${
+          barVisible ? 'translate-y-0' : '-translate-y-[calc(100%+80px)] pointer-events-none'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 flex gap-1 overflow-x-auto no-scrollbar">
           {categories.map((cat) => (
             <button
@@ -78,8 +103,8 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
       </div>
 
       {/* Masonry */}
-      <section id="gallery" className="py-12 sm:py-16 bg-[#3D0A14]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="gallery" className="py-6 sm:py-8 bg-[#3D0A14]">
+        <div className="w-full px-2 sm:px-3">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -87,7 +112,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5 [&>*]:mb-4 sm:[&>*]:mb-5"
+              className="columns-2 md:columns-3 xl:columns-4 2xl:columns-5 gap-2 sm:gap-3 [&>*]:mb-2 sm:[&>*]:mb-3"
             >
               {items.map((item) => (
                 <button
@@ -95,7 +120,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
                   type="button"
                   onClick={() => onOpenLightbox(item.image, item.title)}
                   aria-label={`View photo: ${item.title}`}
-                  className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl border border-[#D4AF37]/25 hover:border-amber-400/70 bg-[#350710] text-left cursor-pointer transition-colors duration-300"
+                  className="group relative block w-full break-inside-avoid overflow-hidden rounded-lg border border-[#D4AF37]/20 hover:border-amber-400/70 bg-[#350710] text-left cursor-pointer transition-colors duration-300"
                 >
                   <img
                     src={item.image}
