@@ -513,7 +513,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
-            <button onClick={() => handleSelectVideo(venueVideos[0])} className="btn-outline-gold backdrop-blur-md bg-black/30">
+            <button onClick={() => { handleSelectVideo(venueVideos[0]); document.getElementById('interactive-console')?.scrollIntoView({ behavior: 'smooth' }); }} className="btn-outline-gold backdrop-blur-md bg-black/30">
               <Play className="w-3.5 h-3.5 fill-current" />
               <span>Video tour</span>
             </button>
@@ -558,120 +558,57 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
       </section>
 
       {/* ========================================================
-          CHAPTER 2: MASTER SINGLE-VIEW WINDOW CONSOLE (Interactive Cockpit)
+          CHAPTER 2: EXPLORE THE VENUE (interactive console)
+          One viewer on the left, short details for the chosen tab on the right.
           ======================================================== */}
-      <section id="interactive-console" className="py-12 sm:py-16 bg-gradient-to-b from-[#26040A] via-[#350710] to-[#26040A] relative z-10 border-t border-[#D4AF37]/40">
+      <section id="interactive-console" className="py-20 sm:py-28 bg-[#2A060E] relative z-10 border-t border-[#D4AF37]/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#2D060E]/95 backdrop-blur-2xl rounded-[32px] border-2 border-[#D4AF37]/60 shadow-[0_24px_70px_rgba(0,0,0,0.85)] overflow-hidden p-4 sm:p-6 lg:p-8 text-white relative">
-          
-          {/* Top Master Options Switcher Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-5 border-b border-[#D4AF37]/35">
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                onClick={() => handleSwitchTab('halls')}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                  activeConsoleTab === 'halls'
-                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg shadow-amber-500/30 scale-105 font-extrabold'
-                    : 'bg-[#4D0D19] text-amber-100/90 hover:bg-[#631422] border border-[#D4AF37]/40'
-                }`}
-              >
-                <Building className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'గ్రాండ్ కళ్యాణ మండపం (హాల్స్)' : 'Our Halls'}</span>
-              </button>
+          <div className="text-center max-w-2xl mx-auto">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Take a closer look</p>
+            <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide text-latte">Explore the Venue</h2>
+            <div className="mx-auto mt-4 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
+          </div>
 
-              <button
-                onClick={() => handleSwitchTab('banquet')}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                  activeConsoleTab === 'banquet'
-                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg shadow-amber-500/30 scale-105 font-extrabold'
-                    : 'bg-[#4D0D19] text-amber-100/90 hover:bg-[#631422] border border-[#D4AF37]/40'
-                }`}
-              >
-                <UtensilsCrossed className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'రాయల్ బాంక్వెట్ హాల్ (250+ సీట్లు)' : 'Banquet Dining'}</span>
-              </button>
-
-              <button
-                onClick={() => handleSwitchTab('themes')}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                  activeConsoleTab === 'themes'
-                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg shadow-amber-500/30 scale-105 font-extrabold'
-                    : 'bg-[#4D0D19] text-amber-100/90 hover:bg-[#631422] border border-[#D4AF37]/40'
-                }`}
-              >
-                <Palette className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'స్టేజ్ డెకర్ & లైట్స్' : 'Stage Themes'}</span>
-              </button>
-
-              <button
-                onClick={() => handleSwitchTab('menus')}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                  activeConsoleTab === 'menus'
-                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg shadow-amber-500/30 scale-105 font-extrabold'
-                    : 'bg-[#4D0D19] text-amber-100/90 hover:bg-[#631422] border border-[#D4AF37]/40'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'విందు భోజనం మెనూలు' : 'Menus'}</span>
-              </button>
-
-              <button
-                onClick={() => handleSwitchTab('contact')}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                  activeConsoleTab === 'contact'
-                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg shadow-amber-500/30 scale-105 font-extrabold'
-                    : 'bg-[#4D0D19] text-amber-100/90 hover:bg-[#631422] border border-[#D4AF37]/40'
-                }`}
-              >
-                <CalendarCheck className="w-3.5 h-3.5" />
-                <span>{lang === 'te' ? 'ముహూర్తం & బుకింగ్' : 'Book a Date'}</span>
-              </button>
-            </div>
-
-            {/* Sacred Palace Temple Drone Ambience Audio Button */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={toggleTempleAudio}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
-                  isTempleAudioActive
-                    ? 'bg-amber-400 text-[#3D0A14] border-amber-300 shadow-md animate-pulse'
-                    : 'bg-[#4D0D19] text-amber-200 border-[#D4AF37]/40 hover:bg-[#631422]'
-                }`}
-                title="Toggle Auspicious Palace Tanpura Harmony"
-              >
-                <Music2 className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Sound</span>
-                
-                {isTempleAudioActive ? (
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-700 animate-ping" />
-                ) : null}
-              </button>
-
-              {/* 4K Video Player Mode Trigger */}
-              <button
-                onClick={() => handleSelectVideo(venueVideos[0])}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all border ${
-                  currentMedia.type === 'video'
-                    ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] shadow-lg shadow-amber-500/25 font-extrabold'
-                    : 'bg-[#4D0D19] text-amber-200 border-[#D4AF37]/45 hover:bg-[#631422]'
-                }`}
-              >
-                <Play className="w-3.5 h-3.5 fill-current" />
-                <span>{lang === 'te' ? 'లైవ్ వీడియో థియేటర్' : 'Video Tour'}</span>
-              </button>
+          {/* Tabs */}
+          <div role="tablist" aria-label="Explore the venue" className="mt-10 flex justify-center">
+            <div className="flex max-w-full gap-1 p-1.5 rounded-full border border-[#D4AF37]/35 bg-black/25 overflow-x-auto no-scrollbar">
+              {[
+                ['halls', 'Halls', Building],
+                ['banquet', 'Dining', UtensilsCrossed],
+                ['themes', 'Stage Themes', Palette],
+                ['menus', 'Menus', Sparkles],
+                ['contact', 'Book', CalendarCheck],
+              ].map(([id, label, Icon]) => {
+                const on = activeConsoleTab === id;
+                return (
+                  <button
+                    key={id}
+                    role="tab"
+                    aria-selected={on}
+                    onClick={() => handleSwitchTab(id)}
+                    className={`relative flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-cinzel tracking-wider whitespace-nowrap transition-colors ${
+                      on ? 'text-[#1C0409] font-bold' : 'text-mocha hover:text-latte'
+                    }`}
+                  >
+                    {on && (
+                      <motion.span
+                        layoutId="console-pill"
+                        transition={{ type: 'spring', stiffness: 420, damping: 36 }}
+                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B8860B] via-[#EED9A6] to-[#C5A059]"
+                      />
+                    )}
+                    <Icon className="relative w-4 h-4" />
+                    <span className="relative">{label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Unified 12-Column Single View Stage */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-            
-            {/* ========================================================
-                LEFT: CRYSTAL-CLEAR CINEMATIC VIDEO & VISUAL THEATER (7 Cols)
-                ======================================================== */}
-            <div className="lg:col-span-7 flex flex-col space-y-3">
-              
-              {/* Theater Screen with Ultra-Vivid Clarity (Zero muddy overlay!) */}
-              <div className="relative rounded-2xl overflow-hidden border-2 border-[#D4AF37]/70 shadow-[0_12px_40px_rgba(212,175,55,0.25)] aspect-[16/10] bg-[#100608] group">
+          <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* Viewer */}
+            <div className="lg:col-span-7">
+              <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl aspect-[16/10] bg-black group">
                 {currentMedia.type === 'video' ? (
                   <video
                     ref={videoRef}
@@ -681,766 +618,307 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                     loop
                     muted={isMuted}
                     playsInline
-                    className="w-full h-full object-cover object-center filter brightness-[1.05] contrast-[1.05] saturate-[1.08]"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <img
                     src={currentMedia.src}
                     alt={currentMedia.title}
                     style={getLightingFilter()}
-                    className="w-full h-full object-cover object-center transition-all duration-500 ease-out"
+                    className="w-full h-full object-cover transition-all duration-500"
                   />
                 )}
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
 
-                {/* Subtle top & bottom shadow gradient for HUD readability only */}
-                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-                <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/65 to-transparent pointer-events-none" />
-
-                {/* Theater Overlay HUD Top Bar */}
-                <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between">
-                  <span />
-
-                  <div className="flex items-center gap-2">
-                    {currentMedia.type === 'video' && (
-                      <>
-                        <button
-                          onClick={togglePlayPause}
-                          aria-label={isPlayingVideo ? "Pause video" : "Play video"}
-                          className="p-2 rounded-full bg-black/80 text-white border border-white/30 hover:bg-[#7A1F31] transition-all shadow-md"
-                          title={isPlayingVideo ? "Pause Video" : "Play Video"}
-                        >
-                          {isPlayingVideo ? <Pause className="w-3.5 h-3.5 text-white" /> : <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />}
-                        </button>
-                        
-                        {/* Audio Unmute Button with Dancing Equalizer Bars */}
-                        <button
-                          onClick={toggleSound}
-                          aria-label={isMuted ? "Unmute sound" : "Mute sound"}
-                          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border shadow-md transition-all ${
-                            isMuted 
-                              ? 'bg-black/80 text-amber-200 border-white/30 hover:bg-[#7A1F31]' 
-                              : 'bg-emerald-500 text-[#100608] border-emerald-400 font-bold'
-                          }`}
-                          title={isMuted ? "Unmute Venue Video Sound" : "Mute Video Sound"}
-                        >
-                          {isMuted ? (
-                            <>
-                              <VolumeX className="w-3.5 h-3.5 text-amber-300" />
-                              <span className="text-[10px] uppercase font-bold">Unmute</span>
-                            </>
-                          ) : (
-                            <>
-                              <Volume2 className="w-3.5 h-3.5 text-[#100608]" />
-                              <div className="flex items-end gap-0.5 h-3">
-                                <span className="w-0.5 bg-[#100608] animate-pulse h-full" />
-                                <span className="w-0.5 bg-[#100608] animate-pulse h-2" style={{ animationDelay: '150ms' }} />
-                                <span className="w-0.5 bg-[#100608] animate-pulse h-3" style={{ animationDelay: '300ms' }} />
-                              </div>
-                            </>
-                          )}
-                        </button>
-                      </>
-                    )}
-
-                    <button
-                      onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
-                      className="p-2 rounded-full bg-black/80 text-white border border-white/30 hover:bg-[#7A1F31] transition-all shadow-md"
-                      title="Fullscreen Lightbox"
-                    >
-                      <Maximize2 className="w-3.5 h-3.5 text-amber-200" />
-                    </button>
-                  </div>
+                <div className="absolute top-3 right-3 flex items-center gap-2">
+                  {currentMedia.type === 'video' && (
+                    <>
+                      <button
+                        onClick={togglePlayPause}
+                        aria-label={isPlayingVideo ? 'Pause video' : 'Play video'}
+                        className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+                      >
+                        {isPlayingVideo ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+                      </button>
+                      <button
+                        onClick={toggleSound}
+                        aria-label={isMuted ? 'Unmute' : 'Mute'}
+                        className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+                      >
+                        {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                      </button>
+                    </>
+                  )}
+                  <button
+                    onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
+                    aria-label="View full screen"
+                    className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                  </button>
                 </div>
 
-                {/* Theater Overlay Bottom Bar */}
-                <div className="absolute bottom-3 left-4 right-4 z-20 flex items-end justify-between">
-                  <div>
-                    <h3 className="font-cinzel text-lg sm:text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-                      {currentMedia.title.split(' – ')[0]}
-                    </h3>
-                    <p className="text-xs text-amber-200 font-medium drop-shadow line-clamp-1">
-                      {currentMedia.caption}
-                    </p>
-                  </div>
+                <div className="absolute bottom-4 left-5 right-5">
+                  <h3 className="font-cinzel text-lg sm:text-xl font-bold text-latte drop-shadow">{currentMedia.title}</h3>
+                  <p className="text-xs sm:text-sm text-mocha line-clamp-1">{currentMedia.caption}</p>
                 </div>
               </div>
 
-              {/* 6 Video Walkthrough Reels Selector Ribbon */}
-              <div className="p-2 rounded-2xl bg-[#2A060E] border border-[#D4AF37]/40 flex items-center justify-between gap-1.5 overflow-x-auto">
+              {/* Video tours */}
+              <div className="mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
+                <span className="text-[11px] tracking-[0.25em] uppercase text-amber-300 whitespace-nowrap pr-1">Video tours</span>
                 {venueVideos.map((v) => {
-                  const isCurrent = currentMedia.src === v.src && currentMedia.type === 'video';
+                  const on = currentMedia.src === v.src && currentMedia.type === 'video';
                   return (
                     <button
                       key={v.id}
                       onClick={() => handleSelectVideo(v)}
-                      className={`flex-1 min-w-[100px] py-1.5 px-2.5 rounded-xl text-[10px] font-bold tracking-wide transition-all whitespace-nowrap flex items-center justify-center gap-1.5 ${
-                        isCurrent
-                          ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] font-bold shadow-md scale-105'
-                          : 'bg-[#3A0813] text-amber-100 hover:bg-[#52101C] border border-[#D4AF37]/35'
+                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${
+                        on ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-[#D4AF37]/35 text-mocha hover:text-latte hover:border-[#D4AF37]/70'
                       }`}
                     >
-                      <Play className={`w-2.5 h-2.5 ${isCurrent ? 'fill-[#3D0A14]' : 'text-amber-300'}`} />
-                      <span>{v.label}</span>
+                      <Play className="w-3 h-3 fill-current" /> {v.label}
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* ========================================================
-                RIGHT: INTERACTIVE OPTIONS COCKPIT (5 Cols - Single View)
-                ======================================================== */}
-            <div className="lg:col-span-5 flex flex-col justify-between h-full bg-[#2E070F] p-5 sm:p-6 rounded-2xl border-2 border-[#D4AF37]/45 overflow-hidden text-white shadow-xl">
+            {/* Details */}
+            <div className="lg:col-span-5">
               <AnimatePresence mode="wait">
-                
-                {/* PANEL 0: ROYAL BANQUET DINING HALL (SWARNA BHOJANAM) */}
-                {activeConsoleTab === 'banquet' && (
-                  <motion.div
-                    key="banquet"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.28, ease: "easeOut" }}
-                    className="space-y-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-amber-300 tracking-[0.22em] uppercase flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Dedicated Dining Sanctuary</span>
-                      </span>
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/50 border border-amber-400/50 text-amber-300 text-[10px] font-bold shadow-sm">
-                        <UtensilsCrossed className="w-3 h-3 text-amber-400" />
-                        <span>250+ Seats Concurrently</span>
-                      </span>
-                    </div>
-
-                    {/* Banquet Highlight Card */}
-                    <div className="p-4 rounded-xl bg-[#3A0813] border border-[#D4AF37]/40 shadow-sm space-y-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <h4 className="font-cinzel text-lg font-bold text-white leading-tight">
-                            {lang === 'te' ? 'స్వర్ణ భోజనం – రాయల్ బాంక్వెట్ హాల్' : 'Swarna Bhojanam – Royal Banquet Floor'}
-                          </h4>
-                          <span className="text-xs text-amber-300 font-medium block mt-0.5">
-                            Round Tables with Royal Maroon & Gold Damask Linens
-                          </span>
-                        </div>
-                        <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-black/40 text-amber-200 border border-[#D4AF37]/30 whitespace-nowrap">
-                          3,500 sq.ft
-                        </span>
-                      </div>
-
-                      {/* 4 Authentic Photo Perspectives Grid */}
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        {[
-                          { title: 'Round Tables Maroon & Gold', src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg', tag: '250+ Seats' },
-                          { title: 'Hyderabadi Dum Biryani Feast', src: '/assets/03_food_and_catering_menus/menu_06_premium_non_veg_200pax.jpeg', tag: 'Biryani Feast' },
-                          { title: 'Pure Veg Traditional Feast', src: '/assets/03_food_and_catering_menus/menu_03_premium_veg_200pax.jpeg', tag: 'Vindhu Bhojanam' },
-                          { title: 'Grand Banquet Celebration', src: '/assets/03_food_and_catering_menus/menu_07_special_non_veg_250pax.jpeg', tag: 'Grand Buffet' }
-                        ].map((item, idx) => (
-                          <div
-                            key={idx}
-                            onClick={() => {
-                              setCurrentMedia({
-                                type: 'image',
-                                src: item.src,
-                                title: item.title,
-                                caption: `Swarna Bhojanam • ${item.tag}`
-                              });
-                            }}
-                            className={`group/bphoto relative rounded-xl overflow-hidden border cursor-pointer aspect-[16/10] transition-all ${
-                              currentMedia.src === item.src
-                                ? 'border-amber-400 ring-2 ring-amber-400/50 scale-102 shadow-lg'
-                                : 'border-[#D4AF37]/35 hover:border-amber-400 opacity-80 hover:opacity-100'
-                            }`}
-                          >
-                            <img src={item.src} alt={item.title} className="w-full h-full object-cover group-hover/bphoto:scale-108 transition-transform duration-500" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                            <div className="absolute bottom-1.5 left-2 right-2">
-                              <span className="text-[10px] font-bold text-white block line-clamp-1 drop-shadow">
-                                {item.title}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* 4 Distinct Banquet Pillars */}
-                      <div className="grid grid-cols-2 gap-2 text-xs pt-1">
-                        <div className="p-2 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
-                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-                          <div>
-                            <strong className="text-white block text-[11px]">Zero Mandap Aroma</strong>
-                            <span className="text-[10px] text-amber-200/80">Dedicated Floor & Exhaust</span>
-                          </div>
-                        </div>
-                        <div className="p-2 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
-                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-                          <div>
-                            <strong className="text-white block text-[11px]">12-Tap Granite Handwash</strong>
-                            <span className="text-[10px] text-amber-200/80">Pure RO Purified Water</span>
-                          </div>
-                        </div>
-                        <div className="p-2 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
-                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-                          <div>
-                            <strong className="text-white block text-[11px]">Catering Service Lift</strong>
-                            <span className="text-[10px] text-amber-200/80">Fast hot food delivery</span>
-                          </div>
-                        </div>
-                        <div className="p-2 rounded-lg bg-black/35 border border-[#D4AF37]/25 flex items-start gap-2">
-                          <Check className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-                          <div>
-                            <strong className="text-white block text-[11px]">1,500+ Feasts Capacity</strong>
-                            <span className="text-[10px] text-amber-200/80">Rolling batches ~25 mins</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Interactive Guest Count & Batch Estimator */}
-                    <div className="p-3.5 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35 space-y-2">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-amber-300">
-                          Estimate Seating Batches:
-                        </span>
-                        <strong className="text-white">
-                          {banquetSeatingBatch} Attendees = {Math.ceil(banquetSeatingBatch / 250)} Batch{Math.ceil(banquetSeatingBatch / 250) > 1 ? 'es' : ''}
-                        </strong>
-                      </div>
-                      <div className="grid grid-cols-4 gap-1.5">
-                        {[150, 250, 500, 750].map((count) => (
+                <motion.div
+                  key={activeConsoleTab}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {/* HALLS */}
+                  {activeConsoleTab === 'halls' && (
+                    <div>
+                      <div className="flex gap-2">
+                        {spacesData.slice(0, 3).map((hall, idx) => (
                           <button
-                            key={count}
-                            onClick={() => setBanquetSeatingBatch(count)}
-                            className={`py-1 px-2 rounded-lg text-[10px] font-bold transition-all border ${
-                              banquetSeatingBatch === count
-                                ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] border-amber-300 shadow-sm'
-                                : 'bg-[#24050B] text-amber-200 hover:text-white border-[#D4AF37]/30'
+                            key={hall.id}
+                            onClick={() => handleSelectHall(idx, hallViewAngle)}
+                            className={`flex-1 px-3 py-2.5 rounded-xl border text-center transition-colors ${
+                              selectedHallIdx === idx ? 'bg-[#4A0E1B] border-amber-400/70' : 'border-[#D4AF37]/25 hover:border-[#D4AF37]/60'
                             }`}
                           >
-                            {count} Guests
+                            <span className="block font-cinzel text-xs sm:text-sm font-bold text-latte">{hall.name}</span>
+                            <span className="block text-[11px] text-mocha mt-0.5">{hall.capacity}</span>
                           </button>
                         ))}
                       </div>
-                    </div>
 
-                    {/* Banquet CTAs */}
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      <Link
-                        to="/halls/dining-hall"
-                        className="block text-center py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:scale-105"
-                      >
-                        Explore Banquet Floor Specs →
-                      </Link>
-                      <Link
-                        to="/menus"
-                        className="block text-center py-2.5 rounded-full border border-amber-400/80 text-amber-300 hover:bg-white/10 font-cinzel text-xs font-bold uppercase tracking-wider transition-all"
-                      >
-                        View Catering Feasts & Menus →
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
+                      <h3 className="mt-6 font-cinzel text-2xl font-bold text-latte">{currentHall.name}</h3>
+                      <p className="mt-1 text-sm text-amber-300 font-semibold">{currentHall.tagline}</p>
+                      <p className="mt-3 text-mocha leading-relaxed line-clamp-4">{currentHall.shortDescription || currentHall.description}</p>
+                      <p className="mt-3 text-sm text-latte">
+                        <span className="text-[10px] tracking-[0.25em] uppercase text-amber-300 mr-2">Ideal for</span>
+                        {currentHall.bestFor}
+                      </p>
 
-                {/* PANEL 1: THE 3 HALLS */}
-                {activeConsoleTab === 'halls' && (
-                  <motion.div
-                    key="halls"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.28, ease: "easeOut" }}
-                    className="space-y-4"
-                  >
-
-                    {/* 3 Named Hall Buttons */}
-                    <div className="grid grid-cols-3 gap-2">
-                      {spacesData.slice(0, 3).map((hall, idx) => (
-                        <button
-                          key={hall.id}
-                          onClick={() => handleSelectHall(idx, hallViewAngle)}
-                          className={`p-2.5 rounded-xl text-center transition-all border ${
-                            selectedHallIdx === idx
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] border-amber-400 shadow-md font-bold scale-105'
-                              : 'bg-[#3A0813] text-amber-100 border-[#D4AF37]/35 hover:bg-[#52101C]'
-                          }`}
-                        >
-                          <span className="block font-cinzel text-xs font-bold leading-tight">
-                            {hall.name}
-                          </span>
-                          <span className={`text-[10px] block mt-0.5 ${selectedHallIdx === idx ? 'text-[#3D0A14]' : 'text-amber-200/80'}`}>
-                            {hall.capacity}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Selected Hall Detail Box */}
-                    <div className="p-4 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35 shadow-sm space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-cinzel text-base font-bold text-white">
-                          {currentHall.name}
-                        </h4>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/40 border border-[#D4AF37]/40 text-amber-200 text-[10px] font-bold">
-                          <Users className="w-3 h-3 text-amber-300" />
-                          <span>{currentHall.capacityDisplay}</span>
-                        </span>
-                      </div>
-
-                      {/* 4 Authentic Photo Angles Grid for Selected Hall */}
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        {(currentHall.gallery?.slice(0, 4) || []).map((photo, i) => (
-                          <div
-                            key={i}
-                            onClick={() => {
-                              setCurrentMedia({
-                                type: 'image',
-                                src: photo.src,
-                                title: photo.title,
-                                caption: `${currentHall.name} • ${photo.category || 'Interior View'}`
-                              });
-                            }}
-                            className={`group/hphoto relative rounded-xl overflow-hidden border cursor-pointer aspect-[16/10] transition-all ${
-                              currentMedia.src === photo.src
-                                ? 'border-amber-400 ring-2 ring-amber-400/50 scale-102 shadow-lg'
-                                : 'border-[#D4AF37]/35 hover:border-amber-400 opacity-80 hover:opacity-100'
+                      <div className="mt-4 flex items-center gap-2 text-xs text-mocha">
+                        <span>View:</span>
+                        {[['hall', 'Hall'], ['foyer', 'Stage']].map(([angle, label]) => (
+                          <button
+                            key={angle}
+                            onClick={() => handleSelectHall(selectedHallIdx, angle)}
+                            className={`px-3 py-1 rounded-full border transition-colors ${
+                              hallViewAngle === angle && currentMedia.type === 'image'
+                                ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold'
+                                : 'border-[#D4AF37]/35 hover:text-latte'
                             }`}
                           >
-                            <img src={photo.src} alt={photo.title} className="w-full h-full object-cover group-hover/hphoto:scale-108 transition-transform duration-500" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-
-                          </div>
+                            {label}
+                          </button>
                         ))}
                       </div>
 
-                      <div className="pt-2 border-t border-[#D4AF37]/25 flex items-center justify-between text-xs">
-                        <span className="text-amber-300 font-semibold flex items-center gap-1"><Snowflake className="w-3.5 h-3.5 text-amber-300" /> A/C</span>
-                        <strong className="text-amber-200 font-medium text-[11px]">
-                          {currentHall.bestFor}
-                        </strong>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <Link to={`/halls/${currentHall.id}`} className="btn-gold">View hall <ArrowRight className="w-3.5 h-3.5" /></Link>
+                        <Link to="/spaces" className="btn-outline-gold">Compare halls</Link>
                       </div>
                     </div>
+                  )}
 
-                    {/* Dual Interior Perspective Angle Switcher */}
-                    <div className="flex items-center justify-between p-2 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35">
-                      <div className="flex gap-1.5">
-                        <button
-                          onClick={() => handleSelectHall(selectedHallIdx, 'hall')}
-                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                            hallViewAngle === 'hall' && currentMedia.type === 'image'
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] shadow-sm'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
-                        >
-                          Hall
-                        </button>
-                        <button
-                          onClick={() => handleSelectHall(selectedHallIdx, 'foyer')}
-                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                            hallViewAngle === 'foyer' && currentMedia.type === 'image'
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] shadow-sm'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
-                        >
-                          Stage & Aisle
-                        </button>
+                  {/* DINING */}
+                  {activeConsoleTab === 'banquet' && (
+                    <div>
+                      <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Dedicated dining floor</p>
+                      <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">Swarna Bhojanam</h3>
+                      <p className="mt-1 text-sm text-amber-300 font-semibold">Round tables in royal maroon and gold damask · 250+ seats · 3,500 sq.ft</p>
+                      <ul className="mt-5 space-y-3">
+                        {[
+                          ['Zero mandap aroma', 'A separate floor with its own exhaust'],
+                          ['12-tap granite handwash', 'Pure RO purified water'],
+                          ['Catering service lift', 'Fast, hot food delivery'],
+                          ['1,500+ feast capacity', 'Rolling batches of about 25 minutes'],
+                        ].map(([t, d]) => (
+                          <li key={t} className="flex gap-3">
+                            <Check className="w-4 h-4 text-amber-300 flex-shrink-0 mt-1" />
+                            <span>
+                              <span className="block text-latte font-semibold">{t}</span>
+                              <span className="block text-sm text-mocha">{d}</span>
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <Link to="/halls/dining-hall" className="btn-gold">Dining floor <ArrowRight className="w-3.5 h-3.5" /></Link>
+                        <Link to="/menus" className="btn-outline-gold">View menus</Link>
                       </div>
                     </div>
+                  )}
 
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      <Link
-                        to={`/halls/${currentHall.id}`}
-                        className="block text-center py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:scale-105"
-                      >
-                        View hall →
-                      </Link>
-                      <Link
-                        to="/spaces"
-                        className="block text-center py-2.5 rounded-full border border-amber-400/80 text-amber-300 hover:bg-white/10 font-cinzel text-xs font-bold uppercase tracking-wider transition-all"
-                      >
-                        Compare halls →
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* PANEL 2: THEMES & LIGHTING SIMULATOR */}
-                {activeConsoleTab === 'themes' && (
-                  <motion.div
-                    key="themes"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.28, ease: "easeOut" }}
-                    className="space-y-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-amber-300 tracking-[0.22em] uppercase">
-                        Interactive Stage Lighting
-                      </span>
-                      <span className="text-[11px] font-bold text-amber-200">
-                        Live Color Grade
-                      </span>
-                    </div>
-
-                    {/* 4 Theme Stage Selector */}
-                    <div className="grid grid-cols-2 gap-2">
-                      {themesData.slice(0, 4).map((theme, idx) => (
-                        <button
-                          key={theme.id}
-                          onClick={() => handleSelectTheme(idx)}
-                          className={`p-2.5 rounded-xl text-left transition-all border ${
-                            selectedThemeIdx === idx && currentMedia.type === 'image'
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] border-amber-400 shadow-md font-bold'
-                              : 'bg-[#3A0813] text-amber-100 border-[#D4AF37]/35 hover:bg-[#52101C]'
-                          }`}
-                        >
-                          <span className="block font-cinzel text-xs font-bold leading-tight line-clamp-1">
+                  {/* THEMES */}
+                  {activeConsoleTab === 'themes' && (
+                    <div>
+                      <div className="flex flex-wrap gap-2">
+                        {themesData.slice(0, 4).map((theme, idx) => (
+                          <button
+                            key={theme.id}
+                            onClick={() => handleSelectTheme(idx)}
+                            className={`px-3.5 py-1.5 rounded-full text-xs border transition-colors ${
+                              selectedThemeIdx === idx && currentMedia.type === 'image'
+                                ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold'
+                                : 'border-[#D4AF37]/35 text-mocha hover:text-latte hover:border-[#D4AF37]/70'
+                            }`}
+                          >
                             {theme.title}
+                          </button>
+                        ))}
+                      </div>
+
+                      <p className="mt-6 text-[11px] tracking-[0.25em] uppercase text-amber-300">{currentTheme.category}</p>
+                      <h3 className="mt-1 font-cinzel text-2xl font-bold text-latte">{currentTheme.title}</h3>
+                      <p className="mt-3 text-mocha leading-relaxed line-clamp-4">{currentTheme.description}</p>
+                      <ul className="mt-4 space-y-2">
+                        {currentTheme.highlights?.slice(0, 3).map((h) => (
+                          <li key={h} className="flex gap-2.5 text-sm text-latte">
+                            <Check className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" /> {h}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="mt-5 flex items-center gap-2 text-xs text-mocha">
+                        <span>Lighting:</span>
+                        {[['day', 'Day', Sun], ['theatrical', 'Stage', Sparkles], ['haldi', 'Haldi', Flame]].map(([mode, label, Icon]) => (
+                          <button
+                            key={mode}
+                            onClick={() => setLightingMode(mode)}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border transition-colors ${
+                              lightingMode === mode ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-[#D4AF37]/35 hover:text-latte'
+                            }`}
+                          >
+                            <Icon className="w-3 h-3" /> {label}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="mt-6">
+                        <Link to="/gallery" className="btn-outline-gold">More decor in the gallery</Link>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* MENUS */}
+                  {activeConsoleTab === 'menus' && (
+                    <div>
+                      <div className="inline-flex p-1 rounded-full border border-[#D4AF37]/35 bg-black/25">
+                        {[['veg', 'Vegetarian', Leaf, 0], ['nonVeg', 'Non-Veg', Drumstick, 1]].map(([type, label, Icon, firstTier]) => (
+                          <button
+                            key={type}
+                            onClick={() => {
+                              setDietaryType(type);
+                              setSelectedMenuTier(firstTier);
+                            }}
+                            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs transition-colors ${
+                              dietaryType === type ? 'bg-amber-300 text-[#3D0A14] font-bold' : 'text-mocha hover:text-latte'
+                            }`}
+                          >
+                            <Icon className="w-3.5 h-3.5" /> {label}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {currentMenus.map((menu, idx) => (
+                          <button
+                            key={menu.id}
+                            onClick={() => setSelectedMenuTier(idx)}
+                            className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${
+                              selectedMenuTier === idx ? 'bg-[#4A0E1B] border-amber-400/70 text-latte' : 'border-[#D4AF37]/30 text-mocha hover:text-latte'
+                            }`}
+                          >
+                            {menu.title}
+                          </button>
+                        ))}
+                      </div>
+
+                      <p className="mt-6 text-[11px] tracking-[0.25em] uppercase text-amber-300">{currentMenu.badge}</p>
+                      <h3 className="mt-1 font-cinzel text-2xl font-bold text-latte">{currentMenu.title}</h3>
+                      <p className="mt-1 text-sm text-mocha">Minimum {currentMenu.minPax} guests · {currentMenuDishes.length} dishes</p>
+                      <p className="mt-3 text-sm text-mocha leading-relaxed line-clamp-4">
+                        {currentMenuDishes.slice(0, 12).join(' · ')}
+                      </p>
+
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <Link to="/menus" className="btn-gold">Full menu <ArrowRight className="w-3.5 h-3.5" /></Link>
+                        <button
+                          onClick={() => onOpenLightbox(currentMenu.image, `${currentMenu.title} - Official Menu Card`)}
+                          className="btn-outline-gold"
+                        >
+                          <FileText className="w-4 h-4" /> Printed card
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* BOOK */}
+                  {activeConsoleTab === 'contact' && (
+                    <div>
+                      <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Visit and book</p>
+                      <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">S.S Convention A/C</h3>
+                      <ul className="mt-5 space-y-4 text-sm text-mocha">
+                        <li className="flex gap-3">
+                          <MapPin className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                          {venueData.address.line1}, {venueData.address.locality}, {venueData.address.city} – {venueData.address.pincode}
+                        </li>
+                        <li className="flex gap-3">
+                          <Phone className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                          <span className="flex flex-col">
+                            {venueData.phones.map((p) => (
+                              <a key={p.raw} href={`tel:${p.raw}`} className="font-semibold text-latte hover:text-amber-300 transition-colors">{p.display}</a>
+                            ))}
                           </span>
-                          <span className={`text-[9px] block mt-0.5 ${selectedThemeIdx === idx ? 'text-[#3D0A14]' : 'text-amber-200/80'}`}>
-                            {theme.category}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Interactive Lighting Mode Switcher */}
-                    <div className="p-3.5 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35 space-y-2">
-                      <span className="text-[11px] font-bold text-amber-300 block uppercase tracking-wider">
-                        Simulate Stage Lighting:
-                      </span>
-                      <div className="grid grid-cols-3 gap-1.5">
-                        <button
-                          onClick={() => setLightingMode('day')}
-                          className={`py-1.5 px-2 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 transition-all ${
-                            lightingMode === 'day'
-                              ? 'bg-amber-400 text-[#3D0A14] shadow-sm font-bold'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
+                        </li>
+                        <li className="flex gap-3">
+                          <Clock className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                          Lunch slots end 3:00 PM · Dinner slots end 11:00 PM
+                        </li>
+                      </ul>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <Link to="/contact" onClick={triggerFlowerShower} className="btn-gold"><CalendarCheck className="w-4 h-4" /> Check dates</Link>
+                        <a
+                          href={`https://wa.me/${venueData.whatsappNumber}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-outline-gold"
                         >
-                          <Sun className="w-3 h-3" />
-                          <span>Daylight</span>
-                        </button>
-                        <button
-                          onClick={() => setLightingMode('theatrical')}
-                          className={`py-1.5 px-2 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 transition-all ${
-                            lightingMode === 'theatrical'
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] shadow-sm font-bold'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
-                        >
-                          <Moon className="w-3 h-3" />
-                          <span>Theatrical</span>
-                        </button>
-                        <button
-                          onClick={() => setLightingMode('haldi')}
-                          className={`py-1.5 px-2 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 transition-all ${
-                            lightingMode === 'haldi'
-                              ? 'bg-amber-600 text-white shadow-sm font-bold'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
-                        >
-                          <Flame className="w-3 h-3" />
-                          <span>Haldi</span>
-                        </button>
+                          <MessageSquare className="w-4 h-4" /> WhatsApp
+                        </a>
                       </div>
                     </div>
-
-                    <Link
-                      to="/occasions"
-                      className="block text-center py-2.5 rounded-full border-2 border-amber-400 text-amber-300 hover:bg-gradient-to-r hover:from-amber-400 hover:to-amber-500 hover:text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md"
-                    >
-                      Explore All Occasions & Décor Stages →
-                    </Link>
-                  </motion.div>
-                )}
-
-                {/* PANEL 3: BANQUET FEASTS & GUEST CALCULATOR */}
-                {activeConsoleTab === 'menus' && (
-                  <motion.div
-                    key="menus"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.28, ease: "easeOut" }}
-                    className="space-y-3.5"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-amber-300 tracking-[0.22em] uppercase">
-                        Live Feast Customizer
-                      </span>
-                      <span className="text-[11px] font-bold text-amber-200">
-                        Separate Dining Level
-                      </span>
-                    </div>
-
-                    {/* Veg vs Non-Veg Switcher */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={() => {
-                          setDietaryType('veg');
-                          setSelectedMenuTier(0);
-                          if (menuViewMode === 'rateCard') {
-                            setCurrentMedia({
-                              type: 'image',
-                              src: cateringMenus.veg[0].image,
-                              title: `${cateringMenus.veg[0].title} (Official Menu Card)`,
-                              caption: `${cateringMenus.veg[0].badge} • Min ${cateringMenus.veg[0].minPax} Pax`
-                            });
-                          }
-                        }}
-                        className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                          dietaryType === 'veg'
-                            ? 'bg-emerald-600 text-white shadow-sm'
-                            : 'bg-[#3A0813] text-emerald-300 border border-emerald-500/40 hover:bg-[#52101C]'
-                        }`}
-                      >
-                        <Leaf className="w-3.5 h-3.5" />
-                        <span>Pure Veg</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setDietaryType('nonVeg');
-                          setSelectedMenuTier(1);
-                          if (menuViewMode === 'rateCard') {
-                            setCurrentMedia({
-                              type: 'image',
-                              src: cateringMenus.nonVeg[1].image,
-                              title: `${cateringMenus.nonVeg[1].title} (Official Menu Card)`,
-                              caption: `${cateringMenus.nonVeg[1].badge} • Min ${cateringMenus.nonVeg[1].minPax} Pax`
-                            });
-                          }
-                        }}
-                        className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                          dietaryType === 'nonVeg'
-                            ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] font-bold shadow-sm'
-                            : 'bg-[#3A0813] text-amber-200 border border-[#D4AF37]/40 hover:bg-[#52101C]'
-                        }`}
-                      >
-                        <Drumstick className="w-3.5 h-3.5" />
-                        <span>Dum Biryani Feast</span>
-                      </button>
-                    </div>
-
-                    {/* Menu Tier Switcher */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {currentMenus.map((menu, idx) => (
-                        <button
-                          key={menu.id}
-                          onClick={() => {
-                            setSelectedMenuTier(idx);
-                            if (menuViewMode === 'rateCard') {
-                              setCurrentMedia({
-                                type: 'image',
-                                src: menu.image,
-                                title: `${menu.title} (Official Menu Card)`,
-                                caption: `${menu.badge} • Min ${menu.minPax} Pax`
-                              });
-                            }
-                          }}
-                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all border ${
-                            selectedMenuTier === idx
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] border-amber-400 font-bold shadow-sm'
-                              : 'bg-[#3A0813] text-amber-100 border-[#D4AF37]/35 hover:bg-[#52101C]'
-                          }`}
-                        >
-                          {menu.title}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Screen View Toggle: Dining Hall vs Printed Rate Card */}
-                    <div className="flex items-center justify-between p-2 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35">
-                      <span className="text-[11px] font-bold text-amber-300">
-                        View:
-                      </span>
-                      <div className="flex gap-1.5">
-                        <button
-                          onClick={() => handleSwitchMenuView('dining')}
-                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all ${
-                            menuViewMode === 'dining' && currentMedia.type === 'image'
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] font-bold shadow-sm'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
-                        >
-                          Dining Hall (250+ Seats)
-                        </button>
-                        <button
-                          onClick={() => handleSwitchMenuView('rateCard')}
-                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
-                            menuViewMode === 'rateCard' && currentMedia.type === 'image'
-                              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-[#3D0A14] font-bold shadow-sm'
-                              : 'bg-[#24050B] text-amber-200 hover:text-white'
-                          }`}
-                        >
-                          <FileText className="w-3 h-3" />
-                          <span>Printed Rate Card</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Live Guest Count Slider */}
-                    <div className="p-3 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35 space-y-1.5">
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="font-bold text-amber-300">
-                          Guests: {guestCount} Pax
-                        </span>
-                        <span className="text-[10px] text-amber-200 font-bold">
-                          {Math.ceil(guestCount / 250)} Seating Batches (250 Seats)
-                        </span>
-                      </div>
-                      <input
-                        type="range"
-                        min="50"
-                        max="600"
-                        step="25"
-                        value={guestCount}
-                        onChange={(e) => setGuestCount(Number(e.target.value))}
-                        className="w-full h-2 bg-[#24050B] rounded-lg appearance-none cursor-pointer accent-amber-400"
-                      />
-                    </div>
-
-                    <Link
-                      to="/menus"
-                      className="block text-center py-2.5 rounded-full border-2 border-amber-400 text-amber-300 hover:bg-gradient-to-r hover:from-amber-400 hover:to-amber-500 hover:text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider transition-all shadow-md"
-                    >
-                      View All 7 Printed Rate Cards →
-                    </Link>
-                  </motion.div>
-                )}
-
-                {/* PANEL 4: BOOK VISIT & DIRECT CONTACT */}
-                {activeConsoleTab === 'contact' && (
-                  <motion.div
-                    key="contact"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.28, ease: "easeOut" }}
-                    className="space-y-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-amber-300 tracking-[0.22em] uppercase">
-                        Direct Venue Inquiry
-                      </span>
-                      <span className="text-[11px] font-bold text-emerald-400">
-                        Open Every Day
-                      </span>
-                    </div>
-
-                    {/* Direct Phone Dial Card */}
-                    <a
-                      href="tel:918985700044"
-                      className="p-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] flex items-center justify-between shadow-lg hover:scale-[1.02] transition-all group"
-                    >
-                      <div>
-                        <span className="text-[10px] text-[#5A101E] block uppercase tracking-wider font-bold">
-                          Primary Booking Line
-                        </span>
-                        <strong className="text-base font-cinzel tracking-wider block mt-0.5">
-                          +91 89857 00044
-                        </strong>
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-[#3D0A14] flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Phone className="w-4 h-4 text-amber-300" />
-                      </div>
-                    </a>
-
-                    {/* Secondary Phone & WhatsApp */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <a
-                        href="https://wa.me/918985700044?text=Hi%20SS%20Convention,%20I%20would%20like%20to%20inquire%20about%20hall%20availability."
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 rounded-xl bg-emerald-600 text-white text-center font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-emerald-700 transition-colors"
-                      >
-                        <MessageSquare className="w-3.5 h-3.5" />
-                        <span>WhatsApp Chat</span>
-                      </a>
-                      <a
-                        href="tel:917981666692"
-                        className="p-3 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35 text-amber-200 text-center font-bold text-xs flex items-center justify-center gap-1 hover:bg-[#52101C] transition-colors"
-                      >
-                        <Phone className="w-3.5 h-3.5 text-amber-300" />
-                        <span>+91 79816 66692</span>
-                      </a>
-                    </div>
-
-                    {/* Location Address */}
-                    <div className="p-3 rounded-xl bg-[#3A0813] border border-[#D4AF37]/35 text-xs text-amber-100/90 leading-relaxed">
-                      <strong className="text-amber-300 block mb-0.5">Address:</strong>
-                      Raghavendra Nagar Colony, Jillelaguda, Meerpet, Hyderabad – 500097
-                    </div>
-
-                    <Link
-                      to="/contact"
-                      onClick={triggerFlowerShower}
-                      className="block text-center py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider shadow-lg transition-all hover:scale-[1.02]"
-                    >
-                      Schedule a Free Hall Visit & Estimate →
-                    </Link>
-                  </motion.div>
-                )}
+                  )}
+                </motion.div>
               </AnimatePresence>
-
-              {/* Bottom Quick Action CTAs */}
-              <div className="pt-4 border-t border-[#D4AF37]/30 flex items-center justify-between">
-                <a
-                  href="#halls"
-                  className="text-[11px] font-bold tracking-wider text-amber-300 hover:text-white uppercase flex items-center gap-1"
-                >
-                  <span>Explore Chapters Below</span>
-                  <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
-                </a>
-
-                <Link
-                  to="/contact"
-                  onClick={triggerFlowerShower}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel text-xs font-bold uppercase tracking-wider shadow-md hover:scale-105 transition-all"
-                >
-                  <span>Book Date</span>
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
-
-        {/* ========================================================
-            3. HERO FLOATING ACTION BAR (The Owner's Call to Action)
-            ======================================================== */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-center">
-          <Link
-            to="/contact"
-            onClick={triggerFlowerShower}
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel font-bold text-sm uppercase tracking-[0.16em] shadow-[0_10px_30px_rgba(212,175,55,0.4)] hover:scale-105 transition-all flex items-center gap-2 group"
-          >
-            <CalendarCheck className="w-4 h-4 text-[#3D0A14] group-hover:scale-110 transition-transform" />
-            <span>BOOK VISIT & INSTANT ESTIMATE</span>
-          </Link>
-
-          <a
-            href="tel:+918985700044"
-            className="px-7 py-4 rounded-full bg-[#350710] hover:bg-[#4D0D19] border-2 border-amber-400 text-amber-300 font-cinzel font-bold text-sm uppercase tracking-[0.16em] shadow-lg hover:scale-105 transition-all flex items-center gap-2"
-          >
-            <Phone className="w-4 h-4 text-amber-400" />
-            <span>CALL +91 89857 00044</span>
-          </a>
-
-          <a
-            href="https://wa.me/918985700044?text=Namaste%20SS%20Convention%20Management,%20I%20would%20like%20to%20inquire%20about%20hall%20availability%20for%20my%20event."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-4 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-cinzel font-bold text-sm uppercase tracking-[0.14em] shadow-lg hover:scale-105 transition-all flex items-center gap-2"
-          >
-            <MessageSquare className="w-4 h-4 fill-current" />
-            <span>WHATSAPP CHAT</span>
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
   </div>
   );
 }
