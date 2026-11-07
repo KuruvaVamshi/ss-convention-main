@@ -245,6 +245,11 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   const switchTabRef = useRef(null);
   const mediaRef = useRef(null);
   const consoleTrackRef = useRef(null);
+  const consoleHoverRef = useRef(false);
+  const consoleVisibleRef = useRef(false);
+  const lastInteractRef = useRef(0);
+  const activeTabRef = useRef('halls');
+  const [consoleAuto, setConsoleAuto] = useState(true);
   // Switch console tab and dynamically sync visual theater
   const handleSwitchTab = (tab) => {
     setActiveConsoleTab(tab);
@@ -447,11 +452,44 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
     return () => io.disconnect();
   }, []);
 
+  activeTabRef.current = activeConsoleTab;
+
+  // Auto-advance the topics every 6 seconds. It pauses while the visitor hovers or
+  // focuses the topics, shortly after they swipe or click, while a video plays,
+  // while the section is off screen and when reduced motion is requested.
+  useEffect(() => {
+    const section = document.getElementById('interactive-console');
+    let io;
+    if (section) {
+      io = new IntersectionObserver(([entry]) => { consoleVisibleRef.current = entry.isIntersecting; }, { threshold: 0.25 });
+      io.observe(section);
+    }
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer;
+    if (consoleAuto && !reduce) {
+      timer = setInterval(() => {
+        if (document.hidden || !consoleVisibleRef.current || consoleHoverRef.current) return;
+        if (mediaRef.current?.type === 'video') return;
+        if (Date.now() - lastInteractRef.current < 10000) return;
+        const topics = ['halls', 'banquet', 'themes', 'menus', 'contact'];
+        const track = consoleTrackRef.current;
+        if (!track) return;
+        const next = (topics.indexOf(activeTabRef.current) + 1) % topics.length;
+        track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
+      }, 6000);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+      if (io) io.disconnect();
+    };
+  }, [consoleAuto]);
+
   const CONSOLE_TOPICS = ['halls', 'banquet', 'themes', 'menus', 'contact'];
   const scrollConsoleTo = (i) => {
     const track = consoleTrackRef.current;
     if (!track) return;
     const next = (i + CONSOLE_TOPICS.length) % CONSOLE_TOPICS.length;
+    lastInteractRef.current = Date.now();
     track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
   };
 
@@ -693,8 +731,20 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           </div>
 
           {/* Topics: swipe or use the arrows to move left and right */}
-          <div className="lg:col-span-6 min-w-0">
-            <div ref={consoleTrackRef} className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+          <div
+            className="lg:col-span-6 min-w-0"
+            onMouseEnter={() => { consoleHoverRef.current = true; }}
+            onMouseLeave={() => { consoleHoverRef.current = false; }}
+            onFocus={() => { consoleHoverRef.current = true; }}
+            onBlur={() => { consoleHoverRef.current = false; }}
+          >
+            <div
+              ref={consoleTrackRef}
+              onPointerDown={() => { lastInteractRef.current = Date.now(); }}
+              onWheel={() => { lastInteractRef.current = Date.now(); }}
+              onTouchStart={() => { lastInteractRef.current = Date.now(); }}
+              className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
+            >
             {[
               ['halls', '01', 'Our Halls'],
               ['banquet', '02', 'Dining Floor'],
@@ -956,6 +1006,16 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 ))}
               </div>
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setConsoleAuto((a) => !a)}
+                  aria-pressed={consoleAuto}
+                  aria-label={consoleAuto ? 'Pause automatic scrolling' : 'Start automatic scrolling'}
+                  title={consoleAuto ? 'Pause auto-scroll' : 'Start auto-scroll'}
+                  className="w-10 h-10 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors"
+                >
+                  {consoleAuto ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+                </button>
                 <button
                   type="button"
                   onClick={() => scrollConsoleTo(CONSOLE_TOPICS.indexOf(activeConsoleTab) - 1)}
