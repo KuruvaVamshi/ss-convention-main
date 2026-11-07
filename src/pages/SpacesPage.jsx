@@ -284,8 +284,8 @@ function HallDecorationLightbox({
 }
 
 /**
- * Hall photo stage: one large photo with a caption panel and a thumbnail rail.
- * Arrow keys and the buttons change photos; clicking the stage opens the lightbox.
+ * Hall photo strip: expanding panels on desktop (hover to open a photo),
+ * swipeable cards on phones. Clicking a photo opens the lightbox.
  */
 function HallGalleryStrip({
   hallName,
@@ -295,98 +295,77 @@ function HallGalleryStrip({
   images = [],
   onOpenLightbox
 }) {
-  const [current, setCurrent] = useState(0);
-  const railRef = useRef(null);
+  const [active, setActive] = useState(0);
 
   if (!images.length) return null;
 
-  const total = images.length;
-  const go = (i) => {
-    const next = (i + total) % total;
-    setCurrent(next);
-    const thumb = railRef.current?.children[next];
-    thumb?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-  };
-  const img = images[current];
-
   return (
-    <div
-      onKeyDown={(e) => {
-        if (e.key === 'ArrowRight') go(current + 1);
-        if (e.key === 'ArrowLeft') go(current - 1);
-      }}
-    >
-      <div className="max-w-2xl mb-8">
-        <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">{eyebrow}</p>
-        <h3 className="mt-2 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">{heading}</h3>
-        <p className="mt-3 text-mocha leading-relaxed">{description}</p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
-        {/* Stage */}
+    <div>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+        <div className="max-w-2xl">
+          <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">{eyebrow}</p>
+          <h3 className="mt-2 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">{heading}</h3>
+          <p className="mt-3 text-mocha leading-relaxed">{description}</p>
+        </div>
         <button
           type="button"
-          onClick={() => onOpenLightbox(images, current, hallName)}
-          aria-label={`Enlarge photo ${current + 1} of ${total}: ${img.title}`}
-          className="group relative lg:col-span-9 aspect-[16/10] overflow-hidden rounded-2xl border border-[#D4AF37]/35 bg-black cursor-zoom-in"
+          onClick={() => onOpenLightbox(images, 0, hallName)}
+          className="btn-outline-gold self-start md:self-auto"
         >
-          {images.map((p, i) => (
-            <img
-              key={p.src}
-              src={p.src}
-              alt={i === current ? p.title : ''}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              draggable={false}
-              className={`absolute inset-0 w-full h-full object-cover transition-all duration-[900ms] ease-out ${
-                i === current ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-              }`}
-            />
-          ))}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/80 via-transparent to-transparent pointer-events-none" />
-          <span className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/55 border border-white/25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <Maximize2 className="w-4 h-4 text-amber-200" />
-          </span>
+          <Eye className="w-4 h-4" /> View all {images.length} photos
         </button>
-
-        {/* Caption panel */}
-        <div className="lg:col-span-3 flex lg:flex-col justify-between gap-4 rounded-2xl border border-[#D4AF37]/25 bg-[#350710] p-5">
-          <div className="min-w-0">
-            <p className="font-cinzel text-3xl text-amber-300 tabular-nums">
-              {String(current + 1).padStart(2, '0')}
-              <span className="text-base text-mocha"> / {String(total).padStart(2, '0')}</span>
-            </p>
-            {img.category && (
-              <p className="mt-4 text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</p>
-            )}
-            <p className="mt-1 font-cinzel text-base sm:text-lg font-bold text-latte leading-snug">{img.title}</p>
-          </div>
-          <div className="flex lg:flex-row items-center gap-2 self-end lg:self-auto">
-            <button type="button" onClick={() => go(current - 1)} aria-label="Previous photo" className="w-11 h-11 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors">
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button type="button" onClick={() => go(current + 1)} aria-label="Next photo" className="w-11 h-11 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors">
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
       </div>
 
-      {/* Thumbnail rail */}
-      <div ref={railRef} className="mt-4 flex gap-3 overflow-x-auto no-scrollbar pb-1">
-        {images.map((p, i) => (
-          <button
-            key={p.src}
-            type="button"
-            onClick={() => go(i)}
-            aria-label={`Show photo ${i + 1}: ${p.title}`}
-            aria-current={i === current}
-            className={`relative flex-shrink-0 w-28 sm:w-36 aspect-[4/3] overflow-hidden rounded-lg border transition-all duration-300 ${
-              i === current ? 'border-amber-300 ring-2 ring-amber-300/40' : 'border-[#D4AF37]/25 opacity-60 hover:opacity-100'
-            }`}
-          >
-            <img src={p.src} alt="" loading="lazy" draggable={false} className="w-full h-full object-cover" />
-          </button>
-        ))}
+      <div className="flex gap-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-3 lg:pb-0 no-scrollbar">
+        {images.map((img, i) => {
+          const open = active === i;
+          return (
+            <button
+              key={img.src}
+              type="button"
+              onMouseEnter={() => window.matchMedia('(hover: hover)').matches && setActive(i)}
+              onFocus={() => setActive(i)}
+              onClick={() => {
+                if (open || !window.matchMedia('(hover: hover)').matches) onOpenLightbox(images, i, hallName);
+                else setActive(i);
+              }}
+              aria-label={`View photo ${i + 1} of ${images.length}: ${img.title}`}
+              className={`group relative flex-shrink-0 snap-center overflow-hidden rounded-2xl border text-left cursor-pointer h-[420px] lg:h-[520px] w-[78vw] sm:w-[52vw] lg:w-auto transition-[flex,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                open ? 'lg:flex-[4.5] border-amber-400/70' : 'lg:flex-1 border-[#D4AF37]/25'
+              }`}
+            >
+              <img
+                src={img.src}
+                alt={img.title}
+                loading="lazy"
+                draggable={false}
+                className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-out ${
+                  open ? 'scale-105 brightness-100' : 'lg:scale-100 lg:brightness-[0.55] lg:grayscale-[0.35]'
+                }`}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409] via-[#1C0409]/20 to-transparent" />
+
+              <span className="absolute top-4 left-5 font-cinzel text-sm tracking-[0.3em] text-amber-300/90">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+                {/* Phones always show the caption; desktop shows it on the open panel */}
+                <div className={`transition-all duration-700 ${open ? 'lg:opacity-100 lg:translate-y-0' : 'lg:opacity-0 lg:translate-y-3'}`}>
+                  {img.category && (
+                    <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</span>
+                  )}
+                  <span className="mt-1 block font-cinzel text-base sm:text-lg font-bold text-latte leading-snug lg:max-w-md">
+                    {img.title}
+                  </span>
+                  <span className="mt-2 hidden lg:inline-flex items-center gap-1.5 text-xs text-mocha">
+                    <Maximize2 className="w-3.5 h-3.5" /> Click to enlarge
+                  </span>
+                </div>
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
