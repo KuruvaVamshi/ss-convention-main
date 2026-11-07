@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Clock, Car, Navigation, Copy, Check, ExternalLink, MessageSquare, Minus, Plus } from 'lucide-react';
 import { venueData } from '../data/venueData';
@@ -36,6 +37,8 @@ const travelDistances = [
   { from: 'Chandrayangutta X Roads', time: '15 – 18 min', dist: '7.8 km' },
   { from: 'Rajiv Gandhi Intl Airport', time: '30 – 35 min', dist: '21 km' },
 ];
+
+const maxKm = Math.max(...travelDistances.map((t) => parseFloat(t.dist)));
 
 function recommendHall(guests) {
   if (guests <= 180) return { name: 'Hall Koundinya', capacity: '50 – 200 guests' };
@@ -289,24 +292,59 @@ export default function ContactPage() {
       {/* Travel times */}
       <section className="py-16 sm:py-24 bg-[#3D0A14]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <SectionHeader eyebrow="Proximity & connectivity" title="Easy for Your Guests" />
-          <Reveal>
-            <ul className="divide-y divide-[#D4AF37]/20 border-y border-[#D4AF37]/20">
-              {travelDistances.map((t) => (
-                <li key={t.from} className="flex items-center justify-between gap-4 py-4">
-                  <span className="text-latte">From {t.from}</span>
-                  <span className="text-sm text-mocha whitespace-nowrap">
-                    {t.time} <span className="ml-3 font-cinzel font-bold text-amber-300">{t.dist}</span>
-                  </span>
+          <SectionHeader eyebrow="Proximity & connectivity" title="Easy for Your Guests">
+            How far each landmark is from the venue. Tap a row to open the route in Google Maps.
+          </SectionHeader>
+
+          <ul className="space-y-3">
+            {travelDistances.map((t, i) => {
+              const km = parseFloat(t.dist);
+              // Square-root scale so the 2.8 km and 21 km bars are both readable
+              const pct = Math.max(14, Math.round((Math.sqrt(km) / Math.sqrt(maxKm)) * 100));
+              return (
+                <li key={t.from}>
+                  <motion.a
+                    href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(`${t.from}, Hyderabad`)}&destination=${encodeURIComponent(venueData.address.full)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                    className="group block rounded-xl border border-[#D4AF37]/20 hover:border-amber-400/60 bg-[#350710]/60 hover:bg-[#4A0E1B]/70 px-4 sm:px-5 py-4 transition-colors"
+                  >
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="text-latte text-sm sm:text-base">{t.from}</span>
+                      <span className="flex items-baseline gap-3 whitespace-nowrap">
+                        <span className="text-xs sm:text-sm text-mocha">{t.time}</span>
+                        <span className="font-cinzel font-bold text-amber-300">{t.dist}</span>
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex items-center gap-2">
+                      <span className="relative flex-1 h-1.5 rounded-full bg-[#D4AF37]/15 overflow-hidden">
+                        <motion.span
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${pct}%` }}
+                          viewport={{ once: true, amount: 0.4 }}
+                          transition={{ duration: 1.1, delay: 0.15 + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[#B8860B] to-[#EED9A6]"
+                        />
+                      </span>
+                      <MapPin className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                      <ExternalLink className="w-3.5 h-3.5 text-mocha opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                    </div>
+                  </motion.a>
                 </li>
-              ))}
-            </ul>
-            <p className="mt-8 text-center text-sm text-mocha">
-              Prefer to talk? <a href={`tel:${venueData.phones[0].raw}`} className="text-amber-300 hover:text-latte">{venueData.phones[0].display}</a>
-              {' · '}
-              <Link to="/policies" className="text-amber-300 hover:text-latte">Venue policies</Link>
-            </p>
-          </Reveal>
+              );
+            })}
+          </ul>
+
+          <p className="mt-8 text-center text-sm text-mocha">
+            Prefer to talk? <a href={`tel:${venueData.phones[0].raw}`} className="text-amber-300 hover:text-latte">{venueData.phones[0].display}</a>
+            {' · '}
+            <Link to="/policies" className="text-amber-300 hover:text-latte">Venue policies</Link>
+          </p>
         </div>
       </section>
     </div>
