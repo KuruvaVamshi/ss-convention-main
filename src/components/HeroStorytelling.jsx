@@ -559,26 +559,85 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
 
       {/* ========================================================
           CHAPTER 2: EXPLORE THE VENUE (interactive console)
-          One viewer on the left, short details for the chosen tab on the right.
+          Full-bleed stage: the photo or video fills the section, a numbered menu
+          sits on the left and a glass panel with details on the right.
           ======================================================== */}
-      <section id="interactive-console" className="py-20 sm:py-28 bg-[#2A060E] relative z-10 border-t border-[#D4AF37]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Take a closer look</p>
-            <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide text-latte">Explore the Venue</h2>
-            <div className="mx-auto mt-4 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
-          </div>
+      <section id="interactive-console" className="relative z-10 overflow-hidden bg-black border-t border-[#D4AF37]/30 min-h-[720px] lg:min-h-[780px] flex flex-col">
+        {/* Background media */}
+        <div className="absolute inset-0">
+          {currentMedia.type === 'video' ? (
+            <video
+              ref={videoRef}
+              key={currentMedia.src}
+              src={currentMedia.src}
+              autoPlay
+              loop
+              muted={isMuted}
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <AnimatePresence mode="sync">
+              <motion.img
+                key={currentMedia.src}
+                src={currentMedia.src}
+                alt={currentMedia.title}
+                style={getLightingFilter()}
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.9, ease: 'easeOut' }}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </AnimatePresence>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#140205]/90 via-[#140205]/45 to-[#140205]/25" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#140205]/85 via-transparent to-[#140205]/40" />
+        </div>
 
-          {/* Tabs */}
-          <div role="tablist" aria-label="Explore the venue" className="mt-10 flex justify-center">
-            <div className="flex max-w-full gap-1 p-1.5 rounded-full border border-[#D4AF37]/35 bg-black/25 overflow-x-auto no-scrollbar">
+        {/* Media controls */}
+        <div className="absolute top-5 right-5 z-20 flex items-center gap-2">
+          {currentMedia.type === 'video' && (
+            <>
+              <button
+                onClick={togglePlayPause}
+                aria-label={isPlayingVideo ? 'Pause video' : 'Play video'}
+                className="w-10 h-10 rounded-full bg-black/55 backdrop-blur border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+              >
+                {isPlayingVideo ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+              </button>
+              <button
+                onClick={toggleSound}
+                aria-label={isMuted ? 'Unmute' : 'Mute'}
+                className="w-10 h-10 rounded-full bg-black/55 backdrop-blur border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+              >
+                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </button>
+            </>
+          )}
+          <button
+            onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
+            aria-label="View full screen"
+            className="w-10 h-10 rounded-full bg-black/55 backdrop-blur border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Numbered menu */}
+          <div className="lg:col-span-5">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Take a closer look</p>
+            <h2 className="mt-2 font-cinzel text-3xl sm:text-5xl font-bold tracking-wide text-latte">Explore the Venue</h2>
+            <div role="tablist" aria-label="Explore the venue" className="mt-8 flex lg:flex-col gap-1 overflow-x-auto no-scrollbar">
               {[
-                ['halls', 'Halls', Building],
-                ['banquet', 'Dining', UtensilsCrossed],
-                ['themes', 'Stage Themes', Palette],
-                ['menus', 'Menus', Sparkles],
-                ['contact', 'Book', CalendarCheck],
-              ].map(([id, label, Icon]) => {
+                ['halls', 'Our Halls'],
+                ['banquet', 'Dining Floor'],
+                ['themes', 'Stage Themes'],
+                ['menus', 'Menus'],
+                ['contact', 'Book a Visit'],
+              ].map(([id, label], i) => {
                 const on = activeConsoleTab === id;
                 return (
                   <button
@@ -586,336 +645,279 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                     role="tab"
                     aria-selected={on}
                     onClick={() => handleSwitchTab(id)}
-                    className={`relative flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-cinzel tracking-wider whitespace-nowrap transition-colors ${
-                      on ? 'text-[#1C0409] font-bold' : 'text-mocha hover:text-latte'
-                    }`}
+                    className="group flex items-center gap-4 py-2 sm:py-2.5 text-left whitespace-nowrap flex-shrink-0"
                   >
-                    {on && (
-                      <motion.span
-                        layoutId="console-pill"
-                        transition={{ type: 'spring', stiffness: 420, damping: 36 }}
-                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B8860B] via-[#EED9A6] to-[#C5A059]"
-                      />
-                    )}
-                    <Icon className="relative w-4 h-4" />
-                    <span className="relative">{label}</span>
+                    <span className={`font-cinzel text-sm transition-colors ${on ? 'text-amber-300' : 'text-latte/40 group-hover:text-latte/70'}`}>
+                      0{i + 1}
+                    </span>
+                    <span
+                      className={`font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide transition-all duration-300 ${
+                        on ? 'text-latte' : 'text-latte/45 group-hover:text-latte/80'
+                      }`}
+                    >
+                      {label}
+                    </span>
+                    <span className={`hidden lg:block h-px bg-amber-300 transition-all duration-500 ${on ? 'w-14 opacity-100' : 'w-0 opacity-0'}`} />
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            {/* Viewer */}
-            <div className="lg:col-span-7">
-              <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl aspect-[16/10] bg-black group">
-                {currentMedia.type === 'video' ? (
-                  <video
-                    ref={videoRef}
-                    key={currentMedia.src}
-                    src={currentMedia.src}
-                    autoPlay
-                    loop
-                    muted={isMuted}
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src={currentMedia.src}
-                    alt={currentMedia.title}
-                    style={getLightingFilter()}
-                    className="w-full h-full object-cover transition-all duration-500"
-                  />
-                )}
-                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
-
-                <div className="absolute top-3 right-3 flex items-center gap-2">
-                  {currentMedia.type === 'video' && (
-                    <>
-                      <button
-                        onClick={togglePlayPause}
-                        aria-label={isPlayingVideo ? 'Pause video' : 'Play video'}
-                        className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
-                      >
-                        {isPlayingVideo ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
-                      </button>
-                      <button
-                        onClick={toggleSound}
-                        aria-label={isMuted ? 'Unmute' : 'Mute'}
-                        className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
-                      >
-                        {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                      </button>
-                    </>
-                  )}
+          {/* Glass details panel */}
+          <div className="lg:col-span-7 lg:pl-10">
+            <div className="rounded-3xl bg-[#1C0409]/70 backdrop-blur-xl border border-[#D4AF37]/35 p-6 sm:p-8 shadow-2xl max-w-xl lg:ml-auto">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeConsoleTab}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* HALLS */}
+          {activeConsoleTab === 'halls' && (
+            <div>
+              <div className="flex gap-2">
+                {spacesData.slice(0, 3).map((hall, idx) => (
                   <button
-                    onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
-                    aria-label="View full screen"
-                    className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
+                    key={hall.id}
+                    onClick={() => handleSelectHall(idx, hallViewAngle)}
+                    className={`flex-1 px-3 py-2.5 rounded-xl border text-center transition-colors ${
+                      selectedHallIdx === idx ? 'bg-[#4A0E1B] border-amber-400/70' : 'border-[#D4AF37]/25 hover:border-[#D4AF37]/60'
+                    }`}
                   >
-                    <Maximize2 className="w-4 h-4" />
+                    <span className="block font-cinzel text-xs sm:text-sm font-bold text-latte">{hall.name}</span>
+                    <span className="block text-[11px] text-mocha mt-0.5">{hall.capacity}</span>
                   </button>
-                </div>
-
-                <div className="absolute bottom-4 left-5 right-5">
-                  <h3 className="font-cinzel text-lg sm:text-xl font-bold text-latte drop-shadow">{currentMedia.title}</h3>
-                  <p className="text-xs sm:text-sm text-mocha line-clamp-1">{currentMedia.caption}</p>
-                </div>
+                ))}
               </div>
 
-              {/* Video tours */}
-              <div className="mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
-                <span className="text-[11px] tracking-[0.25em] uppercase text-amber-300 whitespace-nowrap pr-1">Video tours</span>
-                {venueVideos.map((v) => {
-                  const on = currentMedia.src === v.src && currentMedia.type === 'video';
-                  return (
-                    <button
-                      key={v.id}
-                      onClick={() => handleSelectVideo(v)}
-                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${
-                        on ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-[#D4AF37]/35 text-mocha hover:text-latte hover:border-[#D4AF37]/70'
-                      }`}
-                    >
-                      <Play className="w-3 h-3 fill-current" /> {v.label}
-                    </button>
-                  );
-                })}
+              <h3 className="mt-6 font-cinzel text-2xl font-bold text-latte">{currentHall.name}</h3>
+              <p className="mt-1 text-sm text-amber-300 font-semibold">{currentHall.tagline}</p>
+              <p className="mt-3 text-mocha leading-relaxed line-clamp-4">{currentHall.shortDescription || currentHall.description}</p>
+              <p className="mt-3 text-sm text-latte">
+                <span className="text-[10px] tracking-[0.25em] uppercase text-amber-300 mr-2">Ideal for</span>
+                {currentHall.bestFor}
+              </p>
+
+              <div className="mt-4 flex items-center gap-2 text-xs text-mocha">
+                <span>View:</span>
+                {[['hall', 'Hall'], ['foyer', 'Stage']].map(([angle, label]) => (
+                  <button
+                    key={angle}
+                    onClick={() => handleSelectHall(selectedHallIdx, angle)}
+                    className={`px-3 py-1 rounded-full border transition-colors ${
+                      hallViewAngle === angle && currentMedia.type === 'image'
+                        ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold'
+                        : 'border-[#D4AF37]/35 hover:text-latte'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to={`/halls/${currentHall.id}`} className="btn-gold">View hall <ArrowRight className="w-3.5 h-3.5" /></Link>
+                <Link to="/spaces" className="btn-outline-gold">Compare halls</Link>
               </div>
             </div>
+          )}
 
-            {/* Details */}
-            <div className="lg:col-span-5">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeConsoleTab}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          {/* DINING */}
+          {activeConsoleTab === 'banquet' && (
+            <div>
+              <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Dedicated dining floor</p>
+              <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">Swarna Bhojanam</h3>
+              <p className="mt-1 text-sm text-amber-300 font-semibold">Round tables in royal maroon and gold damask · 250+ seats · 3,500 sq.ft</p>
+              <ul className="mt-5 space-y-3">
+                {[
+                  ['Zero mandap aroma', 'A separate floor with its own exhaust'],
+                  ['12-tap granite handwash', 'Pure RO purified water'],
+                  ['Catering service lift', 'Fast, hot food delivery'],
+                  ['1,500+ feast capacity', 'Rolling batches of about 25 minutes'],
+                ].map(([t, d]) => (
+                  <li key={t} className="flex gap-3">
+                    <Check className="w-4 h-4 text-amber-300 flex-shrink-0 mt-1" />
+                    <span>
+                      <span className="block text-latte font-semibold">{t}</span>
+                      <span className="block text-sm text-mocha">{d}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/halls/dining-hall" className="btn-gold">Dining floor <ArrowRight className="w-3.5 h-3.5" /></Link>
+                <Link to="/menus" className="btn-outline-gold">View menus</Link>
+              </div>
+            </div>
+          )}
+
+          {/* THEMES */}
+          {activeConsoleTab === 'themes' && (
+            <div>
+              <div className="flex flex-wrap gap-2">
+                {themesData.slice(0, 4).map((theme, idx) => (
+                  <button
+                    key={theme.id}
+                    onClick={() => handleSelectTheme(idx)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs border transition-colors ${
+                      selectedThemeIdx === idx && currentMedia.type === 'image'
+                        ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold'
+                        : 'border-[#D4AF37]/35 text-mocha hover:text-latte hover:border-[#D4AF37]/70'
+                    }`}
+                  >
+                    {theme.title}
+                  </button>
+                ))}
+              </div>
+
+              <p className="mt-6 text-[11px] tracking-[0.25em] uppercase text-amber-300">{currentTheme.category}</p>
+              <h3 className="mt-1 font-cinzel text-2xl font-bold text-latte">{currentTheme.title}</h3>
+              <p className="mt-3 text-mocha leading-relaxed line-clamp-4">{currentTheme.description}</p>
+              <ul className="mt-4 space-y-2">
+                {currentTheme.highlights?.slice(0, 3).map((h) => (
+                  <li key={h} className="flex gap-2.5 text-sm text-latte">
+                    <Check className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" /> {h}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-5 flex items-center gap-2 text-xs text-mocha">
+                <span>Lighting:</span>
+                {[['day', 'Day', Sun], ['theatrical', 'Stage', Sparkles], ['haldi', 'Haldi', Flame]].map(([mode, label, Icon]) => (
+                  <button
+                    key={mode}
+                    onClick={() => setLightingMode(mode)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border transition-colors ${
+                      lightingMode === mode ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-[#D4AF37]/35 hover:text-latte'
+                    }`}
+                  >
+                    <Icon className="w-3 h-3" /> {label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-6">
+                <Link to="/gallery" className="btn-outline-gold">More decor in the gallery</Link>
+              </div>
+            </div>
+          )}
+
+          {/* MENUS */}
+          {activeConsoleTab === 'menus' && (
+            <div>
+              <div className="inline-flex p-1 rounded-full border border-[#D4AF37]/35 bg-black/25">
+                {[['veg', 'Vegetarian', Leaf, 0], ['nonVeg', 'Non-Veg', Drumstick, 1]].map(([type, label, Icon, firstTier]) => (
+                  <button
+                    key={type}
+                    onClick={() => {
+                      setDietaryType(type);
+                      setSelectedMenuTier(firstTier);
+                    }}
+                    className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs transition-colors ${
+                      dietaryType === type ? 'bg-amber-300 text-[#3D0A14] font-bold' : 'text-mocha hover:text-latte'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" /> {label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {currentMenus.map((menu, idx) => (
+                  <button
+                    key={menu.id}
+                    onClick={() => setSelectedMenuTier(idx)}
+                    className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${
+                      selectedMenuTier === idx ? 'bg-[#4A0E1B] border-amber-400/70 text-latte' : 'border-[#D4AF37]/30 text-mocha hover:text-latte'
+                    }`}
+                  >
+                    {menu.title}
+                  </button>
+                ))}
+              </div>
+
+              <p className="mt-6 text-[11px] tracking-[0.25em] uppercase text-amber-300">{currentMenu.badge}</p>
+              <h3 className="mt-1 font-cinzel text-2xl font-bold text-latte">{currentMenu.title}</h3>
+              <p className="mt-1 text-sm text-mocha">Minimum {currentMenu.minPax} guests · {currentMenuDishes.length} dishes</p>
+              <p className="mt-3 text-sm text-mocha leading-relaxed line-clamp-4">
+                {currentMenuDishes.slice(0, 12).join(' · ')}
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/menus" className="btn-gold">Full menu <ArrowRight className="w-3.5 h-3.5" /></Link>
+                <button
+                  onClick={() => onOpenLightbox(currentMenu.image, `${currentMenu.title} - Official Menu Card`)}
+                  className="btn-outline-gold"
                 >
-                  {/* HALLS */}
-                  {activeConsoleTab === 'halls' && (
-                    <div>
-                      <div className="flex gap-2">
-                        {spacesData.slice(0, 3).map((hall, idx) => (
-                          <button
-                            key={hall.id}
-                            onClick={() => handleSelectHall(idx, hallViewAngle)}
-                            className={`flex-1 px-3 py-2.5 rounded-xl border text-center transition-colors ${
-                              selectedHallIdx === idx ? 'bg-[#4A0E1B] border-amber-400/70' : 'border-[#D4AF37]/25 hover:border-[#D4AF37]/60'
-                            }`}
-                          >
-                            <span className="block font-cinzel text-xs sm:text-sm font-bold text-latte">{hall.name}</span>
-                            <span className="block text-[11px] text-mocha mt-0.5">{hall.capacity}</span>
-                          </button>
-                        ))}
-                      </div>
-
-                      <h3 className="mt-6 font-cinzel text-2xl font-bold text-latte">{currentHall.name}</h3>
-                      <p className="mt-1 text-sm text-amber-300 font-semibold">{currentHall.tagline}</p>
-                      <p className="mt-3 text-mocha leading-relaxed line-clamp-4">{currentHall.shortDescription || currentHall.description}</p>
-                      <p className="mt-3 text-sm text-latte">
-                        <span className="text-[10px] tracking-[0.25em] uppercase text-amber-300 mr-2">Ideal for</span>
-                        {currentHall.bestFor}
-                      </p>
-
-                      <div className="mt-4 flex items-center gap-2 text-xs text-mocha">
-                        <span>View:</span>
-                        {[['hall', 'Hall'], ['foyer', 'Stage']].map(([angle, label]) => (
-                          <button
-                            key={angle}
-                            onClick={() => handleSelectHall(selectedHallIdx, angle)}
-                            className={`px-3 py-1 rounded-full border transition-colors ${
-                              hallViewAngle === angle && currentMedia.type === 'image'
-                                ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold'
-                                : 'border-[#D4AF37]/35 hover:text-latte'
-                            }`}
-                          >
-                            {label}
-                          </button>
-                        ))}
-                      </div>
-
-                      <div className="mt-6 flex flex-wrap gap-3">
-                        <Link to={`/halls/${currentHall.id}`} className="btn-gold">View hall <ArrowRight className="w-3.5 h-3.5" /></Link>
-                        <Link to="/spaces" className="btn-outline-gold">Compare halls</Link>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* DINING */}
-                  {activeConsoleTab === 'banquet' && (
-                    <div>
-                      <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Dedicated dining floor</p>
-                      <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">Swarna Bhojanam</h3>
-                      <p className="mt-1 text-sm text-amber-300 font-semibold">Round tables in royal maroon and gold damask · 250+ seats · 3,500 sq.ft</p>
-                      <ul className="mt-5 space-y-3">
-                        {[
-                          ['Zero mandap aroma', 'A separate floor with its own exhaust'],
-                          ['12-tap granite handwash', 'Pure RO purified water'],
-                          ['Catering service lift', 'Fast, hot food delivery'],
-                          ['1,500+ feast capacity', 'Rolling batches of about 25 minutes'],
-                        ].map(([t, d]) => (
-                          <li key={t} className="flex gap-3">
-                            <Check className="w-4 h-4 text-amber-300 flex-shrink-0 mt-1" />
-                            <span>
-                              <span className="block text-latte font-semibold">{t}</span>
-                              <span className="block text-sm text-mocha">{d}</span>
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="mt-6 flex flex-wrap gap-3">
-                        <Link to="/halls/dining-hall" className="btn-gold">Dining floor <ArrowRight className="w-3.5 h-3.5" /></Link>
-                        <Link to="/menus" className="btn-outline-gold">View menus</Link>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* THEMES */}
-                  {activeConsoleTab === 'themes' && (
-                    <div>
-                      <div className="flex flex-wrap gap-2">
-                        {themesData.slice(0, 4).map((theme, idx) => (
-                          <button
-                            key={theme.id}
-                            onClick={() => handleSelectTheme(idx)}
-                            className={`px-3.5 py-1.5 rounded-full text-xs border transition-colors ${
-                              selectedThemeIdx === idx && currentMedia.type === 'image'
-                                ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold'
-                                : 'border-[#D4AF37]/35 text-mocha hover:text-latte hover:border-[#D4AF37]/70'
-                            }`}
-                          >
-                            {theme.title}
-                          </button>
-                        ))}
-                      </div>
-
-                      <p className="mt-6 text-[11px] tracking-[0.25em] uppercase text-amber-300">{currentTheme.category}</p>
-                      <h3 className="mt-1 font-cinzel text-2xl font-bold text-latte">{currentTheme.title}</h3>
-                      <p className="mt-3 text-mocha leading-relaxed line-clamp-4">{currentTheme.description}</p>
-                      <ul className="mt-4 space-y-2">
-                        {currentTheme.highlights?.slice(0, 3).map((h) => (
-                          <li key={h} className="flex gap-2.5 text-sm text-latte">
-                            <Check className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" /> {h}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="mt-5 flex items-center gap-2 text-xs text-mocha">
-                        <span>Lighting:</span>
-                        {[['day', 'Day', Sun], ['theatrical', 'Stage', Sparkles], ['haldi', 'Haldi', Flame]].map(([mode, label, Icon]) => (
-                          <button
-                            key={mode}
-                            onClick={() => setLightingMode(mode)}
-                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border transition-colors ${
-                              lightingMode === mode ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-[#D4AF37]/35 hover:text-latte'
-                            }`}
-                          >
-                            <Icon className="w-3 h-3" /> {label}
-                          </button>
-                        ))}
-                      </div>
-
-                      <div className="mt-6">
-                        <Link to="/gallery" className="btn-outline-gold">More decor in the gallery</Link>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* MENUS */}
-                  {activeConsoleTab === 'menus' && (
-                    <div>
-                      <div className="inline-flex p-1 rounded-full border border-[#D4AF37]/35 bg-black/25">
-                        {[['veg', 'Vegetarian', Leaf, 0], ['nonVeg', 'Non-Veg', Drumstick, 1]].map(([type, label, Icon, firstTier]) => (
-                          <button
-                            key={type}
-                            onClick={() => {
-                              setDietaryType(type);
-                              setSelectedMenuTier(firstTier);
-                            }}
-                            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs transition-colors ${
-                              dietaryType === type ? 'bg-amber-300 text-[#3D0A14] font-bold' : 'text-mocha hover:text-latte'
-                            }`}
-                          >
-                            <Icon className="w-3.5 h-3.5" /> {label}
-                          </button>
-                        ))}
-                      </div>
-
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {currentMenus.map((menu, idx) => (
-                          <button
-                            key={menu.id}
-                            onClick={() => setSelectedMenuTier(idx)}
-                            className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${
-                              selectedMenuTier === idx ? 'bg-[#4A0E1B] border-amber-400/70 text-latte' : 'border-[#D4AF37]/30 text-mocha hover:text-latte'
-                            }`}
-                          >
-                            {menu.title}
-                          </button>
-                        ))}
-                      </div>
-
-                      <p className="mt-6 text-[11px] tracking-[0.25em] uppercase text-amber-300">{currentMenu.badge}</p>
-                      <h3 className="mt-1 font-cinzel text-2xl font-bold text-latte">{currentMenu.title}</h3>
-                      <p className="mt-1 text-sm text-mocha">Minimum {currentMenu.minPax} guests · {currentMenuDishes.length} dishes</p>
-                      <p className="mt-3 text-sm text-mocha leading-relaxed line-clamp-4">
-                        {currentMenuDishes.slice(0, 12).join(' · ')}
-                      </p>
-
-                      <div className="mt-6 flex flex-wrap gap-3">
-                        <Link to="/menus" className="btn-gold">Full menu <ArrowRight className="w-3.5 h-3.5" /></Link>
-                        <button
-                          onClick={() => onOpenLightbox(currentMenu.image, `${currentMenu.title} - Official Menu Card`)}
-                          className="btn-outline-gold"
-                        >
-                          <FileText className="w-4 h-4" /> Printed card
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* BOOK */}
-                  {activeConsoleTab === 'contact' && (
-                    <div>
-                      <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Visit and book</p>
-                      <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">S.S Convention A/C</h3>
-                      <ul className="mt-5 space-y-4 text-sm text-mocha">
-                        <li className="flex gap-3">
-                          <MapPin className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
-                          {venueData.address.line1}, {venueData.address.locality}, {venueData.address.city} – {venueData.address.pincode}
-                        </li>
-                        <li className="flex gap-3">
-                          <Phone className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
-                          <span className="flex flex-col">
-                            {venueData.phones.map((p) => (
-                              <a key={p.raw} href={`tel:${p.raw}`} className="font-semibold text-latte hover:text-amber-300 transition-colors">{p.display}</a>
-                            ))}
-                          </span>
-                        </li>
-                        <li className="flex gap-3">
-                          <Clock className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
-                          Lunch slots end 3:00 PM · Dinner slots end 11:00 PM
-                        </li>
-                      </ul>
-                      <div className="mt-6 flex flex-wrap gap-3">
-                        <Link to="/contact" onClick={triggerFlowerShower} className="btn-gold"><CalendarCheck className="w-4 h-4" /> Check dates</Link>
-                        <a
-                          href={`https://wa.me/${venueData.whatsappNumber}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-outline-gold"
-                        >
-                          <MessageSquare className="w-4 h-4" /> WhatsApp
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
+                  <FileText className="w-4 h-4" /> Printed card
+                </button>
+              </div>
             </div>
+          )}
+
+          {/* BOOK */}
+          {activeConsoleTab === 'contact' && (
+            <div>
+              <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">Visit and book</p>
+              <h3 className="mt-2 font-cinzel text-2xl font-bold text-latte">S.S Convention A/C</h3>
+              <ul className="mt-5 space-y-4 text-sm text-mocha">
+                <li className="flex gap-3">
+                  <MapPin className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                  {venueData.address.line1}, {venueData.address.locality}, {venueData.address.city} – {venueData.address.pincode}
+                </li>
+                <li className="flex gap-3">
+                  <Phone className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                  <span className="flex flex-col">
+                    {venueData.phones.map((p) => (
+                      <a key={p.raw} href={`tel:${p.raw}`} className="font-semibold text-latte hover:text-amber-300 transition-colors">{p.display}</a>
+                    ))}
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <Clock className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                  Lunch slots end 3:00 PM · Dinner slots end 11:00 PM
+                </li>
+              </ul>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/contact" onClick={triggerFlowerShower} className="btn-gold"><CalendarCheck className="w-4 h-4" /> Check dates</Link>
+                <a
+                  href={`https://wa.me/${venueData.whatsappNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline-gold"
+                >
+                  <MessageSquare className="w-4 h-4" /> WhatsApp
+                </a>
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+            </div>
+          </div>
+        </div>
+
+        {/* Video tours bar */}
+        <div className="relative z-10 border-t border-white/10 bg-black/45 backdrop-blur-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
+            <span className="text-[11px] tracking-[0.25em] uppercase text-amber-300 whitespace-nowrap pr-2">Video tours</span>
+            {venueVideos.map((v) => {
+              const on = currentMedia.src === v.src && currentMedia.type === 'video';
+              return (
+                <button
+                  key={v.id}
+                  onClick={() => handleSelectVideo(v)}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${
+                    on ? 'bg-amber-300 text-[#3D0A14] border-amber-300 font-bold' : 'border-white/25 text-latte/80 hover:text-latte hover:border-white/60'
+                  }`}
+                >
+                  <Play className="w-3 h-3 fill-current" /> {v.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
