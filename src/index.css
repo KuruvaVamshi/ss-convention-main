@@ -276,3 +276,16 @@
 .animate-panel-drop {
   animation: luxuryPanelDrop 240ms var(--ease-luxury) forwards;
 }
+
+@keyframes luxuryMarqueeX {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee-x {
+  animation: luxuryMarqueeX 70s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-x { animation: none; }
+}

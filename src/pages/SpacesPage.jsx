@@ -639,6 +639,14 @@ function LuxuryCinematicHallCarousel({
  * MASTER SPACES / OUR VENUE PAGE
  * Luxury Architectural Showcase for Hall Vasishta, Hall Agasthya, and Hall Koundinya
  */
+// Venue photos for the hero strip: the first photos of each hall, interleaved
+const HERO_PHOTOS = (() => {
+  const lists = spacesData.slice(0, 3).map((h) => h.gallery.slice(0, 4).map((g) => g.src));
+  const out = [];
+  for (let i = 0; i < 4; i++) lists.forEach((l) => l[i] && out.push(l[i]));
+  return out;
+})();
+
 const HALL_TABS = [
   { id: 'hall-vasishta', label: 'Hall Vasishta' },
   { id: 'hall-agasthya', label: 'Hall Agasthya' },
@@ -796,12 +804,15 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
     <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
       {/* Hero */}
       <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
-        <img
-          src={spacesData[0].hallImage || spacesData[0].image}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/70 to-[#1C0409]/50" />
+        {/* Slowly scrolling strip of venue photos */}
+        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+          <div className="flex h-full w-max animate-marquee-x">
+            {[...HERO_PHOTOS, ...HERO_PHOTOS].map((src, i) => (
+              <img key={i} src={src} alt="" loading={i < 4 ? 'eager' : 'lazy'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
+            ))}
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/60" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}
