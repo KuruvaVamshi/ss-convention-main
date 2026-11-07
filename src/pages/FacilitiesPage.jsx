@@ -13,8 +13,7 @@ import {
   ArrowUpCircle,
   Phone,
   Calendar,
-  CheckCircle2,
-  Plus
+  CheckCircle2
 } from 'lucide-react';
 import { venueData } from '../data/venueData';
 import Reveal from '../components/Reveal';
@@ -23,6 +22,7 @@ import CountUp from '../components/CountUp';
 const facilitiesList = [
   {
     title: "Centralized Cassette Air Conditioning",
+    shortTitle: "Central A/C",
     teluguTitle: "సెంట్రలైజ్డ్ క్యాసెట్ ఎయిర్ కండిషనింగ్",
     category: "Climate & Comfort",
     desc: "Commercial Daikin multi-zone cassette cooling delivers continuous 22°C temperature throughout Hall Vasishta, Hall Agasthya, and Hall Koundinya, keeping guests cool and refreshed even during peak summer weddings.",
@@ -32,6 +32,7 @@ const facilitiesList = [
   },
   {
     title: "Two Executive VIP Bridal Green Suites",
+    shortTitle: "VIP Bridal Suites",
     teluguTitle: "రెండు ఎగ్జిక్యూటివ్ విఐపి గ్రీన్ రూమ్స్",
     category: "Bridal Privacy",
     desc: "Dedicated VIP suites (Bride Suite & Groom Suite) located directly behind the main stage. Features full-length illuminated vanity mirrors, comfortable plush sofas, attached private washrooms, and wardrobe storage.",
@@ -41,6 +42,7 @@ const facilitiesList = [
   },
   {
     title: "Dedicated Banquet Dining Floor (250+ Seats)",
+    shortTitle: "Banquet Dining Floor",
     teluguTitle: "ప్రత్యేక డైనింగ్ హాల్ (250+ సీటింగ్)",
     category: "Dining Comfort",
     desc: "A completely separate banquet dining level featuring round tables and buffet counters. By keeping dining on a dedicated floor, zero food aroma or moisture reaches the sacred marriage mandap.",
@@ -50,6 +52,7 @@ const facilitiesList = [
   },
   {
     title: "100% Commercial DG Power Generator",
+    shortTitle: "Power Backup",
     teluguTitle: "100% ఆటోమేటిక్ జనరేటర్ బ్యాకప్",
     category: "Power Reliability",
     desc: "Heavy-duty soundproof diesel generator system with auto-transfer switch. In case of grid power interruption, backup activates in zero seconds, keeping crystal chandeliers, sound, and A/C uninterrupted.",
@@ -59,6 +62,7 @@ const facilitiesList = [
   },
   {
     title: "Ample On-Premises Car & Bike Parking",
+    shortTitle: "Car & Bike Parking",
     teluguTitle: "విశాలమైన పార్కింగ్ సదుపాయం",
     category: "Guest Convenience",
     desc: "Spacious on-premises parking capacity for 150+ vehicles. Dedicated security guards and CCTV cameras monitor entry and exit smoothly from Raghavendra Nagar Colony main road.",
@@ -68,6 +72,7 @@ const facilitiesList = [
   },
   {
     title: "High-Speed Passenger Elevator",
+    shortTitle: "Passenger Elevator",
     teluguTitle: "హై-స్పీడ్ ప్యాసెంజర్ లిఫ్ట్",
     category: "Accessibility",
     desc: "A modern commercial elevator linking the main entrance foyer, marriage hall, and dining floor. Ensures elderly relatives and guests with mobility challenges transit comfortably with zero stairs.",
@@ -77,6 +82,7 @@ const facilitiesList = [
   },
   {
     title: "Industrial RO Water Purification Plant",
+    shortTitle: "RO Pure Water",
     teluguTitle: "ఆర్వో మంచినీటి ప్లాంట్",
     category: "Hygiene & Health",
     desc: "On-site multi-stage Reverse Osmosis (RO) water purification plant delivering tested, pure drinking water for all dining services, live counters, and guest hydration stations.",
@@ -86,6 +92,7 @@ const facilitiesList = [
   },
   {
     title: "24/7 Perimeter CCTV & Security",
+    shortTitle: "CCTV & Security",
     teluguTitle: "24/7 సిసిటివి & భద్రత",
     category: "Security & Safety",
     desc: "Round-the-clock perimeter coverage with high-definition digital cameras across all entrances, aisles, stage areas, parking lots, and dining corridors, backed by trained on-site security guards.",
@@ -95,6 +102,7 @@ const facilitiesList = [
   },
   {
     title: "Wheelchair Accessible Ramps & Entrances",
+    shortTitle: "Accessible Entry",
     teluguTitle: "వీల్‌చైర్ యాక్సెసబుల్ ర్యాంప్",
     category: "Inclusivity",
     desc: "Thoughtfully engineered gentle-incline ramps at the grand entrance foyer allow effortless wheelchair and stroller access directly from the parking area into the air-conditioned hall.",
@@ -112,7 +120,7 @@ const quickFacts = [
 ];
 
 export default function FacilitiesPage({ lang }) {
-  const [open, setOpen] = useState(0);
+  const [active, setActive] = useState(0);
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
@@ -154,72 +162,98 @@ export default function FacilitiesPage({ lang }) {
         </div>
       </section>
 
-      {/* Facilities list */}
+      {/* Facilities: pick on the left, details on the right */}
       <section className="py-20 sm:py-28 bg-[#3D0A14] border-b border-[#D4AF37]/25">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal className="text-center mb-12">
             <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Uncompromising Standards</h2>
             <div className="mx-auto mt-4 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
-            <p className="mt-4 text-mocha leading-relaxed">
+            <p className="mt-4 text-mocha leading-relaxed max-w-2xl mx-auto">
               Every system is maintained and tested before each celebration, so nothing glitches on your special day.
             </p>
           </Reveal>
 
-          <div className="border-t border-[#D4AF37]/25">
-            {facilitiesList.map((item, idx) => {
-              const IconComp = item.icon;
-              const isOpen = open === idx;
-              return (
-                <div key={item.title} className="border-b border-[#D4AF37]/25">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+            {/* Picker: scrolls sideways on phones, stacks on desktop */}
+            <div
+              role="tablist"
+              aria-label="Facilities"
+              className="lg:col-span-5 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 no-scrollbar"
+            >
+              {facilitiesList.map((item, idx) => {
+                const IconComp = item.icon;
+                const isActive = active === idx;
+                return (
                   <button
-                    type="button"
-                    onClick={() => setOpen(isOpen ? -1 : idx)}
-                    aria-expanded={isOpen}
-                    className="group w-full flex items-center gap-4 sm:gap-6 py-5 sm:py-6 text-left"
+                    key={item.title}
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setActive(idx)}
+                    onMouseEnter={() => window.matchMedia('(hover: hover)').matches && setActive(idx)}
+                    className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl border text-left flex-shrink-0 lg:flex-shrink transition-all duration-300 ${
+                      isActive
+                        ? 'bg-[#4A0E1B] border-amber-400/70 shadow-[0_8px_24px_rgba(0,0,0,0.35)]'
+                        : 'bg-transparent border-[#D4AF37]/20 hover:border-[#D4AF37]/50'
+                    }`}
                   >
-                    <span className="font-cinzel text-lg text-amber-300/60 group-hover:text-amber-300 transition-colors w-8">
+                    <IconComp className={`w-5 h-5 flex-shrink-0 transition-colors ${isActive ? 'text-amber-300' : 'text-mocha'}`} />
+                    <span className={`text-sm font-cinzel font-semibold whitespace-nowrap lg:whitespace-normal transition-colors ${isActive ? 'text-latte' : 'text-mocha group-hover:text-latte'}`}>
+                      {item.shortTitle}
+                    </span>
+                    <span className={`ml-auto hidden lg:block font-cinzel text-xs ${isActive ? 'text-amber-300' : 'text-mocha/60'}`}>
                       {String(idx + 1).padStart(2, '0')}
                     </span>
-                    <span className="w-11 h-11 rounded-xl bg-[#350710] border border-[#D4AF37]/35 flex items-center justify-center flex-shrink-0 group-hover:border-amber-400 transition-colors">
-                      <IconComp className="w-5 h-5 text-amber-300" />
-                    </span>
-                    <span className="flex-1 min-w-0">
-                      <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300/80">{item.category}</span>
-                      <span className="block font-cinzel text-base sm:text-xl font-bold leading-snug">{item.title}</span>
-                    </span>
-                    <span className="hidden md:inline-block text-[11px] px-3 py-1 rounded-full border border-[#D4AF37]/35 text-mocha font-cinzel tracking-wider">
-                      {item.badge}
-                    </span>
-                    <Plus className={`w-5 h-5 text-amber-300 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
                   </button>
+                );
+              })}
+            </div>
 
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pb-7 pl-12 sm:pl-[5.25rem] pr-2 sm:pr-10">
-                          {lang === 'te' && <p className="text-sm text-amber-300 font-semibold mb-2">{item.teluguTitle}</p>}
-                          <p className="text-mocha leading-relaxed">{item.desc}</p>
-                          <ul className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-2">
-                            {item.highlights.map((h) => (
-                              <li key={h} className="flex items-start gap-2 text-sm text-latte">
-                                <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
-                                <span>{h}</span>
-                              </li>
-                            ))}
-                          </ul>
+            {/* Detail panel */}
+            <div className="lg:col-span-7 lg:sticky lg:top-28">
+              <AnimatePresence mode="wait">
+                {(() => {
+                  const item = facilitiesList[active];
+                  const IconComp = item.icon;
+                  return (
+                    <motion.article
+                      key={item.title}
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#4A0E1B] to-[#350710] border border-[#D4AF37]/35 p-7 sm:p-10 shadow-2xl"
+                    >
+                      <IconComp aria-hidden="true" className="absolute -right-6 -bottom-6 w-56 h-56 text-amber-300/[0.06]" />
+
+                      <div className="relative">
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="w-14 h-14 rounded-2xl bg-[#2A0610] border border-[#D4AF37]/40 flex items-center justify-center">
+                            <IconComp className="w-7 h-7 text-amber-300" />
+                          </span>
+                          <span className="text-[11px] px-3.5 py-1.5 rounded-full border border-[#D4AF37]/40 text-amber-200 font-cinzel tracking-wider">
+                            {item.badge}
+                          </span>
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
+
+                        <p className="mt-6 text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">{item.category}</p>
+                        <h3 className="mt-2 font-cinzel text-2xl sm:text-3xl font-bold leading-snug">{item.title}</h3>
+                        {lang === 'te' && <p className="mt-2 text-sm text-amber-300 font-semibold">{item.teluguTitle}</p>}
+                        <p className="mt-4 text-mocha leading-relaxed">{item.desc}</p>
+
+                        <ul className="mt-6 pt-6 border-t border-[#D4AF37]/25 space-y-2.5">
+                          {item.highlights.map((h) => (
+                            <li key={h} className="flex items-center gap-2.5 text-sm text-latte">
+                              <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                              {h}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.article>
+                  );
+                })()}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </section>
