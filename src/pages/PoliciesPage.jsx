@@ -75,7 +75,7 @@ const faqs = [
   },
 ];
 
-export default function PoliciesPage({ lang, setLang }) {
+export default function PoliciesPage({ lang }) {
   const [openFaq, setOpenFaq] = useState(0);
   const te = lang === 'te';
 
@@ -89,28 +89,9 @@ export default function PoliciesPage({ lang, setLang }) {
           <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide">Transparent Guidelines</h1>
           <div className="mx-auto mt-5 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
           <p className="mt-5 text-base sm:text-lg text-mocha leading-relaxed">
-            Clear policies make for stress-free celebrations. Read the terms for catering, payments, stage decor and slot timings in English or Telugu.
+            Clear policies make for stress-free celebrations. Read the terms for catering, payments, stage decor and slot timings.
           </p>
 
-          {/* Language switch */}
-          <div role="group" aria-label="Language" className="mt-8 inline-flex p-1 rounded-full border border-[#D4AF37]/40 bg-black/30">
-            {[
-              ['en', 'English'],
-              ['te', 'తెలుగు'],
-            ].map(([code, label]) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => setLang?.(code)}
-                aria-pressed={lang === code}
-                className={`px-6 py-2 rounded-full text-sm font-cinzel tracking-wider transition-colors ${
-                  lang === code ? 'bg-gradient-to-r from-[#B8860B] via-[#EED9A6] to-[#C5A059] text-[#1C0409] font-bold' : 'text-mocha hover:text-latte'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
         </Reveal>
       </section>
 
@@ -130,7 +111,6 @@ export default function PoliciesPage({ lang, setLang }) {
                   </span>
                   <p className="mt-5 text-[11px] tracking-[0.25em] uppercase text-amber-300">{r.badge}</p>
                   <h3 className="mt-1 font-cinzel text-xl font-bold">{te ? r.teluguTitle : r.title}</h3>
-                  {!te && <p className="mt-0.5 text-sm text-amber-300/80">{r.teluguTitle}</p>}
                   <p className="mt-4 text-mocha leading-relaxed">{te ? r.te : r.en}</p>
                 </article>
               </Reveal>
@@ -147,7 +127,7 @@ export default function PoliciesPage({ lang, setLang }) {
               <Clock className="w-6 h-6 text-amber-300" />
             </span>
             <h2 className="mt-4 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Slot Vacation Schedule</h2>
-            <p className="mt-2 text-sm text-amber-300">{teluguTranslations.guidelines.timingsTitle}</p>
+            {te && <p className="mt-2 text-sm text-amber-300">{teluguTranslations.guidelines.timingsTitle}</p>}
           </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#D4AF37]/25 rounded-2xl overflow-hidden border border-[#D4AF37]/25">
