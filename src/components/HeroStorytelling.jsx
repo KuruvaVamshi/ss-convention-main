@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import SplitHeading from './SplitHeading';
 import confetti from 'canvas-confetti';
 import { 
@@ -39,6 +39,8 @@ import { venueData } from '../data/venueData';
 import { spacesData } from '../data/spacesData';
 import { themesData } from '../data/themesData';
 import { cateringMenus } from '../data/menusData';
+
+const CONSOLE_TOPICS = ['halls', 'banquet', 'themes', 'menus', 'contact'];
 
 export default function HeroStorytelling({ lang, onOpenLightbox }) {
   // Master Single-View Console Active Tab: 'halls' | 'banquet' | 'themes' | 'menus' | 'contact'
@@ -244,12 +246,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   // Refs keep the observer callback pointing at the latest handler and media.
   const switchTabRef = useRef(null);
   const mediaRef = useRef(null);
-  const consoleTrackRef = useRef(null);
-  const consoleHoverRef = useRef(false);
-  const consoleVisibleRef = useRef(false);
-  const lastInteractRef = useRef(0);
+  const consoleSectionRef = useRef(null);
   const activeTabRef = useRef('halls');
-  const [consoleAuto, setConsoleAuto] = useState(true);
   // Switch console tab and dynamically sync visual theater
   const handleSwitchTab = (tab) => {
     setActiveConsoleTab(tab);
@@ -432,65 +430,34 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
 
   switchTabRef.current = handleSwitchTab;
   mediaRef.current = currentMedia;
-
-  useEffect(() => {
-    const blocks = document.querySelectorAll('[data-console-block]');
-    if (!blocks.length) return undefined;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((en) => {
-          if (!en.isIntersecting) return;
-          const id = en.target.getAttribute('data-console-block');
-          // Don't replace a video the visitor is watching; only move the highlight
-          if (mediaRef.current?.type === 'video') setActiveConsoleTab(id);
-          else switchTabRef.current?.(id);
-        });
-      },
-      { root: consoleTrackRef.current, threshold: 0.6 }
-    );
-    blocks.forEach((b) => io.observe(b));
-    return () => io.disconnect();
-  }, []);
-
   activeTabRef.current = activeConsoleTab;
 
-  // Auto-advance the topics every 4 seconds. It pauses while the visitor hovers or
-  // focuses the topics, shortly after they swipe or click, while a video plays,
-  // while the section is off screen and when reduced motion is requested.
-  useEffect(() => {
-    const section = document.getElementById('interactive-console');
-    let io;
-    if (section) {
-      io = new IntersectionObserver(([entry]) => { consoleVisibleRef.current = entry.isIntersecting; }, { threshold: 0.25 });
-      io.observe(section);
-    }
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let timer;
-    if (consoleAuto && !reduce) {
-      timer = setInterval(() => {
-        if (document.hidden || !consoleVisibleRef.current || consoleHoverRef.current) return;
-        if (mediaRef.current?.type === 'video') return;
-        if (Date.now() - lastInteractRef.current < 10000) return;
-        const topics = ['halls', 'banquet', 'themes', 'menus', 'contact'];
-        const track = consoleTrackRef.current;
-        if (!track) return;
-        const next = (topics.indexOf(activeTabRef.current) + 1) % topics.length;
-        track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
-      }, 4000);
-    }
-    return () => {
-      if (timer) clearInterval(timer);
-      if (io) io.disconnect();
-    };
-  }, [consoleAuto]);
+  // Page scroll drives the console: while the section is pinned, scrolling down slides
+  // the topics left (like the 3D photo scroll) and the viewer follows the topic in view.
+  const { scrollYProgress: consoleProgress } = useScroll({
+    target: consoleSectionRef,
+    offset: ['start start', 'end end']
+  });
+  const consoleX = useTransform(consoleProgress, [0, 1], ['0%', `-${(CONSOLE_TOPICS.length - 1) * 100}%`]);
 
-  const CONSOLE_TOPICS = ['halls', 'banquet', 'themes', 'menus', 'contact'];
+  useMotionValueEvent(consoleProgress, 'change', (v) => {
+    const idx = Math.max(0, Math.min(CONSOLE_TOPICS.length - 1, Math.round(v * (CONSOLE_TOPICS.length - 1))));
+    const id = CONSOLE_TOPICS[idx];
+    if (id === activeTabRef.current) return;
+    // Don't replace a video the visitor is watching; only move the highlight
+    if (mediaRef.current?.type === 'video') setActiveConsoleTab(id);
+    else switchTabRef.current?.(id);
+  });
+
+  // Dots and arrows scroll the page to the matching point of the pinned section
   const scrollConsoleTo = (i) => {
-    const track = consoleTrackRef.current;
-    if (!track) return;
+    const section = consoleSectionRef.current;
+    if (!section) return;
+    const last = CONSOLE_TOPICS.length - 1;
     const next = (i + CONSOLE_TOPICS.length) % CONSOLE_TOPICS.length;
-    lastInteractRef.current = Date.now();
-    track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
+    const travel = section.offsetHeight - window.innerHeight;
+    const top = section.getBoundingClientRect().top + window.scrollY + (next / last) * travel;
+    window.scrollTo({ top, behavior: 'smooth' });
   };
 
   const triggerFlowerShower = () => {
@@ -635,8 +602,9 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           Scroll-driven: the viewer stays pinned on the left while the five
           topics scroll past on the right and switch what the viewer shows.
           ======================================================== */}
-      <section id="interactive-console" className="relative z-10 bg-[#2A060E] border-t border-[#D4AF37]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
+      <section ref={consoleSectionRef} id="interactive-console" className="relative z-10 bg-[#2A060E] border-t border-[#D4AF37]/30 h-[360vh]">
+        <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden pt-20 pb-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-2xl">
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Take a closer look</p>
             <h2 className="font-cinzel text-3xl sm:text-5xl font-bold tracking-wide text-latte">Explore the Venue</h2>
@@ -644,10 +612,10 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14 items-start">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5 lg:mt-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-14 items-start">
           {/* Pinned viewer */}
           <div className="lg:col-span-6">
-            <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black aspect-[16/11] w-full">
+            <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black aspect-[16/10] max-h-[34vh] lg:max-h-[50vh] w-full">
               {currentMedia.type === 'video' ? (
                 <video
                   ref={videoRef}
@@ -730,21 +698,10 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
             </div>
           </div>
 
-          {/* Topics: swipe or use the arrows to move left and right */}
-          <div
-            className="lg:col-span-6 min-w-0"
-            onMouseEnter={() => { consoleHoverRef.current = true; }}
-            onMouseLeave={() => { consoleHoverRef.current = false; }}
-            onFocus={() => { consoleHoverRef.current = true; }}
-            onBlur={() => { consoleHoverRef.current = false; }}
-          >
-            <div
-              ref={consoleTrackRef}
-              onPointerDown={() => { lastInteractRef.current = Date.now(); }}
-              onWheel={() => { lastInteractRef.current = Date.now(); }}
-              onTouchStart={() => { lastInteractRef.current = Date.now(); }}
-              className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
-            >
+          {/* Topics: slide left as the page scrolls; dots and arrows jump to a topic */}
+          <div className="lg:col-span-6 min-w-0">
+            <div className="overflow-hidden">
+            <motion.div style={{ x: consoleX }} className="flex">
             {[
               ['halls', '01', 'Our Halls'],
               ['banquet', '02', 'Dining Floor'],
@@ -757,7 +714,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 <article
                   key={id}
                   data-console-block={id}
-                  className={`w-full flex-shrink-0 snap-center pr-4 sm:pr-8 transition-opacity duration-500 ${
+                  className={`w-full flex-shrink-0 pr-4 sm:pr-8 transition-opacity duration-500 ${
                     on ? 'opacity-100' : 'opacity-40'
                   }`}
                 >
@@ -990,6 +947,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 </article>
               );
             })}
+            </motion.div>
             </div>
 
             {/* Controls */}
@@ -1006,16 +964,6 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 ))}
               </div>
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setConsoleAuto((a) => !a)}
-                  aria-pressed={consoleAuto}
-                  aria-label={consoleAuto ? 'Pause automatic scrolling' : 'Start automatic scrolling'}
-                  title={consoleAuto ? 'Pause auto-scroll' : 'Start auto-scroll'}
-                  className="w-10 h-10 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors"
-                >
-                  {consoleAuto ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
-                </button>
                 <button
                   type="button"
                   onClick={() => scrollConsoleTo(CONSOLE_TOPICS.indexOf(activeConsoleTab) - 1)}
@@ -1035,6 +983,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
   </div>
