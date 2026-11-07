@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   Snowflake,
   DoorClosed,
@@ -11,281 +11,249 @@ import {
   ShieldCheck,
   Accessibility,
   ArrowUpCircle,
-  Sparkles,
   Phone,
   Calendar,
-  CheckCircle2
+  CheckCircle2,
+  Plus
 } from 'lucide-react';
 import { venueData } from '../data/venueData';
+import Reveal from '../components/Reveal';
+import CountUp from '../components/CountUp';
+
+const facilitiesList = [
+  {
+    title: "Centralized Cassette Air Conditioning",
+    teluguTitle: "సెంట్రలైజ్డ్ క్యాసెట్ ఎయిర్ కండిషనింగ్",
+    category: "Climate & Comfort",
+    desc: "Commercial Daikin multi-zone cassette cooling delivers continuous 22°C temperature throughout Hall Vasishta, Hall Agasthya, and Hall Koundinya, keeping guests cool and refreshed even during peak summer weddings.",
+    icon: Snowflake,
+    badge: "Daikin Cassette",
+    highlights: ["Multi-zone airflow control", "Silent operation (no fan noise)", "Continuous fresh air circulation"]
+  },
+  {
+    title: "Two Executive VIP Bridal Green Suites",
+    teluguTitle: "రెండు ఎగ్జిక్యూటివ్ విఐపి గ్రీన్ రూమ్స్",
+    category: "Bridal Privacy",
+    desc: "Dedicated VIP suites (Bride Suite & Groom Suite) located directly behind the main stage. Features full-length illuminated vanity mirrors, comfortable plush sofas, attached private washrooms, and wardrobe storage.",
+    icon: DoorClosed,
+    badge: "Private AC Suites",
+    highlights: ["Direct private backstage access", "Attached private washrooms", "Professional bridal makeup vanity lighting"]
+  },
+  {
+    title: "Dedicated Banquet Dining Floor (250+ Seats)",
+    teluguTitle: "ప్రత్యేక డైనింగ్ హాల్ (250+ సీటింగ్)",
+    category: "Dining Comfort",
+    desc: "A completely separate banquet dining level featuring round tables and buffet counters. By keeping dining on a dedicated floor, zero food aroma or moisture reaches the sacred marriage mandap.",
+    icon: UtensilsCrossed,
+    badge: "Zero Smell in Mandap",
+    highlights: ["250+ concurrent banquet dining", "Round banquet tables & buffet islands", "Direct elevator and staircase access"]
+  },
+  {
+    title: "100% Commercial DG Power Generator",
+    teluguTitle: "100% ఆటోమేటిక్ జనరేటర్ బ్యాకప్",
+    category: "Power Reliability",
+    desc: "Heavy-duty soundproof diesel generator system with auto-transfer switch. In case of grid power interruption, backup activates in zero seconds, keeping crystal chandeliers, sound, and A/C uninterrupted.",
+    icon: Zap,
+    badge: "Zero-Second Blackout",
+    highlights: ["Runs full hall A/C & lighting", "Soundproof heavy-duty unit", "Seamless auto-transfer switch"]
+  },
+  {
+    title: "Ample On-Premises Car & Bike Parking",
+    teluguTitle: "విశాలమైన పార్కింగ్ సదుపాయం",
+    category: "Guest Convenience",
+    desc: "Spacious on-premises parking capacity for 150+ vehicles. Dedicated security guards and CCTV cameras monitor entry and exit smoothly from Raghavendra Nagar Colony main road.",
+    icon: Car,
+    badge: "150+ Vehicles",
+    highlights: ["On-premises secured lot", "Uniformed parking attendants", "24/7 CCTV surveillance"]
+  },
+  {
+    title: "High-Speed Passenger Elevator",
+    teluguTitle: "హై-స్పీడ్ ప్యాసెంజర్ లిఫ్ట్",
+    category: "Accessibility",
+    desc: "A modern commercial elevator linking the main entrance foyer, marriage hall, and dining floor. Ensures elderly relatives and guests with mobility challenges transit comfortably with zero stairs.",
+    icon: ArrowUpCircle,
+    badge: "All Floors Connected",
+    highlights: ["Senior citizen friendly", "Wide cabin for family transit", "Smooth automatic leveling"]
+  },
+  {
+    title: "Industrial RO Water Purification Plant",
+    teluguTitle: "ఆర్వో మంచినీటి ప్లాంట్",
+    category: "Hygiene & Health",
+    desc: "On-site multi-stage Reverse Osmosis (RO) water purification plant delivering tested, pure drinking water for all dining services, live counters, and guest hydration stations.",
+    icon: Droplets,
+    badge: "Multi-Stage Tested",
+    highlights: ["Tested safe drinking water", "Dedicated water coolers", "Hygienic food preparation supply"]
+  },
+  {
+    title: "24/7 Perimeter CCTV & Security",
+    teluguTitle: "24/7 సిసిటివి & భద్రత",
+    category: "Security & Safety",
+    desc: "Round-the-clock perimeter coverage with high-definition digital cameras across all entrances, aisles, stage areas, parking lots, and dining corridors, backed by trained on-site security guards.",
+    icon: ShieldCheck,
+    badge: "Full Perimeter Coverage",
+    highlights: ["High-definition digital cameras", "Live monitoring console", "Trained security personnel"]
+  },
+  {
+    title: "Wheelchair Accessible Ramps & Entrances",
+    teluguTitle: "వీల్‌చైర్ యాక్సెసబుల్ ర్యాంప్",
+    category: "Inclusivity",
+    desc: "Thoughtfully engineered gentle-incline ramps at the grand entrance foyer allow effortless wheelchair and stroller access directly from the parking area into the air-conditioned hall.",
+    icon: Accessibility,
+    badge: "Step-Free Entry",
+    highlights: ["Gentle-incline entrance ramp", "Wide double doors", "Accessible ground level foyer"]
+  }
+];
+
+const quickFacts = [
+  { to: 22, suffix: '°C', label: 'Steady cooling' },
+  { to: 250, suffix: '+', label: 'Dining seats' },
+  { to: 150, suffix: '+', label: 'Parking spots' },
+  { to: 0, suffix: ' sec', label: 'Blackout' },
+];
 
 export default function FacilitiesPage({ lang }) {
-  const shouldReduceMotion = useReducedMotion();
-
-  const facilitiesList = [
-    {
-      title: "Centralized Cassette Air Conditioning",
-      teluguTitle: "సెంట్రలైజ్డ్ క్యాసెట్ ఎయిర్ కండిషనింగ్",
-      category: "Climate & Comfort",
-      desc: "Commercial Daikin multi-zone cassette cooling delivers continuous 22°C temperature throughout Hall Vasishta, Hall Agasthya, and Hall Koundinya, keeping guests cool and refreshed even during peak summer weddings.",
-      icon: Snowflake,
-      badge: "Daikin Cassette",
-      highlights: ["Multi-zone airflow control", "Silent operation (no fan noise)", "Continuous fresh air circulation"]
-    },
-    {
-      title: "Two Executive VIP Bridal Green Suites",
-      teluguTitle: "రెండు ఎగ్జిక్యూటివ్ విఐపి గ్రీన్ రూమ్స్",
-      category: "Bridal Privacy",
-      desc: "Dedicated VIP suites (Bride Suite & Groom Suite) located directly behind the main stage. Features full-length illuminated vanity mirrors, comfortable plush sofas, attached private washrooms, and wardrobe storage.",
-      icon: DoorClosed,
-      badge: "Private AC Suites",
-      highlights: ["Direct private backstage access", "Attached private washrooms", "Professional bridal makeup vanity lighting"]
-    },
-    {
-      title: "Dedicated Banquet Dining Floor (250+ Seats)",
-      teluguTitle: "ప్రత్యేక డైనింగ్ హాల్ (250+ సీటింగ్)",
-      category: "Dining Comfort",
-      desc: "A completely separate banquet dining level featuring round tables and buffet counters. By keeping dining on a dedicated floor, zero food aroma or moisture reaches the sacred marriage mandap.",
-      icon: UtensilsCrossed,
-      badge: "Zero Smell in Mandap",
-      highlights: ["250+ concurrent banquet dining", "Round banquet tables & buffet islands", "Direct elevator and staircase access"]
-    },
-    {
-      title: "100% Commercial DG Power Generator",
-      teluguTitle: "100% ఆటోమేటిక్ జనరేటర్ బ్యాకప్",
-      category: "Power Reliability",
-      desc: "Heavy-duty soundproof diesel generator system with auto-transfer switch. In case of grid power interruption, backup activates in zero seconds, keeping crystal chandeliers, sound, and A/C uninterrupted.",
-      icon: Zap,
-      badge: "Zero-Second Blackout",
-      highlights: ["Runs full hall A/C & lighting", "Soundproof heavy-duty unit", "Seamless auto-transfer switch"]
-    },
-    {
-      title: "Ample On-Premises Car & Bike Parking",
-      teluguTitle: "విశాలమైన పార్కింగ్ సదుపాయం",
-      category: "Guest Convenience",
-      desc: "Spacious on-premises parking capacity for 150+ vehicles. Dedicated security guards and CCTV cameras monitor entry and exit smoothly from Raghavendra Nagar Colony main road.",
-      icon: Car,
-      badge: "150+ Vehicles",
-      highlights: ["On-premises secured lot", "Uniformed parking attendants", "24/7 CCTV surveillance"]
-    },
-    {
-      title: "High-Speed Passenger Elevator",
-      teluguTitle: "హై-స్పీడ్ ప్యాసెంజర్ లిఫ్ట్",
-      category: "Accessibility",
-      desc: "A modern commercial elevator linking the main entrance foyer, marriage hall, and dining floor. Ensures elderly relatives and guests with mobility challenges transit comfortably with zero stairs.",
-      icon: ArrowUpCircle,
-      badge: "All Floors Connected",
-      highlights: ["Senior citizen friendly", "Wide cabin for family transit", "Smooth automatic leveling"]
-    },
-    {
-      title: "Industrial RO Water Purification Plant",
-      teluguTitle: "ఆర్వో మంచినీటి ప్లాంట్",
-      category: "Hygiene & Health",
-      desc: "On-site multi-stage Reverse Osmosis (RO) water purification plant delivering tested, pure drinking water for all dining services, live counters, and guest hydration stations.",
-      icon: Droplets,
-      badge: "Multi-Stage Tested",
-      highlights: ["Tested safe drinking water", "Dedicated water coolers", "Hygienic food preparation supply"]
-    },
-    {
-      title: "24/7 Perimeter CCTV & Security",
-      teluguTitle: "24/7 సిసిటివి & భద్రత",
-      category: "Security & Safety",
-      desc: "Round-the-clock perimeter coverage with high-definition digital cameras across all entrances, aisles, stage areas, parking lots, and dining corridors, backed by trained on-site security guards.",
-      icon: ShieldCheck,
-      badge: "Full Perimeter Coverage",
-      highlights: ["High-definition digital cameras", "Live monitoring console", "Trained security personnel"]
-    },
-    {
-      title: "Wheelchair Accessible Ramps & Entrances",
-      teluguTitle: "వీల్‌చైర్ యాక్సెసబుల్ ర్యాంప్",
-      category: "Inclusivity",
-      desc: "Thoughtfully engineered gentle-incline ramps at the grand entrance foyer allow effortless wheelchair and stroller access directly from the parking area into the air-conditioned hall.",
-      icon: Accessibility,
-      badge: "Step-Free Entry",
-      highlights: ["Gentle-incline entrance ramp", "Wide double doors", "Accessible ground level foyer"]
-    }
-  ];
-
-  const easeLuxury = [0.22, 1, 0.36, 1];
+  const [open, setOpen] = useState(0);
 
   return (
-    <div className="bg-[#450B17] text-white min-h-screen pt-24 overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
-      {/* Page Header */}
-      <section className="py-20 bg-gradient-to-b from-[#350710] to-[#450B17] border-b border-[#D4AF37]/30 text-white relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-32 bg-amber-500/10 rounded-full blur-[110px] pointer-events-none" />
-        
-        <motion.div 
-          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: easeLuxury }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
-        >
-          <span className="font-serif text-xs sm:text-sm tracking-[0.35em] text-amber-300 uppercase block mb-2 drop-shadow">
-            || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
-          </span>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 border border-[#D4AF37]/40 text-amber-200 text-xs font-bold tracking-widest uppercase mb-4 shadow-md backdrop-blur-sm">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>5-Star Infrastructure</span>
-          </div>
-          <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[0.1em] sm:tracking-[0.14em] text-white uppercase mb-4 drop-shadow">
-            {lang === 'te' ? 'రాయల్ సదుపాయాలు & సౌకర్యాలు' : 'FACILITIES & AMENITIES'}
-          </h1>
-          <p className="text-amber-100/85 text-xs sm:text-sm md:text-base max-w-3xl mx-auto leading-relaxed font-normal">
-            {lang === 'te'
-              ? 'సెంట్రల్ ఎసి, విఐపి గ్రీన్ రూమ్స్, ఆటోమేటిక్ జనరేటర్ మరియు విశాలమైన పార్కింగ్ – మీ అతిథులకు అత్యుత్తమ సౌకర్యాలు.'
-              : 'Engineered for seamless guest comfort. From Daikin central climate control and two VIP bridal suites to 100% power generator backup and 150+ parking slots.'}
-          </p>
-        </motion.div>
+    <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
+      {/* Hero */}
+      <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
+        <img
+          src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
+        <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">5-Star Infrastructure</p>
+            <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">
+              {lang === 'te' ? 'రాయల్ సదుపాయాలు & సౌకర్యాలు' : 'Facilities & Amenities'}
+            </h1>
+            <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
+            <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
+              {lang === 'te'
+                ? 'సెంట్రల్ ఎసి, విఐపి గ్రీన్ రూమ్స్, ఆటోమేటిక్ జనరేటర్ మరియు విశాలమైన పార్కింగ్ – మీ అతిథులకు అత్యుత్తమ సౌకర్యాలు.'
+                : 'Engineered for seamless guest comfort, from Daikin central climate control and two VIP bridal suites to 100% generator backup and 150+ parking slots.'}
+            </p>
+          </Reveal>
+        </div>
       </section>
 
-      {/* Facilities Grid with Staggered Scroll Entrance */}
-      <section className="py-24 bg-[#3D0A14] border-b border-[#D4AF37]/30 text-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, ease: easeLuxury }}
-            className="text-center max-w-3xl mx-auto mb-16"
-          >
-            <h2 className="font-cinzel text-3xl sm:text-5xl font-bold text-white tracking-wide mb-3">
-              Uncompromising Standards for Your Special Day
-            </h2>
-            <p className="text-amber-100/80 text-xs sm:text-sm font-normal">
-              Every system is professionally maintained and tested prior to each celebration to guarantee zero glitches.
-            </p>
-          </motion.div>
+      {/* Quick facts */}
+      <section className="py-12 bg-[#2E060F] border-b border-[#D4AF37]/25">
+        <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {quickFacts.map((f, i) => (
+            <Reveal key={f.label} delay={i * 0.08}>
+              <div className="font-cinzel text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] to-[#C5A059] tabular-nums">
+                <CountUp to={f.to} suffix={f.suffix} duration={1.6} />
+              </div>
+              <div className="mt-1 text-[11px] tracking-[0.25em] uppercase text-mocha">{f.label}</div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.1 } }
-            }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
+      {/* Facilities list */}
+      <section className="py-20 sm:py-28 bg-[#3D0A14] border-b border-[#D4AF37]/25">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Reveal className="text-center mb-12">
+            <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Uncompromising Standards</h2>
+            <div className="mx-auto mt-4 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
+            <p className="mt-4 text-mocha leading-relaxed">
+              Every system is maintained and tested before each celebration, so nothing glitches on your special day.
+            </p>
+          </Reveal>
+
+          <div className="border-t border-[#D4AF37]/25">
             {facilitiesList.map((item, idx) => {
               const IconComp = item.icon;
+              const isOpen = open === idx;
               return (
-                <motion.div
-                  key={idx}
-                  variants={{
-                    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30, scale: 0.96 },
-                    visible: { 
-                      opacity: 1, 
-                      y: 0, 
-                      scale: 1,
-                      transition: { duration: 0.7, ease: easeLuxury } 
-                    }
-                  }}
-                  whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.015 }}
-                  className="p-7 rounded-[32px] bg-[#450B17] border-2 border-[#D4AF37]/40 shadow-2xl hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(212,175,55,0.22)] transition-all flex flex-col justify-between group cursor-default"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-13 h-13 rounded-2xl bg-[#32060E] border border-[#D4AF37]/50 flex items-center justify-center text-amber-300 shadow-md group-hover:scale-105 transition-transform p-3">
-                        <IconComp className="w-7 h-7 text-amber-400" />
-                      </div>
-                      <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-black/60 border border-[#D4AF37]/40 text-amber-300 uppercase tracking-wider font-cinzel">
-                        {item.badge}
-                      </span>
-                    </div>
-
-                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest block mb-1 font-cinzel">
-                      {item.category}
+                <div key={item.title} className="border-b border-[#D4AF37]/25">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? -1 : idx)}
+                    aria-expanded={isOpen}
+                    className="group w-full flex items-center gap-4 sm:gap-6 py-5 sm:py-6 text-left"
+                  >
+                    <span className="font-cinzel text-lg text-amber-300/60 group-hover:text-amber-300 transition-colors w-8">
+                      {String(idx + 1).padStart(2, '0')}
                     </span>
-                    <h3 className="font-cinzel text-xl font-bold text-white mb-2 leading-snug">
-                      {item.title}
-                    </h3>
-                    {lang === 'te' && (
-                      <p className="text-xs text-amber-300 font-semibold mb-2">
-                        {item.teluguTitle}
-                      </p>
-                    )}
-                    <p className="text-xs text-amber-100/80 leading-relaxed font-normal mb-6">
-                      {item.desc}
-                    </p>
+                    <span className="w-11 h-11 rounded-xl bg-[#350710] border border-[#D4AF37]/35 flex items-center justify-center flex-shrink-0 group-hover:border-amber-400 transition-colors">
+                      <IconComp className="w-5 h-5 text-amber-300" />
+                    </span>
+                    <span className="flex-1 min-w-0">
+                      <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300/80">{item.category}</span>
+                      <span className="block font-cinzel text-base sm:text-xl font-bold leading-snug">{item.title}</span>
+                    </span>
+                    <span className="hidden md:inline-block text-[11px] px-3 py-1 rounded-full border border-[#D4AF37]/35 text-mocha font-cinzel tracking-wider">
+                      {item.badge}
+                    </span>
+                    <Plus className={`w-5 h-5 text-amber-300 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
+                  </button>
 
-                    <div className="space-y-2 pt-4 border-t border-[#D4AF37]/20">
-                      {item.highlights.map((h, hIdx) => (
-                        <div key={hIdx} className="flex items-center gap-2 text-xs text-amber-200/90 font-medium">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                          <span>{h}</span>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-7 pl-12 sm:pl-[5.25rem] pr-2 sm:pr-10">
+                          {lang === 'te' && <p className="text-sm text-amber-300 font-semibold mb-2">{item.teluguTitle}</p>}
+                          <p className="text-mocha leading-relaxed">{item.desc}</p>
+                          <ul className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-2">
+                            {item.highlights.map((h) => (
+                              <li key={h} className="flex items-start gap-2 text-sm text-latte">
+                                <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                                <span>{h}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Guidelines & Slot Timings Teaser */}
-      <section className="py-20 bg-[#350710] border-b border-[#D4AF37]/30 text-white relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <motion.div 
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.75, ease: easeLuxury }}
-            className="p-8 sm:p-10 rounded-[32px] bg-[#450B17] border-2 border-[#D4AF37]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6"
-          >
-            <div>
-              <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest block mb-1 font-cinzel">
-                Transparency & Rules
-              </span>
-              <h3 className="font-cinzel text-2xl font-bold text-white mb-2">
-                Venue Policies & Slot Schedules
-              </h3>
-              <p className="text-xs text-amber-100/80 max-w-lg leading-relaxed font-normal">
-                Review our clear vacation timings (3 PM lunch / 11 PM dinner), outside decor policies, and payment terms for smooth operations.
-              </p>
-            </div>
-            <Link
-              to="/policies"
-              className="px-6 py-3.5 rounded-full bg-[#32060E] border border-amber-400/60 text-amber-300 hover:bg-amber-400 hover:text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider transition-all whitespace-nowrap shadow-md hover:scale-105"
-            >
-              View Venue Policies →
-            </Link>
-          </motion.div>
-        </div>
+      {/* Policies teaser */}
+      <section className="py-16 bg-[#350710] border-b border-[#D4AF37]/25">
+        <Reveal className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-2">Transparency & Rules</p>
+            <h3 className="font-cinzel text-2xl font-bold">Venue Policies & Slot Schedules</h3>
+            <p className="mt-2 text-mocha max-w-lg leading-relaxed">
+              Slot timings (3 PM lunch, 11 PM dinner), outside decor policy and payment terms.
+            </p>
+          </div>
+          <Link to="/policies" className="btn-outline-gold">View venue policies →</Link>
+        </Reveal>
       </section>
 
-      {/* Quick Inquiries CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-white text-center border-t border-[#D4AF37]/30 shadow-2xl relative overflow-hidden">
-        <motion.div 
-          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.75, ease: easeLuxury }}
-          className="max-w-4xl mx-auto px-4 relative z-10"
-        >
-          <h2 className="font-cinzel text-2xl sm:text-4xl font-bold text-white mb-3 tracking-wide">
-            Experience Our Facilities in Person
-          </h2>
-          <p className="text-amber-100/90 text-xs sm:text-sm max-w-xl mx-auto mb-8 font-light leading-relaxed">
-            Walk through our air-conditioned halls, inspect the VIP green rooms, and see the dedicated dining floor firsthand.
+      {/* CTA */}
+      <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-center">
+        <Reveal className="max-w-3xl mx-auto px-4">
+          <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">See our facilities in person</h2>
+          <p className="mt-4 text-mocha leading-relaxed">
+            Walk through the air-conditioned halls, inspect the VIP green rooms and see the dining floor firsthand.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/contact"
-              className="px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-[#3D0A14] font-cinzel font-bold text-xs uppercase tracking-wider shadow-lg flex items-center gap-2 hover:scale-105 transition-all"
-            >
-              <Calendar className="w-4 h-4 text-[#3D0A14]" />
-              <span>Book In-Person Venue Tour</span>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <Link to="/contact" className="btn-gold">
+              <Calendar className="w-4 h-4" /> Book a venue tour
             </Link>
-            <a
-              href={`tel:${venueData.phones[0].raw}`}
-              className="px-8 py-3.5 rounded-full border border-amber-300/60 text-white hover:bg-white/10 font-cinzel font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2"
-            >
-              <Phone className="w-4 h-4 text-amber-400" />
-              <span>Call +91 89857 00044</span>
+            <a href={`tel:${venueData.phones[0].raw}`} className="btn-outline-gold">
+              <Phone className="w-4 h-4 text-amber-300" /> {venueData.phones[0].display}
             </a>
           </div>
-        </motion.div>
+        </Reveal>
       </section>
     </div>
   );
