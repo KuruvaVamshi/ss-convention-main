@@ -7,8 +7,9 @@ const COUNT = 12;
 
 // Evenly sample photos across the whole gallery so every area of the venue appears.
 function pickPhotos() {
-  const step = galleryItems.length / COUNT;
-  return Array.from({ length: COUNT }, (_, i) => galleryItems[Math.floor(i * step)]);
+  const pool = galleryItems.filter((g) => !g.image.includes('edison_bulbs'));
+  const step = pool.length / COUNT;
+  return Array.from({ length: COUNT }, (_, i) => pool[Math.floor(i * step)]);
 }
 
 export default function PhotoScroll3D({ onOpenLightbox }) {
@@ -42,12 +43,12 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
     <section ref={ref} className={`relative bg-[#2A060E] border-t border-[#D4AF37]/25 ${reduce ? '' : 'h-[320vh]'}`}>
       <div className={`${reduce ? 'py-20' : 'sticky top-0 h-screen'} overflow-hidden flex flex-col justify-center`}>
         <div className="px-4 pt-20 sm:pt-16">
-          <SectionHeader eyebrow="Moments of Grandeur" title="Walk Through the Palace">
+          <SectionHeader compact eyebrow="Moments of Grandeur" title="Walk Through the Palace">
             Scroll to turn the gallery. Tap any photo to view it full screen.
           </SectionHeader>
         </div>
 
-        <div className="relative flex-1 min-h-[360px]" style={{ perspective: '1600px' }}>
+        <div className="relative" style={{ perspective: '1100px', height: cardH + 140 }}>
           <motion.div
             className="absolute left-1/2 top-1/2"
             style={{
@@ -55,6 +56,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
               height: 0,
               transformStyle: 'preserve-3d',
               rotateY: reduce ? 0 : rotate,
+              z: Math.round(radius * 0.6),
               rotateX: reduce ? 0 : tilt,
             }}
           >
@@ -70,7 +72,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
                   height: cardH,
                   marginLeft: -cardW / 2,
                   marginTop: -cardH / 2,
-                  transform: `rotateY(${i * step}deg) translateZ(${radius}px)`,
+                  transform: `rotateY(${i * step}deg) translateZ(-${radius}px)`,
                   backfaceVisibility: 'hidden',
                 }}
               >

@@ -16,7 +16,7 @@ export default function HomePage({ onOpenLightbox, lang }) {
     <div className="bg-[#450B17] text-latte min-h-screen">
       <HeroStorytelling lang={lang} onOpenLightbox={onOpenLightbox} />
       <HomeStory />
-      <HomeHalls onOpenLightbox={onOpenLightbox} />
+      <HomeHalls />
       <PhotoScroll3D onOpenLightbox={onOpenLightbox} />
       <ExperienceStrip />
 
