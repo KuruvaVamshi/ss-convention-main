@@ -244,6 +244,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
   // Refs keep the observer callback pointing at the latest handler and media.
   const switchTabRef = useRef(null);
   const mediaRef = useRef(null);
+  const consoleTrackRef = useRef(null);
   // Switch console tab and dynamically sync visual theater
   const handleSwitchTab = (tab) => {
     setActiveConsoleTab(tab);
@@ -440,11 +441,19 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           else switchTabRef.current?.(id);
         });
       },
-      { rootMargin: '-45% 0px -45% 0px' }
+      { root: consoleTrackRef.current, threshold: 0.6 }
     );
     blocks.forEach((b) => io.observe(b));
     return () => io.disconnect();
   }, []);
+
+  const CONSOLE_TOPICS = ['halls', 'banquet', 'themes', 'menus', 'contact'];
+  const scrollConsoleTo = (i) => {
+    const track = consoleTrackRef.current;
+    if (!track) return;
+    const next = (i + CONSOLE_TOPICS.length) % CONSOLE_TOPICS.length;
+    track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
+  };
 
   const triggerFlowerShower = () => {
     try {
@@ -599,8 +608,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14 items-start">
           {/* Pinned viewer */}
-          <div className="lg:col-span-6 sticky top-[72px] lg:top-24 z-20 pt-4 pb-3 lg:py-8 bg-[#2A060E] lg:bg-transparent">
-            <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black h-[34vh] sm:h-[44vh] lg:h-auto lg:aspect-[4/5] lg:max-h-[72vh] w-full">
+          <div className="lg:col-span-6">
+            <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black aspect-[16/11] w-full">
               {currentMedia.type === 'video' ? (
                 <video
                   ref={videoRef}
@@ -683,8 +692,9 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
             </div>
           </div>
 
-          {/* Topics that scroll past the pinned viewer */}
-          <div className="lg:col-span-6">
+          {/* Topics: swipe or use the arrows to move left and right */}
+          <div className="lg:col-span-6 min-w-0">
+            <div ref={consoleTrackRef} className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
             {[
               ['halls', '01', 'Our Halls'],
               ['banquet', '02', 'Dining Floor'],
@@ -697,8 +707,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 <article
                   key={id}
                   data-console-block={id}
-                  className={`min-h-[55vh] lg:min-h-[78vh] flex flex-col justify-center py-10 border-b border-[#D4AF37]/15 last:border-b-0 transition-opacity duration-500 ${
-                    on ? 'opacity-100' : 'opacity-40 hover:opacity-80'
+                  className={`w-full flex-shrink-0 snap-center pr-4 sm:pr-8 transition-opacity duration-500 ${
+                    on ? 'opacity-100' : 'opacity-40'
                   }`}
                 >
                   <div className="flex items-center gap-4 mb-6">
@@ -930,6 +940,40 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 </article>
               );
             })}
+            </div>
+
+            {/* Controls */}
+            <div className="mt-6 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                {CONSOLE_TOPICS.map((t, i) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => scrollConsoleTo(i)}
+                    aria-label={`Show topic ${i + 1}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${activeConsoleTab === t ? 'w-8 bg-amber-300' : 'w-3 bg-white/30 hover:bg-white/60'}`}
+                  />
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollConsoleTo(CONSOLE_TOPICS.indexOf(activeConsoleTab) - 1)}
+                  aria-label="Previous topic"
+                  className="w-10 h-10 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors"
+                >
+                  <ChevronDown className="w-5 h-5 rotate-90" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollConsoleTo(CONSOLE_TOPICS.indexOf(activeConsoleTab) + 1)}
+                  aria-label="Next topic"
+                  className="w-10 h-10 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors"
+                >
+                  <ChevronDown className="w-5 h-5 -rotate-90" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
