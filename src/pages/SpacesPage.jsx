@@ -284,47 +284,9 @@ function HallDecorationLightbox({
 }
 
 /**
- * Hall photo ribbons: two rows of photos drifting in opposite directions.
- * Hovering a row pauses it; clicking a photo opens the lightbox.
+ * Hall photo stage: one large photo with a caption panel and a thumbnail rail.
+ * Arrow keys and the buttons change photos; clicking the stage opens the lightbox.
  */
-function PhotoRibbon({ items, images, hallName, onOpenLightbox, reverse = false, duration = 60 }) {
-  // Four copies so the track is wider than any screen; it moves by half its width, which is a whole number of sets
-  const loop = [...items, ...items, ...items, ...items];
-  return (
-    <div className="group/row relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
-      <div
-        className="flex w-max gap-4 animate-marquee-x group-hover/row:[animation-play-state:paused]"
-        style={{ animationDuration: `${duration}s`, animationDirection: reverse ? 'reverse' : 'normal' }}
-      >
-        {loop.map(({ img, index }, k) => (
-          <button
-            key={`${img.src}-${k}`}
-            type="button"
-            onClick={() => onOpenLightbox(images, index, hallName)}
-            aria-label={`View photo ${index + 1} of ${images.length}: ${img.title}`}
-            aria-hidden={k >= items.length ? true : undefined}
-            tabIndex={k >= items.length ? -1 : 0}
-            className="group relative flex-shrink-0 w-[260px] sm:w-[340px] h-[190px] sm:h-[240px] overflow-hidden rounded-2xl border border-[#D4AF37]/25 hover:border-amber-400/70 cursor-pointer transition-colors duration-300"
-          >
-            <img
-              src={img.src}
-              alt={k < items.length ? img.title : ''}
-              loading="lazy"
-              draggable={false}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-left translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-              {img.category && <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</span>}
-              <span className="mt-1 block font-cinzel text-sm font-bold text-latte leading-snug line-clamp-2">{img.title}</span>
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function HallGalleryStrip({
   hallName,
   eyebrow,
@@ -333,35 +295,98 @@ function HallGalleryStrip({
   images = [],
   onOpenLightbox
 }) {
+  const [current, setCurrent] = useState(0);
+  const railRef = useRef(null);
+
   if (!images.length) return null;
-  const indexed = images.map((img, index) => ({ img, index }));
-  const half = Math.ceil(indexed.length / 2);
-  const rowA = indexed.slice(0, half);
-  const rowB = indexed.slice(half);
+
+  const total = images.length;
+  const go = (i) => {
+    const next = (i + total) % total;
+    setCurrent(next);
+    const thumb = railRef.current?.children[next];
+    thumb?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  };
+  const img = images[current];
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10">
-        <div className="max-w-2xl">
-          <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">{eyebrow}</p>
-          <h3 className="mt-2 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">{heading}</h3>
-          <p className="mt-3 text-mocha leading-relaxed">{description}</p>
-        </div>
-        <button
-          type="button"
-          onClick={() => onOpenLightbox(images, 0, hallName)}
-          className="btn-outline-gold self-start md:self-auto"
-        >
-          <Eye className="w-4 h-4" /> View all {images.length} photos
-        </button>
+    <div
+      onKeyDown={(e) => {
+        if (e.key === 'ArrowRight') go(current + 1);
+        if (e.key === 'ArrowLeft') go(current - 1);
+      }}
+    >
+      <div className="max-w-2xl mb-8">
+        <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">{eyebrow}</p>
+        <h3 className="mt-2 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">{heading}</h3>
+        <p className="mt-3 text-mocha leading-relaxed">{description}</p>
       </div>
 
-      {/* Full-bleed ribbons */}
-      <div className="space-y-4 -mx-2 sm:-mx-4 lg:-mx-6">
-        <PhotoRibbon items={rowA} images={images} hallName={hallName} onOpenLightbox={onOpenLightbox} duration={55} />
-        {rowB.length > 0 && (
-          <PhotoRibbon items={rowB} images={images} hallName={hallName} onOpenLightbox={onOpenLightbox} reverse duration={65} />
-        )}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
+        {/* Stage */}
+        <button
+          type="button"
+          onClick={() => onOpenLightbox(images, current, hallName)}
+          aria-label={`Enlarge photo ${current + 1} of ${total}: ${img.title}`}
+          className="group relative lg:col-span-9 aspect-[16/10] overflow-hidden rounded-2xl border border-[#D4AF37]/35 bg-black cursor-zoom-in"
+        >
+          {images.map((p, i) => (
+            <img
+              key={p.src}
+              src={p.src}
+              alt={i === current ? p.title : ''}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              draggable={false}
+              className={`absolute inset-0 w-full h-full object-cover transition-all duration-[900ms] ease-out ${
+                i === current ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+              }`}
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/80 via-transparent to-transparent pointer-events-none" />
+          <span className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/55 border border-white/25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <Maximize2 className="w-4 h-4 text-amber-200" />
+          </span>
+        </button>
+
+        {/* Caption panel */}
+        <div className="lg:col-span-3 flex lg:flex-col justify-between gap-4 rounded-2xl border border-[#D4AF37]/25 bg-[#350710] p-5">
+          <div className="min-w-0">
+            <p className="font-cinzel text-3xl text-amber-300 tabular-nums">
+              {String(current + 1).padStart(2, '0')}
+              <span className="text-base text-mocha"> / {String(total).padStart(2, '0')}</span>
+            </p>
+            {img.category && (
+              <p className="mt-4 text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</p>
+            )}
+            <p className="mt-1 font-cinzel text-base sm:text-lg font-bold text-latte leading-snug">{img.title}</p>
+          </div>
+          <div className="flex lg:flex-row items-center gap-2 self-end lg:self-auto">
+            <button type="button" onClick={() => go(current - 1)} aria-label="Previous photo" className="w-11 h-11 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button type="button" onClick={() => go(current + 1)} aria-label="Next photo" className="w-11 h-11 rounded-full border border-[#D4AF37]/40 text-latte flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors">
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Thumbnail rail */}
+      <div ref={railRef} className="mt-4 flex gap-3 overflow-x-auto no-scrollbar pb-1">
+        {images.map((p, i) => (
+          <button
+            key={p.src}
+            type="button"
+            onClick={() => go(i)}
+            aria-label={`Show photo ${i + 1}: ${p.title}`}
+            aria-current={i === current}
+            className={`relative flex-shrink-0 w-28 sm:w-36 aspect-[4/3] overflow-hidden rounded-lg border transition-all duration-300 ${
+              i === current ? 'border-amber-300 ring-2 ring-amber-300/40' : 'border-[#D4AF37]/25 opacity-60 hover:opacity-100'
+            }`}
+          >
+            <img src={p.src} alt="" loading="lazy" draggable={false} className="w-full h-full object-cover" />
+          </button>
+        ))}
       </div>
     </div>
   );
