@@ -284,361 +284,94 @@ function HallDecorationLightbox({
 }
 
 /**
- * Luxury Cinematic Wedding Photography Exhibition Carousel
- * - Ambient Theater Backlight Glow (radiates the warm colors of the active stage)
- * - Cinema Scope Aspect with Integrated Royal Frosted-Glass Caption Scrim
- * - Prev/Next Directional Sliding Animation with 700ms Luxury Easing
- * - Floating Auspicious Dock containing 5s Progress Bar + Thumbnails
- * - Manual Play/Pause Toggle + Fullscreen Lightbox Integration
- * - Single-window vertical footprint with zero clipping
+ * Hall photo strip: expanding panels on desktop (hover to open a photo),
+ * swipeable cards on phones. Clicking a photo opens the lightbox.
  */
-function LuxuryCinematicHallCarousel({
+function HallGalleryStrip({
   hallName,
   eyebrow,
   heading,
   description,
   images = [],
-  onOpenLightbox,
-  lang = 'en'
+  onOpenLightbox
 }) {
-  const shouldReduce = useReducedMotion();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const touchStartX = useRef(null);
+  const [active, setActive] = useState(0);
 
-  const total = images.length;
-  const currentImage = images[currentIndex] || images[0] || {};
-
-  // 5-second Autoplay with progress bar (resets on change, pauses on hover or manual pause)
-  useEffect(() => {
-    if (isPaused || isHovered || shouldReduce || total <= 1) return;
-
-    const intervalTime = 50; // ms
-    const step = (intervalTime / 5000) * 100;
-
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setDirection(1);
-          setCurrentIndex((curr) => (curr + 1) % total);
-          return 0;
-        }
-        return prev + step;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [currentIndex, isPaused, isHovered, shouldReduce, total]);
-
-  const handleNext = () => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % total);
-    setProgress(0);
-  };
-
-  const handlePrev = () => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
-    setProgress(0);
-  };
-
-  const handleSelectIndex = (idx) => {
-    if (idx === currentIndex) return;
-    setDirection(idx > currentIndex ? 1 : -1);
-    setCurrentIndex(idx);
-    setProgress(0);
-  };
-
-  const togglePlayPause = () => {
-    setIsPaused((prev) => !prev);
-  };
-
-  // Touch Swipe for Mobile
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e) => {
-    if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-
-    if (diff > 45) {
-      handleNext();
-    } else if (diff < -45) {
-      handlePrev();
-    }
-    touchStartX.current = null;
-  };
-
-  // Keyboard navigation
-  const handleKeyDown = (e) => {
-    if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      handleNext();
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      handlePrev();
-    }
-  };
-
-  // 700ms slide variants with luxury easing
-  const slideVariants = {
-    enter: (dir) => ({
-      x: shouldReduce ? 0 : dir > 0 ? '100%' : '-100%',
-      opacity: shouldReduce ? 0 : 0.2,
-      scale: shouldReduce ? 1 : 1.04
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        x: { duration: shouldReduce ? 0.1 : 0.7, ease: [0.16, 1, 0.3, 1] },
-        opacity: { duration: shouldReduce ? 0.1 : 0.35 },
-        scale: { duration: shouldReduce ? 0.1 : 0.7, ease: [0.16, 1, 0.3, 1] }
-      }
-    },
-    exit: (dir) => ({
-      x: shouldReduce ? 0 : dir > 0 ? '-100%' : '100%',
-      opacity: shouldReduce ? 0 : 0.2,
-      scale: shouldReduce ? 1 : 0.98,
-      transition: {
-        x: { duration: shouldReduce ? 0.1 : 0.7, ease: [0.16, 1, 0.3, 1] },
-        opacity: { duration: shouldReduce ? 0.1 : 0.3 }
-      }
-    })
-  };
+  if (!images.length) return null;
 
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-      className="w-full mx-auto focus:outline-none select-none relative"
-    >
-      {/* 1. Ambient Theatre Backlight Glow (Radiates the warm colors of the active stage) */}
-      <div 
-        className="absolute inset-0 -m-6 sm:-m-12 rounded-3xl overflow-hidden pointer-events-none opacity-45 blur-3xl transition-all duration-1000 ease-out"
-        aria-hidden="true"
-      >
-        <img 
-          src={currentImage.src} 
-          alt="" 
-          className="w-full h-full object-cover scale-110 filter saturate-150" 
-        />
-      </div>
-
-      {/* 2. Grand Header Bar */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-2.5 sm:mb-3.5 px-1">
-        <div>
-          <span className="text-xs sm:text-sm font-bold tracking-[0.24em] text-champagne-gold uppercase block mb-1">
-            {eyebrow || `${hallName.toUpperCase()} · CINEMATIC EXHIBITION`}
-          </span>
-          <h3 className="font-cinzel text-2xl sm:text-3xl md:text-4xl font-bold text-luxury-ivory tracking-wide leading-tight">
-            {heading || 'Celebrations, Beautifully Designed.'}
-          </h3>
-          {description && (
-            <p className="text-luxury-parchment/85 text-xs sm:text-sm font-light mt-1">
-              {description}
-            </p>
-          )}
+    <div>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+        <div className="max-w-2xl">
+          <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">{eyebrow}</p>
+          <h3 className="mt-2 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">{heading}</h3>
+          <p className="mt-3 text-mocha leading-relaxed">{description}</p>
         </div>
-
-        {/* Exhibition Counter & Play/Pause Controls */}
-        <div className="flex items-center gap-2.5 flex-shrink-0">
-          <button
-            onClick={togglePlayPause}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-palace-obsidian/85 border border-champagne-hairline hover:border-champagne-gold text-champagne-light text-xs font-semibold tracking-wider uppercase backdrop-blur-md transition-all cursor-pointer shadow-md"
-            title={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
-          >
-            {isPaused ? (
-              <>
-                <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
-                <span>Play</span>
-              </>
-            ) : (
-              <>
-                <Pause className="w-3.5 h-3.5 text-champagne-gold fill-champagne-gold" />
-                <span className="text-[11px] text-champagne-light">{isHovered ? 'Paused' : '5s Auto'}</span>
-              </>
-            )}
-          </button>
-
-          <div className="font-cinzel text-sm sm:text-base font-bold text-champagne-light tracking-widest px-4 py-1.5 rounded-full bg-palace-obsidian/90 border border-champagne-hairline shadow-md">
-            <span>{String(currentIndex + 1).padStart(2, '0')}</span>
-            <span className="text-luxury-parchment/40 mx-1">/</span>
-            <span className="text-luxury-parchment/70">{String(total).padStart(2, '0')}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Grand Cinema Scope Stage (Screen-Full Immersion ~72vh height, up to 1600px width) */}
-      <div className="relative group z-10">
-        <div
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onClick={() => onOpenLightbox(images, currentIndex, hallName)}
-          className="relative h-[60vh] sm:h-[66vh] md:h-[70vh] lg:h-[72vh] min-h-[440px] max-h-[740px] w-full rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-champagne-hairline/80 shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-palace-obsidian cursor-pointer ring-1 ring-champagne-gold/30"
-          title="Click to view full screen"
+        <button
+          type="button"
+          onClick={() => onOpenLightbox(images, 0, hallName)}
+          className="btn-outline-gold self-start md:self-auto"
         >
-          {/* Animated Image Slide with Ken Burns Micro Push */}
-          <AnimatePresence initial={false} custom={direction} mode="popLayout">
-            <motion.div
-              key={currentIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="absolute inset-0 w-full h-full"
+          <Eye className="w-4 h-4" /> View all {images.length} photos
+        </button>
+      </div>
+
+      <div className="flex gap-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-3 lg:pb-0 no-scrollbar">
+        {images.map((img, i) => {
+          const open = active === i;
+          return (
+            <button
+              key={img.src}
+              type="button"
+              onMouseEnter={() => window.matchMedia('(hover: hover)').matches && setActive(i)}
+              onFocus={() => setActive(i)}
+              onClick={() => {
+                if (open || !window.matchMedia('(hover: hover)').matches) onOpenLightbox(images, i, hallName);
+                else setActive(i);
+              }}
+              aria-label={`View photo ${i + 1} of ${images.length}: ${img.title}`}
+              className={`group relative flex-shrink-0 snap-center overflow-hidden rounded-2xl border text-left cursor-pointer h-[420px] lg:h-[520px] w-[78vw] sm:w-[52vw] lg:w-auto transition-[flex,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                open ? 'lg:flex-[4.5] border-amber-400/70' : 'lg:flex-1 border-[#D4AF37]/25'
+              }`}
             >
               <img
-                src={currentImage.src}
-                alt={currentImage.title}
-                className="w-full h-full object-cover object-center"
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Top Badges (Category & Fullscreen Zoom) */}
-          <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
-            <span className="px-3.5 py-1.5 rounded-full bg-palace-obsidian/85 border border-champagne-gold/50 text-champagne-gold text-xs font-bold tracking-wider uppercase backdrop-blur-md shadow-md pointer-events-auto">
-              {currentImage.category}
-            </span>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onOpenLightbox(images, currentIndex, hallName);
-              }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-palace-obsidian/85 hover:bg-champagne-gold hover:text-palace-obsidian text-champagne-light border border-champagne-hairline text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all cursor-pointer pointer-events-auto"
-            >
-              <Maximize2 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Exhibition View</span>
-            </button>
-          </div>
-
-          {/* Integrated Frosted Glass Caption Veil (Generous & High-Contrast) */}
-          <div className="absolute bottom-0 inset-x-0 z-20 p-5 sm:p-7 bg-gradient-to-t from-black/95 via-black/80 to-transparent backdrop-blur-[3px] pointer-events-none">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, y: shouldReduce ? 0 : 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: shouldReduce ? 0 : -8 }}
-                transition={{
-                  duration: shouldReduce ? 0.1 : 0.4,
-                  delay: shouldReduce ? 0 : 0.08,
-                  ease: 'easeOut'
-                }}
-                className="flex flex-col sm:flex-row sm:items-end justify-between gap-2"
-              >
-                <div>
-                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.24em] text-champagne-gold block drop-shadow mb-0.5">
-                    {hallName} · AUTHENTIC VENUE RECORD
-                  </span>
-                  <h4 className="font-cinzel text-lg sm:text-2xl md:text-3xl font-bold text-luxury-ivory tracking-wide leading-tight drop-shadow-md">
-                    {currentImage.title}
-                  </h4>
-                </div>
-
-                <div className="text-xs sm:text-sm text-luxury-parchment font-light flex items-center gap-1.5 drop-shadow flex-shrink-0">
-                  <Sparkles className="w-4 h-4 text-champagne-light" />
-                  <span>Click to view in 4K resolution</span>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Floating Side Navigation Arrows (Docked inside frame for wide layout) */}
-        {total > 1 && (
-          <>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePrev();
-              }}
-              aria-label="Previous decoration photograph"
-              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-palace-obsidian/90 hover:bg-[#3D0A14] border-2 border-champagne-gold/60 hover:border-champagne-gold text-champagne-gold hover:text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
-            >
-              <ChevronLeft className="w-5 h-5 sm:w-7 sm:h-7" />
-            </button>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleNext();
-              }}
-              aria-label="Next decoration photograph"
-              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-palace-obsidian/90 hover:bg-[#3D0A14] border-2 border-champagne-gold/60 hover:border-champagne-gold text-champagne-gold hover:text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
-            >
-              <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* 4. Auspicious Floating Dock (Widescreen Segmented Progress Bar + Generous Thumbnails) */}
-      <div className="relative z-10 mt-2.5 sm:mt-3 p-2.5 sm:p-3 rounded-2xl bg-palace-obsidian/95 backdrop-blur-xl border border-champagne-hairline/80 shadow-[0_12px_40px_rgba(0,0,0,0.85)] flex flex-col gap-2 w-full mx-auto">
-        {/* Minimal 5-Second Segmented Progress Bar */}
-        <div className="w-full flex items-center gap-1.5 px-1">
-          {images.map((_, idx) => (
-            <div
-              key={idx}
-              onClick={() => handleSelectIndex(idx)}
-              className="h-1.5 flex-1 rounded-full bg-white/10 overflow-hidden cursor-pointer relative transition-colors hover:bg-white/20"
-              title={`View photo ${idx + 1}`}
-            >
-              {idx === currentIndex ? (
-                <div
-                  className="h-full bg-gradient-to-r from-amber-400 via-champagne-gold to-amber-500 transition-all duration-75"
-                  style={{ width: `${progress}%` }}
-                />
-              ) : idx < currentIndex ? (
-                <div className="h-full bg-champagne-gold/60 w-full" />
-              ) : null}
-            </div>
-          ))}
-        </div>
-
-        {/* Generous Widescreen Thumbnail Strip Below for Direct Navigation */}
-        <div className="flex items-center justify-center gap-2.5 sm:gap-3.5 overflow-x-auto py-1 no-scrollbar">
-          {images.map((img, idx) => {
-            const isActive = idx === currentIndex;
-            return (
-              <button
-                key={idx}
-                onClick={() => handleSelectIndex(idx)}
-                className={`relative flex-shrink-0 w-20 h-13 sm:w-24 sm:h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? 'border-champagne-gold scale-105 shadow-[0_0_20px_rgba(212,175,55,0.65)] ring-2 ring-champagne-gold/60'
-                    : 'border-white/20 opacity-60 hover:opacity-95 hover:border-champagne-hairline'
+                src={img.src}
+                alt={img.title}
+                loading="lazy"
+                draggable={false}
+                className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-out ${
+                  open ? 'scale-105 brightness-100' : 'lg:scale-100 lg:brightness-[0.55] lg:grayscale-[0.35]'
                 }`}
-                title={img.title}
-              >
-                <img src={img.src} alt="" className="w-full h-full object-cover" />
-                {isActive && (
-                  <div className="absolute inset-0 bg-champagne-gold/15 pointer-events-none" />
-                )}
-              </button>
-            );
-          })}
-        </div>
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409] via-[#1C0409]/20 to-transparent" />
+
+              <span className="absolute top-4 left-5 font-cinzel text-sm tracking-[0.3em] text-amber-300/90">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+                {/* Phones always show the caption; desktop shows it on the open panel */}
+                <div className={`transition-all duration-700 ${open ? 'lg:opacity-100 lg:translate-y-0' : 'lg:opacity-0 lg:translate-y-3'}`}>
+                  {img.category && (
+                    <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</span>
+                  )}
+                  <span className="mt-1 block font-cinzel text-base sm:text-lg font-bold text-latte leading-snug lg:max-w-md">
+                    {img.title}
+                  </span>
+                  <span className="mt-2 hidden lg:inline-flex items-center gap-1.5 text-xs text-mocha">
+                    <Maximize2 className="w-3.5 h-3.5" /> Click to enlarge
+                  </span>
+                </div>
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-/**
- * MASTER SPACES / OUR VENUE PAGE
- * Luxury Architectural Showcase for Hall Vasishta, Hall Agasthya, and Hall Koundinya
- */
+
 // Venue photos for the hero strip: the first photos of each hall, interleaved
 const HERO_PHOTOS = (() => {
   const lists = spacesData.slice(0, 3).map((h) => h.gallery.slice(0, 4).map((g) => g.src));
@@ -917,7 +650,7 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
               </dl>
             </div>
 
-            <LuxuryCinematicHallCarousel
+            <HallGalleryStrip
               hallName={hall.name}
               eyebrow={meta.carouselEyebrow}
               heading="Celebrations, Beautifully Designed."
