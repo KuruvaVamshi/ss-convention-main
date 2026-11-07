@@ -316,8 +316,7 @@ function HallGalleryStrip({
         </button>
       </div>
 
-      {/* Full-viewport width so the panels can run edge to edge */}
-      <div className="relative left-1/2 w-screen -translate-x-1/2 px-3 sm:px-5 lg:px-8 flex gap-3 lg:gap-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-3 lg:pb-0 no-scrollbar">
+      <div className="flex gap-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-3 lg:pb-0 no-scrollbar">
         {images.map((img, i) => {
           const open = active === i;
           return (
@@ -331,7 +330,7 @@ function HallGalleryStrip({
                 else setActive(i);
               }}
               aria-label={`View photo ${i + 1} of ${images.length}: ${img.title}`}
-              className={`group relative flex-shrink-0 snap-center overflow-hidden rounded-2xl border text-left cursor-pointer h-[500px] sm:h-[560px] lg:h-[720px] w-[86vw] sm:w-[62vw] lg:w-auto transition-[flex,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              className={`group relative flex-shrink-0 snap-center overflow-hidden rounded-2xl border text-left cursor-pointer h-[420px] lg:h-[520px] w-[78vw] sm:w-[52vw] lg:w-auto transition-[flex,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 open ? 'lg:flex-[4.5] border-amber-400/70' : 'lg:flex-1 border-[#D4AF37]/25'
               }`}
             >
