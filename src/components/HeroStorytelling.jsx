@@ -454,7 +454,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
 
   activeTabRef.current = activeConsoleTab;
 
-  // Auto-advance the topics every 6 seconds. It pauses while the visitor hovers or
+  // Auto-advance the topics every 4 seconds. It pauses while the visitor hovers or
   // focuses the topics, shortly after they swipe or click, while a video plays,
   // while the section is off screen and when reduced motion is requested.
   useEffect(() => {
@@ -476,7 +476,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
         if (!track) return;
         const next = (topics.indexOf(activeTabRef.current) + 1) % topics.length;
         track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
-      }, 6000);
+      }, 4000);
     }
     return () => {
       if (timer) clearInterval(timer);
