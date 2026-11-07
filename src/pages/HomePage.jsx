@@ -23,8 +23,8 @@ export default function HomePage({ onOpenLightbox, lang }) {
       </Suspense>
 
       <section className="py-24 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] border-t border-[#D4AF37]/35">
-        <Reveal className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-cinzel text-3xl sm:text-5xl font-bold tracking-wide">Ready to celebrate with us?</h2>
+        <Reveal className="max-w-5xl mx-auto px-4 text-center">
+          <h2 className="font-cinzel text-[clamp(1.1rem,5vw,3rem)] whitespace-nowrap font-bold tracking-wide">Ready to celebrate with us?</h2>
           <p className="mt-4 text-mocha leading-relaxed">
             Prime muhurtham and weekend dates book quickly. Reserve a visit and get an instant estimate.
           </p>
