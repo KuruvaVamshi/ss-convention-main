@@ -18,6 +18,7 @@ export default function Navbar({ lang, setLang }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopDropdown, setDesktopDropdown] = useState(null); // 'venue' | null
+  const [venuePreview, setVenuePreview] = useState(0);
   const [mobileExpanded, setMobileExpanded] = useState({ venue: false });
 
   const location = useLocation();
@@ -253,49 +254,60 @@ export default function Navbar({ lang, setLang }) {
                   )}
                 </button>
 
-                {/* Dropdown: three photo cards */}
+                {/* Dropdown: full-width editorial panel, photo fades in behind the hovered link */}
                 {desktopDropdown === 'venue' && (
                   <div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[660px] rounded-2xl bg-[#140205]/98 backdrop-blur-xl border border-[#D4AF37]/40 shadow-[0_25px_60px_rgba(0,0,0,0.9)] p-4 z-50 animate-dropdown-slide before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']"
+                    className="fixed left-0 right-0 top-16 sm:top-20 z-50 overflow-hidden bg-[#140205] border-y border-[#D4AF37]/30 shadow-[0_30px_60px_rgba(0,0,0,0.8)] animate-panel-drop"
                     onMouseEnter={() => handleMouseEnter('venue')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <div className="grid grid-cols-3 gap-3">
-                      {venueSubLinks.map((item) => (
-                        <NavLink
-                          key={item.path}
-                          to={item.path}
-                          onClick={closeAllMenus}
-                          className="group relative block aspect-[4/5] rounded-xl overflow-hidden border border-[#D4AF37]/25 hover:border-amber-400/80 transition-colors duration-300"
-                        >
-                          <img
-                            src={item.img}
-                            alt=""
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#140205] via-[#140205]/40 to-transparent" />
-                          <div className="absolute bottom-0 left-0 right-0 p-3.5">
-                            <span className="font-cinzel text-sm font-bold text-latte flex items-center justify-between">
-                              {item.title}
-                              <ArrowRight className="w-3.5 h-3.5 text-amber-300 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
-                            </span>
-                            <span className="mt-1 block text-xs text-mocha leading-snug max-h-0 opacity-0 overflow-hidden transition-all duration-300 group-hover:max-h-16 group-hover:opacity-100">
-                              {item.desc}
-                            </span>
-                          </div>
-                        </NavLink>
-                      ))}
-                    </div>
+                    {venueSubLinks.map((item, i) => (
+                      <img
+                        key={item.path}
+                        src={item.img}
+                        alt=""
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                          venuePreview === i ? 'opacity-30' : 'opacity-0'
+                        }`}
+                      />
+                    ))}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#140205] via-[#140205]/85 to-[#140205]/60" />
 
-                    <div className="mt-3 pt-3 border-t border-[#D4AF37]/20 flex items-center justify-between text-xs text-mocha">
-                      <span>Need instant date confirmation?</span>
-                      <a
-                        href={`tel:${venueData.phones[0].raw}`}
-                        className="text-amber-300 hover:text-latte font-bold flex items-center gap-1.5 transition-colors"
-                      >
-                        <Phone className="w-3.5 h-3.5" />
-                        <span>Call venue</span>
-                      </a>
+                    <div className="relative max-w-7xl mx-auto px-8 py-10 grid grid-cols-12 gap-10 items-center">
+                      <div className="col-span-3">
+                        <p className="text-[11px] font-cinzel font-bold tracking-[0.3em] uppercase text-amber-300">The Venue</p>
+                        <p className="mt-3 font-cinzel text-2xl text-latte leading-snug">Where your celebration comes to life</p>
+                        <a
+                          href={`tel:${venueData.phones[0].raw}`}
+                          className="mt-5 inline-flex items-center gap-2 text-sm text-amber-300 hover:text-latte transition-colors"
+                        >
+                          <Phone className="w-4 h-4" />
+                          <span>{venueData.phones[0].display}</span>
+                        </a>
+                      </div>
+
+                      <div className="col-span-9 grid grid-cols-3 gap-8">
+                        {venueSubLinks.map((item, i) => (
+                          <NavLink
+                            key={item.path}
+                            to={item.path}
+                            onClick={closeAllMenus}
+                            onMouseEnter={() => setVenuePreview(i)}
+                            onFocus={() => setVenuePreview(i)}
+                            className="group block"
+                          >
+                            <span className="font-cinzel text-sm tracking-[0.3em] text-amber-300/80">0{i + 1}</span>
+                            <span className="mt-2 flex items-center gap-2 font-cinzel text-xl font-bold text-latte">
+                              {item.title}
+                              <ArrowRight className="w-4 h-4 text-amber-300 -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                            </span>
+                            <span className="mt-1 block text-sm text-mocha leading-snug">{item.desc}</span>
+                            <span className="mt-4 block h-px w-full bg-[#D4AF37]/25 overflow-hidden">
+                              <span className="block h-full w-full bg-amber-300 -translate-x-full transition-transform duration-500 ease-out group-hover:translate-x-0" />
+                            </span>
+                          </NavLink>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}

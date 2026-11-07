@@ -267,3 +267,12 @@
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes luxuryPanelDrop {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-panel-drop {
+  animation: luxuryPanelDrop 240ms var(--ease-luxury) forwards;
+}
