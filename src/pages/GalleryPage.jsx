@@ -77,30 +77,41 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
         </div>
       </section>
 
-      {/* Filters */}
+      {/* Filters: floating pill bar that slides away on scroll down */}
       <div
-        className={`sticky top-[68px] sm:top-[72px] z-30 bg-[#1C0409]/95 backdrop-blur-xl border-b border-[#D4AF37]/25 transform transition-transform duration-300 ${
-          barVisible ? 'translate-y-0' : '-translate-y-[calc(100%+80px)] pointer-events-none'
-        }`}
+        className={}
       >
-        <div className="max-w-7xl mx-auto px-4 flex gap-1 overflow-x-auto no-scrollbar">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => setActive(cat.id)}
-              aria-pressed={active === cat.id}
-              className={`relative px-4 py-3.5 text-sm font-cinzel tracking-wider whitespace-nowrap transition-colors ${
-                active === cat.id ? 'text-latte' : 'text-mocha hover:text-latte'
-              }`}
-            >
-              {cat.label}
-              <span className="ml-1.5 text-[11px] text-amber-300/70">{counts[cat.id] || 0}</span>
-              {active === cat.id && (
-                <motion.span layoutId="gallery-underline" className="absolute left-3 right-3 bottom-0 h-0.5 bg-amber-300 rounded-full" />
-              )}
-            </button>
-          ))}
+        <div className="max-w-full mx-auto mt-4 flex justify-center">
+          <div
+            role="group"
+            aria-label="Filter photos"
+            className="pointer-events-auto max-w-full flex items-center gap-1 p-1.5 rounded-full bg-[#1C0409]/80 backdrop-blur-xl border border-[#D4AF37]/40 shadow-[0_10px_35px_rgba(0,0,0,0.5)] overflow-x-auto no-scrollbar"
+          >
+            {categories.map((cat) => {
+              const on = active === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setActive(cat.id)}
+                  aria-pressed={on}
+                  className={}
+                >
+                  {on && (
+                    <motion.span
+                      layoutId="gallery-pill"
+                      transition={{ type: 'spring', stiffness: 420, damping: 36 }}
+                      className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B8860B] via-[#EED9A6] to-[#C5A059]"
+                    />
+                  )}
+                  <span className="relative">{cat.label}</span>
+                  <span className={}>
+                    {counts[cat.id] || 0}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
