@@ -103,8 +103,8 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
       </div>
 
       {/* Masonry */}
-      <section id="gallery" className="py-6 sm:py-8 bg-[#3D0A14]">
-        <div className="w-full px-2 sm:px-3">
+      <section id="gallery" className="py-12 sm:py-16 bg-[#3D0A14]">
+        <div className="w-full px-4 sm:px-8 lg:px-12">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -112,7 +112,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="columns-2 md:columns-3 xl:columns-4 2xl:columns-5 gap-2 sm:gap-3 [&>*]:mb-2 sm:[&>*]:mb-3"
+              className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5 [&>*]:mb-4 sm:[&>*]:mb-5"
             >
               {items.map((item) => (
                 <button
@@ -120,7 +120,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
                   type="button"
                   onClick={() => onOpenLightbox(item.image, item.title)}
                   aria-label={`View photo: ${item.title}`}
-                  className="group relative block w-full break-inside-avoid overflow-hidden rounded-lg border border-[#D4AF37]/20 hover:border-amber-400/70 bg-[#350710] text-left cursor-pointer transition-colors duration-300"
+                  className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl border border-[#D4AF37]/25 hover:border-amber-400/70 bg-[#350710] text-left cursor-pointer transition-colors duration-300"
                 >
                   <img
                     src={item.image}
