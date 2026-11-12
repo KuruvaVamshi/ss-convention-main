@@ -1,28 +1,55 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { venueData } from '../data/venueData';
 import { MapPin, Phone, Heart, Sparkles, CalendarCheck } from 'lucide-react';
 
 export default function Footer({ lang }) {
+  const location = useLocation();
+
+  const handleHomeClick = (e) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const heroEl = document.getElementById('hero') || document.getElementById('homepage-hero-carousel');
+      if (heroEl) {
+        if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+          window.lenis.scrollTo(heroEl, { duration: 1.2, lock: false });
+        } else {
+          heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+          window.lenis.scrollTo(0, { duration: 1.2, lock: false });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+  };
+
   return (
     <footer className="bg-[#140205] border-t border-[#C5A059]/25 pt-16 pb-12 relative text-[#FAF6F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Col 1: Brand Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full border border-[#C5A059]/50 flex items-center justify-center text-amber-300 shadow-md bg-black/40">
+            <Link
+              to="/"
+              onClick={handleHomeClick}
+              className="flex items-center gap-2.5 group cursor-pointer"
+              title="SS Convention Hall - Return to Hero Section"
+            >
+              <div className="w-9 h-9 rounded-full border border-[#C5A059]/50 flex items-center justify-center text-amber-300 shadow-md bg-black/40 group-hover:scale-105 transition-transform">
                 <Heart className="w-4 h-4 fill-[#C5A059]/30 text-amber-300" />
               </div>
               <div>
-                <span className="font-cinzel text-lg font-bold tracking-[0.16em] text-white block">
+                <span className="font-cinzel text-lg font-bold tracking-[0.16em] text-white block group-hover:text-amber-300 transition-colors">
                   S.S CONVENTION
                 </span>
                 <span className="text-[9px] tracking-[0.25em] text-amber-300 font-bold uppercase block -mt-0.5">
                   Wedding & Banquet Halls
                 </span>
               </div>
-            </div>
+            </Link>
             <p className="text-xs text-amber-100/80 leading-relaxed font-light">
               "We Make Your Celebrations Unforgettable." Hyderabad's premier destination for Weddings, Receptions, 1st Birthdays, Cradle Ceremonies, and Grand Banquets.
             </p>
@@ -38,7 +65,7 @@ export default function Footer({ lang }) {
               EXPLORE PAGES
             </h4>
             <ul className="space-y-2 text-xs font-normal text-amber-100/90">
-              <li><Link to="/" className="hover:text-amber-300 transition-colors">Home & Palace Overview</Link></li>
+              <li><Link to="/" onClick={handleHomeClick} className="hover:text-amber-300 transition-colors">Home & Palace Overview</Link></li>
               <li><Link to="/about" className="hover:text-amber-300 transition-colors">About S.S Convention</Link></li>
               <li><Link to="/spaces" className="hover:text-amber-300 transition-colors">Our Halls & Spaces</Link></li>
               <li><Link to="/facilities" className="hover:text-amber-300 transition-colors">Facilities & Amenities</Link></li>

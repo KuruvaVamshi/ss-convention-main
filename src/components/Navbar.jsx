@@ -142,6 +142,31 @@ export default function Navbar({ lang, setLang }) {
     setDesktopDropdown(null);
   };
 
+  // Navigate or smooth-scroll directly to Hero Section
+  const handleHomeClick = (e) => {
+    closeAllMenus();
+
+    // If already on homepage ('/'), smoothly scroll to the Hero section
+    if (location.pathname === '/') {
+      e.preventDefault();
+
+      const heroEl = document.getElementById('hero') || document.getElementById('homepage-hero-carousel');
+      if (heroEl) {
+        if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+          window.lenis.scrollTo(heroEl, { duration: 1.2, lock: false });
+        } else {
+          heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+          window.lenis.scrollTo(0, { duration: 1.2, lock: false });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+  };
+
   // Toggle mobile accordion groups
   const toggleMobileAccordion = (group) => {
     setMobileExpanded((prev) => ({
@@ -193,9 +218,9 @@ export default function Navbar({ lang, setLang }) {
             {/* 1. Brand Logo & Name */}
             <Link
               to="/"
-              onClick={closeAllMenus}
-              className="flex items-center gap-3 group flex-shrink-0"
-              title="SS Convention Hall - Return to Homepage"
+              onClick={handleHomeClick}
+              className="flex items-center gap-3 group flex-shrink-0 cursor-pointer"
+              title="SS Convention Hall - Return to Hero Section"
             >
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#D4AF37] p-0.5 flex items-center justify-center bg-black/60 shadow-[0_0_14px_rgba(212,175,55,0.45)] group-hover:scale-105 transition-all overflow-hidden">
                 <img
@@ -219,6 +244,7 @@ export default function Navbar({ lang, setLang }) {
               {/* Home */}
               <NavLink
                 to="/"
+                onClick={handleHomeClick}
                 className={({ isActive }) =>
                   `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
                     isActive ? 'text-amber-300' : 'text-amber-100/80 hover:text-white'
@@ -455,7 +481,7 @@ export default function Navbar({ lang, setLang }) {
                 {/* Home */}
                 <NavLink
                   to="/"
-                  onClick={closeAllMenus}
+                  onClick={handleHomeClick}
                   className={({ isActive }) =>
                     `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
                       isActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'

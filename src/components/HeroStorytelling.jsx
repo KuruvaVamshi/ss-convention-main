@@ -417,7 +417,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           CHAPTER 1: FULL-SCREEN CINEMATIC LUXURY HERO SECTION
           (Grand Royal Symmetrical Palace Hero with 5-Image Carousel, 5s Auto-Crossfade)
           ======================================================== */}
-      <section id="homepage-hero-carousel" className="relative h-[100dvh] max-h-[100dvh] min-h-[640px] flex flex-col justify-between pt-16 sm:pt-20 pb-4 overflow-hidden select-none">
+      <section id="hero" data-carousel-id="homepage-hero-carousel" className="relative h-[100dvh] max-h-[100dvh] min-h-[640px] flex flex-col justify-between pt-16 sm:pt-20 pb-4 overflow-hidden select-none">
         {/* Full-Screen Background Image with 1s Smooth Crossfade */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
           {banquetShowcaseOptions.map((item, idx) => (
