@@ -2,7 +2,6 @@ import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
-import RoyalPalaceLoader from './components/RoyalPalaceLoader';
 import GoldenDustCanvas from './components/GoldenDustCanvas';
 import AuspiciousBlessingsCanvas from './components/AuspiciousBlessingsCanvas';
 import Navbar from './components/Navbar';
@@ -10,6 +9,7 @@ import Footer from './components/Footer';
 import FloatingContactBar from './components/FloatingContactBar';
 import LightboxModal from './components/LightboxModal';
 import ScrollProgress from './components/ScrollProgress';
+import CinematicEntranceLoader from './components/CinematicEntranceLoader';
 
 // Multi-Page Views
 import HomePage from './pages/HomePage';
@@ -55,8 +55,8 @@ export default function App() {
         <ScrollToTop />
 
         <div className="min-h-screen bg-gradient-to-b from-[#1C0409] via-[#24060C] to-[#120104] text-[#FAF6F0] flex flex-col selection:bg-[#C5A059] selection:text-[#0D0204] relative">
-          {/* Grand 3D Royal Mahadwaram Doors Opening Reveal (Opens directly onto Homepage Hero) */}
-          <RoyalPalaceLoader />
+          {/* Scroll-Controlled First Load Entrance (Exterior Doors -> Reception Doors -> Hero Page) */}
+          <CinematicEntranceLoader lang={lang} />
 
           {/* Subtle Ambient Drifting Golden Dust Particles */}
           <GoldenDustCanvas />

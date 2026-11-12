@@ -415,21 +415,20 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
     <div className="relative text-white overflow-x-clip border-b-2 border-[#D4AF37]/35">
       {/* ========================================================
           CHAPTER 1: FULL-SCREEN CINEMATIC LUXURY HERO SECTION
-          (Grand Royal Symmetrical Palace Hero with Open Architectural Stage)
+          (Grand Royal Symmetrical Palace Hero with 5-Image Carousel, 5s Auto-Crossfade)
           ======================================================== */}
-      <section className="relative h-[100dvh] max-h-[100dvh] min-h-[640px] flex flex-col justify-between pt-16 sm:pt-20 pb-4 overflow-hidden select-none">
-        
-        {/* ========================================================
-            FULL-SCREEN HERO BACKGROUND IMAGE WITH SMOOTH CROSSFADE
-            (Auto-changes smoothly every 5 seconds across 5 authentic angles)
-            ======================================================== */}
+      <section id="homepage-hero-carousel" className="relative h-[100dvh] max-h-[100dvh] min-h-[640px] flex flex-col justify-between pt-16 sm:pt-20 pb-4 overflow-hidden select-none">
+        {/* Full-Screen Background Image with 1s Smooth Crossfade */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
           {banquetShowcaseOptions.map((item, idx) => (
             <img
               key={item.id}
               src={item.src}
               alt={item.title}
-              style={{ transform: activeSlideIdx === idx ? "scale(1.07)" : "scale(1)", transition: "opacity 1000ms ease-in-out, transform 8000ms linear" }}
+              style={{
+                transform: activeSlideIdx === idx ? 'scale(1.07)' : 'scale(1)',
+                transition: 'opacity 1000ms ease-in-out, transform 8000ms linear'
+              }}
               className={`absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.92] contrast-[1.08] saturate-[1.12] transition-opacity duration-1000 ease-in-out will-change-transform ${
                 activeSlideIdx === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
@@ -506,7 +505,13 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
           </div>
 
           <div className="flex items-center justify-center gap-4">
-            <button onClick={handlePrevSlide} aria-label="Previous view" className="text-latte/80 hover:text-amber-300 transition-colors text-lg leading-none cursor-pointer">‹</button>
+            <button
+              onClick={handlePrevSlide}
+              aria-label="Previous view"
+              className="text-latte/80 hover:text-amber-300 transition-colors text-lg leading-none cursor-pointer"
+            >
+              ‹
+            </button>
             <div className="flex items-center gap-2">
               {banquetShowcaseOptions.map((item, idx) => (
                 <button
@@ -520,11 +525,23 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
                 />
               ))}
             </div>
-            <button onClick={handleNextSlide} aria-label="Next view" className="text-latte/80 hover:text-amber-300 transition-colors text-lg leading-none cursor-pointer">›</button>
-            <span className="hidden sm:inline text-xs font-cinzel tracking-widest text-mocha min-w-[140px] text-left">{currentSlide.shortTitle}</span>
+            <button
+              onClick={handleNextSlide}
+              aria-label="Next view"
+              className="text-latte/80 hover:text-amber-300 transition-colors text-lg leading-none cursor-pointer"
+            >
+              ›
+            </button>
+            <span className="hidden sm:inline text-xs font-cinzel tracking-widest text-mocha min-w-[140px] text-left">
+              {currentSlide.shortTitle}
+            </span>
           </div>
 
-          <a href="#interactive-console" aria-label="Scroll to explore" className="mt-4 inline-flex flex-col items-center text-amber-300/80 hover:text-amber-300">
+          <a
+            href="#interactive-console"
+            aria-label="Scroll to explore"
+            className="mt-4 inline-flex flex-col items-center text-amber-300/80 hover:text-amber-300"
+          >
             <span className="block w-px h-8 bg-gradient-to-b from-amber-300/0 to-amber-300 animate-pulse" />
             <ChevronDown className="w-4 h-4 -mt-1" />
           </a>
