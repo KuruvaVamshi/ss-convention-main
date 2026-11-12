@@ -89,6 +89,18 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
   const lastScrollTimeRef = useRef(0);
   const touchStartYRef = useRef(0);
 
+  // Absolute scroll reset ensuring hero always starts from y = 0
+  const resetScrollToTop = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      if (document.documentElement) document.documentElement.scrollTop = 0;
+      if (document.body) document.body.scrollTop = 0;
+      if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+        window.lenis.scrollTo(0, { immediate: true });
+      }
+    }
+  }, []);
+
   // Preload authentic photographs
   useEffect(() => {
     [EXTERIOR_IMAGE, RECEPTION_IMAGE].forEach((src) => {
@@ -101,17 +113,20 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
   const playSlowOpeningSequence = useCallback(() => {
     if (isPlayingRef.current || isDismissedRef.current) return;
     isPlayingRef.current = true;
+    resetScrollToTop();
 
     if (stepRef.current === 0) {
       // 1. Open Image 1 (Exterior) slowly
       stepRef.current = 1;
       setStep(1);
+      resetScrollToTop();
 
       // 2. Let visitor admire the Grand Reception (1900ms pause)
       setTimeout(() => {
         if (isDismissedRef.current) return;
 
         // 3. Open Image 2 (Reception) slowly
+        resetScrollToTop();
         stepRef.current = 2;
         setStep(2);
 
@@ -131,16 +146,33 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
 
         // 4. Fade container out after Reception doors have fully swung open
         setTimeout(() => {
+          resetScrollToTop();
           setContainerFading(true);
           setTimeout(() => {
             isDismissedRef.current = true;
+            resetScrollToTop();
             setShouldRender(false);
+
+            // Re-enable and reset Lenis exactly at the start of hero
+            if (window.lenis) {
+              window.lenis.scrollTo(0, { immediate: true });
+              if (typeof window.lenis.start === 'function') {
+                window.lenis.start();
+              }
+            }
+
+            // Triple safety check to guarantee hero starts cleanly at top
+            requestAnimationFrame(resetScrollToTop);
+            setTimeout(resetScrollToTop, 50);
+            setTimeout(resetScrollToTop, 150);
+
             onComplete?.();
           }, 600);
         }, 1800);
       }, 1900);
     } else if (stepRef.current === 1) {
       // Already at Reception, open Reception doors slowly
+      resetScrollToTop();
       stepRef.current = 2;
       setStep(2);
 
@@ -158,15 +190,29 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       } catch (_) {}
 
       setTimeout(() => {
+        resetScrollToTop();
         setContainerFading(true);
         setTimeout(() => {
           isDismissedRef.current = true;
+          resetScrollToTop();
           setShouldRender(false);
+
+          if (window.lenis) {
+            window.lenis.scrollTo(0, { immediate: true });
+            if (typeof window.lenis.start === 'function') {
+              window.lenis.start();
+            }
+          }
+
+          requestAnimationFrame(resetScrollToTop);
+          setTimeout(resetScrollToTop, 50);
+          setTimeout(resetScrollToTop, 150);
+
           onComplete?.();
         }, 600);
       }, 1800);
     }
-  }, [onComplete]);
+  }, [onComplete, resetScrollToTop]);
 
   // Handle scroll delta from mouse wheel or touch swipe
   const handleScrollDelta = useCallback((deltaY) => {
@@ -181,6 +227,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       if (stepRef.current === 0) {
         stepRef.current = 1;
         setStep(1);
+        resetScrollToTop();
       } else if (stepRef.current === 1) {
         playSlowOpeningSequence();
       }
@@ -190,9 +237,10 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       if (stepRef.current === 1 && !isPlayingRef.current) {
         stepRef.current = 0;
         setStep(0);
+        resetScrollToTop();
       }
     }
-  }, [playSlowOpeningSequence]);
+  }, [playSlowOpeningSequence, resetScrollToTop]);
 
   // Register window scroll event listeners ONCE on mount
   useEffect(() => {
@@ -204,14 +252,71 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       return;
     }
 
+    // Clear lingering URL anchor hashes that could force auto-scroll
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    // Disable browser automatic scroll restoration
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     // Lock body scroll while loader is visible so the background page stays locked at y = 0
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
+    // Pause Lenis and reset scroll position immediately
+    resetScrollToTop();
+    if (window.lenis && typeof window.lenis.stop === 'function') {
+      window.lenis.stop();
+      window.lenis.scrollTo(0, { immediate: true });
+    }
+
+    // Guard against Lenis initializing a frame later in SmoothScroll
+    const lenisPoll = setInterval(() => {
+      if (window.lenis) {
+        if (typeof window.lenis.stop === 'function') {
+          window.lenis.stop();
+        }
+        if (typeof window.lenis.scrollTo === 'function') {
+          window.lenis.scrollTo(0, { immediate: true });
+        }
+        resetScrollToTop();
+      }
+    }, 100);
+
+    // Capture phase listener halts wheel events BEFORE they reach Lenis or background scroll
     const onWheel = (e) => {
       e.preventDefault();
       e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      resetScrollToTop();
       handleScrollDelta(e.deltaY);
+    };
+
+    // Prevent touch scrolling of background page
+    const onTouchMove = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      resetScrollToTop();
+    };
+
+    const onTouchStart = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        touchStartYRef.current = e.touches[0].clientY;
+      }
+    };
+
+    const onTouchEnd = (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaY = touchStartYRef.current - touchEndY;
+        if (Math.abs(deltaY) > 25) {
+          handleScrollDelta(deltaY);
+        }
+      }
     };
 
     const onKeyDown = (e) => {
@@ -224,28 +329,34 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       }
     };
 
-    window.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('wheel', onWheel, { passive: false, capture: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false, capture: true });
+    window.addEventListener('touchstart', onTouchStart, { passive: true, capture: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true, capture: true });
+    window.addEventListener('keydown', onKeyDown, { capture: true });
 
     return () => {
+      clearInterval(lenisPoll);
       document.body.style.overflow = prevOverflow;
-      window.removeEventListener('wheel', onWheel);
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('wheel', onWheel, { capture: true });
+      window.removeEventListener('touchmove', onTouchMove, { capture: true });
+      window.removeEventListener('touchstart', onTouchStart, { capture: true });
+      window.removeEventListener('touchend', onTouchEnd, { capture: true });
+      window.removeEventListener('keydown', onKeyDown, { capture: true });
+
+      // Anchor scroll at 0 and resume Lenis for the Hero section
+      resetScrollToTop();
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { immediate: true });
+        if (typeof window.lenis.start === 'function') {
+          window.lenis.start();
+        }
+      }
+      requestAnimationFrame(resetScrollToTop);
+      setTimeout(resetScrollToTop, 50);
+      setTimeout(resetScrollToTop, 150);
     };
-  }, [handleScrollDelta, playSlowOpeningSequence, onComplete]);
-
-  // Touch handlers for mobile devices
-  const handleTouchStart = (e) => {
-    touchStartYRef.current = e.touches[0].clientY;
-  };
-
-  const handleTouchEnd = (e) => {
-    const touchEndY = e.changedTouches[0].clientY;
-    const deltaY = touchStartYRef.current - touchEndY;
-    if (Math.abs(deltaY) > 30) {
-      handleScrollDelta(deltaY);
-    }
-  };
+  }, [handleScrollDelta, playSlowOpeningSequence, onComplete, resetScrollToTop]);
 
   if (!shouldRender) return null;
 
@@ -257,8 +368,10 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       role="dialog"
       aria-label="S.S. Convention Grand Cinematic Welcome"
       onClick={playSlowOpeningSequence}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onTouchMove={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
       className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer bg-[#0A0204] transition-opacity duration-800 ease-out ${
         containerFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
