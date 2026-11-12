@@ -105,7 +105,7 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
       `• *Special Notes:* ${formData.notes || 'None'}\n\n` +
       `Please provide availability and a royal booking estimate.`;
 
-    const whatsappUrl = `https://wa.me/${venueData.whatsapp.raw}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${venueData.whatsappNumber || venueData.phones[0].raw}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     setIsSubmitted(true);
   };

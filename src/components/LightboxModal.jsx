@@ -16,7 +16,7 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev
       window.addEventListener('keydown', handleKeyDown);
     }
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose, onPrev, onNext, multiple]);

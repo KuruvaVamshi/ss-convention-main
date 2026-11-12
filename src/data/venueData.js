@@ -8,6 +8,7 @@ export const venueData = {
     { display: "+91 79816 66692", raw: "917981666692", primary: false }
   ],
   whatsappNumber: "918985700044",
+  whatsapp: { raw: "918985700044", display: "+91 89857 00044" },
   address: {
     line1: "Raghavendra Nagar Colony",
     locality: "Jillelaguda, Meerpet",

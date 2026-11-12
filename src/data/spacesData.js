@@ -464,5 +464,8 @@ export const spacesData = [
 ];
 
 export const getHallById = (id) => {
+  if (id === 'banquet-dining-hall' || id === 'dining-hall') {
+    return spacesData.find((h) => h.id === 'dining-hall' || h.slug === 'dining-hall');
+  }
   return spacesData.find((hall) => hall.id === id || hall.slug === id);
 };

@@ -24,7 +24,6 @@ const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 export default function App() {
   const [lang, setLang] = useState('en'); // 'en' or 'te'
-  const [entranceComplete, setEntranceComplete] = useState(false);
   const [lightbox, setLightbox] = useState({
     isOpen: false,
     items: [],
@@ -57,9 +56,7 @@ export default function App() {
 
         <div className="min-h-screen bg-gradient-to-b from-[#1C0409] via-[#24060C] to-[#120104] text-[#FAF6F0] flex flex-col selection:bg-[#C5A059] selection:text-[#0D0204] relative">
           {/* Scroll-Controlled First Load Entrance (Exterior Doors -> Reception Doors -> Hero Page) */}
-          {!entranceComplete && (
-            <CinematicEntranceLoader lang={lang} onComplete={() => setEntranceComplete(true)} />
-          )}
+          <CinematicEntranceLoader lang={lang} />
 
           {/* Subtle Ambient Drifting Golden Dust Particles */}
           <GoldenDustCanvas />

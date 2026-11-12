@@ -266,13 +266,6 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
 
   // Register window scroll event listeners ONCE on mount
   useEffect(() => {
-    // Respect reduced-motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      unlockAndComplete();
-      return;
-    }
-
     // Clear lingering URL anchor hashes that could force auto-scroll
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname);
@@ -357,9 +350,16 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
     window.addEventListener('keydown', onKeyDown, { capture: true });
 
     return () => {
-      unlockAndComplete();
+      if (listenersRef.current.attached) {
+        listenersRef.current.attached = false;
+        window.removeEventListener('wheel', onWheel, { capture: true });
+        window.removeEventListener('touchmove', onTouchMove, { capture: true });
+        window.removeEventListener('touchstart', onTouchStart, { capture: true });
+        window.removeEventListener('touchend', onTouchEnd, { capture: true });
+        window.removeEventListener('keydown', onKeyDown, { capture: true });
+      }
     };
-  }, [handleScrollDelta, playSlowOpeningSequence, unlockAndComplete, resetScrollToTop]);
+  }, [handleScrollDelta, playSlowOpeningSequence, resetScrollToTop]);
 
   if (!shouldRender) return null;
 

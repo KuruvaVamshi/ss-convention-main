@@ -443,7 +443,7 @@ export const videoTours = [
     category: "Entrance & Lobby",
     description: "A walk through the auspicious Buddha fountain entrance, illuminated reception registration desk, and executive air-conditioned corridors.",
     src: "/assets/11_event_videos/video_highlight_05_reception_tour.mp4",
-    thumbnail: "/assets/04_entrance_and_lobby/entrance_grand_double_doors_view.jpeg",
+    thumbnail: "/assets/05_reception_and_lobby/reception_helpdesk_booking_counter.jpeg",
     duration: "0:25",
     badge: "Guest Welcome"
   },

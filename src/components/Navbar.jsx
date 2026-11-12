@@ -91,6 +91,17 @@ export default function Navbar({ lang, setLang }) {
     setDesktopDropdown(null);
   }, [location.pathname]);
 
+  // Lock body scroll when mobile navigation drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [mobileMenuOpen]);
+
   // Click outside to dismiss desktop dropdowns
   useEffect(() => {
     const handleClickOutside = (e) => {
