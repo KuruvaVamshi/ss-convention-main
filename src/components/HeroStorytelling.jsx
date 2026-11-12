@@ -449,9 +449,10 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
 
           <h1 className="font-cinzel text-4xl sm:text-6xl md:text-7xl font-bold tracking-[0.12em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] via-[#EED9A6] to-[#C5A059] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] leading-[1.05]">
             S.S CONVENTION
+            <span className="sr-only"> – Wedding & Banquet Halls in Meerpet, Hyderabad</span>
           </h1>
 
-          <div className="flex items-center justify-center gap-3 mt-4">
+          <div className="flex items-center justify-center gap-3 mt-4" aria-hidden="true">
             <span className="h-px w-10 sm:w-20 bg-gradient-to-r from-transparent to-[#C5A059]/80" />
             <span className="text-[11px] sm:text-sm font-cinzel tracking-[0.28em] uppercase text-latte drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               Wedding & Banquet Halls · Meerpet, Hyderabad

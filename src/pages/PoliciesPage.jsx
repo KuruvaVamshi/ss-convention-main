@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Utensils, CreditCard, Sparkles, Clock, Plus, AlertCircle, Phone } from 'lucide-react';
 import { venueData } from '../data/venueData';
 import { teluguTranslations } from '../data/teluguData';
+import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 
 const rules = [
@@ -75,18 +76,44 @@ const faqs = [
   },
 ];
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": f.a
+    }
+  }))
+};
+
 export default function PoliciesPage({ lang }) {
   const [openFaq, setOpenFaq] = useState(0);
   const te = lang === 'te';
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
+      <SEO
+        title="Booking Policies & Venue Guidelines | S.S. Convention Meerpet"
+        description="Read transparent booking policies, slot timings, payment terms, and in-house decoration guidelines for S.S. Convention Hall in Meerpet, Hyderabad."
+        keywords="S.S. Convention Policies, Function Hall Booking Rules Meerpet, Wedding Hall Guidelines Hyderabad, Banquet Hall Terms Meerpet, Convention Hall Rules Hyderabad"
+        canonical="/policies"
+        pageSchema={faqSchema}
+      />
+
       {/* Header */}
       <section className="relative pt-36 pb-16 bg-gradient-to-b from-[#2E060F] to-[#450B17] border-b border-[#D4AF37]/30">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-40 bg-amber-500/10 rounded-full blur-[110px] pointer-events-none" />
         <Reveal className="relative max-w-3xl mx-auto px-4 text-center">
           <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Official Rules & Agreements</p>
-          <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide">Transparent Guidelines</h1>
+          <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide">
+            {lang === 'te' ? 'నిబంధనలు & మార్గదర్శకాలు' : 'Booking Policies & Venue Guidelines'}
+          </h1>
+          <p className="text-xs sm:text-sm font-cinzel text-amber-300/90 tracking-widest mt-2 uppercase">
+            {lang === 'te' ? 'S.S. కన్వెన్షన్ మీర్పేట్, హైదరాబాద్' : 'S.S. Convention Hall · Meerpet, Hyderabad'}
+          </p>
           <div className="mx-auto mt-5 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
           <p className="mt-5 text-base sm:text-lg text-mocha leading-relaxed">
             Clear policies make for stress-free celebrations. Read the terms for catering, payments, stage decor and slot timings.

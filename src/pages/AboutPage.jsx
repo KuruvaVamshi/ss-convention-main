@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Phone, Calendar } from 'lucide-react';
 import { venueData } from '../data/venueData';
+import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
 
@@ -43,11 +44,18 @@ const stats = [
 export default function AboutPage({ lang }) {
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
+      <SEO
+        title="About S.S. Convention | Premier Wedding Venue in Hyderabad"
+        description="Learn about S.S. Convention in Meerpet, Hyderabad: a premier wedding and banquet destination engineered for grand traditions, pillar-free sightlines, and 50 to 600 guest celebrations."
+        keywords="About S.S. Convention, Wedding Venue Hyderabad, Marriage Hall Meerpet History, Banquet Halls in Hyderabad, Best Function Halls Meerpet"
+        canonical="/about"
+      />
+
       {/* Hero */}
       <section className="relative min-h-[60vh] flex items-end pt-32 pb-16 border-b border-[#D4AF37]/30">
         <img
           src="/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg"
-          alt=""
+          alt="S.S. Convention Grand Mahadwaram Royal Palace Entrance in Meerpet Hyderabad"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/70 to-[#1C0409]/50" />
@@ -58,8 +66,11 @@ export default function AboutPage({ lang }) {
               || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
             </p>
             <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-[0.1em] uppercase">
-              {lang === 'te' ? 'మా గురించి' : 'About S.S Convention'}
+              {lang === 'te' ? 'మా గురించి | S.S. కన్వెన్షన్' : 'About S.S. Convention'}
             </h1>
+            <p className="text-xs sm:text-sm font-cinzel text-amber-300/90 tracking-widest mt-2 uppercase">
+              {lang === 'te' ? 'మీర్పేట్, హైదరాబాద్ లో ప్రీమియర్ కళ్యాణ వేదిక' : 'Premier Wedding & Banquet Destination · Meerpet, Hyderabad'}
+            </p>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
               {lang === 'te'

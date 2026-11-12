@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarCheck, Phone } from 'lucide-react';
+import SEO from '../components/SEO';
 import HeroStorytelling from '../components/HeroStorytelling';
 import HomeStory from '../components/HomeStory';
 import HomeHalls from '../components/HomeHalls';
@@ -12,6 +13,12 @@ import { venueData } from '../data/venueData';
 export default function HomePage({ onOpenLightbox, lang }) {
   return (
     <div className="bg-[#450B17] text-latte min-h-screen">
+      <SEO
+        title="S.S. Convention | Wedding & Function Halls in Meerpet, Hyderabad"
+        description="Looking for wedding halls in Meerpet, Hyderabad? S.S. Convention A/C offers luxury banquet & function halls for weddings, receptions, and engagements in Jillelaguda, Meerpet near LB Nagar."
+        keywords="S.S. Convention, S.S. Convention Meerpet, S.S. Convention Hyderabad, Wedding Halls in Meerpet, Function Halls in Meerpet, Marriage Halls in Meerpet, Banquet Halls in Meerpet, Best Wedding Halls in Hyderabad, Marriage Halls in Hyderabad, Reception Halls in Hyderabad, AC Function Halls in Hyderabad, Banquet Halls Near Me, Wedding Venues Near Meerpet, Function Halls in LB Nagar, Marriage Halls in Badangpet, Banquet Halls in Almasguda, Function Halls in Jillelaguda, Wedding Venues in Karmanghat, Marriage Halls Near LB Nagar"
+        canonical="/"
+      />
       <HeroStorytelling lang={lang} onOpenLightbox={onOpenLightbox} />
       <HomeStory />
       <HomeHalls />

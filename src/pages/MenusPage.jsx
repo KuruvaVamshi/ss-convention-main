@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Leaf, Drumstick, Eye, MessageSquare, AlertCircle, Users } from 'lucide-react';
+import SEO from '../components/SEO';
 import { cateringMenus } from '../data/menusData';
 import { venueData } from '../data/venueData';
 import Reveal from '../components/Reveal';
@@ -38,18 +39,29 @@ export default function MenusPage({ onOpenLightbox }) {
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
+      <SEO
+        title="Banquet Dining & Catering Menus in Meerpet | S.S. Convention Hyderabad"
+        description="Explore authentic South & North Indian wedding feast menus, live counters, and banquet dining packages at S.S. Convention in Jillelaguda, Meerpet, Hyderabad."
+        keywords="Banquet Dining Meerpet, Catering Menus Hyderabad, Wedding Feast Meerpet, S.S. Convention Menus, Veg Non Veg Catering Meerpet, Hyderabadi Dum Biryani Wedding"
+        canonical="/dining"
+      />
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
         <img
           src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
-          alt=""
+          alt="Royal banquet dining hall with round tables at S.S. Convention Meerpet"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Banquet Catering & Menus</p>
-            <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">Royal Feast & Banquets</h1>
+            <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wide leading-[1.1]">
+              Banquet Dining & Catering Menus
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059] text-xl sm:text-3xl mt-2 font-normal">
+                Royal Feast & Dining Hall in Meerpet, Hyderabad
+              </span>
+            </h1>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
               Seven official catering packages with transparent dish lists, from pure ghee South Indian meals to royal Hyderabadi Dum Biryani.

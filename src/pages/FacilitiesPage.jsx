@@ -16,6 +16,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { venueData } from '../data/venueData';
+import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
 
@@ -151,11 +152,18 @@ export default function FacilitiesPage({ lang }) {
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
+      <SEO
+        title="Convention Hall Amenities & Facilities in Meerpet | S.S. Convention"
+        description="Discover 5-star amenities at S.S. Convention Meerpet: Daikin central A/C, 150+ car parking, 100% DG power backup, 2 VIP bridal suites, RO drinking water, and 24/7 CCTV security."
+        keywords="Convention Hall Facilities Meerpet, AC Function Hall Hyderabad, Wedding Hall with Parking Meerpet, Banquet Hall Amenities Hyderabad, AC Marriage Hall Meerpet"
+        canonical="/facilities"
+      />
+
       {/* Hero */}
       <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
         <img
           src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
-          alt=""
+          alt="S.S. Convention Banquet Dining and 5-Star Facilities in Meerpet Hyderabad"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
@@ -163,8 +171,11 @@ export default function FacilitiesPage({ lang }) {
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">5-Star Infrastructure</p>
             <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">
-              {lang === 'te' ? 'రాయల్ సదుపాయాలు & సౌకర్యాలు' : 'Facilities & Amenities'}
+              {lang === 'te' ? 'రాయల్ సదుపాయాలు & సౌకర్యాలు' : 'Convention Hall Facilities & Amenities'}
             </h1>
+            <p className="text-xs sm:text-sm font-cinzel text-amber-300/90 tracking-widest mt-2 uppercase">
+              {lang === 'te' ? 'మీర్పేట్, హైదరాబాద్ లో 5-స్టార్ సౌకర్యాలు' : '5-Star Event Infrastructure · Meerpet, Hyderabad'}
+            </p>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
               {lang === 'te'

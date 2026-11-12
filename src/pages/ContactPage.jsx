@@ -3,6 +3,7 @@ import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Clock, Car, Navigation, Copy, Check, ExternalLink, MessageSquare, Minus, Plus } from 'lucide-react';
+import SEO from '../components/SEO';
 import { venueData } from '../data/venueData';
 import Reveal from '../components/Reveal';
 import SectionHeader from '../components/SectionHeader';
@@ -84,18 +85,29 @@ export default function ContactPage() {
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
+      <SEO
+        title="Contact & Location of S.S. Convention Hall in Meerpet, Hyderabad"
+        description="Get directions and book a hall visit to S.S. Convention in Raghavendra Nagar Colony, Jillelaguda, Meerpet, Hyderabad near LB Nagar. Call +91 89857 00044."
+        keywords="S.S. Convention Location, S.S. Convention Contact, S.S. Convention Meerpet, Function Halls in Meerpet Contact, Wedding Hall Booking Hyderabad, Marriage Halls near LB Nagar"
+        canonical="/contact"
+      />
       {/* Hero */}
       <section className="relative min-h-[45vh] flex items-end pt-32 pb-12 border-b border-[#D4AF37]/30">
         <img
           src="/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg"
-          alt=""
+          alt="S.S. Convention royal entrance gates in Meerpet, Hyderabad"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Reservations & Location</p>
-            <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">Reserve Your Date</h1>
+            <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wide leading-[1.1]">
+              Contact S.S. Convention Hall
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059] text-xl sm:text-3xl mt-2 font-normal">
+                Location & Booking in Meerpet, Hyderabad
+              </span>
+            </h1>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
               Tell us about your celebration and we will confirm availability on WhatsApp, or visit us in Meerpet, Hyderabad.

@@ -40,7 +40,7 @@ function HallCard({ hall, featured }) {
             <img
               key={src}
               src={src}
-              alt={`${hall.name} view ${i + 1}`}
+              alt={`${hall.name} - ${hall.role || 'Wedding & Function Hall'} at S.S. Convention Meerpet, Hyderabad (Photo ${i + 1})`}
               loading="lazy"
               draggable={false}
               className="w-full h-full flex-shrink-0 snap-center object-cover"

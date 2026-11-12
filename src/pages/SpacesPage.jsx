@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/SEO';
 import { spacesData } from '../data/spacesData';
 import { venueData } from '../data/venueData';
 import {
@@ -666,13 +667,19 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
+      <SEO
+        title="Wedding & Function Halls in Meerpet | S.S. Convention Hyderabad"
+        description="Explore 3 luxury air-conditioned halls at S.S. Convention in Meerpet, Hyderabad: Hall Vasishta (600 guests), Hall Agasthya (350 guests), and Hall Koundinya (150 guests) with separate dining."
+        keywords="Function Halls in Meerpet, Wedding Venue in Hyderabad, Wedding Halls in Meerpet, Marriage Halls in Hyderabad, Banquet Halls in Meerpet, AC Function Halls in Hyderabad, Function Halls in LB Nagar, Marriage Halls in Badangpet, Banquet Halls in Almasguda, Function Halls in Jillelaguda"
+        canonical="/spaces"
+      />
       {/* Hero */}
       <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
         {/* Slowly scrolling strip of venue photos */}
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="flex h-full w-max animate-marquee-x">
             {[...HERO_PHOTOS, ...HERO_PHOTOS].map((src, i) => (
-              <img key={i} src={src} alt="" loading={i < 4 ? 'eager' : 'lazy'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
+              <img key={i} src={src} alt="S.S. Convention wedding and function hall interior view" loading={i < 4 ? 'eager' : 'lazy'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
             ))}
           </div>
         </div>
@@ -684,12 +691,12 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
             transition={{ duration: 0.8, ease: easeLuxury }}
           >
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">
-              {lang === 'te' ? 'మా వేదికను కనుగొనండి' : 'Discover our venue'}
+              {lang === 'te' ? 'మా వేదికను కనుగొనండి' : 'Wedding & Banquet Halls · Meerpet'}
             </p>
-            <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">
-              {lang === 'te' ? 'మూడు విశిష్ట వేదికలు.' : 'Three Unique Spaces.'}
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059]">
-                {lang === 'te' ? 'అంతులేని సంబరాలు.' : 'Endless Celebrations.'}
+            <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wide leading-[1.1]">
+              {lang === 'te' ? 'వివాహ & వేడుకల వేదికలు' : 'Wedding & Function Halls in Meerpet'}
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059] text-xl sm:text-3xl lg:text-4xl mt-2">
+                {lang === 'te' ? 'ఎస్.ఎస్. కన్వెన్షన్, హైదరాబాద్' : 'Three Distinct Halls at S.S. Convention, Hyderabad'}
               </span>
             </h1>
             <p className="mt-5 max-w-xl text-base sm:text-lg text-mocha leading-relaxed">

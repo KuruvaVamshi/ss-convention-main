@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import SEO from '../components/SEO';
 import {
   spacesData,
   getHallById
@@ -109,8 +110,67 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
     setIsSubmitted(true);
   };
 
+  const seoConfig = {
+    'hall-vasishta': {
+      title: 'Hall Vasishta – Grand Wedding & Reception Hall in Meerpet | S.S. Convention',
+      description: 'Book Hall Vasishta at S.S. Convention Meerpet, Hyderabad. Ideal for grand weddings & receptions with 300–600 seated capacity, crystal chandeliers, central A/C.',
+      keywords: 'Hall Vasishta, Banquet Hall Meerpet, Wedding & Reception Hall, Kalyana Mandapam Hyderabad, Marriage Hall Meerpet, Wedding Venue Meerpet, Function Halls in Meerpet',
+      h1Sub: 'Grand Kalyana Mandapam & Wedding Hall · Meerpet, Hyderabad'
+    },
+    'hall-agasthya': {
+      title: 'Hall Agasthya – Luxury Banquet & Sangeet Hall Meerpet | S.S. Convention',
+      description: 'Hall Agasthya is premier banquet and function hall in Meerpet, Hyderabad for sangeet, engagements, and cocktail receptions with 150–350 guest capacity.',
+      keywords: 'Hall Agasthya, Function Hall Meerpet, Banquet Hall Meerpet, Engagement Hall Hyderabad, Sangeet Venue Hyderabad, Marriage Halls in Hyderabad',
+      h1Sub: 'Banquet & Sangeet Reception Hall · Meerpet, Hyderabad'
+    },
+    'hall-koundinya': {
+      title: 'Hall Koundinya – Mini Banquet & Marriage Hall Meerpet | S.S. Convention',
+      description: 'Hall Koundinya at S.S. Convention Meerpet is an intimate mini banquet hall for cradle ceremonies, birthday parties, and compact weddings (50–150 guests).',
+      keywords: 'Hall Koundinya, Marriage Hall Meerpet, Mini Banquet Hall Hyderabad, Birthday Party Halls in Hyderabad, Engagement Halls in Hyderabad',
+      h1Sub: 'Mini Banquet & Marriage Hall · Meerpet, Hyderabad'
+    },
+    'banquet-dining-hall': {
+      title: 'Royal Banquet Dining Hall in Meerpet | S.S. Convention Hyderabad',
+      description: 'Dedicated 250+ capacity banquet dining hall at S.S. Convention in Jillelaguda, Meerpet. Features round-table setup and zero aroma transfer into ceremony halls.',
+      keywords: 'Banquet Dining Hall Meerpet, Dining Hall Hyderabad, Wedding Feast Meerpet, Banquet Catering Hyderabad',
+      h1Sub: 'Dedicated Banquet Dining Hall · Meerpet, Hyderabad'
+    }
+  };
+
+  const currentSeo = seoConfig[hall.id] || {
+    title: `${hall.name} | S.S. Convention Meerpet, Hyderabad`,
+    description: hall.shortDescription || hall.subtitle,
+    keywords: `${hall.name}, Function Halls in Meerpet, Wedding Halls in Meerpet, Banquet Halls in Hyderabad`,
+    h1Sub: 'Luxury Celebration Sanctuary · Meerpet, Hyderabad'
+  };
+
+  const hallStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    'name': `${hall.name} - S.S. Convention A/C`,
+    'description': hall.shortDescription || hall.subtitle,
+    'image': `https://www.ssconvention.in${hall.image}`,
+    'maximumAttendeeCapacity': hall.capacity,
+    'address': {
+      '@type': 'PostalAddress',
+      'streetAddress': 'Raghavendra Nagar Colony, Jillelaguda',
+      'addressLocality': 'Meerpet',
+      'addressRegion': 'Telangana',
+      'postalCode': '500097',
+      'addressCountry': 'IN'
+    }
+  };
+
   return (
     <div className="bg-[#450B17] text-white min-h-screen pt-20 selection:bg-[#D4AF37] selection:text-[#3A0813]">
+      <SEO
+        title={currentSeo.title}
+        description={currentSeo.description}
+        keywords={currentSeo.keywords}
+        canonical={`/halls/${hall.id}`}
+        ogImage={hall.image}
+        structuredData={hallStructuredData}
+      />
       
       {/* ========================================================
           1. CINEMATIC HALL HERO SECTION
@@ -120,7 +180,7 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
         <div className="absolute inset-0 bg-black">
           <img
             src={hall.coverImage || hall.image}
-            alt={hall.name}
+            alt={`${hall.name} luxury wedding & banquet hall interior at S.S. Convention Meerpet`}
             className="w-full h-full object-cover object-center scale-105 animate-pulse-slow brightness-90"
           />
           {/* Multi-layered Royal Velvet & Dark Vignette Gradients */}
@@ -146,9 +206,12 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
               <span>{hall.tagline || 'Royal Celebration Sanctuary'}</span>
             </div>
 
-            {/* Hall Title */}
-            <h1 className="font-cinzel text-4xl sm:text-6xl lg:text-7xl font-bold tracking-wide text-white uppercase mb-4 drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)] leading-tight">
+            {/* Hall Title with SEO H1 */}
+            <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wide text-white uppercase mb-3 drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)] leading-tight">
               {hall.name}
+              <span className="block text-xs sm:text-sm md:text-base font-cinzel text-amber-300 tracking-[0.22em] uppercase font-normal mt-2">
+                {currentSeo.h1Sub}
+              </span>
             </h1>
 
             {/* Subtitle */}
