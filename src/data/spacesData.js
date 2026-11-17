@@ -3,10 +3,10 @@
  * 
  * Image Accuracy Policy:
  * - Only verified interior photographs of the respective halls are assigned as primary hall images.
- * - Hall Vasishta: Grand main marriage hall with crystal chandeliers, Italian vitrified flooring & carved mandap.
- * - Hall Agasthya: Grand reception & sangeet hall with stage lighting, neon arches & acoustic ceiling.
- * - Hall Koundinya: Intimate mini banquet hall with modern linear wood ceiling, cradle & birthday stage setups.
- * - Banquet Dining Hall: Dedicated dining floor with round banquet tables dressed in maroon & gold linen.
+ * - Hall Vasishta (2nd Floor): Flagship Grand Kalyana Mandapam with double-tier crystal chandeliers, Italian vitrified flooring, 70-ft bridal aisle & carved Vedic mandap.
+ * - Hall Agasthya (1st Floor): Grand Reception & Sangeet Hall with contemporary stage, acoustic ceilings & dedicated green rooms.
+ * - Hall Koundinya (3rd Floor): Intimate boutique banquet hall with modern linear wood ceiling, cradle & birthday stage setups.
+ * - Banquet Dining Hall: Dedicated dining floor with round banquet tables dressed in maroon & gold linen, plus hygienic stainless steel buffet stations.
  */
 
 export const spacesData = [
@@ -24,7 +24,7 @@ export const spacesData = [
     hallImage: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
     coverImage: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
     
-    // Comprehensive Gallery (Real Authentic Photos Only)
+    // Comprehensive Gallery (Real Authentic Photos Only — Strictly No Cross-Hall Mixing)
     gallery: [
       {
         src: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
@@ -32,19 +32,44 @@ export const spacesData = [
         category: "Main Hall Interior"
       },
       {
+        src: "/assets/05_hall_vasishta/hall_vasishta_auditorium_sofas_entrance_01.jpeg",
+        title: "Grand Auditorium Entrance with S.S Convention Crest & Plush Seating",
+        category: "Hall Entrance"
+      },
+      {
+        src: "/assets/05_hall_vasishta/hall_vasishta_stage_right_reflection_02.jpeg",
+        title: "High-Gloss Italian Marble Reflections & Sacred Om Wall Mural",
+        category: "Ceremonial Perspective"
+      },
+      {
+        src: "/assets/05_hall_vasishta/hall_vasishta_stage_left_floral_mandap_04.jpeg",
+        title: "Stage Perspective with Traditional Floral Mandap & Acoustic Baffles",
+        category: "Stage Architecture"
+      },
+      {
+        src: "/assets/07_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg",
+        title: "Auspicious Lotus Stage Backdrop & Central Crystal Chandelier",
+        category: "Stage Backdrop"
+      },
+      {
+        src: "/assets/07_main_hall_seating/main_hall_seating_front_vip_sofas_overview_05.jpeg",
+        title: "Front Row Sovereign Gold VIP Sofas with Unobstructed Sightlines",
+        category: "VIP Seating"
+      },
+      {
         src: "/assets/06_main_hall_seating/main_hall_aisle_view_towards_stage.jpeg",
-        title: "Regal Central Aisle Looking Towards the Grand Stage",
+        title: "Regal 70-Foot Central Bridal Aisle Looking Towards the Grand Stage",
         category: "Bridal Aisle"
       },
       {
-        src: "/assets/06_main_hall_seating/main_hall_seating_chandelier_perspective.jpeg",
-        title: "Architectural Ceiling & Golden Chandelier Perspective",
+        src: "/assets/07_main_hall_seating/main_hall_seating_chandelier_close_02.jpeg",
+        title: "Double-Tier Golden Crystal Chandelier Architectural Perspective",
         category: "Lighting & Ceiling"
       },
       {
-        src: "/assets/06_main_hall_seating/main_hall_guest_seating_rows_facing_stage.jpeg",
-        title: "Guest Seating Rows with High-Gloss Vitrified Tile Reflections",
-        category: "Guest Seating"
+        src: "/assets/07_main_hall_seating/main_hall_seating_entrance_portal_wide_04.jpeg",
+        title: "Grand Double Door Foyer Portal Entering Hall Vasishta",
+        category: "Entrance Portal"
       },
       {
         src: "/assets/08_wedding_mandap_and_rituals/traditional_wedding_mandap_carved_pillars.jpeg",
@@ -58,13 +83,8 @@ export const spacesData = [
       },
       {
         src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_royal_sofa_clean.jpeg",
-        title: "Evening Luxury Reception Stage Setup with Velvet Sofa",
+        title: "Evening Luxury Reception Stage Setup with Velvet Couch",
         category: "Reception Setup"
-      },
-      {
-        src: "/assets/06_main_hall_seating/main_hall_seating_perspective_arch_stage.jpeg",
-        title: "Perspective Angle from Guest Area Towards Stage Arch",
-        category: "Hall Perspective"
       }
     ],
 
@@ -140,21 +160,31 @@ export const spacesData = [
     subtitle: "Majestic Celebration Space with Modern Lighting, Acoustic Panels & Dynamic Stage",
     shortDescription: "A versatile, high-energy luxury venue tailored for festive sangeet evenings, chic engagement galas, and medium-scale wedding receptions of 200 to 350 guests.",
 
-    // Accurate Real Interior Photography
-    image: "/assets/06_main_hall_seating/main_hall_seating_chandelier_perspective.jpeg",
-    hallImage: "/assets/06_main_hall_seating/main_hall_seating_chandelier_perspective.jpeg",
-    coverImage: "/assets/06_main_hall_seating/main_hall_seating_chandelier_perspective.jpeg",
+    // Accurate Real Interior Photography (Verified 1st Floor Hall Agasthya)
+    image: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+    hallImage: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+    coverImage: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
 
-    // Comprehensive Gallery (Real Authentic Photos Only)
+    // Comprehensive Gallery (Real Authentic Photos Only — Strictly No Cross-Hall Mixing)
     gallery: [
       {
-        src: "/assets/06_main_hall_seating/main_hall_seating_chandelier_perspective.jpeg",
-        title: "Hall Agasthya Grand Interior View & Chandelier Perspective",
-        category: "Interior View"
+        src: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+        title: "Hall Agasthya Grand Interior Overview with Mirrored Flooring & Crystal Chandeliers",
+        category: "Hall Architecture"
+      },
+      {
+        src: "/assets/04_hall_agasthya/hall_agasthya_center_aisle_stage_view_03.jpeg",
+        title: "Central Aisle Perspective Towards the Elevated Performance Stage",
+        category: "Center Aisle"
+      },
+      {
+        src: "/assets/04_hall_agasthya/hall_agasthya_glass_entrance_doors_01.jpeg",
+        title: "Toughened Glass Double Entrance Doors Entering Hall Agasthya",
+        category: "Hall Entrance"
       },
       {
         src: "/assets/09_reception_engagement_stages/stage_better_together_neon_wide_shot.jpeg",
-        title: "Modern Neon Floral Ring Arch Stage for Receptions",
+        title: "Modern Neon Floral Ring Arch Stage for Sangeet & Receptions",
         category: "Reception Stage"
       },
       {
@@ -173,19 +203,9 @@ export const spacesData = [
         category: "Contemporary Decor"
       },
       {
-        src: "/assets/09_reception_engagement_stages/stage_peach_drapes_fairy_lights_divan_sofa.jpeg",
-        title: "Peach Draping with Cascading Fairy Light Canopy",
-        category: "Drapes & Canopy"
-      },
-      {
         src: "/assets/09_reception_engagement_stages/stage_haldi_mehendi_yellow_canopy_wisteria.jpeg",
         title: "Festive Haldi & Mehendi Yellow Floral Stage",
         category: "Haldi / Mehendi"
-      },
-      {
-        src: "/assets/06_main_hall_seating/main_hall_seating_perspective_arch_stage.jpeg",
-        title: "Audience Perspective Towards Ceremonial Arch Stage",
-        category: "Guest Perspective"
       }
     ],
 
@@ -248,7 +268,7 @@ export const spacesData = [
       { name: "Ample Guest Parking", desc: "Convenient parking facilities with security supervision", icon: "Car" }
     ],
 
-    description: "Named after the venerated Sage Agasthya, this versatile hall blends ceremonial warmth with contemporary celebratory energy. With an open floor plan of 3,800 square feet, Hall Agasthya is designed for high-spirited celebrations where dance, music, and elegance coalesce. Featuring an acoustically treated ceiling, dynamic stage lighting, and flexible floor layouts for cabaret or theatre seating, it is the premier choice for memorable Sangeet dance parties, glamorous engagement ceremonies, and sophisticated evening banquets."
+    description: "Named after the venerated Sage Agasthya, this versatile hall blends ceremonial warmth with contemporary celebratory energy. With an open floor plan of 3,800 square feet on the first floor, Hall Agasthya is designed for high-spirited celebrations where dance, music, and elegance coalesce. Featuring an acoustically treated ceiling, dynamic stage lighting, and flexible floor layouts for cabaret or theatre seating, it is the premier choice for memorable Sangeet dance parties, glamorous engagement ceremonies, and sophisticated evening banquets."
   },
   {
     id: "hall-koundinya",
@@ -259,17 +279,27 @@ export const spacesData = [
     subtitle: "Modern Intimate Hall with Designer Wood Slat Ceilings & Dedicated Milestone Stage",
     shortDescription: "A chic, warm, and air-conditioned boutique venue crafted specifically for 1st birthdays, cradle ceremonies (Barasala), upanayanam, dhoti functions, and corporate meetings of 100 to 200 guests.",
 
-    // Accurate Real Interior Photography
-    image: "/assets/06_main_hall_seating/mini_hall_seating_central_aisle_stage.jpeg",
-    hallImage: "/assets/06_main_hall_seating/mini_hall_seating_central_aisle_stage.jpeg",
-    coverImage: "/assets/06_main_hall_seating/mini_hall_seating_central_aisle_stage.jpeg",
+    // Accurate Real Interior Photography (Verified 3rd Floor Hall Koundinya)
+    image: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg",
+    hallImage: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg",
+    coverImage: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg",
 
-    // Comprehensive Gallery (Real Authentic Photos Only)
+    // Comprehensive Gallery (Real Authentic Photos Only — Strictly No Cross-Hall Mixing)
     gallery: [
       {
-        src: "/assets/06_main_hall_seating/mini_hall_seating_central_aisle_stage.jpeg",
-        title: "Hall Koundinya Central Aisle & Stage Overview",
+        src: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg",
+        title: "Hall Koundinya Central Aisle, Chandelier & Auspicious Bird Mural Stage",
         category: "Mini Hall Seating"
+      },
+      {
+        src: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_stage_to_audience_02.jpeg",
+        title: "Stage Perspective Looking into Dressed Banquet Chair Seating",
+        category: "Audience Perspective"
+      },
+      {
+        src: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_sign_side_view_03.jpeg",
+        title: "Boutique Hall Side View with Official Mini Hall Architectural Signage",
+        category: "Hall Architecture"
       },
       {
         src: "/assets/10_cradle_and_birthday_decor/stage_cradle_naming_ceremony_lotus_swing.jpeg",
@@ -287,19 +317,9 @@ export const spacesData = [
         category: "Aisle Decoration"
       },
       {
-        src: "/assets/10_cradle_and_birthday_decor/birthday_sunshine_theme_stage_wide_shot.jpeg",
-        title: "Sunshine Theme Stage Full Width View & Cake Cutting Area",
-        category: "Cake Cutting Stage"
-      },
-      {
         src: "/assets/10_cradle_and_birthday_decor/birthday_ocean_under_the_sea_theme_stage.jpeg",
         title: "Under The Sea Ocean Blue Theme Setup with Balloon Arches",
         category: "Thematic Birthday"
-      },
-      {
-        src: "/assets/06_main_hall_seating/main_hall_seating_cocomelon_backdrop.jpeg",
-        title: "Custom Character Theme Backdrop & Stage Seating",
-        category: "Character Themes"
       }
     ],
 
@@ -384,6 +404,11 @@ export const spacesData = [
         src: "/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg",
         title: "Swarna Bhojanam Dining Floor with Maroon & Gold Damask Linens",
         category: "Dining Hall"
+      },
+      {
+        src: "/assets/08_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg",
+        title: "Stainless Steel Commercial Buffet Counter with Chafing Dishes & Italian Marble Wall",
+        category: "Buffet Setup"
       },
       {
         src: "/assets/03_food_and_catering_menus/menu_06_premium_non_veg_200pax.jpeg",

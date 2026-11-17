@@ -399,6 +399,86 @@ export const galleryItems = [
     categoryLabel: "Exterior & Foyer",
     image: "/assets/05_reception_and_lobby/lobby_interior_signage_perspective.jpeg",
     featured: false
+  },
+  {
+    id: 50,
+    title: "S.S. Convention Illuminated Night Facade & Ganesha Crest (Drone View)",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/01_exterior/exterior_night_drone_facade_01.jpeg",
+    featured: true
+  },
+  {
+    id: 51,
+    title: "Grand Palace Entrance Adorned with Auspicious Fresh Flower Toranam",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/02_entrance/entrance_auspicious_flower_toranam_01.jpeg",
+    featured: true
+  },
+  {
+    id: 52,
+    title: "Grand Reception Counter with Illuminated Lord Ganesha & Fluted Feature Wall",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/03_reception/reception_booking_counter_gold_ganesha_01.jpeg",
+    featured: true
+  },
+  {
+    id: 53,
+    title: "Auspicious Lord Balaji Deity & Buddha Water Fountain Welcoming Foyer",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/03_reception/reception_lord_balaji_buddha_foyer_10.jpeg",
+    featured: true
+  },
+  {
+    id: 54,
+    title: "Hall Agasthya – Grand Sangeet & Reception Hall Overview (1st Floor)",
+    category: "hall",
+    categoryLabel: "Hall Agasthya",
+    image: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+    featured: true
+  },
+  {
+    id: 55,
+    title: "Hall Koundinya – Intimate Mini Hall with Designer Wood Slat Ceilings & Bird Mural",
+    category: "hall",
+    categoryLabel: "Hall Koundinya",
+    image: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg",
+    featured: true
+  },
+  {
+    id: 56,
+    title: "Hall Vasishta – Mirrored Vitrified Reflections & Sacred Om Mural",
+    category: "hall",
+    categoryLabel: "Main Hall",
+    image: "/assets/05_hall_vasishta/hall_vasishta_stage_right_reflection_02.jpeg",
+    featured: true
+  },
+  {
+    id: 57,
+    title: "Swarna Bhojanam – Stainless Steel Chafing Buffet Counter & Italian Marble Wall",
+    category: "hall",
+    categoryLabel: "Dining Floor",
+    image: "/assets/08_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg",
+    featured: true
+  },
+  {
+    id: 58,
+    title: "S.S. Convention Daytime Architectural Facade & Flower Arch Steps",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/01_exterior/exterior_daytime_facade_entrance_02.png",
+    featured: false
+  },
+  {
+    id: 59,
+    title: "Air-Conditioned VIP Client Lounge with Teal Sofas & Gallery Wall",
+    category: "exterior",
+    categoryLabel: "Exterior & Foyer",
+    image: "/assets/03_reception/reception_client_lounge_teal_sofas_04.jpeg",
+    featured: false
   }
 ];
 

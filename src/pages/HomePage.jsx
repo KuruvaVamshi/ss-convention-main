@@ -10,7 +10,7 @@ import PhotoScroll3D from '../components/PhotoScroll3D';
 import Reveal from '../components/Reveal';
 import { venueData } from '../data/venueData';
 
-export default function HomePage({ onOpenLightbox, lang }) {
+export default function HomePage({ onOpenLightbox, lang, isEntranceComplete = false }) {
   return (
     <div className="bg-[#450B17] text-latte min-h-screen">
       <SEO
@@ -19,7 +19,7 @@ export default function HomePage({ onOpenLightbox, lang }) {
         keywords="S.S. Convention, S.S. Convention Meerpet, S.S. Convention Hyderabad, Wedding Halls in Meerpet, Function Halls in Meerpet, Marriage Halls in Meerpet, Banquet Halls in Meerpet, Best Wedding Halls in Hyderabad, Marriage Halls in Hyderabad, Reception Halls in Hyderabad, AC Function Halls in Hyderabad, Banquet Halls Near Me, Wedding Venues Near Meerpet, Function Halls in LB Nagar, Marriage Halls in Badangpet, Banquet Halls in Almasguda, Function Halls in Jillelaguda, Wedding Venues in Karmanghat, Marriage Halls Near LB Nagar"
         canonical="/"
       />
-      <HeroStorytelling lang={lang} onOpenLightbox={onOpenLightbox} />
+      <HeroStorytelling lang={lang} onOpenLightbox={onOpenLightbox} isEntranceComplete={isEntranceComplete} />
       <HomeStory />
       <HomeHalls />
       <PhotoScroll3D onOpenLightbox={onOpenLightbox} />

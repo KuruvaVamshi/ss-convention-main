@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 import {
@@ -15,6 +15,8 @@ import {
   CheckCircle2,
   ArrowRight,
   ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
   Sparkles,
   ShieldCheck,
   DoorClosed,
@@ -73,11 +75,44 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Scroll to top on hall switch
+  // Carousel Slide State & Mobile Swipe Handling
+  const [activeSlide, setActiveSlide] = useState(0);
+  const touchStartXRef = useRef(0);
+
+  // Scroll to top on hall switch and reset active slide
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsSubmitted(false);
+    setActiveSlide(0);
   }, [id]);
+
+  const galleryList = hall.gallery || [];
+  const totalSlides = galleryList.length;
+  const currentItem = galleryList[activeSlide] || galleryList[0];
+
+  const handlePrevSlide = () => {
+    setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  const handleNextSlide = () => {
+    setActiveSlide((prev) => (prev + 1) % totalSlides);
+  };
+
+  const handleTouchStart = (e) => {
+    if (e.touches && e.touches.length > 0) {
+      touchStartXRef.current = e.touches[0].clientX;
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (e.changedTouches && e.changedTouches.length > 0) {
+      const deltaX = touchStartXRef.current - e.changedTouches[0].clientX;
+      if (Math.abs(deltaX) > 40) {
+        if (deltaX > 0) handleNextSlide();
+        else handlePrevSlide();
+      }
+    }
+  };
 
   // Sibling halls for navigation
   const otherHalls = spacesData.filter((h) => h.id !== hall.id);
@@ -317,60 +352,149 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
 
 
       {/* ========================================================
-          3. COMPREHENSIVE AUTHENTIC INTERIOR PHOTO GALLERY
+          3. COMPREHENSIVE AUTHENTIC INTERIOR PHOTO SHOWCASE CAROUSEL
           ======================================================== */}
-      <section className="py-24 bg-[#3D0A14] border-b border-[#D4AF37]/30 text-white">
+      <section className="py-20 sm:py-24 bg-[#3D0A14] border-b border-[#D4AF37]/30 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-[#D4AF37]/40 text-amber-300 text-xs font-bold tracking-widest uppercase mb-3">
                 <Eye className="w-3.5 h-3.5 text-amber-400" />
-                <span>Interior Photography</span>
+                <span>Interior Showcase</span>
               </div>
               <h2 className="font-cinzel text-3xl sm:text-5xl font-bold text-white uppercase tracking-wide">
                 Inside {hall.name}
               </h2>
               <p className="text-amber-100/80 text-xs sm:text-base mt-2 max-w-2xl font-light">
-                Actual high-definition interior photographs showcasing the chandelier perspectives, aisle, stage arrangements, and seating layout.
+                Actual high-definition photographs showcasing the chandelier perspectives, bridal aisle, ceremonial stage, and seating configurations.
               </p>
             </div>
 
-            <div className="mt-4 md:mt-0 text-xs text-amber-200/70 font-medium">
-              Click any photograph to inspect in full-screen zoom.
+            <div className="mt-4 md:mt-0 flex items-center gap-3">
+              {/* Image Counter Pill */}
+              <div className="px-3.5 py-1.5 rounded-full bg-black/60 border border-[#D4AF37]/40 text-amber-300 text-xs sm:text-sm font-cinzel font-semibold tracking-wider">
+                <span>{String(activeSlide + 1).padStart(2, '0')}</span>
+                <span className="text-amber-200/50 mx-1.5">/</span>
+                <span>{String(totalSlides).padStart(2, '0')}</span>
+              </div>
+
+              {/* Prev / Next Buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handlePrevSlide}
+                  aria-label="Previous photograph"
+                  className="w-10 h-10 rounded-full bg-black/70 hover:bg-[#7A1F31] border border-[#D4AF37]/50 hover:border-amber-400 text-amber-200 flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextSlide}
+                  aria-label="Next photograph"
+                  className="w-10 h-10 rounded-full bg-black/70 hover:bg-[#7A1F31] border border-[#D4AF37]/50 hover:border-amber-400 text-amber-200 flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Photo Gallery Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {hall.gallery?.map((item, index) => (
-              <div
-                key={index}
-                onClick={() => onOpenLightbox(item.src, `${hall.name} - ${item.title}`)}
-                className="group relative rounded-2xl overflow-hidden border-2 border-[#D4AF37]/35 bg-black cursor-pointer shadow-xl hover:border-amber-400 transition-all duration-300 hover:scale-[1.02]"
+          {/* Dominant Featured Showcase Carousel with Touch Swipe */}
+          {currentItem && (
+            <div
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onClick={() => onOpenLightbox(currentItem.src, `${hall.name} - ${currentItem.title}`)}
+              className="relative w-full h-[380px] sm:h-[520px] lg:h-[640px] rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 bg-black shadow-2xl cursor-pointer group mb-6 select-none"
+            >
+              <img
+                key={currentItem.src}
+                src={currentItem.src}
+                alt={currentItem.title}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-[0.97]"
+              />
+
+              {/* Cinematic Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/20 pointer-events-none" />
+
+              {/* Floating Category Badge */}
+              <div className="absolute top-4 left-4 z-20">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-[#D4AF37]/40 text-amber-300 text-xs font-cinzel font-semibold tracking-wider">
+                  <Sparkles className="w-3 h-3 text-amber-400" />
+                  {currentItem.category}
+                </span>
+              </div>
+
+              {/* Fullscreen Magnifier Icon */}
+              <div className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/70 backdrop-blur-md border border-[#D4AF37]/50 text-amber-300 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+                <Maximize2 className="w-4 h-4" />
+              </div>
+
+              {/* Captions Overlay */}
+              <div className="absolute bottom-6 left-6 right-6 sm:left-10 sm:right-10 z-20 pointer-events-none">
+                <h3 className="font-cinzel text-xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
+                  {currentItem.title}
+                </h3>
+                <p className="mt-2 text-xs sm:text-sm text-amber-200/90 font-light flex items-center gap-2 drop-shadow">
+                  <span>{hall.name}</span>
+                  <span>•</span>
+                  <span>Swipe or click arrows to explore view</span>
+                </p>
+              </div>
+
+              {/* Carousel Arrow Controls (Inside Dominant Frame) */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePrevSlide();
+                }}
+                aria-label="Previous image"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-[#7A1F31] border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30"
               >
-                <div className="h-64 overflow-hidden bg-black">
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleNextSlide();
+                }}
+                aria-label="Next image"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-[#7A1F31] border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+          )}
+
+          {/* Interactive Thumbnail Filmstrip */}
+          <div className="flex items-center gap-3 overflow-x-auto pb-4 no-scrollbar">
+            {galleryList.map((item, index) => {
+              const isActive = activeSlide === index;
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setActiveSlide(index)}
+                  className={`relative shrink-0 w-24 sm:w-32 h-16 sm:h-20 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                    isActive
+                      ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105 shadow-lg'
+                      : 'border-[#D4AF37]/30 hover:border-amber-400/60 opacity-60 hover:opacity-100'
+                  }`}
+                >
                   <img
                     src={item.src}
                     alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-cover"
                   />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
-
-                <div className="absolute bottom-4 left-4 right-4 z-10">
-                  <span className="text-[10px] font-bold tracking-widest text-amber-300 uppercase block mb-1">
-                    {item.category}
-                  </span>
-                  <p className="text-xs sm:text-sm font-semibold text-white leading-snug line-clamp-2">
-                    {item.title}
-                  </p>
-                </div>
-
-                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/70 border border-[#D4AF37]/50 text-amber-300 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Eye className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            ))}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-amber-400/10 pointer-events-none" />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>

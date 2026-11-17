@@ -17,7 +17,13 @@ import {
   Plus,
   User,
   Check,
-  Compass
+  Compass,
+  Heart,
+  Crown,
+  Flower2,
+  Cake,
+  Baby,
+  Music
 } from 'lucide-react';
 import { venueData } from '../data/venueData';
 
@@ -32,12 +38,12 @@ export default function InteractiveBookingStudio({ lang }) {
 
   // Occasions with curated icons & descriptions
   const eventTypes = [
-    { id: 'Wedding / Muhurtham', label: 'Wedding / Muhurtham', telugu: 'కళ్యాణం / ముహూర్తం', icon: '💍', badge: 'Vedic Mandap' },
-    { id: 'Grand Reception', label: 'Grand Reception', telugu: 'రిసెప్షన్ వేడుక', icon: '👑', badge: 'Red Carpet' },
-    { id: 'Engagement Ceremony', label: 'Engagement / Ring Ceremony', telugu: 'నిశ్చితార్థం', icon: '🌸', badge: 'Floral Arch' },
-    { id: '1st Milestone Birthday', label: '1st Milestone Birthday', telugu: 'మొదటి పుట్టినరోజు', icon: '🎂', badge: 'Theme Stage' },
-    { id: 'Cradle (Barasala)', label: 'Cradle (Barasala)', telugu: 'బారసాల / ఉయ్యాల', icon: '👶', badge: 'Lotus Swing' },
-    { id: 'Sangeet & Corporate', label: 'Sangeet & Corporate', telugu: 'సంగీత్ & సమ్మేళనం', icon: '✨', badge: 'Truss Lighting' }
+    { id: 'Wedding / Muhurtham', label: 'Wedding / Muhurtham', telugu: 'కళ్యాణం / ముహూర్తం', icon: Heart, badge: 'Vedic Mandap' },
+    { id: 'Grand Reception', label: 'Grand Reception', telugu: 'రిసెప్షన్ వేడుక', icon: Crown, badge: 'Red Carpet' },
+    { id: 'Engagement Ceremony', label: 'Engagement / Ring Ceremony', telugu: 'నిశ్చితార్థం', icon: Flower2, badge: 'Floral Arch' },
+    { id: '1st Milestone Birthday', label: '1st Milestone Birthday', telugu: 'మొదటి పుట్టినరోజు', icon: Cake, badge: 'Theme Stage' },
+    { id: 'Cradle (Barasala)', label: 'Cradle (Barasala)', telugu: 'బారసాల / ఉయ్యాల', icon: Baby, badge: 'Lotus Swing' },
+    { id: 'Sangeet & Corporate', label: 'Sangeet & Corporate', telugu: 'సంగీత్ & సమ్మేళనం', icon: Music, badge: 'Truss Lighting' }
   ];
 
   // Party Slots
@@ -236,7 +242,9 @@ export default function InteractiveBookingStudio({ lang }) {
                         }`}
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-xl">{item.icon}</span>
+                          <span className="p-1.5 rounded-lg bg-[#2A050D] border border-[#D4AF37]/35 text-[#D4AF37]">
+                            <item.icon className="w-4 h-4" />
+                          </span>
                           <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                             isSelected ? 'bg-amber-400 text-[#3D0A14]' : 'bg-black/40 text-amber-300/80 border border-[#D4AF37]/30'
                           }`}>

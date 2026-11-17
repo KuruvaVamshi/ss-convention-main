@@ -24,8 +24,8 @@ export default function StoryWalkthrough({ onOpenLightbox, lang }) {
       time: "Chapter I • The Royal Arrival",
       title: "Grand Illuminated Facade & Welcoming Aisle",
       tagline: "First Impressions That Command Awe",
-      image: "/assets/04_exterior_and_entrance/exterior_night_facade_parking_lighting.jpeg",
-      secondaryImage: "/assets/05_reception_and_lobby/lobby_buddha_water_fountain_feature.jpeg",
+      image: "/assets/01_exterior/exterior_night_drone_facade_01.jpeg",
+      secondaryImage: "/assets/03_reception/reception_lord_balaji_buddha_foyer_10.jpeg",
       desc: "Your guests arrive to an illuminated architectural marvel. With on-premises 4-wheeler and 2-wheeler parking, a grand marble flight of stairs, and an auspicious Buddha water fountain foyer, every family entry feels majestic and dignified.",
       highlights: ["Illuminated evening facade & arch", "Dedicated on-premise CCTV parking", "Grand welcoming foyer with water features"],
       icon: Building
@@ -58,7 +58,7 @@ export default function StoryWalkthrough({ onOpenLightbox, lang }) {
       title: "250+ Seat Separate Dining Floor & Dum Biryani",
       tagline: "Zero Odor in Mandap • Pure Ghee Feasts",
       image: "/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg",
-      secondaryImage: "/assets/03_food_and_catering_menus/menu_06_premium_non_veg_200pax.jpeg",
+      secondaryImage: "/assets/08_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg",
       desc: "Feasting without chaos. Our separate banquet dining hall seats over 250 guests concurrently at round tables dressed in maroon and gold, serving authentic Hyderabadi Mutton & Chicken Dum Biryani, Telangana curries, and warm Double Ka Meeta.",
       highlights: ["Separate dining level (Zero aroma in mandap)", "Seats 250+ guests simultaneously", "Direct hygienic catering kitchen access"],
       icon: Utensils

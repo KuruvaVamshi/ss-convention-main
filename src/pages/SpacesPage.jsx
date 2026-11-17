@@ -126,7 +126,7 @@ function HallDecorationLightbox({
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose, onNext, onPrev]);
@@ -382,21 +382,48 @@ const HERO_PHOTOS = (() => {
 })();
 
 const HALL_TABS = [
-  { id: 'hall-vasishta', label: 'Hall Vasishta' },
-  { id: 'hall-agasthya', label: 'Hall Agasthya' },
-  { id: 'hall-koundinya', label: 'Hall Koundinya' }
+  { 
+    id: 'hall-vasishta', 
+    number: '01',
+    label: 'Hall Vasishta', 
+    shortLabel: 'Vasishta',
+    floor: '2nd Floor',
+    capacity: '600 Seated (1,000 Floating)',
+    tag: 'Flagship Kalyana Mandapam'
+  },
+  { 
+    id: 'hall-agasthya', 
+    number: '02',
+    label: 'Hall Agasthya', 
+    shortLabel: 'Agasthya',
+    floor: '1st Floor',
+    capacity: '350 Seated (500 Floating)',
+    tag: 'Reception & Sangeet'
+  },
+  { 
+    id: 'hall-koundinya', 
+    number: '03',
+    label: 'Hall Koundinya', 
+    shortLabel: 'Koundinya',
+    floor: '3rd Floor',
+    capacity: '100–200 Guests',
+    tag: 'Boutique Milestones'
+  }
 ];
 
-// Per-hall copy that is not in spacesData
+// Per-hall rich metadata & companion interior photographs
 const HALL_META = {
   'hall-vasishta': {
+    floor: '2nd Floor',
+    hallBadge: 'Crown Flagship Kalyana Mandapam · 2nd Floor',
     capacityPill: '600 Seated · 1,000 Floating',
-    caption: 'Double-Tier Crystal Chandeliers & 70-ft Auspicious Bridal Aisle',
+    caption: 'Double-Tier Golden Crystal Chandeliers & 70-ft Auspicious Bridal Aisle',
     chips: ['5,500+ Sq.Ft', 'Pillarless Span', 'Central Cassette A/C', '70-ft Bridal Aisle', '2 VIP Bride/Groom Suites'],
     counters: [
-      { label: 'Theatre / Seated', target: 600, suffix: '' },
-      { label: 'Floating Reception', target: 1000, suffix: '+' },
-      { label: 'Round-Table Banquet', target: 350, suffix: '' }
+      { label: 'Theatre / Seated', target: 600, suffix: '', icon: Users },
+      { label: 'Floating Reception', target: 1000, suffix: '+', icon: Sparkles },
+      { label: 'Round-Table Banquet', target: 350, suffix: '', icon: UtensilsCrossed },
+      { label: 'Floor Area', target: 5500, suffix: ' sq.ft', icon: Building }
     ],
     area: '5,500+',
     soundLabel: 'Power Backup & Sound',
@@ -410,16 +437,36 @@ const HALL_META = {
       sound: '100% DG Generator backup with 0-second blackout auto-transfer'
     },
     carouselEyebrow: 'HALL VASISHTA · WEDDING DECOR EXHIBITION',
-    carouselText: 'Explore authentic traditional mandaps, carved pillars, reception stages, chandeliers, and ceremonial settings designed in Hall Vasishta.'
+    carouselText: 'Explore authentic traditional mandaps, carved pillars, reception stages, chandeliers, and ceremonial settings designed in Hall Vasishta.',
+    companionPhotos: [
+      {
+        src: '/assets/05_hall_vasishta/hall_vasishta_stage_right_reflection_02.jpeg',
+        title: 'Stage & Reflections',
+        caption: 'High-gloss Italian vitrified reflections and Om mural'
+      },
+      {
+        src: '/assets/07_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg',
+        title: 'Lotus Stage Setup',
+        caption: 'Auspicious Lotus Stage Backdrop & Central Crystal Chandelier'
+      },
+      {
+        src: '/assets/06_main_hall_seating/main_hall_aisle_view_towards_stage.jpeg',
+        title: '70-Ft Bridal Walk',
+        caption: 'Regal central procession aisle looking towards the grand stage'
+      }
+    ]
   },
   'hall-agasthya': {
+    floor: '1st Floor',
+    hallBadge: 'Royal Sangeet & Reception Hall · 1st Floor',
     capacityPill: '200–350 Seated · 500 Floating',
-    caption: 'Chandelier Perspective & Theatrical Stage Lighting',
+    caption: 'Chandelier Perspective & Moving Head Theatrical Stage Lighting',
     chips: ['3,800 Sq.Ft', 'Acoustic Ceiling', 'Theatrical Stage Lighting', 'Central Multi-Zone A/C', '1 VIP Green Room'],
     counters: [
-      { label: 'Theatre / Seated', target: 350, suffix: '' },
-      { label: 'Floating Reception', target: 500, suffix: '' },
-      { label: 'Banquet Round-Table', target: 200, suffix: '' }
+      { label: 'Theatre / Seated', target: 350, suffix: '', icon: Users },
+      { label: 'Floating Reception', target: 500, suffix: '', icon: Sparkles },
+      { label: 'Banquet Round-Table', target: 200, suffix: '', icon: UtensilsCrossed },
+      { label: 'Floor Area', target: 3800, suffix: ' sq.ft', icon: Building }
     ],
     area: '3,800',
     soundLabel: 'Acoustics & Lighting',
@@ -433,16 +480,36 @@ const HALL_META = {
       sound: 'Studio-tuned acoustic false ceiling with DMX intelligent wash fixtures'
     },
     carouselEyebrow: 'HALL AGASTHYA · SANGEET & RECEPTION EXHIBITION',
-    carouselText: 'Explore contemporary sangeet stages, neon floral arches, pastel boho setups, and dynamic event lighting designed in Hall Agasthya.'
+    carouselText: 'Explore contemporary sangeet stages, neon floral arches, pastel boho setups, and dynamic event lighting designed in Hall Agasthya.',
+    companionPhotos: [
+      {
+        src: '/assets/04_hall_agasthya/hall_agasthya_center_aisle_stage_view_03.jpeg',
+        title: 'Central Aisle View',
+        caption: 'Performance stage perspective with acoustic ceiling'
+      },
+      {
+        src: '/assets/04_hall_agasthya/hall_agasthya_glass_entrance_doors_01.jpeg',
+        title: 'Glass Double Doors',
+        caption: 'Private grand entrance portal entering Hall Agasthya'
+      },
+      {
+        src: '/assets/09_reception_engagement_stages/stage_better_together_neon_wide_shot.jpeg',
+        title: 'Sangeet Party Stage',
+        caption: 'Neon floral ring arch and dynamic stage lighting'
+      }
+    ]
   },
   'hall-koundinya': {
+    floor: '3rd Floor',
+    hallBadge: 'Milestone Celebrations & Boutique Banquet · 3rd Floor',
     capacityPill: '100–200 Guests',
-    caption: 'Central Aisle & Dedicated Milestone Celebration Stage',
+    caption: 'Vertical Wood Slat Ceilings & Dedicated Milestone Celebration Stage',
     chips: ['2,200 Sq.Ft', 'Wood Slat Ceiling', 'Milestone Stage', 'Silent Cassette A/C', 'Family Waiting Lounge'],
     counters: [
-      { label: 'Theatre / Seated', target: 200, suffix: '' },
-      { label: 'Floating Reception', target: 250, suffix: '' },
-      { label: 'Banquet Round-Table', target: 120, suffix: '' }
+      { label: 'Theatre / Seated', target: 200, suffix: '', icon: Users },
+      { label: 'Floating Reception', target: 250, suffix: '', icon: Sparkles },
+      { label: 'Banquet Round-Table', target: 120, suffix: '', icon: UtensilsCrossed },
+      { label: 'Floor Area', target: 2200, suffix: ' sq.ft', icon: Building }
     ],
     area: '2,200',
     soundLabel: 'Acoustics & Video',
@@ -456,9 +523,186 @@ const HALL_META = {
       sound: 'Linear wood ceiling dampening echo for crystal speech & family videos'
     },
     carouselEyebrow: 'HALL KOUNDINYA · CELEBRATION EXHIBITION',
-    carouselText: 'Explore authentic 1st birthday sunshine setups, traditional cradle ceremony (Barasala) lotus swings, and milestone family themes designed in Hall Koundinya.'
+    carouselText: 'Explore authentic 1st birthday sunshine setups, traditional cradle ceremony (Barasala) lotus swings, and milestone family themes designed in Hall Koundinya.',
+    companionPhotos: [
+      {
+        src: '/assets/06_hall_koundinya/hall_koundinya_mini_hall_stage_to_audience_02.jpeg',
+        title: 'Stage to Audience',
+        caption: 'Looking into comfortable dressed banquet seating'
+      },
+      {
+        src: '/assets/06_hall_koundinya/hall_koundinya_mini_hall_sign_side_view_03.jpeg',
+        title: 'Architectural View',
+        caption: 'Boutique wood slat styling with official architectural signage'
+      },
+      {
+        src: '/assets/10_cradle_and_birthday_decor/stage_cradle_naming_ceremony_lotus_swing.jpeg',
+        title: 'Barasala Cradle Stage',
+        caption: 'Traditional lotus swing naming ceremony stage installation'
+      }
+    ]
   }
 };
+
+/**
+ * Grand Hall Interactive Showcase Component
+ * Features:
+ * - Dominant, commanding architectural presentation with luxury gold frame
+ * - Multi-perspective instant switcher (Main Grand Overview + 3 Real Architectural Angles)
+ * - Smooth crossfade transitions with Framer Motion
+ * - Floating badges (Floor, Hall No., Capacity pill)
+ * - Click-to-enlarge full-resolution lightbox trigger
+ * - Mobile-optimized vertical presentation with touch-friendly perspective pills
+ */
+function HallInteractiveShowcase({ hall, meta, hallNumber, onOpenLightbox }) {
+  const shouldReduce = useReducedMotion();
+  const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+
+  // Combine main hall cover photograph + 3 verified companion interior perspectives
+  const showcasePhotos = [
+    {
+      src: hall.hallImage || hall.image,
+      title: `${hall.name} · Grand Overview`,
+      caption: meta.caption,
+      tag: 'Grand Interior'
+    },
+    ...(meta.companionPhotos || []).map((cp) => ({
+      src: cp.src,
+      title: `${hall.name} · ${cp.title}`,
+      caption: cp.caption,
+      tag: cp.title
+    }))
+  ];
+
+  const currentPhoto = showcasePhotos[activePhotoIdx] || showcasePhotos[0];
+
+  return (
+    <div className="relative group w-full flex flex-col">
+      {/* Primary Dominant Showcase Frame */}
+      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 shadow-[0_20px_60px_rgba(0,0,0,0.85)] bg-[#100205] aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] w-full">
+        {/* Animated Image with Subtle Ken Burns / Smooth Crossfade */}
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentPhoto.src}
+            src={currentPhoto.src}
+            alt={currentPhoto.title}
+            initial={{ opacity: 0, scale: shouldReduce ? 1 : 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: shouldReduce ? 1 : 0.98 }}
+            transition={{ duration: shouldReduce ? 0.15 : 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full h-full object-cover select-none"
+            loading="lazy"
+          />
+        </AnimatePresence>
+
+        {/* Cinematic Vignette & Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#100205] via-[#100205]/20 to-black/40 pointer-events-none" />
+        <div className="absolute inset-0 bg-radial-vignette opacity-40 pointer-events-none" />
+
+        {/* Architectural Gold Filigree Accent Corners */}
+        <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#D4AF37]/60 pointer-events-none" />
+        <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#D4AF37]/60 pointer-events-none" />
+        <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#D4AF37]/60 pointer-events-none" />
+        <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#D4AF37]/60 pointer-events-none" />
+
+        {/* Top Badges */}
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-auto gap-2">
+          {/* Hall Number & Floor Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#180307]/85 border border-[#D4AF37]/60 backdrop-blur-md shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#FFE57F] animate-pulse" />
+            <span className="font-cinzel text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E7] to-[#D4AF37] tracking-wider uppercase">
+              Hall 0{hallNumber} · {meta.floor}
+            </span>
+          </div>
+
+          {/* Quick Enlarge & Lightbox Trigger */}
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#180307]/85 border border-[#D4AF37]/50 text-amber-200 backdrop-blur-md shadow-lg">
+              <Users className="w-3.5 h-3.5 text-[#D4AF37]" /> {meta.capacityPill}
+            </span>
+            <button
+              onClick={() => onOpenLightbox(showcasePhotos, activePhotoIdx, hall.name)}
+              aria-label={`Enlarge ${currentPhoto.title} in high resolution`}
+              className="group/btn flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#2C060F]/90 hover:bg-[#8A1828] border border-[#D4AF37]/70 text-amber-200 hover:text-white backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+            >
+              <Maximize2 className="w-3.5 h-3.5 text-[#D4AF37] group-hover/btn:text-white transition-colors" />
+              <span className="text-[11px] font-bold uppercase tracking-wider hidden md:inline">Expand</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Editorial Caption */}
+        <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
+          <div className="max-w-xl p-3 sm:p-4 rounded-xl bg-[#140205]/85 border border-[#D4AF37]/35 backdrop-blur-md shadow-2xl">
+            <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
+              <Sparkles className="w-3 h-3 text-amber-300" />
+              <span>{currentPhoto.title}</span>
+            </div>
+            <p className="mt-1 font-cinzel text-xs sm:text-sm font-semibold text-[#FFFDF5] leading-snug drop-shadow line-clamp-2">
+              {currentPhoto.caption}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Multi-Angle Architectural Perspective Selector Rail */}
+      <div className="mt-3.5 pt-1">
+        <div className="flex items-center justify-between mb-2 px-1">
+          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#D4AF37]/90 font-semibold flex items-center gap-1.5">
+            <Layers className="w-3 h-3 text-[#D4AF37]" /> Architectural Perspectives ({showcasePhotos.length} Views)
+          </span>
+          <span className="text-[10px] text-mocha">Click thumbnail to switch view</span>
+        </div>
+        <div className="grid grid-cols-4 gap-2 sm:gap-3">
+          {showcasePhotos.map((photo, pIdx) => {
+            const isActive = pIdx === activePhotoIdx;
+            return (
+              <button
+                key={photo.src}
+                type="button"
+                onClick={() => setActivePhotoIdx(pIdx)}
+                className={`group/thumb relative rounded-xl overflow-hidden border-2 transition-all duration-300 aspect-[16/10] text-left cursor-pointer ${
+                  isActive
+                    ? 'border-[#FFE57F] shadow-[0_0_15px_rgba(212,175,55,0.5)] scale-[1.02]'
+                    : 'border-[#D4AF37]/30 hover:border-[#D4AF37]/80 opacity-75 hover:opacity-100 hover:scale-[1.01]'
+                }`}
+                title={`Switch view: ${photo.tag}`}
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.tag}
+                  className={`w-full h-full object-cover transition-transform duration-500 ${
+                    isActive ? 'scale-105 brightness-105' : 'group-hover/thumb:scale-105 brightness-90'
+                  }`}
+                  loading="lazy"
+                />
+                <div
+                  className={`absolute inset-0 transition-opacity duration-300 ${
+                    isActive
+                      ? 'bg-gradient-to-t from-black/80 via-transparent to-transparent'
+                      : 'bg-black/40 group-hover/thumb:bg-black/10'
+                  }`}
+                />
+                {isActive && (
+                  <div className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FFE57F] shadow-[0_0_6px_#FFE57F]" />
+                )}
+                <div className="absolute bottom-1.5 left-2 right-2">
+                  <p
+                    className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wider truncate ${
+                      isActive ? 'text-[#FFE57F]' : 'text-white/80'
+                    }`}
+                  >
+                    {photo.tag}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
   const shouldReduce = useReducedMotion();
@@ -535,133 +779,203 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
   const renderHall = (hall) => {
     const meta = HALL_META[hall.id] || HALL_META['hall-vasishta'];
     const hallNumber = HALL_TABS.findIndex((t) => t.id === hall.id) + 1;
-  const specs = [
-    ['Clear Span & Height', hall.specs?.ceilingHeight || meta.specFallback.ceilingHeight],
-    ['Stage', hall.specs?.stageDimensions || meta.specFallback.stageDimensions],
-    ['Climate Control', hall.specs?.cooling || meta.specFallback.cooling],
-    ['Flooring', hall.specs?.flooring || meta.specFallback.flooring],
-    ['VIP Green Rooms', hall.specs?.greenRooms || meta.specFallback.greenRooms],
-    [meta.soundLabel, hall.specs?.[meta.specKey] || meta.specFallback.sound]
-  ];
-    return (
-<motion.section
-      key={hall.id}
-      id={hall.id}
-      aria-label={`${hall.name} showcase`}
-      initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.08 }}
-      transition={{ duration: 0.7, ease: easeLuxury }}
-      className="py-16 sm:py-24 scroll-mt-32 border-b border-[#D4AF37]/15"
-    >
-          <div className="w-full max-w-[96vw] xl:max-w-[1440px] mx-auto px-2 sm:px-4 lg:px-6">
-            {/* Intro */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center mb-16 sm:mb-20">
-              <div className="lg:col-span-7 group relative">
-                <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D4AF37]/35 shadow-2xl bg-black aspect-[16/10]">
-                  <img
-                    src={hall.hallImage || hall.image}
-                    alt={hall.name}
-                    className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
-                  <button
-                    onClick={() => openGalleryModal(hall.gallery, 0, hall.name)}
-                    aria-label={`Enlarge ${hall.name} photograph`}
-                    className="absolute top-4 left-4 w-10 h-10 rounded-full bg-black/60 border border-[#C5A059]/50 text-amber-200 flex items-center justify-center hover:bg-amber-400 hover:text-[#3D0A14] transition-colors"
-                  >
-                    <Eye className="w-4 h-4" />
-                  </button>
-                  <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-black/60 border border-[#C5A059]/50 text-amber-200 backdrop-blur-md">
-                    <Users className="w-3.5 h-3.5" /> {meta.capacityPill}
-                  </span>
-                  <p className="absolute bottom-5 left-6 right-6 font-cinzel text-base sm:text-lg font-bold text-latte drop-shadow">
-                    {meta.caption}
-                  </p>
-                </div>
-              </div>
+    const isReversed = hallNumber % 2 === 0;
 
-              <div className="lg:col-span-5 flex flex-col space-y-5">
-                <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold">
+    const specsWithIcons = [
+      { label: 'Clear Span & Height', value: hall.specs?.ceilingHeight || meta.specFallback.ceilingHeight, icon: Layers },
+      { label: 'Ceremony Stage', value: hall.specs?.stageDimensions || meta.specFallback.stageDimensions, icon: Sparkles },
+      { label: 'Climate Control', value: hall.specs?.cooling || meta.specFallback.cooling, icon: Snowflake },
+      { label: 'Flooring & Surface', value: hall.specs?.flooring || meta.specFallback.flooring, icon: Building },
+      { label: 'VIP Green Rooms', value: hall.specs?.greenRooms || meta.specFallback.greenRooms, icon: DoorClosed },
+      { label: meta.soundLabel, value: hall.specs?.[meta.specKey] || meta.specFallback.sound, icon: Zap }
+    ];
+
+    return (
+      <motion.section
+        key={hall.id}
+        id={hall.id}
+        aria-label={`${hall.name} showcase`}
+        initial={{ opacity: 0, y: shouldReduce ? 0 : 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.06 }}
+        transition={{ duration: 0.75, ease: easeLuxury }}
+        className="py-16 sm:py-24 scroll-mt-36 border-b border-[#D4AF37]/20 relative"
+      >
+        <div className="w-full max-w-[96vw] xl:max-w-[1440px] mx-auto px-2 sm:px-4 lg:px-6">
+          {/* Main Hero Grid: Alternating Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center mb-16 sm:mb-20">
+            {/* Image Showcase Column */}
+            <div className={`lg:col-span-7 ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
+              <HallInteractiveShowcase
+                hall={hall}
+                meta={meta}
+                hallNumber={hallNumber}
+                onOpenLightbox={openGalleryModal}
+              />
+            </div>
+
+            {/* Hall Story & Quick Actions Column */}
+            <div className={`lg:col-span-5 flex flex-col space-y-5 ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
+              {/* Category Eyebrow */}
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE57F] shadow-[0_0_6px_#FFE57F]" />
+                <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-bold">
                   The Venue · Hall 0{hallNumber}
                 </p>
-                <div>
-                  <h2 className="font-cinzel text-4xl lg:text-5xl font-bold tracking-wide leading-tight">{hall.name}</h2>
-                  <p className="mt-2 font-cinzel text-sm sm:text-base text-amber-200">{hall.tagline}</p>
-                </div>
-                <p className="text-mocha text-base leading-relaxed">{hall.shortDescription || hall.description}</p>
+              </div>
 
-                <ul className="flex flex-wrap gap-2">
-                  {meta.chips.map((tag) => (
-                    <li key={tag} className="px-3 py-1 rounded-lg bg-[#350710] border border-[#D4AF37]/30 text-xs text-latte">
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
+              <div>
+                <span className="inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#2C060F] border border-[#D4AF37]/45 text-amber-200 mb-3 shadow-md">
+                  {meta.hallBadge}
+                </span>
+                <h2 className="font-cinzel text-3xl sm:text-4xl lg:text-5xl font-bold tracking-wide leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFFDF5] via-[#F4E8C1] to-[#D4AF37]">
+                  {hall.name}
+                </h2>
+                <p className="mt-2 font-cinzel text-sm sm:text-base text-amber-200/90 font-medium">
+                  {hall.tagline}
+                </p>
+              </div>
 
-                <div className="pt-2 flex flex-wrap items-center gap-3">
-                  <Link to="/contact" className="btn-gold">
-                    <span>Book hall visit</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                  <a
-                    href={`https://wa.me/${venueData.whatsappNumber}?text=${encodeURIComponent(
-                      `Hello SS Convention, I would like to enquire about booking ${hall.name}.`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-outline-gold"
+              <div className="h-px w-24 bg-gradient-to-r from-[#D4AF37] to-transparent" />
+
+              <p className="text-mocha text-sm sm:text-base leading-relaxed">
+                {hall.shortDescription || hall.description}
+              </p>
+
+              {/* Verified Feature Chips */}
+              <ul className="flex flex-wrap gap-2 pt-1">
+                {meta.chips.map((tag) => (
+                  <li
+                    key={tag}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2A050D] border border-[#D4AF37]/35 text-xs text-latte shadow-sm"
                   >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </a>
-                </div>
+                    <Check className="w-3 h-3 text-[#D4AF37]" />
+                    <span>{tag}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Direct Booking & Venue Actions */}
+              <div className="pt-3 flex flex-wrap items-center gap-3">
+                <Link to="/contact" className="btn-gold shadow-lg shadow-amber-950/50">
+                  <span>Schedule Hall Visit</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <a
+                  href={`https://wa.me/${venueData.whatsappNumber}?text=${encodeURIComponent(
+                    `Hello SS Convention, I would like to enquire about reserving ${hall.name} on the ${meta.floor}.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline-gold"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>WhatsApp Venue</span>
+                </a>
+                <a
+                  href={`tel:${venueData.phones[0].raw}`}
+                  className="btn-outline-gold hidden sm:inline-flex"
+                >
+                  <Phone className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Direct Call</span>
+                </a>
               </div>
             </div>
+          </div>
 
-            {/* Capacities */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#D4AF37]/20 rounded-2xl overflow-hidden border border-[#D4AF37]/25 mb-16 sm:mb-20">
-              {meta.counters.map((c) => (
-                <div key={c.label} className="bg-[#3D0A14] p-5 sm:p-7 text-center">
-                  <div className="font-cinzel text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] to-[#C5A059] tabular-nums">
-                    <AnimatedCounter target={c.target} suffix={c.suffix} shouldReduce={shouldReduce} />
+          {/* Capacities Section */}
+          <div className="mb-16 sm:mb-20">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                <h3 className="font-cinzel text-lg sm:text-xl font-bold tracking-wide text-latte">
+                  Hall Seating & Guest Capacities
+                </h3>
+              </div>
+              <span className="text-xs text-amber-300/80 font-semibold tracking-wider uppercase hidden sm:inline">
+                {meta.floor} Allocation
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              {meta.counters.map((c) => {
+                const IconComponent = c.icon || Users;
+                return (
+                  <div
+                    key={c.label}
+                    className="group relative rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-[#2D060F] via-[#22040B] to-[#180307] border border-[#D4AF37]/35 shadow-xl hover:border-[#D4AF37]/70 transition-all duration-300 hover:-translate-y-0.5"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="p-2 rounded-lg bg-[#3D0A14] border border-[#D4AF37]/30 text-[#D4AF37]">
+                        <IconComponent className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] tracking-[0.2em] uppercase text-amber-300/70 font-semibold">
+                        Verified
+                      </span>
+                    </div>
+                    <div className="font-cinzel text-2xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF5] to-[#D4AF37] tabular-nums">
+                      <AnimatedCounter target={c.target} suffix={c.suffix} shouldReduce={shouldReduce} />
+                    </div>
+                    <div className="mt-1 text-xs tracking-[0.18em] uppercase text-mocha font-medium">
+                      {c.label}
+                    </div>
                   </div>
-                  <div className="mt-1 text-[11px] tracking-[0.22em] uppercase text-mocha">{c.label}</div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Specifications Grid */}
+          <div className="mb-16 sm:mb-20">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Building className="w-4 h-4 text-[#D4AF37]" />
+                  <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide">
+                    Architectural & Engineering Specifications
+                  </h3>
+                </div>
+                <p className="mt-1 text-xs text-mocha">
+                  Comprehensive structural and utility details for {hall.name} ({meta.floor})
+                </p>
+              </div>
+            </div>
+            <div className="h-px w-24 bg-gradient-to-r from-[#D4AF37] to-transparent mb-6" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+              {specsWithIcons.map(({ label, value, icon: IconComponent }) => (
+                <div
+                  key={label}
+                  className="rounded-xl p-4 sm:p-5 bg-[#20040A]/85 border border-[#D4AF37]/25 hover:border-[#D4AF37]/50 transition-colors shadow-md flex flex-col justify-between"
+                >
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <span className="p-1.5 rounded-md bg-[#350710] border border-[#D4AF37]/30 text-amber-300">
+                      <IconComponent className="w-3.5 h-3.5" />
+                    </span>
+                    <span className="text-[11px] uppercase tracking-[0.2em] text-amber-300 font-bold">
+                      {label}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-mocha leading-relaxed pl-8">
+                    {value}
+                  </p>
                 </div>
               ))}
-              <div className="bg-[#3D0A14] p-5 sm:p-7 text-center">
-                <div className="font-cinzel text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] to-[#C5A059]">
-                  {meta.area} <span className="text-sm font-normal text-mocha">sq.ft</span>
-                </div>
-                <div className="mt-1 text-[11px] tracking-[0.22em] uppercase text-mocha">Floor Area</div>
-              </div>
             </div>
-
-            {/* Specifications */}
-            <div className="mb-16 sm:mb-20">
-              <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide mb-2">Specifications</h3>
-              <div className="h-px w-20 bg-gradient-to-r from-[#C5A059] to-transparent mb-8" />
-              <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-14">
-                {specs.map(([label, value]) => (
-                  <div key={label} className="grid grid-cols-12 gap-4 py-5 border-b border-[#D4AF37]/20">
-                    <dt className="col-span-4 text-[11px] uppercase tracking-[0.2em] text-amber-300 font-semibold pt-0.5">{label}</dt>
-                    <dd className="col-span-8 text-sm text-mocha leading-relaxed">{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-
-            <HallGalleryStrip
-              hallName={hall.name}
-              eyebrow={meta.carouselEyebrow}
-              heading="Celebrations, Beautifully Designed."
-              description={meta.carouselText}
-              images={hall.gallery}
-              onOpenLightbox={openGalleryModal}
-              lang={lang}
-            />
           </div>
-        </motion.section>
+
+          {/* Curated Hall Photography Exhibition */}
+          <HallGalleryStrip
+            hallName={hall.name}
+            eyebrow={meta.carouselEyebrow}
+            heading="Celebrations, Beautifully Designed."
+            description={meta.carouselText}
+            images={hall.gallery}
+            onOpenLightbox={openGalleryModal}
+            lang={lang}
+          />
+        </div>
+      </motion.section>
     );
   };
 
@@ -708,34 +1022,85 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
         </div>
       </section>
 
-      {/* Hall switcher */}
+      {/* Upgraded Luxury Hall Switcher Navigation */}
       <div
         id="hall-tabs"
-        className={`sticky top-[68px] sm:top-[72px] z-30 w-full py-3 px-4 bg-[#1C0409]/95 backdrop-blur-xl border-b border-[#D4AF37]/25 transform transition-transform duration-300 ${
+        className={`sticky top-[68px] sm:top-[74px] z-30 w-full py-2.5 sm:py-3 px-3 sm:px-6 bg-[#120205]/92 backdrop-blur-2xl border-b border-[#D4AF37]/35 shadow-[0_10px_35px_rgba(0,0,0,0.7)] transition-transform duration-300 ${
           subnavVisible ? 'translate-y-0' : '-translate-y-[calc(100%+80px)] pointer-events-none'
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
-            {HALL_TABS.map((t, i) => (
-              <button
-                key={t.id}
-                onClick={() => scrollToSection(t.id)}
-                className={`relative px-4 py-2 text-sm font-cinzel tracking-wider whitespace-nowrap transition-colors ${
-                  activeNav === t.id ? 'text-latte' : 'text-mocha hover:text-latte'
-                }`}
-              >
-                <span className="text-amber-300/70 mr-2 text-xs">0{i + 1}</span>
-                {t.label}
-                {activeNav === t.id && (
-                  <motion.span layoutId="hall-underline" className="absolute left-3 right-3 -bottom-0.5 h-0.5 bg-amber-300 rounded-full" />
-                )}
-              </button>
-            ))}
+          {/* Venue Hall Indicator Badge (Desktop) */}
+          <div className="hidden lg:flex items-center gap-2.5 text-xs text-amber-200/90 font-cinzel tracking-wider border-r border-[#D4AF37]/30 pr-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <span className="font-bold text-latte">3 Distinct Halls</span>
           </div>
-          <button onClick={() => scrollToSection('enquire-cta')} className="hidden sm:inline-flex items-center gap-1.5 text-sm text-amber-300 hover:text-latte transition-colors">
-            Enquire <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+
+          {/* Interactive Tabs Rail with Spring Motion Capsule */}
+          <nav aria-label="Halls navigation" className="flex items-center gap-1.5 sm:gap-3 overflow-x-auto no-scrollbar py-1 flex-1 sm:flex-initial">
+            {HALL_TABS.map((t, i) => {
+              const isActive = activeNav === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => scrollToSection(t.id)}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`relative px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-cinzel tracking-wider whitespace-nowrap transition-all duration-300 flex items-center gap-2 group cursor-pointer ${
+                    isActive
+                      ? 'text-[#FFFDF5] font-bold shadow-lg'
+                      : 'text-mocha hover:text-[#FFFDF5] hover:bg-white/5'
+                  }`}
+                >
+                  {/* Active Tab Sliding Pill Indicator */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="active-hall-capsule"
+                      className="absolute inset-0 bg-gradient-to-r from-[#8A1828] via-[#5F1524] to-[#3D0A14] rounded-full border border-[#D4AF37]/80 shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                    />
+                  )}
+
+                  {/* Number Badge */}
+                  <span
+                    className={`relative z-10 text-[10px] sm:text-xs font-mono font-semibold px-1.5 py-0.5 rounded ${
+                      isActive
+                        ? 'bg-[#FFE57F]/25 text-[#FFE57F] border border-[#FFE57F]/40'
+                        : 'text-amber-300/60 group-hover:text-amber-300'
+                    }`}
+                  >
+                    0{i + 1}
+                  </span>
+
+                  {/* Hall Title and Metadata */}
+                  <span className="relative z-10 flex flex-col items-start leading-none">
+                    <span className={`transition-colors ${isActive ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#FFFDF5] to-[#D4AF37]' : ''}`}>
+                      {t.label}
+                    </span>
+                    <span className="hidden md:inline-block text-[9px] text-amber-200/70 tracking-normal font-sans mt-0.5">
+                      {t.floor} · {t.capacity.split(' ')[0]} guests
+                    </span>
+                  </span>
+
+                  {/* Active Pulsing Dot */}
+                  {isActive && (
+                    <span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#FFE57F] shadow-[0_0_6px_#FFE57F] animate-pulse ml-0.5" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Right Desktop Quick CTA */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => scrollToSection('enquire-cta')}
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-cinzel font-bold text-amber-200 hover:text-white bg-[#30050E] hover:bg-[#450B17] border border-[#D4AF37]/50 shadow-md transition-all hover:scale-105 cursor-pointer"
+            >
+              <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Book Visit</span>
+              <ArrowRight className="w-3 h-3 ml-0.5" />
+            </button>
+          </div>
         </div>
       </div>
 

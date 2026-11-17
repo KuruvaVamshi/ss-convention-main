@@ -38,7 +38,8 @@ export default function SmoothScroll({ children }) {
     };
 
     gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    // Smooth frame lag during page transitions and heavy asset rendering
+    gsap.ticker.lagSmoothing(500, 33);
 
     return () => {
       gsap.ticker.remove(tickerCallback);

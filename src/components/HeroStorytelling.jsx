@@ -42,7 +42,7 @@ import { cateringMenus } from '../data/menusData';
 
 const CONSOLE_TOPICS = ['halls', 'banquet', 'themes', 'menus', 'contact'];
 
-export default function HeroStorytelling({ lang, onOpenLightbox }) {
+export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceComplete = false }) {
   // Master Single-View Console Active Tab: 'halls' | 'banquet' | 'themes' | 'menus' | 'contact'
   const [activeConsoleTab, setActiveConsoleTab] = useState('halls');
 
@@ -67,7 +67,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
       id: 'hall-vasishta',
       title: lang === 'te' ? 'హాల్ వశిష్ట – గ్రాండ్ కళ్యాణ మండపం (600 Pax)' : 'Hall Vasishta – Grand Kalyana Mandapam (600 Pax)',
       shortTitle: 'Grand Kalyana Mandapam',
-      badge: '★ Best Overall',
+      badge: 'Premier Hall',
       src: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
       desc: lang === 'te' ? 'డబుల్-టైర్ క్రిస్టల్ షాండ్లియర్స్, ఇటాలియన్ టైల్స్ & 70 అడుగుల బ్రైడల్ ఐల్.' : 'Double-tier crystal chandeliers, Italian vitrified reflections & 70-ft bridal walk.'
     },
@@ -100,22 +100,52 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
       title: lang === 'te' ? 'హాల్ కౌండిన్య – మైల్‌స్టోన్ సెలబ్రేషన్స్ హాల్ (200 Pax)' : 'Hall Koundinya – Celebrations Hall (200 Pax)',
       shortTitle: 'Cradle & Birthday Hall',
       badge: '200 Pax',
-      src: '/assets/06_main_hall_seating/mini_hall_seating_central_aisle_stage.jpeg',
+      src: '/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg',
       desc: lang === 'te' ? '1వ పుట్టినరోజులు, బారసాల మరియు సన్నిహిత కుటుంబ వేడుకలకు వుడ్ స్లాట్ సీలింగ్ హాల్.' : 'Intimate boutique hall with wood slat ceiling, milestone stage & crisp acoustics.'
     }
   ];
 
-  // Auto-Changing Hero Venue Views Carousel (changes smoothly every 5 seconds)
+  // Auto-Changing Hero Venue Views Carousel
+  // Strict requirement: ALWAYS begin on IMAGE 01 (index 0). Never autoplay during opening sequence.
   const [activeSlideIdx, setActiveSlideIdx] = useState(0);
   const [isAutoPlayActive, setIsAutoPlayActive] = useState(true);
+  const [entranceDone, setEntranceDone] = useState(Boolean(isEntranceComplete));
 
+  // Sync with isEntranceComplete prop from App / HomePage
   useEffect(() => {
-    if (!isAutoPlayActive) return;
+    if (isEntranceComplete) {
+      setActiveSlideIdx(0);
+      setEntranceDone(true);
+    }
+  }, [isEntranceComplete]);
+
+  // Redundant global event listener for cinematic entrance completion
+  useEffect(() => {
+    const handleEntranceComplete = () => {
+      setActiveSlideIdx(0);
+      setEntranceDone(true);
+    };
+    window.addEventListener('ss-entrance-complete', handleEntranceComplete);
+    return () => window.removeEventListener('ss-entrance-complete', handleEntranceComplete);
+  }, []);
+
+  // Lock carousel strictly to index 0 (Image 01) while entrance animation is playing
+  useEffect(() => {
+    if (!entranceDone) {
+      setActiveSlideIdx(0);
+    }
+  }, [entranceDone]);
+
+  // Start regular 5-second interval ONLY after entrance finishes and homepage carousel becomes visible
+  useEffect(() => {
+    if (!entranceDone || !isAutoPlayActive) return;
+
     const interval = setInterval(() => {
       setActiveSlideIdx((prev) => (prev + 1) % banquetShowcaseOptions.length);
     }, 5000);
+
     return () => clearInterval(interval);
-  }, [isAutoPlayActive, banquetShowcaseOptions.length]);
+  }, [entranceDone, isAutoPlayActive, banquetShowcaseOptions.length]);
 
   const currentSlide = banquetShowcaseOptions[activeSlideIdx] || banquetShowcaseOptions[0];
 
@@ -425,6 +455,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox }) {
               key={item.id}
               src={item.src}
               alt={item.title}
+              loading={idx === 0 ? 'eager' : 'lazy'}
+              decoding={idx === 0 ? 'sync' : 'async'}
               style={{
                 transform: activeSlideIdx === idx ? 'scale(1.07)' : 'scale(1)',
                 transition: 'opacity 1000ms ease-in-out, transform 8000ms linear'

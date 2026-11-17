@@ -54,8 +54,8 @@ export default function AboutPage({ lang }) {
       {/* Hero */}
       <section className="relative min-h-[60vh] flex items-end pt-32 pb-16 border-b border-[#D4AF37]/30">
         <img
-          src="/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg"
-          alt="S.S. Convention Grand Mahadwaram Royal Palace Entrance in Meerpet Hyderabad"
+          src="/assets/01_exterior/exterior_daytime_facade_entrance_02.png"
+          alt="S.S. Convention Daytime Architectural Facade and Grand Entrance in Meerpet Hyderabad"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/70 to-[#1C0409]/50" />
@@ -88,16 +88,16 @@ export default function AboutPage({ lang }) {
             <div className="relative pb-10 pr-6 sm:pr-10">
               <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black group">
                 <img
-                  src="/assets/05_reception_and_lobby/lobby_buddha_water_fountain_feature.jpeg"
-                  alt="Lobby Buddha water fountain at S.S Convention"
+                  src="/assets/03_reception/reception_lord_balaji_buddha_foyer_10.jpeg"
+                  alt="Auspicious Lord Balaji deity and Buddha water fountain foyer at S.S Convention Meerpet"
                   loading="lazy"
                   className="w-full h-[360px] sm:h-[460px] object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                 />
               </div>
               <div className="absolute bottom-0 right-0 w-40 sm:w-52 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-[#3D0A14] shadow-xl">
                 <img
-                  src="/assets/05_reception_and_lobby/lobby_backlit_wooden_signboard.jpeg"
-                  alt="Backlit wooden signboard"
+                  src="/assets/entrance/Warmly Lit Convention Hall Reception.png"
+                  alt="S.S. Convention Grand Reception desk and illuminated Ganesha emblem"
                   loading="lazy"
                   className="w-full h-full object-cover"
                 />

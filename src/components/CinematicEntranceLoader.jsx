@@ -1,520 +1,723 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 
 /**
- * S.S. CONVENTION — CINEMATIC SLOW TWO-IMAGE PALACE ENTRANCE
- * 
- * On clicking "Enter Venue" (or anywhere on the screen, or scrolling down):
- * 1. Image 1 (Building Exterior at Night) double doors swing open SLOWLY in 3D (1600ms).
- * 2. Reveals Image 2 (Grand Reception with Lord Ganesha & "A GRAND WELCOME AWAITS").
- * 3. Image 2 (Reception) double doors swing open SLOWLY in 3D (1600ms) with golden flower petals.
- * 4. Gracefully hands over to the Homepage Hero Page at scroll y = 0.
+ * S.S. CONVENTION — CINEMATIC VENUE WALKTHROUGH
+ *
+ * Scene sequence:
+ *   0  Exterior at Night
+ *   1  Main Entrance (Google-Maps zoom towards bottom-left)
+ *   2  Entrance doors swing open 3D → reveals Lobby
+ *   3  Grand Lobby Lounge (stationary showcase)
+ *   4  Grand Reception + confetti
+ *   5  Dissolve → Homepage Carousel (index 0)
  */
 
-const EXTERIOR_IMAGE = '/assets/entrance/Illuminated Ganesha Convention Hall at Night.png';
-const RECEPTION_IMAGE = '/assets/entrance/Warmly Lit Convention Hall Reception.png';
+const IMAGES = {
+  exteriorDesktop: '/assets/entrance/Illuminated Ganesha Convention Hall at Night.png',
+  exteriorMobile:  '/assets/entrance/exterior_mobile_portrait.png',
+  entranceDesktop: '/assets/entrance/Grand_Illuminated_Palace_Entrance_Clean.png',
+  entranceMobile:  '/assets/entrance/entrance_mobile_portrait.png',
+  lobbyDesktop:    '/assets/entrance/reception_foyer_wide_balaji_buddha_lounge_15.jpeg',
+  lobbyMobile:     '/assets/entrance/Elegant S.S. Convention Lobby Lounge.png',
+  receptionDesktop:'/assets/entrance/Warmly Lit Convention Hall Reception.png',
+  receptionMobile: '/assets/entrance/reception_mobile_portrait.png',
+};
 
-/**
- * DoorPanel - Symmetrical half-slice of a full-screen photograph.
- * When closed: 1px subpixel overlap ensures 100% seamless, continuous photo with zero lines.
- * When opening: Swings smoothly and slowly in 3D perspective around outer hinges.
- */
-function DoorPanel({ side, imageSrc, alt, isOpen }) {
-  const isLeft = side === 'left';
+/* ─────────────────────────────────────────────────────────────────────────────
+   LUXURY CAPTION — full cinematic editorial reveal
+   · scene number badge (gold, top-left of text block)
+   · thin golden rule that slides in from left before the headline
+   · headline: oversized Cinzel, masked-line word-by-word lift
+   · subtext : Plus Jakarta Sans, delayed fade-up
+   · thin decorative rule below
+   ───────────────────────────────────────────────────────────────────────────── */
+function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay = 200, position = 'bottom' }) {
+  const words = typeof headline === 'string' && headline ? headline.split(' ') : [];
+  const totalWords = words.length;
+
+  /* vertical placement */
+  const posClass = position === 'top'
+    ? 'top-14 sm:top-16 md:top-20'
+    : 'bottom-10 sm:bottom-14 md:bottom-16';
 
   return (
     <div
-      className={`absolute top-0 ${
-        isLeft ? 'left-0 origin-left' : 'right-0 origin-right'
-      } w-[calc(50%+1px)] h-full overflow-hidden will-change-transform z-20`}
-      style={{
-        transform: isOpen
-          ? `perspective(1400px) rotateY(${isLeft ? '-92deg' : '92deg'}) translateZ(10px)`
-          : 'perspective(1400px) rotateY(0deg) translateZ(0px)',
-        opacity: isOpen ? 0.05 : 1,
-        transformStyle: 'preserve-3d',
-        transition: 'transform 1600ms cubic-bezier(0.25, 1, 0.35, 1), opacity 1000ms ease-in 600ms',
-        boxShadow: isOpen
-          ? isLeft
-            ? '40px 0 80px rgba(0,0,0,0.95)'
-            : '-40px 0 80px rgba(0,0,0,0.95)'
-          : 'none'
-      }}
+      aria-hidden={!isActive}
+      className={`absolute inset-x-0 ${posClass} z-30 pointer-events-none px-6 sm:px-10 md:px-16 lg:px-24`}
+      style={{ textAlign: 'left' }}
     >
-      {/* Full-width image pinned to screen boundaries */}
+      {/* ── scene badge + horizontal rule ── */}
       <div
-        className={`absolute top-0 ${
-          isLeft ? 'left-0' : 'right-0'
-        } w-screen h-full pointer-events-none`}
+        className="flex items-center gap-3 mb-3 sm:mb-4"
+        style={{
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? 'translateX(0)' : 'translateX(-18px)',
+          transition: `opacity 600ms ease-out ${delay}ms, transform 700ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+        }}
       >
-        <img
-          src={imageSrc}
-          alt={alt}
-          className="w-full h-full object-cover object-center filter brightness-[0.95] contrast-[1.05]"
+        {/* Badge */}
+        <span
+          className="font-cinzel text-[9px] sm:text-[10px] tracking-[0.35em] uppercase"
+          style={{
+            color: '#D4AF37',
+            border: '1px solid rgba(212,175,55,0.5)',
+            padding: '3px 10px',
+            borderRadius: '99px',
+            background: 'rgba(0,0,0,0.45)',
+            backdropFilter: 'blur(6px)',
+            WebkitBackdropFilter: 'blur(6px)',
+            letterSpacing: '0.35em',
+          }}
+        >
+          {String(sceneNum).padStart(2, '0')}
+        </span>
+        {/* Line */}
+        <div
+          style={{
+            height: '1px',
+            width: isActive ? '64px' : '0px',
+            background: 'linear-gradient(90deg, #D4AF37, transparent)',
+            transition: `width 700ms cubic-bezier(0.16,1,0.3,1) ${delay + 120}ms`,
+          }}
         />
-        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+        {/* Venue name tiny label */}
+        <span
+          className="font-cinzel text-[8px] sm:text-[9px] tracking-[0.3em] uppercase"
+          style={{ color: 'rgba(212,175,55,0.65)' }}
+        >
+          S.S. Convention
+        </span>
       </div>
 
-      {/* 3D Depth Shading dynamically active during door swing */}
+      {/* ── Headline: word-by-word lift with gold gradient ── */}
+      {/*
+          RENDERING NOTE:
+          filter + WebkitTextFillColor:transparent on the SAME element causes invisible text
+          in Chrome. Fix: wrap the gradient-clipped inner span in a drop-shadow wrapper div.
+      */}
+      <h2
+        className="font-cinzel font-black leading-[1.12] tracking-[0.015em]"
+        style={{
+          fontSize: 'clamp(1.65rem, 5vw, 3.75rem)',
+          maxWidth: '880px',
+        }}
+      >
+        {words.map((word, i) => (
+          <span
+            key={i}
+            className="inline-block align-top"
+            style={{
+              marginRight: '0.22em',
+              paddingBottom: '0.12em',
+              overflow: 'visible',
+              /* drop-shadow on this wrapper — NOT on the transparent-fill span */
+              filter: 'drop-shadow(0 2px 18px rgba(0,0,0,0.95))',
+            }}
+          >
+            <span
+              className="inline-block will-change-transform"
+              style={{
+                background: 'linear-gradient(160deg, #FFFDF5 0%, #F6E8C4 45%, #C8952A 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                /* NO filter here — it makes gradient-clipped text invisible in Chrome */
+                transform: isActive ? 'translateY(0)' : 'translateY(105%)',
+                opacity: isActive ? 1 : 0,
+                display: 'inline-block',
+                transition: `transform 820ms cubic-bezier(0.16,1,0.3,1) ${delay + 180 + i * 65}ms, opacity 520ms ease ${delay + 180 + i * 65}ms`,
+              }}
+            >
+              {word}
+            </span>
+          </span>
+        ))}
+      </h2>
+
+      {/* ── thin gold divider ── */}
       <div
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${
-          isLeft
-            ? 'bg-gradient-to-r from-transparent via-transparent to-black/85'
-            : 'bg-gradient-to-l from-transparent via-transparent to-black/85'
-        }`}
-        style={{ opacity: isOpen ? 0.95 : 0 }}
+        style={{
+          width: isActive ? '80px' : '0px',
+          height: '1.5px',
+          background: 'linear-gradient(90deg, #D4AF37 0%, rgba(212,175,55,0.2) 100%)',
+          marginTop: '16px',
+          marginBottom: '14px',
+          transition: `width 800ms cubic-bezier(0.16,1,0.3,1) ${delay + 180 + totalWords * 65 + 80}ms`,
+        }}
       />
 
-      {/* Golden Vertical Light Edge along meeting stile — invisible when closed */}
+      {/* ── Supporting text ── */}
+      <p
+        className="font-sans font-light tracking-widest uppercase"
+        style={{
+          fontSize: 'clamp(0.6rem, 1.4vw, 0.78rem)',
+          letterSpacing: '0.22em',
+          color: 'rgba(234,216,178,0.88)',
+          maxWidth: '520px',
+          lineHeight: 1.75,
+          textShadow: '0 2px 12px rgba(0,0,0,0.95)',
+          opacity: isActive ? 0.9 : 0,
+          transform: isActive ? 'translateY(0)' : 'translateY(10px)',
+          transition: `opacity 700ms ease ${delay + 180 + totalWords * 65 + 200}ms, transform 700ms cubic-bezier(0.16,1,0.3,1) ${delay + 180 + totalWords * 65 + 200}ms`,
+        }}
+      >
+        {subtext}
+      </p>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DOOR PANEL — 3-D perspective swing open
+   ───────────────────────────────────────────────────────────────────────────── */
+function DoorPanel({ side, imageSrc, alt, isOpen }) {
+  const isLeft = side === 'left';
+  return (
+    <div
+      className={`absolute top-0 ${isLeft ? 'left-0 origin-left' : 'right-0 origin-right'} w-[calc(50%+1px)] h-full overflow-hidden will-change-transform z-20`}
+      style={{
+        transform: isOpen
+          ? `perspective(1400px) rotateY(${isLeft ? '-90deg' : '90deg'}) translateZ(10px)`
+          : 'perspective(1400px) rotateY(0deg) translateZ(0px)',
+        opacity: isOpen ? 0.02 : 1,
+        transformStyle: 'preserve-3d',
+        transition: 'transform 1300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 800ms ease-in 400ms',
+        boxShadow: isOpen
+          ? isLeft ? '40px 0 80px rgba(0,0,0,0.95)' : '-40px 0 80px rgba(0,0,0,0.95)'
+          : 'none',
+      }}
+    >
+      <div className={`absolute top-0 ${isLeft ? 'left-0' : 'right-0'} w-screen h-full pointer-events-none will-change-transform`}>
+        <img src={imageSrc} alt={alt} className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.96) contrast(1.04)' }} />
+        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+      </div>
       <div
-        className={`absolute top-0 ${
-          isLeft ? 'right-0' : 'left-0'
-        } w-[2px] h-full bg-gradient-to-b from-transparent via-[#FFE57F] to-transparent shadow-[0_0_15px_#FFE57F] pointer-events-none transition-opacity duration-700`}
-        style={{ opacity: isOpen ? 0.95 : 0 }}
+        className={`absolute inset-0 pointer-events-none ${isLeft ? 'bg-gradient-to-r from-transparent via-transparent to-black/85' : 'bg-gradient-to-l from-transparent via-transparent to-black/85'}`}
+        style={{ opacity: isOpen ? 0.95 : 0, transition: 'opacity 800ms ease' }}
+      />
+      <div
+        className={`absolute top-0 ${isLeft ? 'right-0' : 'left-0'} w-[2px] h-full bg-gradient-to-b from-transparent via-[#FFE57F] to-transparent pointer-events-none`}
+        style={{ opacity: isOpen ? 0.95 : 0, boxShadow: '0 0 15px #FFE57F', transition: 'opacity 600ms ease' }}
       />
     </div>
   );
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   GLOBAL VIGNETTE — cinematic four-corner darkness
+   ───────────────────────────────────────────────────────────────────────────── */
+function Vignette() {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 pointer-events-none z-[45]"
+      style={{
+        background: 'radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.72) 100%)',
+      }}
+    />
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PROGRESS DOTS — four scenes
+   ───────────────────────────────────────────────────────────────────────────── */
+function SceneDots({ step }) {
+  const dots = [0, 1, 3, 4]; // scene steps that have a caption
+  const active = dots.indexOf(step);
+  return (
+    <div className="absolute left-6 sm:left-8 inset-y-0 z-50 flex flex-col items-center justify-center gap-2.5 pointer-events-none">
+      {dots.map((_, i) => (
+        <div
+          key={i}
+          style={{
+            width: i === active ? '2px' : '1px',
+            height: i === active ? '28px' : '14px',
+            borderRadius: '99px',
+            background: i === active
+              ? 'linear-gradient(180deg, #D4AF37, rgba(212,175,55,0.3))'
+              : 'rgba(255,255,255,0.22)',
+            transition: 'all 500ms cubic-bezier(0.16,1,0.3,1)',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MAIN COMPONENT
+   ═══════════════════════════════════════════════════════════════════════════════ */
 export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
-  // Step: 0 = Exterior, 1 = Reception, 2 = Completing/Hero
-  const [step, setStep] = useState(0);
+  const [step, setStep]                   = useState(0);
   const [containerFading, setContainerFading] = useState(false);
-  const [shouldRender, setShouldRender] = useState(true);
+  const [shouldRender, setShouldRender]   = useState(true);
+  const [isMobile, setIsMobile]           = useState(false);
 
-  const stepRef = useRef(0);
-  const isPlayingRef = useRef(false);
-  const isDismissedRef = useRef(false);
-  const lastScrollTimeRef = useRef(0);
-  const touchStartYRef = useRef(0);
+  const stepRef              = useRef(0);
+  const isPlayingRef         = useRef(false);
+  const isDismissedRef       = useRef(false);
+  const isTransitioningRef   = useRef(false);
+  const scrollAccumulatorRef = useRef(0);
+  const touchStartYRef       = useRef(0);
+  const listenersRef         = useRef({ wheel: null, touchMove: null, touchStart: null, touchEnd: null, keyDown: null, attached: false });
 
-  // References to event listeners for clean immediate detachment
-  const listenersRef = useRef({
-    wheel: null,
-    touchMove: null,
-    touchStart: null,
-    touchEnd: null,
-    keyDown: null,
-    attached: false
-  });
+  const location = useLocation();
 
-  // Absolute scroll reset ensuring hero always starts from y = 0
+  /* ── mobile detection ── */
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768 || window.innerHeight > window.innerWidth);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const exteriorImage  = isMobile ? IMAGES.exteriorMobile  : IMAGES.exteriorDesktop;
+  const entranceImage  = isMobile ? IMAGES.entranceMobile  : IMAGES.entranceDesktop;
+  const lobbyImage     = isMobile ? IMAGES.lobbyMobile     : IMAGES.lobbyDesktop;
+  const receptionImage = isMobile ? IMAGES.receptionMobile : IMAGES.receptionDesktop;
+
+  /* ── preload ── */
+  useEffect(() => {
+    const isMob = window.innerWidth < 768 || window.innerHeight > window.innerWidth;
+    const set = isMob
+      ? [IMAGES.exteriorMobile, IMAGES.entranceMobile, IMAGES.lobbyMobile, IMAGES.receptionMobile]
+      : [IMAGES.exteriorDesktop, IMAGES.entranceDesktop, IMAGES.lobbyDesktop, IMAGES.receptionDesktop];
+    const img0 = new Image(); img0.src = set[0];
+    const t = setTimeout(() => { set.slice(1).forEach(s => { const i = new Image(); i.src = s; }); }, 350);
+    return () => clearTimeout(t);
+  }, []);
+
+  /* ── scroll reset ── */
   const resetScrollToTop = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      if (document.documentElement) document.documentElement.scrollTop = 0;
-      if (document.body) document.body.scrollTop = 0;
-      if (window.lenis && typeof window.lenis.scrollTo === 'function') {
-        window.lenis.scrollTo(0, { immediate: true });
-      }
+    if (typeof window === 'undefined') return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+    if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+      window.lenis.scrollTo(0, { immediate: true });
     }
   }, []);
 
-  // Complete unlock function: fully restores scroll and resumes Lenis
+  /* ── complete / unlock ── */
   const unlockAndComplete = useCallback(() => {
     if (isDismissedRef.current) return;
     isDismissedRef.current = true;
-
-    // 1. Restore body overflow so homepage can scroll freely
+    try { window.dispatchEvent(new CustomEvent('ss-entrance-complete')); } catch (_) {}
     document.body.style.overflow = '';
-
-    // 2. Remove all window capture listeners immediately
     if (listenersRef.current.attached) {
       listenersRef.current.attached = false;
-      if (listenersRef.current.wheel) {
-        window.removeEventListener('wheel', listenersRef.current.wheel, { capture: true });
-      }
-      if (listenersRef.current.touchMove) {
-        window.removeEventListener('touchmove', listenersRef.current.touchMove, { capture: true });
-      }
-      if (listenersRef.current.touchStart) {
-        window.removeEventListener('touchstart', listenersRef.current.touchStart, { capture: true });
-      }
-      if (listenersRef.current.touchEnd) {
-        window.removeEventListener('touchend', listenersRef.current.touchEnd, { capture: true });
-      }
-      if (listenersRef.current.keyDown) {
-        window.removeEventListener('keydown', listenersRef.current.keyDown, { capture: true });
-      }
+      const { wheel, touchMove, touchStart, touchEnd, keyDown } = listenersRef.current;
+      if (wheel)      window.removeEventListener('wheel',     wheel,     { capture: true });
+      if (touchMove)  window.removeEventListener('touchmove', touchMove, { capture: true });
+      if (touchStart) window.removeEventListener('touchstart',touchStart,{ capture: true });
+      if (touchEnd)   window.removeEventListener('touchend',  touchEnd,  { capture: true });
+      if (keyDown)    window.removeEventListener('keydown',   keyDown,   { capture: true });
     }
-
-    // 3. Anchor to top of hero
     resetScrollToTop();
-
-    // 4. Resume Lenis smooth scrolling
     if (window.lenis) {
       window.lenis.scrollTo(0, { immediate: true });
-      if (typeof window.lenis.start === 'function') {
-        window.lenis.start();
-      }
+      if (typeof window.lenis.start  === 'function') window.lenis.start();
+      if (typeof window.lenis.resize === 'function') window.lenis.resize();
     }
-
-    // 5. Hide component and notify parent
     setShouldRender(false);
     onComplete?.();
   }, [resetScrollToTop, onComplete]);
 
-  // Preload authentic photographs
+  /* ── dismiss on non-home route ── */
   useEffect(() => {
-    [EXTERIOR_IMAGE, RECEPTION_IMAGE].forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
+    if (location.pathname !== '/') unlockAndComplete();
+  }, [location.pathname, unlockAndComplete]);
+
+  /* ── confetti ── */
+  const triggerReceptionConfetti = useCallback(() => {
+    try {
+      confetti({ particleCount: 55, spread: 110, origin: { y: 0.36 }, colors: ['#FFDF73','#D4AF37','#FFF9E6','#FFD700','#E63946'], gravity: 0.55, scalar: 1.05, ticks: 200, shapes: ['circle'] });
+    } catch (_) {}
   }, []);
 
-  // Slowly opens the two images sequentially
-  const playSlowOpeningSequence = useCallback(() => {
-    if (isPlayingRef.current || isDismissedRef.current) return;
-    isPlayingRef.current = true;
+  /* ── step advance ── */
+  const advanceToNextScene = useCallback(() => {
+    if (isDismissedRef.current || isTransitioningRef.current) return;
     resetScrollToTop();
+    const cur = stepRef.current;
 
-    if (stepRef.current === 0) {
-      // 1. Open Image 1 (Exterior) slowly
-      stepRef.current = 1;
-      setStep(1);
-      resetScrollToTop();
-
-      // 2. Let visitor admire the Grand Reception (1900ms pause)
+    if (cur === 0) {
+      isTransitioningRef.current = true;
+      stepRef.current = 1; setStep(1);
+      setTimeout(() => { isTransitioningRef.current = false; }, 2000);
+    } else if (cur === 1) {
+      isTransitioningRef.current = true;
+      stepRef.current = 2; setStep(2);
       setTimeout(() => {
         if (isDismissedRef.current) return;
-
-        // 3. Open Image 2 (Reception) slowly
         resetScrollToTop();
-        stepRef.current = 2;
-        setStep(2);
+        stepRef.current = 3; setStep(3);
+        isTransitioningRef.current = false;
+      }, 1300);
+    } else if (cur === 2 || cur === 3) {
+      isTransitioningRef.current = true;
+      stepRef.current = 4; setStep(4);
+      triggerReceptionConfetti();
+      setTimeout(() => { isTransitioningRef.current = false; }, 1200);
+    } else if (cur === 4) {
+      isTransitioningRef.current = true;
+      stepRef.current = 5; setStep(5);
+      setContainerFading(true);
+      setTimeout(() => { unlockAndComplete(); }, 500);
+    }
+  }, [resetScrollToTop, triggerReceptionConfetti, unlockAndComplete]);
 
-        // Shower of celebratory golden petals
-        try {
-          confetti({
-            particleCount: 50,
-            spread: 110,
-            origin: { y: 0.38 },
-            colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'],
-            gravity: 0.55,
-            scalar: 1.05,
-            ticks: 200,
-            shapes: ['circle']
-          });
-        } catch (_) {}
+  /* ── auto-walkthrough ── */
+  const playCinematicWalkthrough = useCallback(() => {
+    if (isPlayingRef.current || isDismissedRef.current) { unlockAndComplete(); return; }
+    isPlayingRef.current = true;
+    isTransitioningRef.current = true;
+    resetScrollToTop();
 
-        // 4. Fade container out after Reception doors have fully swung open
-        setTimeout(() => {
-          resetScrollToTop();
-          setContainerFading(true);
-          setTimeout(() => {
-            unlockAndComplete();
-          }, 600);
-        }, 1800);
-      }, 1900);
-    } else if (stepRef.current === 1) {
-      // Already at Reception, open Reception doors slowly
-      resetScrollToTop();
-      stepRef.current = 2;
-      setStep(2);
-
-      try {
-        confetti({
-          particleCount: 50,
-          spread: 110,
-          origin: { y: 0.38 },
-          colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'],
-          gravity: 0.55,
-          scalar: 1.05,
-          ticks: 200,
-          shapes: ['circle']
-        });
-      } catch (_) {}
-
+    stepRef.current = 1; setStep(1);
+    setTimeout(() => {
+      if (isDismissedRef.current) return; resetScrollToTop();
+      stepRef.current = 2; setStep(2);
       setTimeout(() => {
-        resetScrollToTop();
-        setContainerFading(true);
+        if (isDismissedRef.current) return; resetScrollToTop();
+        stepRef.current = 3; setStep(3);
         setTimeout(() => {
-          unlockAndComplete();
-        }, 600);
-      }, 1800);
-    }
-  }, [resetScrollToTop, unlockAndComplete]);
+          if (isDismissedRef.current) return; resetScrollToTop();
+          stepRef.current = 4; setStep(4); triggerReceptionConfetti();
+          setTimeout(() => {
+            if (isDismissedRef.current) return; resetScrollToTop();
+            stepRef.current = 5; setStep(5); setContainerFading(true);
+            setTimeout(() => { unlockAndComplete(); }, 500);
+          }, 1800);
+        }, 1800);
+      }, 1300);
+    }, 2000);
+  }, [resetScrollToTop, triggerReceptionConfetti, unlockAndComplete]);
 
-  // Handle scroll delta from mouse wheel or touch swipe
+  /* ── scroll delta ── */
   const handleScrollDelta = useCallback((deltaY) => {
-    if (isDismissedRef.current) return;
-    const now = Date.now();
-    // 700ms throttle to match the slow 1600ms door motion
-    if (now - lastScrollTimeRef.current < 700) return;
-
+    if (isDismissedRef.current || isTransitioningRef.current) return;
     if (deltaY > 15) {
-      // Scrolling DOWN -> trigger next slow opening step
-      lastScrollTimeRef.current = now;
-      if (stepRef.current === 0) {
-        stepRef.current = 1;
-        setStep(1);
-        resetScrollToTop();
-      } else if (stepRef.current === 1) {
-        playSlowOpeningSequence();
-      }
+      scrollAccumulatorRef.current += deltaY;
+      if (scrollAccumulatorRef.current >= 45) { scrollAccumulatorRef.current = 0; advanceToNextScene(); }
     } else if (deltaY < -15) {
-      // Scrolling UP (reverse back to exterior)
-      lastScrollTimeRef.current = now;
-      if (stepRef.current === 1 && !isPlayingRef.current) {
-        stepRef.current = 0;
-        setStep(0);
-        resetScrollToTop();
+      scrollAccumulatorRef.current += deltaY;
+      if (scrollAccumulatorRef.current <= -45) {
+        scrollAccumulatorRef.current = 0;
+        if (!isPlayingRef.current) {
+          if (stepRef.current === 4) {
+            isTransitioningRef.current = true; stepRef.current = 3; setStep(3);
+            setTimeout(() => { isTransitioningRef.current = false; }, 1200);
+          } else if (stepRef.current === 3 || stepRef.current === 2) {
+            isTransitioningRef.current = true; stepRef.current = 1; setStep(1);
+            setTimeout(() => { isTransitioningRef.current = false; }, 1300);
+          } else if (stepRef.current === 1) {
+            isTransitioningRef.current = true; stepRef.current = 0; setStep(0);
+            setTimeout(() => { isTransitioningRef.current = false; }, 2000);
+          }
+        }
       }
     }
-  }, [playSlowOpeningSequence, resetScrollToTop]);
+  }, [advanceToNextScene]);
 
-  // Register window scroll event listeners ONCE on mount
+  /* ── event listeners ── */
   useEffect(() => {
-    // Clear lingering URL anchor hashes that could force auto-scroll
-    if (window.location.hash) {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-
-    // Disable browser automatic scroll restoration
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-
-    // Lock body scroll while loader is visible so the background page stays locked at y = 0
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { unlockAndComplete(); return; }
+    if (window.location.hash) window.history.replaceState(null, '', window.location.pathname);
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
     document.body.style.overflow = 'hidden';
-
-    // Pause Lenis and reset scroll position immediately
     resetScrollToTop();
     if (window.lenis && typeof window.lenis.stop === 'function') {
       window.lenis.stop();
       window.lenis.scrollTo(0, { immediate: true });
     }
 
-    // Capture phase listener halts wheel events BEFORE they reach Lenis or background scroll
     const onWheel = (e) => {
       if (isDismissedRef.current) return;
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-      resetScrollToTop();
-      handleScrollDelta(e.deltaY);
+      resetScrollToTop(); handleScrollDelta(e.deltaY);
     };
-
-    // Prevent touch scrolling of background page while loader is open
     const onTouchMove = (e) => {
       if (isDismissedRef.current) return;
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       if (e.stopImmediatePropagation) e.stopImmediatePropagation();
       resetScrollToTop();
     };
-
     const onTouchStart = (e) => {
       if (isDismissedRef.current) return;
-      if (e.touches && e.touches.length > 0) {
-        touchStartYRef.current = e.touches[0].clientY;
-      }
+      if (e.touches && e.touches.length > 0) touchStartYRef.current = e.touches[0].clientY;
     };
-
     const onTouchEnd = (e) => {
       if (isDismissedRef.current) return;
       if (e.changedTouches && e.changedTouches.length > 0) {
-        const touchEndY = e.changedTouches[0].clientY;
-        const deltaY = touchStartYRef.current - touchEndY;
-        if (Math.abs(deltaY) > 25) {
-          handleScrollDelta(deltaY);
-        }
+        const dy = touchStartYRef.current - e.changedTouches[0].clientY;
+        if (Math.abs(dy) > 25) handleScrollDelta(dy);
       }
     };
-
     const onKeyDown = (e) => {
       if (isDismissedRef.current) return;
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        playSlowOpeningSequence();
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        handleScrollDelta(-40);
-      }
+      if (['ArrowDown','PageDown',' ','Enter'].includes(e.key)) { e.preventDefault(); advanceToNextScene(); }
+      else if (['ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); handleScrollDelta(-60); }
+      else if (e.key === 'Escape') { e.preventDefault(); unlockAndComplete(); }
     };
 
-    listenersRef.current = {
-      wheel: onWheel,
-      touchMove: onTouchMove,
-      touchStart: onTouchStart,
-      touchEnd: onTouchEnd,
-      keyDown: onKeyDown,
-      attached: true
-    };
-
-    window.addEventListener('wheel', onWheel, { passive: false, capture: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: false, capture: true });
-    window.addEventListener('touchstart', onTouchStart, { passive: true, capture: true });
-    window.addEventListener('touchend', onTouchEnd, { passive: true, capture: true });
-    window.addEventListener('keydown', onKeyDown, { capture: true });
+    listenersRef.current = { wheel: onWheel, touchMove: onTouchMove, touchStart: onTouchStart, touchEnd: onTouchEnd, keyDown: onKeyDown, attached: true };
+    window.addEventListener('wheel',      onWheel,      { passive: false, capture: true });
+    window.addEventListener('touchmove',  onTouchMove,  { passive: false, capture: true });
+    window.addEventListener('touchstart', onTouchStart, { passive: true,  capture: true });
+    window.addEventListener('touchend',   onTouchEnd,   { passive: true,  capture: true });
+    window.addEventListener('keydown',    onKeyDown,    { capture: true });
 
     return () => {
       if (listenersRef.current.attached) {
         listenersRef.current.attached = false;
-        window.removeEventListener('wheel', onWheel, { capture: true });
-        window.removeEventListener('touchmove', onTouchMove, { capture: true });
+        window.removeEventListener('wheel',      onWheel,      { capture: true });
+        window.removeEventListener('touchmove',  onTouchMove,  { capture: true });
         window.removeEventListener('touchstart', onTouchStart, { capture: true });
-        window.removeEventListener('touchend', onTouchEnd, { capture: true });
-        window.removeEventListener('keydown', onKeyDown, { capture: true });
+        window.removeEventListener('touchend',   onTouchEnd,   { capture: true });
+        window.removeEventListener('keydown',    onKeyDown,    { capture: true });
       }
     };
-  }, [handleScrollDelta, playSlowOpeningSequence, resetScrollToTop]);
+  }, [handleScrollDelta, advanceToNextScene, resetScrollToTop, unlockAndComplete]);
 
   if (!shouldRender) return null;
 
-  const exteriorDoorsOpen = step >= 1;
-  const receptionDoorsOpen = step >= 2;
+  const entranceDoorsOpen = step >= 2;
 
+  /* ─────────────────────────── RENDER ─────────────────────────── */
   return (
     <div
       role="dialog"
-      aria-label="S.S. Convention Grand Cinematic Welcome"
-      onClick={playSlowOpeningSequence}
-      onTouchMove={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer bg-[#0A0204] transition-opacity duration-800 ease-out ${
-        containerFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}
+      aria-label="S.S. Convention Grand Cinematic Walkthrough"
+      onClick={advanceToNextScene}
+      onTouchMove={(e) => { e.preventDefault(); e.stopPropagation(); }}
+      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer bg-[#060106] transition-opacity duration-500 ease-out ${containerFading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
     >
-      {/* ========================================================
-          SCENE 2: GRAND RECEPTION & LORD GANESHA (16:9 Full Screen)
-          Revealed directly as Exterior doors swing open slowly
-          ======================================================== */}
+
+      {/* ══════════════════════════════════════════════════════════════
+          LAYER 1 — SCENE 4: GRAND RECEPTION (bottom)
+          ════════════════════════════════════════════════════════════ */}
       <div className="absolute inset-0 z-10 overflow-hidden">
-        {/* Reception Double Doors (Swing open into Hero Page on next step) */}
-        <DoorPanel
-          side="left"
-          imageSrc={RECEPTION_IMAGE}
-          alt="S.S. Convention Reception Left"
-          isOpen={receptionDoorsOpen}
-        />
-        <DoorPanel
-          side="right"
-          imageSrc={RECEPTION_IMAGE}
-          alt="S.S. Convention Reception Right"
-          isOpen={receptionDoorsOpen}
-        />
-
-        {/* Ambient Darkening Scrims */}
-        <div className="absolute top-0 inset-x-0 h-44 sm:h-56 bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none z-25" />
-        <div className="absolute bottom-0 inset-x-0 h-52 sm:h-64 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none z-25" />
-
-        {/* Scene 2 Typography — A Grand Welcome Awaits */}
         <div
-          className={`absolute bottom-16 sm:bottom-20 inset-x-0 text-center pointer-events-none px-4 transition-all duration-1000 ease-out z-30 ${
-            step === 1
-              ? 'opacity-100 translate-y-0 delay-300'
-              : 'opacity-0 translate-y-6 pointer-events-none'
-          }`}
+          className="w-full h-full will-change-transform"
+          style={{
+            transform: step >= 4 ? 'scale(1.0)' : 'scale(1.04)',
+            transition: 'transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
         >
-          <p className="font-serif text-xs sm:text-sm tracking-[0.3em] text-[#FFF6D1]/90 mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-            || శ్రీరస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
-          </p>
-          <h2 className="font-cinzel text-2xl sm:text-4xl md:text-5xl font-bold tracking-[0.18em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF5] via-[#F4E3BA] to-[#C5A059] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] uppercase leading-tight">
-            {lang === 'te' ? 'ఘనమైన స్వాగతం' : 'A GRAND WELCOME AWAITS'}
-          </h2>
-          <p className="mt-2 font-cinzel text-xs sm:text-sm text-[#E6C687] tracking-[0.25em] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] font-medium">
-            S.S. Convention · Meerpet, Hyderabad
-          </p>
+          <img src={receptionImage} alt="S.S. Convention Reception" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.9) contrast(1.06)' }} />
+          <div className="absolute inset-0 bg-black/25 pointer-events-none" />
         </div>
-
-        {/* Scene 2 Prompt Cue */}
-        <div
-          className={`absolute bottom-6 sm:bottom-8 inset-x-0 z-30 flex flex-col items-center justify-center pointer-events-none text-amber-300/85 transition-opacity duration-700 ${
-            step === 1 && !isPlayingRef.current ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <span className="text-[10px] sm:text-xs font-cinzel font-semibold tracking-[0.25em] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-            {lang === 'te' ? 'హాల్స్‌లోకి ప్రవేశించడానికి క్లిక్ చేయండి' : 'Click or scroll to enter wedding halls'}
-          </span>
-          <ChevronDown className="w-4 h-4 animate-bounce mt-1 text-amber-300 drop-shadow" />
-        </div>
+        {/* scrims */}
+        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-56 sm:h-72 bg-gradient-to-t from-black/95 via-black/55 to-transparent pointer-events-none z-[25]" />
+        <LuxuryCaption
+          sceneNum={4}
+          headline={lang === 'te' ? 'మీ మధుర క్షణాలు. మా రాజప్రాంగణం.' : 'Your Moments. Our Space.'}
+          subtext={lang === 'te' ? 'ప్రతి శుభకార్యం ఒక అద్భుత జ్ఞాపకంగా మారే పవిత్ర కల్యాణ వేదిక.' : 'Where grand occasions become beautiful memories, and every celebration finds its perfect setting.'}
+          isActive={step === 4}
+          position="bottom"
+          delay={300}
+        />
       </div>
 
-      {/* ========================================================
-          SCENE 1: BUILDING EXTERIOR AT NIGHT (TOP LAYER)
-          First view upon load; click or scroll opens doors slowly into Reception
-          ======================================================== */}
+      {/* ══════════════════════════════════════════════════════════════
+          LAYER 2 — SCENE 3: GRAND LOBBY (third image)
+          ════════════════════════════════════════════════════════════ */}
       <div
-        className={`absolute inset-0 z-30 overflow-hidden pointer-events-none transition-opacity duration-700 ${
-          receptionDoorsOpen ? 'opacity-0' : 'opacity-100'
-        }`}
+        className="absolute inset-0 z-20 overflow-hidden pointer-events-none"
+        style={{ opacity: step >= 4 ? 0 : 1, transition: 'opacity 800ms ease-in-out' }}
       >
-        {/* Exterior Double Doors */}
-        <DoorPanel
-          side="left"
-          imageSrc={EXTERIOR_IMAGE}
-          alt="S.S. Convention Building Exterior Left"
-          isOpen={exteriorDoorsOpen}
-        />
-        <DoorPanel
-          side="right"
-          imageSrc={EXTERIOR_IMAGE}
-          alt="S.S. Convention Building Exterior Right"
-          isOpen={exteriorDoorsOpen}
-        />
-
-        {/* Ambient Darkening Scrims */}
-        <div className="absolute top-0 inset-x-0 h-44 sm:h-56 bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none z-25" />
-        <div className="absolute bottom-0 inset-x-0 h-44 sm:h-56 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none z-25" />
-
-        {/* Scene 1 Typography — High in the night sky (Zero overlap with building facade) */}
         <div
-          className={`absolute top-16 sm:top-20 md:top-24 inset-x-0 text-center pointer-events-none px-4 transition-all duration-1000 ease-out z-30 ${
-            step === 0 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6 pointer-events-none'
-          }`}
+          className="w-full h-full will-change-transform"
+          style={{
+            transform: step >= 3 ? 'scale(1.0) translateY(0)' : 'scale(1.05) translateY(1%)',
+            transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
         >
-          <p className="font-serif text-xs sm:text-sm tracking-[0.3em] text-[#FFF6D1]/90 mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-            || శ్రీరస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
-          </p>
-          <h1 className="font-cinzel text-2xl sm:text-4xl md:text-5xl font-bold tracking-[0.14em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF5] via-[#F4E3BA] to-[#C5A059] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] leading-tight">
-            {lang === 'te' ? 'ఎస్.ఎస్. కన్వెన్షన్‌కు స్వాగతం' : 'WELCOME TO S.S. CONVENTION'}
-          </h1>
-          <p className="mt-2 font-cinzel text-xs sm:text-sm md:text-base text-[#D4AF37] tracking-[0.25em] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] font-medium">
-            {lang === 'te' ? 'ప్రతి శుభకార్యానికి వైభవమైన ప్రారంభం' : 'Where Every Celebration Begins'}
-          </p>
+          <img src={lobbyImage} alt="S.S. Convention Grand Lobby Lounge" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.9) contrast(1.06)' }} />
+          <div className="absolute inset-0 bg-black/25 pointer-events-none" />
         </div>
-
-        {/* Scene 1 Prompt Cue */}
-        <div
-          className={`absolute bottom-6 sm:bottom-8 inset-x-0 z-35 flex flex-col items-center justify-center pointer-events-none text-amber-300/85 transition-opacity duration-700 ${
-            step === 0 && !isPlayingRef.current ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <span className="text-[10px] sm:text-xs font-cinzel font-semibold tracking-[0.25em] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-            {lang === 'te' ? 'వేదికలోకి ప్రవేశించడానికి క్లిక్ చేయండి' : 'Click or scroll down to open venue'}
-          </span>
-          <ChevronDown className="w-4 h-4 animate-bounce mt-1 text-amber-300 drop-shadow" />
-        </div>
+        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <LuxuryCaption
+          sceneNum={3}
+          headline={lang === 'te' ? 'క్షణకాలం ఆగండి. వైభవం ఆహ్వానిస్తుంది.' : 'Pause Here. Let Elegance Welcome You.'}
+          subtext={lang === 'te' ? 'ఘనమైన ఆతిథ్యం, ముందున్న గొప్ప సంబరానికి ఒక శుభారంభం మాత్రమే.' : 'A thoughtful welcome is only the beginning of everything waiting ahead.'}
+          isActive={step === 3}
+          position="bottom"
+          delay={300}
+        />
       </div>
 
-      {/* ========================================================
-          USER CONTROLS: "ENTER VENUE →" ACTION BUTTON
-          ======================================================== */}
-      <div className="absolute top-6 right-6 z-50">
+      {/* ══════════════════════════════════════════════════════════════
+          LAYER 3 — SCENE 2: ENTRANCE PORTAL + 3D DOORS
+          ════════════════════════════════════════════════════════════ */}
+      <div
+        className="absolute inset-0 z-30 overflow-hidden pointer-events-none"
+        style={{ opacity: step >= 4 ? 0 : 1, transition: 'opacity 600ms ease-out' }}
+      >
+        <div
+          className="absolute inset-0 will-change-transform overflow-hidden pointer-events-none"
+          style={{
+            transform: step >= 1 ? 'scale(1.0) translateY(0)' : 'scale(1.09) translateY(0.8%)',
+            transformOrigin: isMobile ? '40% 70%' : '32% 68%',
+            opacity: step >= 1 ? 1 : 0.45,
+            transition: 'transform 2000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1500ms ease-out',
+          }}
+        >
+          <DoorPanel side="left"  imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Left Door"  isOpen={entranceDoorsOpen} />
+          <DoorPanel side="right" imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Right Door" isOpen={entranceDoorsOpen} />
+        </div>
+        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <LuxuryCaption
+          sceneNum={2}
+          headline={lang === 'te' ? 'ఈ ప్రవేశద్వారం దాటితే, ఒక దివ్యమైన అనుభూతి.' : 'Beyond This Entrance, Something Beautiful Awaits.'}
+          subtext={lang === 'te' ? 'అడుగు ముందుకు వేయండి. మీ రాచరిక అనుభవం ఇప్పుడే మొదలవుతోంది.' : 'Step inside. Your experience is just beginning.'}
+          isActive={step === 1}
+          position="bottom"
+          delay={1400}
+        />
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════════
+          LAYER 4 — SCENE 1: EXTERIOR AT NIGHT (top)
+          ════════════════════════════════════════════════════════════ */}
+      <div
+        className="absolute inset-0 z-40 overflow-hidden pointer-events-none"
+        style={{
+          opacity: step >= 1 ? 0 : 1,
+          transition: step >= 1 ? 'opacity 1200ms ease-in-out 800ms' : 'opacity 500ms ease-out',
+        }}
+      >
+        <div
+          className="w-full h-full overflow-hidden will-change-transform"
+          style={{
+            transform: step >= 1
+              ? (isMobile ? 'scale(1.25)' : 'scale(1.22)')
+              : 'scale(1.0)',
+            transformOrigin: isMobile ? '40% 70%' : '32% 68%',
+            transition: 'transform 2000ms cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
+        >
+          <img src={exteriorImage} alt="S.S. Convention Building Exterior at Night" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.9) contrast(1.06)' }} />
+          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+        </div>
+        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <LuxuryCaption
+          sceneNum={1}
+          headline={lang === 'te' ? 'వైభవమైన వేడుకకు అద్భుతమైన ఆరంభం.' : 'A Celebration Begins With a First Impression.'}
+          subtext={lang === 'te' ? 'ప్రతి మధురమైన సందర్భానికి ఒక చిరస్మరణీయమైన శుభారంభం.' : 'Every unforgettable occasion deserves an extraordinary beginning.'}
+          isActive={step === 0}
+          position="bottom"
+          delay={350}
+        />
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════════
+          GLOBAL VIGNETTE (above all images, below UI)
+          ════════════════════════════════════════════════════════════ */}
+      <Vignette />
+
+      {/* ══════════════════════════════════════════════════════════════
+          SCENE PROGRESS DOTS (left rail)
+          ════════════════════════════════════════════════════════════ */}
+      <SceneDots step={step} />
+
+      {/* ══════════════════════════════════════════════════════════════
+          TOP BAR — brand wordmark + "Enter Venue" button
+          ════════════════════════════════════════════════════════════ */}
+      <div className="absolute top-0 inset-x-0 z-50 flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6">
+        {/* Brand wordmark left */}
+        <div className="flex flex-col leading-none pointer-events-none">
+          <span
+            className="font-cinzel font-black tracking-[0.18em] uppercase"
+            style={{ fontSize: 'clamp(0.7rem, 2vw, 1rem)', color: '#D4AF37', letterSpacing: '0.22em' }}
+          >
+            S.S. Convention
+          </span>
+          <span
+            className="font-sans font-light tracking-[0.3em] uppercase"
+            style={{ fontSize: 'clamp(0.42rem, 1vw, 0.55rem)', color: 'rgba(212,175,55,0.6)', marginTop: '3px', letterSpacing: '0.3em' }}
+          >
+            Wedding &amp; Function Halls &mdash; Meerpet
+          </span>
+        </div>
+
+        {/* Enter Venue button right */}
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            playSlowOpeningSequence();
-          }}
+          onClick={(e) => { e.stopPropagation(); playCinematicWalkthrough(); }}
           aria-label="Enter venue"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/80 hover:bg-[#7A1F31] border border-[#D4AF37]/80 text-amber-200 text-xs sm:text-sm font-cinzel font-semibold tracking-wider backdrop-blur-md transition-all shadow-[0_4px_24px_rgba(0,0,0,0.85)] hover:scale-105 active:scale-95 cursor-pointer"
+          className="group inline-flex items-center gap-2.5 font-cinzel font-bold uppercase tracking-[0.2em] cursor-pointer"
+          style={{
+            fontSize: 'clamp(0.55rem, 1.4vw, 0.72rem)',
+            color: '#EED9A6',
+            border: '1px solid rgba(212,175,55,0.55)',
+            borderRadius: '99px',
+            padding: '10px 20px',
+            background: 'rgba(0,0,0,0.65)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)',
+            transition: 'background 300ms ease, box-shadow 300ms ease, transform 200ms ease',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'rgba(90,20,30,0.85)';
+            e.currentTarget.style.boxShadow = '0 6px 32px rgba(212,175,55,0.3), inset 0 1px 0 rgba(255,255,255,0.08)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'rgba(0,0,0,0.65)';
+            e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
         >
           <span>{lang === 'te' ? 'వేదికలోకి ప్రవేశించండి' : 'Enter Venue'}</span>
-          <ArrowRight className="w-4 h-4 text-[#FFDF73]" />
+          <ArrowRight
+            className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+            style={{ color: '#D4AF37' }}
+          />
         </button>
       </div>
 
-      {/* Subtle Hint */}
-      <div className="absolute bottom-1 inset-x-0 z-40 text-center pointer-events-none">
-        <span className="text-[9px] font-cinzel tracking-[0.2em] uppercase text-amber-200/50 drop-shadow">
-          {lang === 'te' ? 'వేదిక ప్రారంభానికి ఎక్కడైనా క్లిక్ చేయండి' : 'Click anywhere on venue to begin'}
+      {/* ══════════════════════════════════════════════════════════════
+          BOTTOM — scene instruction + scroll cue
+          ════════════════════════════════════════════════════════════ */}
+      <div
+        className={`absolute bottom-5 inset-x-0 z-50 flex flex-col items-center gap-1 pointer-events-none transition-opacity duration-700 ${step < 5 ? 'opacity-100' : 'opacity-0'}`}
+      >
+        {/* Animated scroll arrow */}
+        <div
+          style={{
+            width: '1px',
+            height: '28px',
+            background: 'linear-gradient(180deg, transparent, rgba(212,175,55,0.7), transparent)',
+            animation: 'ss-scroll-pulse 2s ease-in-out infinite',
+            marginBottom: '4px',
+          }}
+        />
+        <span
+          className="font-cinzel tracking-[0.28em] uppercase"
+          style={{ fontSize: '9px', color: 'rgba(212,175,55,0.65)' }}
+        >
+          {lang === 'te' ? 'స్క్రోల్ చేయండి' : 'Scroll to continue'}
         </span>
       </div>
+
+      {/* ── inline keyframe for scroll pulse ── */}
+      <style>{`
+        @keyframes ss-scroll-pulse {
+          0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+          50%       { opacity: 1;   transform: scaleY(1); }
+        }
+      `}</style>
     </div>
   );
 }

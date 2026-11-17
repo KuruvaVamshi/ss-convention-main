@@ -5,6 +5,9 @@
     <link rel="icon" type="image/jpeg" href="/assets/01_brand_and_logos/ss_convention_official_swan_logo.jpeg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Preload Critical Opening Sequence Image -->
+    <link rel="preload" as="image" href="/assets/entrance/Illuminated Ganesha Convention Hall at Night.png" fetchpriority="high" />
+
     <!-- Primary SEO Metadata -->
     <title>S.S. Convention | Wedding & Function Halls in Meerpet, Hyderabad</title>
     <meta name="description" content="Looking for wedding halls in Meerpet, Hyderabad? S.S. Convention A/C offers luxury banquet & function halls for weddings, receptions, and engagements in Jillelaguda, Meerpet near LB Nagar." />
@@ -116,6 +119,23 @@
   </head>
   <body class="bg-[#1C0409] text-[#FAF6F0] font-sans selection:bg-[#C5A059] selection:text-[#0D0204] antialiased overflow-x-hidden">
     <div id="root"></div>
+    <div id="global-error-banner" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999999;background:#1C0409;color:#FFB4B4;padding:32px;font-family:monospace;overflow:auto;white-space:pre-wrap;"></div>
+    <script>
+      window.addEventListener('error', function(e) {
+        var el = document.getElementById('global-error-banner');
+        if (el) {
+          el.style.display = 'block';
+          el.textContent += '\n[UNCAUGHT ERROR] ' + (e.message || e.error) + '\nLocation: ' + (e.filename || '') + ':' + (e.lineno || '') + ':' + (e.colno || '') + '\n' + (e.error && e.error.stack ? e.error.stack : '') + '\n';
+        }
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        var el = document.getElementById('global-error-banner');
+        if (el) {
+          el.style.display = 'block';
+          el.textContent += '\n[UNHANDLED REJECTION] ' + (e.reason && (e.reason.stack || e.reason.message || e.reason)) + '\n';
+        }
+      });
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

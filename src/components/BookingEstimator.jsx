@@ -36,14 +36,14 @@ export default function BookingEstimator({ lang }) {
     const formattedMsg = encodeURIComponent(
       `*SS CONVENTION HALL - EVENT BOOKING INQUIRY*\n` +
       `---------------------------------------\n` +
-      `👤 *Name:* ${clientName || 'Valued Guest'}\n` +
-      `📞 *Phone:* ${clientPhone || 'Not provided'}\n` +
-      `🎉 *Event Type:* ${eventType}\n` +
-      `📅 *Preferred Date:* ${eventDate || 'To be decided'}\n` +
-      `⏰ *Slot:* ${slot}\n` +
-      `👥 *Estimated Guests:* ${guestCount} Guests\n` +
-      `🍽️ *Preferred Menu:* ${menuChoice}\n` +
-      `📍 *Venue:* Raghavendra Nagar Colony, Meerpet, Hyderabad\n` +
+      `*Name:* ${clientName || 'Valued Guest'}\n` +
+      `*Phone:* ${clientPhone || 'Not provided'}\n` +
+      `*Event Type:* ${eventType}\n` +
+      `*Preferred Date:* ${eventDate || 'To be decided'}\n` +
+      `*Slot:* ${slot}\n` +
+      `*Estimated Guests:* ${guestCount} Guests\n` +
+      `*Preferred Menu:* ${menuChoice}\n` +
+      `*Venue:* Raghavendra Nagar Colony, Meerpet, Hyderabad\n` +
       `---------------------------------------\n` +
       `Please confirm slot availability and share a detailed quotation. Thank you!`
     );

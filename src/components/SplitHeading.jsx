@@ -30,9 +30,10 @@ export default function SplitHeading({
       });
 
       const targets = splitBy === 'chars' ? splitInstance.chars : splitInstance.words;
+      let tween;
 
       if (targets && targets.length > 0) {
-        gsap.fromTo(
+        tween = gsap.fromTo(
           targets,
           {
             y: 30,
@@ -64,6 +65,9 @@ export default function SplitHeading({
           splitInstance.revert();
         } catch (_) {}
       }
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.trigger === el) st.kill();
+      });
     };
   }, [splitBy, delay, stagger]);
 
