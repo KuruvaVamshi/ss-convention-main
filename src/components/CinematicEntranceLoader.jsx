@@ -253,7 +253,15 @@ function SceneDots({ step }) {
 export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
   const [step, setStep]                   = useState(0);
   const [containerFading, setContainerFading] = useState(false);
-  const [shouldRender, setShouldRender]   = useState(true);
+  const [shouldRender, setShouldRender]   = useState(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        if (sessionStorage.getItem('ss_entrance_seen') === 'true') return false;
+        if (window.location.pathname !== '/') return false;
+      }
+    } catch (_) {}
+    return true;
+  });
   const [isMobile, setIsMobile]           = useState(false);
 
   const stepRef              = useRef(0);
@@ -281,19 +289,20 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
 
   /* ── preload ── */
   useEffect(() => {
+    if (!shouldRender) return;
     const isMob = window.innerWidth < 768 || window.innerHeight > window.innerWidth;
     const set = isMob
       ? [IMAGES.exteriorMobile, IMAGES.entranceMobile, IMAGES.lobbyMobile, IMAGES.receptionMobile]
       : [IMAGES.exteriorDesktop, IMAGES.entranceDesktop, IMAGES.lobbyDesktop, IMAGES.receptionDesktop];
     const img0 = new Image(); img0.src = set[0];
-    const t = setTimeout(() => { set.slice(1).forEach(s => { const i = new Image(); i.src = s; }); }, 350);
+    const t = setTimeout(() => { set.slice(1).forEach(s => { const i = new Image(); i.src = s; }); }, 300);
     return () => clearTimeout(t);
-  }, []);
+  }, [shouldRender]);
 
-  /* ── scroll reset ── */
+  /* ── scroll reset helper ── */
   const resetScrollToTop = useCallback(() => {
     if (typeof window === 'undefined') return;
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    window.scrollTo(0, 0);
     if (document.documentElement) document.documentElement.scrollTop = 0;
     if (document.body) document.body.scrollTop = 0;
     if (window.lenis && typeof window.lenis.scrollTo === 'function') {
@@ -305,8 +314,10 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
   const unlockAndComplete = useCallback(() => {
     if (isDismissedRef.current) return;
     isDismissedRef.current = true;
+    try { sessionStorage.setItem('ss_entrance_seen', 'true'); } catch (_) {}
     try { window.dispatchEvent(new CustomEvent('ss-entrance-complete')); } catch (_) {}
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
     if (listenersRef.current.attached) {
       listenersRef.current.attached = false;
       const { wheel, touchMove, touchStart, touchEnd, keyDown } = listenersRef.current;
@@ -326,98 +337,96 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
     onComplete?.();
   }, [resetScrollToTop, onComplete]);
 
-  /* ── dismiss on non-home route ── */
+  /* ── dismiss on non-home route or if already seen ── */
   useEffect(() => {
-    if (location.pathname !== '/') unlockAndComplete();
+    if (location.pathname !== '/') {
+      unlockAndComplete();
+    }
   }, [location.pathname, unlockAndComplete]);
 
   /* ── confetti ── */
   const triggerReceptionConfetti = useCallback(() => {
     try {
-      confetti({ particleCount: 55, spread: 110, origin: { y: 0.36 }, colors: ['#FFDF73','#D4AF37','#FFF9E6','#FFD700','#E63946'], gravity: 0.55, scalar: 1.05, ticks: 200, shapes: ['circle'] });
+      confetti({ particleCount: 50, spread: 100, origin: { y: 0.36 }, colors: ['#FFDF73','#D4AF37','#FFF9E6','#FFD700','#E63946'], gravity: 0.55, scalar: 1.05, ticks: 180, shapes: ['circle'] });
     } catch (_) {}
   }, []);
 
-  /* ── step advance ── */
+  /* ── step advance with fluid responsive debounces ── */
   const advanceToNextScene = useCallback(() => {
     if (isDismissedRef.current || isTransitioningRef.current) return;
-    resetScrollToTop();
     const cur = stepRef.current;
 
     if (cur === 0) {
       isTransitioningRef.current = true;
       stepRef.current = 1; setStep(1);
-      setTimeout(() => { isTransitioningRef.current = false; }, 2000);
+      setTimeout(() => { isTransitioningRef.current = false; }, 650);
     } else if (cur === 1) {
       isTransitioningRef.current = true;
       stepRef.current = 2; setStep(2);
       setTimeout(() => {
         if (isDismissedRef.current) return;
-        resetScrollToTop();
         stepRef.current = 3; setStep(3);
-        isTransitioningRef.current = false;
-      }, 1300);
+        setTimeout(() => { isTransitioningRef.current = false; }, 600);
+      }, 700);
     } else if (cur === 2 || cur === 3) {
       isTransitioningRef.current = true;
       stepRef.current = 4; setStep(4);
       triggerReceptionConfetti();
-      setTimeout(() => { isTransitioningRef.current = false; }, 1200);
+      setTimeout(() => { isTransitioningRef.current = false; }, 600);
     } else if (cur === 4) {
       isTransitioningRef.current = true;
       stepRef.current = 5; setStep(5);
       setContainerFading(true);
-      setTimeout(() => { unlockAndComplete(); }, 500);
+      setTimeout(() => { unlockAndComplete(); }, 350);
     }
-  }, [resetScrollToTop, triggerReceptionConfetti, unlockAndComplete]);
+  }, [triggerReceptionConfetti, unlockAndComplete]);
 
   /* ── auto-walkthrough ── */
   const playCinematicWalkthrough = useCallback(() => {
     if (isPlayingRef.current || isDismissedRef.current) { unlockAndComplete(); return; }
     isPlayingRef.current = true;
     isTransitioningRef.current = true;
-    resetScrollToTop();
 
     stepRef.current = 1; setStep(1);
     setTimeout(() => {
-      if (isDismissedRef.current) return; resetScrollToTop();
+      if (isDismissedRef.current) return;
       stepRef.current = 2; setStep(2);
       setTimeout(() => {
-        if (isDismissedRef.current) return; resetScrollToTop();
+        if (isDismissedRef.current) return;
         stepRef.current = 3; setStep(3);
         setTimeout(() => {
-          if (isDismissedRef.current) return; resetScrollToTop();
+          if (isDismissedRef.current) return;
           stepRef.current = 4; setStep(4); triggerReceptionConfetti();
           setTimeout(() => {
-            if (isDismissedRef.current) return; resetScrollToTop();
+            if (isDismissedRef.current) return;
             stepRef.current = 5; setStep(5); setContainerFading(true);
-            setTimeout(() => { unlockAndComplete(); }, 500);
-          }, 1800);
-        }, 1800);
-      }, 1300);
-    }, 2000);
-  }, [resetScrollToTop, triggerReceptionConfetti, unlockAndComplete]);
+            setTimeout(() => { unlockAndComplete(); }, 400);
+          }, 1600);
+        }, 1600);
+      }, 1200);
+    }, 1800);
+  }, [triggerReceptionConfetti, unlockAndComplete]);
 
-  /* ── scroll delta ── */
+  /* ── scroll delta (supports mouse wheel, trackpad, and touch swipe) ── */
   const handleScrollDelta = useCallback((deltaY) => {
     if (isDismissedRef.current || isTransitioningRef.current) return;
-    if (deltaY > 15) {
-      scrollAccumulatorRef.current += deltaY;
-      if (scrollAccumulatorRef.current >= 45) { scrollAccumulatorRef.current = 0; advanceToNextScene(); }
-    } else if (deltaY < -15) {
-      scrollAccumulatorRef.current += deltaY;
-      if (scrollAccumulatorRef.current <= -45) {
-        scrollAccumulatorRef.current = 0;
-        if (!isPlayingRef.current) {
-          if (stepRef.current === 4) {
-            isTransitioningRef.current = true; stepRef.current = 3; setStep(3);
-            setTimeout(() => { isTransitioningRef.current = false; }, 1200);
-          } else if (stepRef.current === 3 || stepRef.current === 2) {
-            isTransitioningRef.current = true; stepRef.current = 1; setStep(1);
-            setTimeout(() => { isTransitioningRef.current = false; }, 1300);
-          } else if (stepRef.current === 1) {
-            isTransitioningRef.current = true; stepRef.current = 0; setStep(0);
-            setTimeout(() => { isTransitioningRef.current = false; }, 2000);
-          }
+    scrollAccumulatorRef.current += deltaY;
+
+    if (scrollAccumulatorRef.current >= 38) {
+      scrollAccumulatorRef.current = 0;
+      advanceToNextScene();
+    } else if (scrollAccumulatorRef.current <= -38) {
+      scrollAccumulatorRef.current = 0;
+      if (!isPlayingRef.current) {
+        if (stepRef.current === 4) {
+          isTransitioningRef.current = true; stepRef.current = 3; setStep(3);
+          setTimeout(() => { isTransitioningRef.current = false; }, 600);
+        } else if (stepRef.current === 3 || stepRef.current === 2) {
+          isTransitioningRef.current = true; stepRef.current = 1; setStep(1);
+          setTimeout(() => { isTransitioningRef.current = false; }, 600);
+        } else if (stepRef.current === 1) {
+          isTransitioningRef.current = true; stepRef.current = 0; setStep(0);
+          setTimeout(() => { isTransitioningRef.current = false; }, 600);
         }
       }
     }
@@ -425,10 +434,19 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
 
   /* ── event listeners ── */
   useEffect(() => {
+    if (!shouldRender) {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (window.lenis && typeof window.lenis.start === 'function') window.lenis.start();
+      return;
+    }
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { unlockAndComplete(); return; }
     if (window.location.hash) window.history.replaceState(null, '', window.location.pathname);
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+    
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
     resetScrollToTop();
     if (window.lenis && typeof window.lenis.stop === 'function') {
       window.lenis.stop();
@@ -437,15 +455,14 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
 
     const onWheel = (e) => {
       if (isDismissedRef.current) return;
-      e.preventDefault(); e.stopPropagation();
-      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-      resetScrollToTop(); handleScrollDelta(e.deltaY);
+      e.preventDefault();
+      e.stopPropagation();
+      handleScrollDelta(e.deltaY);
     };
     const onTouchMove = (e) => {
       if (isDismissedRef.current) return;
-      e.preventDefault(); e.stopPropagation();
-      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-      resetScrollToTop();
+      e.preventDefault();
+      e.stopPropagation();
     };
     const onTouchStart = (e) => {
       if (isDismissedRef.current) return;
@@ -455,13 +472,13 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       if (isDismissedRef.current) return;
       if (e.changedTouches && e.changedTouches.length > 0) {
         const dy = touchStartYRef.current - e.changedTouches[0].clientY;
-        if (Math.abs(dy) > 25) handleScrollDelta(dy);
+        if (Math.abs(dy) > 20) handleScrollDelta(dy);
       }
     };
     const onKeyDown = (e) => {
       if (isDismissedRef.current) return;
       if (['ArrowDown','PageDown',' ','Enter'].includes(e.key)) { e.preventDefault(); advanceToNextScene(); }
-      else if (['ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); handleScrollDelta(-60); }
+      else if (['ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); handleScrollDelta(-50); }
       else if (e.key === 'Escape') { e.preventDefault(); unlockAndComplete(); }
     };
 
@@ -473,6 +490,12 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
     window.addEventListener('keydown',    onKeyDown,    { capture: true });
 
     return () => {
+      // Ensure body and html overflow are ALWAYS restored on unmount
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (window.lenis && typeof window.lenis.start === 'function') {
+        window.lenis.start();
+      }
       if (listenersRef.current.attached) {
         listenersRef.current.attached = false;
         window.removeEventListener('wheel',      onWheel,      { capture: true });
@@ -482,7 +505,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         window.removeEventListener('keydown',    onKeyDown,    { capture: true });
       }
     };
-  }, [handleScrollDelta, advanceToNextScene, resetScrollToTop, unlockAndComplete]);
+  }, [shouldRender, handleScrollDelta, advanceToNextScene, resetScrollToTop, unlockAndComplete]);
 
   if (!shouldRender) return null;
 

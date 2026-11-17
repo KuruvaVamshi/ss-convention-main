@@ -11,38 +11,35 @@ export default function SmoothScroll({ children }) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
-    // On touch devices (smartphones/tablets), preserve fast native inertial momentum scrolling
-    // to prevent mobile touch freezes and stuck pages
-    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-    if (isTouchDevice) {
-      return;
-    }
-
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 0.95,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
       syncTouch: false,
     });
 
     window.lenis = lenis;
 
-    // Connect Lenis to GSAP ScrollTrigger
+    // Synchronize Lenis scroll position with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
-    const tickerCallback = (time) => {
-      lenis.raf(time * 1000);
-    };
+    // Run Lenis on standard 60-120fps requestAnimationFrame loop for stutter-free scrolling
+    let rafId;
+    function raf(time) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
 
-    gsap.ticker.add(tickerCallback);
-    // Smooth frame lag during page transitions and heavy asset rendering
-    gsap.ticker.lagSmoothing(500, 33);
+    // Prevent GSAP lagSmoothing from pausing or clamping scroll velocity
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      gsap.ticker.remove(tickerCallback);
+      if (rafId) cancelAnimationFrame(rafId);
       lenis.destroy();
       window.lenis = null;
     };

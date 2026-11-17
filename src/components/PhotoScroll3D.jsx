@@ -63,7 +63,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
 
         <div className="relative" style={{ perspective: '1100px', height: cardH + 140 }}>
           <motion.div
-            className="absolute left-1/2 top-1/2"
+            className="absolute left-1/2 top-1/2 will-change-transform"
             style={{
               width: 0,
               height: 0,
@@ -71,6 +71,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
               rotateY: reduce ? 0 : rotate,
               z: Math.round(radius * 0.6),
               rotateX: reduce ? 0 : tilt,
+              willChange: 'transform',
             }}
           >
             {photos.map((p, i) => (

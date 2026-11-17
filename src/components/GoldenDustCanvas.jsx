@@ -22,15 +22,15 @@ export default function GoldenDustCanvas() {
 
     window.addEventListener('resize', handleResize);
 
-    // Particle pool
-    const particleCount = Math.min(width < 768 ? 20 : 45, 50);
+    // Lightweight particle pool for ambient elegance without GPU frame drops
+    const particleCount = width < 768 ? 12 : 24;
     const particles = Array.from({ length: particleCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 2 + 0.6,
-      speedY: -(Math.random() * 0.35 + 0.12),
-      speedX: (Math.random() - 0.5) * 0.25,
-      opacity: Math.random() * 0.5 + 0.2,
+      size: Math.random() * 1.8 + 0.6,
+      speedY: -(Math.random() * 0.3 + 0.1),
+      speedX: (Math.random() - 0.5) * 0.2,
+      opacity: Math.random() * 0.45 + 0.2,
       pulseSpeed: Math.random() * 0.02 + 0.008,
       pulse: Math.random() * Math.PI,
     }));
@@ -45,7 +45,7 @@ export default function GoldenDustCanvas() {
     observer.observe(canvas);
 
     const render = () => {
-      if (!isVisible) {
+      if (!isVisible || document.hidden) {
         animationFrameId = requestAnimationFrame(render);
         return;
       }

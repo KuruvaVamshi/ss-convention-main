@@ -13,8 +13,9 @@ export default function ScrollToTop() {
       window.history.scrollRestoration = 'manual';
     }
 
-    // 1. Clear any stuck body overflow locks from previous routes
+    // 1. Clear any stuck body / html overflow locks from previous routes
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 
     // 2. Standard native scroll reset
     window.scrollTo({
