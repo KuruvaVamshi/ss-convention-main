@@ -445,7 +445,7 @@ const HALL_META = {
         caption: 'High-gloss Italian vitrified reflections and Om mural'
       },
       {
-        src: '/assets/07_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg',
+        src: '/assets/06_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg',
         title: 'Lotus Stage Setup',
         caption: 'Auspicious Lotus Stage Backdrop & Central Crystal Chandelier'
       },

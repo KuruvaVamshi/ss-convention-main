@@ -47,12 +47,12 @@ export const spacesData = [
         category: "Stage Architecture"
       },
       {
-        src: "/assets/07_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg",
+        src: "/assets/06_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg",
         title: "Auspicious Lotus Stage Backdrop & Central Crystal Chandelier",
         category: "Stage Backdrop"
       },
       {
-        src: "/assets/07_main_hall_seating/main_hall_seating_front_vip_sofas_overview_05.jpeg",
+        src: "/assets/06_main_hall_seating/main_hall_seating_front_vip_sofas_overview_05.jpeg",
         title: "Front Row Sovereign Gold VIP Sofas with Unobstructed Sightlines",
         category: "VIP Seating"
       },
@@ -62,12 +62,12 @@ export const spacesData = [
         category: "Bridal Aisle"
       },
       {
-        src: "/assets/07_main_hall_seating/main_hall_seating_chandelier_close_02.jpeg",
+        src: "/assets/06_main_hall_seating/main_hall_seating_chandelier_close_02.jpeg",
         title: "Double-Tier Golden Crystal Chandelier Architectural Perspective",
         category: "Lighting & Ceiling"
       },
       {
-        src: "/assets/07_main_hall_seating/main_hall_seating_entrance_portal_wide_04.jpeg",
+        src: "/assets/06_main_hall_seating/main_hall_seating_entrance_portal_wide_04.jpeg",
         title: "Grand Double Door Foyer Portal Entering Hall Vasishta",
         category: "Entrance Portal"
       },
@@ -406,7 +406,7 @@ export const spacesData = [
         category: "Dining Hall"
       },
       {
-        src: "/assets/08_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg",
+        src: "/assets/07_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg",
         title: "Stainless Steel Commercial Buffet Counter with Chafing Dishes & Italian Marble Wall",
         category: "Buffet Setup"
       },

@@ -461,7 +461,7 @@ export const galleryItems = [
     title: "Swarna Bhojanam – Stainless Steel Chafing Buffet Counter & Italian Marble Wall",
     category: "hall",
     categoryLabel: "Dining Floor",
-    image: "/assets/08_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg",
+    image: "/assets/07_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg",
     featured: true
   },
   {

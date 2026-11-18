@@ -90,7 +90,7 @@ const facilitiesList = [
     icon: ArrowUpCircle,
     badge: "All Floors Connected",
     highlights: ["Senior citizen friendly", "Wide cabin for family transit", "Smooth automatic leveling"],
-    image: "/assets/03_reception/reception_lift_1_floor_directory_23.jpeg",
+    image: "/assets/facilities/06_Passenger_Elevator.png",
     imageAlt: "Commercial High-Speed Passenger Elevator with Floor Directory at S.S. Convention"
   },
   {
