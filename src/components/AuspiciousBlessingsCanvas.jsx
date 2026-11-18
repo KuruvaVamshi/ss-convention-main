@@ -8,10 +8,14 @@ export default function AuspiciousBlessingsCanvas() {
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const rafId = useRef(null);
   const startLoop = useRef(() => {});
+  const handleMouseMoveRef = useRef(() => {});
 
   // Trigger burst of 45 auspicious petals and golden coins
   const triggerBlessings = () => {
+    // Decorative only — skip entirely for visitors who prefer reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     setIsActive(true);
+    window.addEventListener('mousemove', handleMouseMoveRef.current, { passive: true });
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -54,7 +58,8 @@ export default function AuspiciousBlessingsCanvas() {
     };
 
     window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
+    // mouse tracking is attached only while petals are on screen (see triggerBlessings / animate)
+    handleMouseMoveRef.current = handleMouseMove;
 
     // Animation loop with physics (gravity, air drift, mouse deflection)
     const animate = () => {
@@ -72,7 +77,7 @@ export default function AuspiciousBlessingsCanvas() {
         // Mouse deflection
         const dx = p.x - mouseRef.current.x;
         const dy = p.y - mouseRef.current.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
         if (dist < 100) {
           const force = (100 - dist) / 100;
           p.vx += (dx / dist) * force * 1.5;
@@ -122,6 +127,7 @@ export default function AuspiciousBlessingsCanvas() {
 
       if (particlesRef.current.length === 0) {
         setIsActive(false);
+        window.removeEventListener('mousemove', handleMouseMove);
         rafId.current = null;
         return;
       }

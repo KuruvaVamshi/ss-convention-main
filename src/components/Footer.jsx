@@ -115,10 +115,16 @@ export default function Footer({ lang }) {
               DIRECT INQUIRIES
             </h4>
             <div className="space-y-2.5 text-xs text-amber-100/90 font-normal">
-              <p className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
-                <span>Raghavendra Nagar Colony, Jillelaguda, Meerpet, Hyderabad - 500097</span>
-              </p>
+              <a
+                href={venueData.googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 group hover:text-amber-300 transition-colors"
+                title="Open S.S. Convention on Google Maps"
+              >
+                <MapPin className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                <span className="group-hover:underline">Raghavendra Nagar Colony, Jillelaguda, Meerpet, Hyderabad - 500097</span>
+              </a>
               <p className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-amber-300 flex-shrink-0" />
                 <a href={`tel:${venueData.phones[0].raw}`} className="font-bold text-white hover:text-amber-200 hover:underline">

@@ -1,4 +1,5 @@
 import React from 'react';
+import ImageReveal from './ImageReveal';
 import { Award, HeartHandshake, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
 import { venueData } from '../data/venueData';
 
@@ -15,11 +16,14 @@ export default function AboutSection({ lang }) {
             <div className="relative mx-auto max-w-lg lg:max-w-none">
               {/* Main Visual: Lobby Buddha Water Fountain */}
               <div className="relative rounded-3xl overflow-hidden border border-gold-500/30 shadow-2xl group">
+                <ImageReveal>
                 <img
                   src="/assets/05_reception_and_lobby/lobby_buddha_water_fountain_feature.jpeg"
                   alt="SS Convention Lobby Waterfall and Buddha"
+                  loading="lazy"
                   className="w-full h-[400px] sm:h-[480px] object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+                </ImageReveal>
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/80 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-obsidian-900/90 backdrop-blur-md border border-gold-500/20">
                   <p className="text-xs text-gold-400 font-semibold uppercase tracking-wider mb-0.5">

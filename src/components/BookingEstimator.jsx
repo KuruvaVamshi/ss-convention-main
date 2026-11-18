@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, Users, Clock, Utensils, Send, Phone, Sparkles, CheckCircle2 } from 'lucide-react';
 import { venueData } from '../data/venueData';
+import AnimatedNumber from './AnimatedNumber';
 
 export default function BookingEstimator({ lang }) {
   const [eventType, setEventType] = useState('Wedding / Reception');
@@ -160,7 +161,7 @@ export default function BookingEstimator({ lang }) {
                   <span>Estimated Guest Count:</span>
                 </label>
                 <span className="font-cinzel text-lg font-bold text-gold-400">
-                  {guestCount} Guests
+                  <AnimatedNumber value={guestCount} duration={0.35} /> Guests
                 </span>
               </div>
               <input

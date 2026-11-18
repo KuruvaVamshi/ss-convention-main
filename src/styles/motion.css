@@ -1,0 +1,68 @@
+/* ───────────────────────────────────────────────────────────────
+   S.S. Convention — shared motion layer
+   Rules: transform/opacity only, one easing family, reduced-motion safe.
+   ─────────────────────────────────────────────────────────────── */
+:root {
+  --ss-ease: cubic-bezier(0.16, 1, 0.3, 1);        /* matches tailwind "luxury" */
+  --ss-ease-settle: cubic-bezier(0.25, 1, 0.5, 1);  /* matches "luxury-settle"  */
+}
+
+/* Gold shimmer sweep — opt-in. Put <span class="ss-shimmer-sweep" aria-hidden="true"/>
+   inside a relatively-positioned button/link (add class "ss-shimmer" to the parent). */
+.ss-shimmer { position: relative; overflow: hidden; isolation: isolate; }
+.ss-shimmer-sweep {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 248, 231, 0.55) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: ss-shimmer 5.5s var(--ss-ease-settle) 2s infinite;
+}
+@keyframes ss-shimmer {
+  0%   { transform: translateX(-120%); }
+  22%  { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
+}
+
+/* Nav: underline that slides in on hover (inactive links only) */
+.ss-navlink { position: relative; }
+.ss-navlink::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: linear-gradient(90deg, #d4af37, #eed9a6);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 420ms var(--ss-ease);
+}
+.ss-navlink:hover::after, .ss-navlink:focus-visible::after { transform: scaleX(1); }
+
+/* Floating contact bar: slide up + fade when it appears */
+.ss-float { transition: transform 520ms var(--ss-ease), opacity 360ms ease; }
+.ss-float[data-hidden='true'] { transform: translateY(24px); opacity: 0; pointer-events: none; }
+/* One gentle ring pulse on WhatsApp, every ~7s */
+.ss-ring { position: relative; }
+.ss-ring::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  border: 2px solid rgba(37, 211, 102, 0.65);
+  opacity: 0; animation: ss-ring 7s ease-out 3s infinite;
+}
+@keyframes ss-ring {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  14%  { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* Skip-intro button focus ring */
+.ss-skip:focus-visible { outline: 2px solid #eed9a6; outline-offset: 3px; }
+
+/* ── Reduced motion: collapse CSS animation/transition globally ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ss-shimmer-sweep, .ss-ring::after { display: none; }
+}
+
+/* ── Touch devices: no hover-only motion ── */
+@media (hover: none) {
+  .ss-navlink::after { display: none; }
+}

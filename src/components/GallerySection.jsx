@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { galleryItems } from '../data/galleryData';
 import { Camera, Maximize2 } from 'lucide-react';
+import Reveal from './Reveal';
 
 export default function GallerySection({ onOpenLightbox, lang }) {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -54,9 +55,9 @@ export default function GallerySection({ onOpenLightbox, lang }) {
 
         {/* Masonry / Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredImages.map((item) => (
+          {filteredImages.map((item, idx) => (
+            <Reveal key={item.id} delay={(idx % 3) * 0.08}>
             <div
-              key={item.id}
               onClick={() => onOpenLightbox(item.image, item.title)}
               className="group relative rounded-[28px] overflow-hidden border-2 border-[#D4AF37]/40 bg-[#350710] shadow-xl cursor-pointer transition-all duration-300 hover:border-amber-400 hover:shadow-2xl"
             >
@@ -87,6 +88,7 @@ export default function GallerySection({ onOpenLightbox, lang }) {
                 </p>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>

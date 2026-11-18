@@ -1,5 +1,7 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
+import './styles/motion.css';
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
 import GoldenDustCanvas from './components/GoldenDustCanvas';
@@ -49,6 +51,7 @@ export default function App() {
   const current = lightbox.items[lightbox.index];
 
   return (
+    <MotionConfig reducedMotion="user">
     <BrowserRouter>
       {/* Lenis + GSAP Smooth Virtual Momentum Scrolling */}
       <SmoothScroll>
@@ -159,5 +162,6 @@ export default function App() {
       </div>
       </SmoothScroll>
     </BrowserRouter>
+    </MotionConfig>
   );
 }

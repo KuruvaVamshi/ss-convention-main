@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   Menu,
   X,
@@ -247,7 +248,7 @@ export default function Navbar({ lang, setLang }) {
                 onClick={handleHomeClick}
                 className={({ isActive }) =>
                   `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
-                    isActive ? 'text-amber-300' : 'text-amber-100/80 hover:text-white'
+                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
@@ -255,7 +256,7 @@ export default function Navbar({ lang, setLang }) {
                   <>
                     <span>{lang === 'te' ? 'హోమ్' : 'HOME'}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -271,7 +272,7 @@ export default function Navbar({ lang, setLang }) {
                   type="button"
                   onClick={() => setDesktopDropdown(desktopDropdown === 'venue' ? null : 'venue')}
                   className={`font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 flex items-center gap-1.5 uppercase cursor-pointer ${
-                    isVenueActive ? 'text-amber-300' : 'text-amber-100/80 hover:text-white'
+                    isVenueActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`}
                   aria-haspopup="true"
                   aria-expanded={desktopDropdown === 'venue'}
@@ -283,7 +284,7 @@ export default function Navbar({ lang, setLang }) {
                     }`}
                   />
                   {isVenueActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                    <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                   )}
                 </button>
 
@@ -350,7 +351,7 @@ export default function Navbar({ lang, setLang }) {
                 to="/gallery"
                 className={({ isActive }) =>
                   `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
-                    isActive ? 'text-amber-300' : 'text-amber-100/80 hover:text-white'
+                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
@@ -358,7 +359,7 @@ export default function Navbar({ lang, setLang }) {
                   <>
                     <span>{lang === 'te' ? 'గ్యాలరీ' : 'GALLERY'}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -369,7 +370,7 @@ export default function Navbar({ lang, setLang }) {
                 to="/dining"
                 className={({ isActive }) =>
                   `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
-                    isActive ? 'text-amber-300' : 'text-amber-100/80 hover:text-white'
+                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
@@ -377,7 +378,7 @@ export default function Navbar({ lang, setLang }) {
                   <>
                     <span>{lang === 'te' ? 'క్యాటరింగ్ & డైనింగ్' : 'DINING'}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -388,7 +389,7 @@ export default function Navbar({ lang, setLang }) {
                 to="/contact"
                 className={({ isActive }) =>
                   `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
-                    isActive ? 'text-amber-300' : 'text-amber-100/80 hover:text-white'
+                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
@@ -396,7 +397,7 @@ export default function Navbar({ lang, setLang }) {
                   <>
                     <span>{lang === 'te' ? 'సంప్రదించండి' : 'CONTACT'}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}

@@ -169,7 +169,7 @@ export default function ContactLocationSection({ lang }) {
                   <span>Get Directions</span>
                 </a>
                 <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(venueData.address.full)}`}
+                  href={venueData.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-xl bg-black/50 border border-[#D4AF37]/40 text-amber-200 text-[11px] font-bold tracking-wide flex items-center gap-1.5 hover:text-white transition-colors"
@@ -184,11 +184,11 @@ export default function ContactLocationSection({ lang }) {
             <div className="relative flex-1 min-h-[380px] bg-[#22040A]">
               <iframe
                 title="SS Convention Hall Meerpet Map Location"
-                src="https://maps.google.com/maps?q=17.3323,78.5273+(SS+Convention+Hall+Meerpet)&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                src={venueData.googleMapsEmbedUrl}
                 className="w-full h-full min-h-[380px] border-0"
                 allowFullScreen=""
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
             </div>
 

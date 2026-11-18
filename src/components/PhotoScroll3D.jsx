@@ -42,7 +42,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
   const cardH = Math.round(cardW * 1.3);
 
   return (
-    <section ref={ref} className={`relative bg-[#2A060E] border-t border-[#D4AF37]/25 ${reduce ? '' : 'h-[320vh]'}`}>
+    <section ref={ref} className={`relative bg-[#2A060E] border-t border-[#D4AF37]/25 ${reduce ? '' : 'h-[210vh] sm:h-[260vh] lg:h-[320vh]'}`}>
       <div className={`${reduce ? 'py-20' : 'sticky top-0 h-screen'} overflow-hidden flex flex-col justify-center`}>
         <div className="px-4 pt-16 sm:pt-12 text-center">
           <SectionHeader compact eyebrow="Moments of Grandeur" title="Walk Through the Palace">

@@ -7,6 +7,7 @@ import SEO from '../components/SEO';
 import { venueData } from '../data/venueData';
 import Reveal from '../components/Reveal';
 import SectionHeader from '../components/SectionHeader';
+import GoogleReviewsMapSection from '../components/GoogleReviewsMapSection';
 
 const eventTypes = [
   'Wedding / Muhurtham',
@@ -269,37 +270,8 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map */}
-      <section id="contact" className="py-16 sm:py-24 bg-[#350710] border-b border-[#D4AF37]/25">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Visit our venue" title="Centrally Located in Meerpet">
-            Smooth 60-ft connecting roads, on-premises parking and an illuminated grand entrance. Landmark: Raghavendra Nagar Colony, Jillelaguda.
-          </SectionHeader>
-          <Reveal>
-            <div className="rounded-2xl overflow-hidden border border-[#D4AF37]/35 shadow-2xl bg-[#22040A]">
-              <iframe
-                title="SS Convention Hall Meerpet map location"
-                src="https://maps.google.com/maps?q=17.3323,78.5273+(SS+Convention+Hall+Meerpet)&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                className="w-full h-[380px] sm:h-[460px] border-0"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              <div className="px-5 py-3 border-t border-[#D4AF37]/30 bg-[#24050B] flex flex-wrap items-center justify-between gap-3 text-sm text-mocha">
-                <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-amber-300" /> Near Karmanghat & LB Nagar Ring Road</span>
-                <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(venueData.address.full)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-amber-300 hover:text-latte transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" /> Open in Maps
-                </a>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* Google Reviews & Real-Time Map */}
+      <GoogleReviewsMapSection />
 
       {/* Travel times */}
       <section className="py-16 sm:py-24 bg-[#3D0A14]">

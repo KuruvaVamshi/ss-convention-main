@@ -139,6 +139,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
   // Start regular 5-second interval ONLY after entrance finishes and homepage carousel becomes visible
   useEffect(() => {
     if (!entranceDone || !isAutoPlayActive) return;
+    // Auto-rotating slides are motion the visitor didn't ask for
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const interval = setInterval(() => {
       setActiveSlideIdx((prev) => (prev + 1) % banquetShowcaseOptions.length);
@@ -518,7 +520,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
           </ul>
 
           <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-            <Link to="/contact" className="btn-gold">
+            <Link to="/contact" className="btn-gold ss-shimmer">
+              <span className="ss-shimmer-sweep" aria-hidden="true" />
               <CalendarCheck className="w-4 h-4" />
               <span>{lang === 'te' ? 'హాల్ విజిట్ బుక్ చేయండి' : 'Book a hall visit'}</span>
               <ArrowRight className="w-3.5 h-3.5" />

@@ -507,6 +507,17 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
     };
   }, [shouldRender, handleScrollDelta, advanceToNextScene, resetScrollToTop, unlockAndComplete]);
 
+  /* ── idle nudge: visitors who never scroll shouldn't be stuck on scene 0 ── */
+  useEffect(() => {
+    if (!shouldRender) return;
+    const t = setTimeout(() => {
+      if (!isDismissedRef.current && !isPlayingRef.current && stepRef.current === 0) {
+        playCinematicWalkthrough();
+      }
+    }, 9000);
+    return () => clearTimeout(t);
+  }, [shouldRender, playCinematicWalkthrough]);
+
   if (!shouldRender) return null;
 
   const entranceDoorsOpen = step >= 2;
@@ -673,6 +684,24 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
           </span>
         </div>
 
+        <div className="flex items-center gap-2 sm:gap-3">
+        {/* Skip intro — always visible so nobody is held behind the animation */}
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); unlockAndComplete(); }}
+          aria-label="Skip intro"
+          className="ss-skip font-cinzel font-bold uppercase tracking-[0.2em] cursor-pointer"
+          style={{
+            fontSize: 'clamp(0.5rem, 1.3vw, 0.66rem)',
+            color: 'rgba(238,217,166,0.8)',
+            padding: '10px 8px',
+            background: 'transparent',
+            textShadow: '0 1px 8px rgba(0,0,0,0.9)',
+          }}
+        >
+          {lang === 'te' ? 'దాటవేయండి' : 'Skip intro'}
+        </button>
+
         {/* Enter Venue button right */}
         <button
           type="button"
@@ -708,6 +737,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
             style={{ color: '#D4AF37' }}
           />
         </button>
+        </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════════
