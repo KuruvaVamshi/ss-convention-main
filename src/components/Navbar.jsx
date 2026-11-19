@@ -211,7 +211,7 @@ export default function Navbar({ lang, setLang }) {
         } ${
           scrolled || mobileMenuOpen
             ? 'bg-[#120104]/96 backdrop-blur-md border-b border-[#D4AF37]/35 shadow-[0_8px_30px_rgba(0,0,0,0.85)]'
-            : 'bg-gradient-to-b from-black/90 via-black/50 to-transparent backdrop-blur-[3px] border-b border-[#D4AF37]/20'
+            : 'bg-gradient-to-b from-black/55 via-black/20 to-transparent border-b border-[#D4AF37]/15'
         }`}
       >
         <div ref={navContainerRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">

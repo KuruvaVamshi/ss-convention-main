@@ -15,6 +15,16 @@ import { ArrowRight, ChevronDown } from 'lucide-react';
  *   5  Dissolve → Homepage Carousel (index 0)
  */
 
+/* Headline animation style: 'rise' (words slide up from a mask) or 'curtain' (line wiped open L→R) */
+const CAPTION_VARIANT = 'rise';
+
+/* Lobby → reception light-wipe */
+const WIPE_MS = 1250;
+/* Reception → website golden iris */
+const IRIS_MS = 1200;
+const IRIS_EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
+const WIPE_EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
+
 const IMAGES = {
   exteriorDesktop: '/assets/entrance/Illuminated Ganesha Convention Hall at Night.png',
   exteriorMobile:  '/assets/entrance/exterior_mobile_portrait.png',
@@ -34,7 +44,7 @@ const IMAGES = {
    · subtext : Plus Jakarta Sans, delayed fade-up
    · thin decorative rule below
    ───────────────────────────────────────────────────────────────────────────── */
-function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay = 200, position = 'bottom' }) {
+function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay = 250, position = 'bottom', variant = CAPTION_VARIANT }) {
   const words = typeof headline === 'string' && headline ? headline.split(' ') : [];
   const totalWords = words.length;
 
@@ -42,6 +52,16 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
   const posClass = position === 'top'
     ? 'top-14 sm:top-16 md:top-20'
     : 'bottom-10 sm:bottom-14 md:bottom-16';
+
+  /* ── timing ──────────────────────────────────────────────────────────
+     ENTER: starts `delay` ms after the scene changes, runs ~1s in total.
+     EXIT : starts immediately (no delay) and takes ~220ms, so a caption never
+            lingers over the next scene's image.
+     Using the same easing family everywhere (luxury). */
+  const EASE = 'cubic-bezier(0.16,1,0.3,1)';
+  const WORD_STAGGER = 55;
+  const wordsStart = delay + 80;
+  const wordsEnd = wordsStart + totalWords * WORD_STAGGER;
 
   return (
     <div
@@ -55,10 +75,11 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
         style={{
           opacity: isActive ? 1 : 0,
           transform: isActive ? 'translateX(0)' : 'translateX(-18px)',
-          transition: `opacity 600ms ease-out ${delay}ms, transform 700ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+          transition: isActive
+            ? `opacity 500ms ease-out ${delay}ms, transform 700ms ${EASE} ${delay}ms`
+            : 'opacity 220ms ease-in 0ms, transform 0s linear 240ms',
         }}
       >
-        {/* Badge */}
         <span
           className="font-cinzel text-[9px] sm:text-[10px] tracking-[0.35em] uppercase"
           style={{
@@ -66,7 +87,7 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
             border: '1px solid rgba(212,175,55,0.5)',
             padding: '3px 10px',
             borderRadius: '99px',
-            background: 'rgba(0,0,0,0.45)',
+            background: 'rgba(0,0,0,0.35)',
             backdropFilter: 'blur(6px)',
             WebkitBackdropFilter: 'blur(6px)',
             letterSpacing: '0.35em',
@@ -74,35 +95,40 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
         >
           {String(sceneNum).padStart(2, '0')}
         </span>
-        {/* Line */}
         <div
           style={{
             height: '1px',
             width: isActive ? '64px' : '0px',
             background: 'linear-gradient(90deg, #D4AF37, transparent)',
-            transition: `width 700ms cubic-bezier(0.16,1,0.3,1) ${delay + 120}ms`,
+            transition: isActive ? `width 700ms ${EASE} ${delay + 120}ms` : 'width 0s linear 240ms',
           }}
         />
-        {/* Venue name tiny label */}
         <span
           className="font-cinzel text-[8px] sm:text-[9px] tracking-[0.3em] uppercase"
-          style={{ color: 'rgba(212,175,55,0.65)' }}
+          style={{ color: 'rgba(212,175,55,0.75)', textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}
         >
           S.S. Convention
         </span>
       </div>
 
-      {/* ── Headline: word-by-word lift with gold gradient ── */}
-      {/*
-          RENDERING NOTE:
-          filter + WebkitTextFillColor:transparent on the SAME element causes invisible text
-          in Chrome. Fix: wrap the gradient-clipped inner span in a drop-shadow wrapper div.
-      */}
+      {/* ── Headline ──
+          'rise'    : every word slides up out of an invisible mask (clean editorial line reveal)
+          'curtain' : the whole line is wiped open from left to right with a soft gold edge
+          RENDERING NOTE: filter + WebkitTextFillColor:transparent on the SAME element makes
+          text invisible in Chrome, so drop-shadow lives on the wrapper, never on the gradient span. */}
       <h2
-        className="font-cinzel font-black leading-[1.12] tracking-[0.015em]"
+        className="font-cinzel font-black leading-[1.14] tracking-[0.015em]"
         style={{
           fontSize: 'clamp(1.65rem, 5vw, 3.75rem)',
           maxWidth: '880px',
+          ...(variant === 'curtain'
+            ? {
+                clipPath: isActive ? 'inset(-0.2em -0.2em -0.3em 0%)' : 'inset(-0.2em 100% -0.3em 0%)',
+                transition: isActive
+                  ? `clip-path 1100ms ${EASE} ${wordsStart}ms`
+                  : 'clip-path 0s linear 240ms',
+              }
+            : null),
         }}
       >
         {words.map((word, i) => (
@@ -111,24 +137,30 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
             className="inline-block align-top"
             style={{
               marginRight: '0.22em',
-              paddingBottom: '0.12em',
-              overflow: 'visible',
-              /* drop-shadow on this wrapper — NOT on the transparent-fill span */
-              filter: 'drop-shadow(0 2px 18px rgba(0,0,0,0.95))',
+              /* generous padding so tall Telugu marks / descenders are never clipped by the mask */
+              padding: variant === 'curtain' ? 0 : '0.2em 0.05em 0.3em',
+              margin: variant === 'curtain' ? '0 0.22em 0 0' : '-0.2em 0.17em -0.3em -0.05em',
+              overflow: variant === 'curtain' ? 'visible' : 'hidden',
+              filter: 'drop-shadow(0 2px 14px rgba(0,0,0,0.75))',
             }}
           >
             <span
               className="inline-block will-change-transform"
               style={{
-                background: 'linear-gradient(160deg, #FFFDF5 0%, #F6E8C4 45%, #C8952A 100%)',
+                background: 'linear-gradient(160deg, #FFFDF5 0%, #F6E8C4 45%, #E0B04A 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                /* NO filter here — it makes gradient-clipped text invisible in Chrome */
-                transform: isActive ? 'translateY(0)' : 'translateY(105%)',
-                opacity: isActive ? 1 : 0,
                 display: 'inline-block',
-                transition: `transform 820ms cubic-bezier(0.16,1,0.3,1) ${delay + 180 + i * 65}ms, opacity 520ms ease ${delay + 180 + i * 65}ms`,
+                ...(variant === 'curtain'
+                  ? { opacity: 1, transform: 'none' }
+                  : {
+                      transform: isActive ? 'translateY(0)' : 'translateY(115%)',
+                      opacity: isActive ? 1 : 0,
+                      transition: isActive
+                        ? `transform 850ms ${EASE} ${wordsStart + i * WORD_STAGGER}ms, opacity 450ms ease-out ${wordsStart + i * WORD_STAGGER}ms`
+                        : 'opacity 220ms ease-in 0ms, transform 0s linear 240ms',
+                    }),
               }}
             >
               {word}
@@ -145,7 +177,7 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
           background: 'linear-gradient(90deg, #D4AF37 0%, rgba(212,175,55,0.2) 100%)',
           marginTop: '16px',
           marginBottom: '14px',
-          transition: `width 800ms cubic-bezier(0.16,1,0.3,1) ${delay + 180 + totalWords * 65 + 80}ms`,
+          transition: isActive ? `width 800ms ${EASE} ${wordsEnd + 60}ms` : 'width 0s linear 240ms',
         }}
       />
 
@@ -155,13 +187,15 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
         style={{
           fontSize: 'clamp(0.6rem, 1.4vw, 0.78rem)',
           letterSpacing: '0.22em',
-          color: 'rgba(234,216,178,0.88)',
+          color: 'rgba(240,226,190,0.95)',
           maxWidth: '520px',
           lineHeight: 1.75,
-          textShadow: '0 2px 12px rgba(0,0,0,0.95)',
-          opacity: isActive ? 0.9 : 0,
+          textShadow: '0 2px 10px rgba(0,0,0,0.85)',
+          opacity: isActive ? 0.95 : 0,
           transform: isActive ? 'translateY(0)' : 'translateY(10px)',
-          transition: `opacity 700ms ease ${delay + 180 + totalWords * 65 + 200}ms, transform 700ms cubic-bezier(0.16,1,0.3,1) ${delay + 180 + totalWords * 65 + 200}ms`,
+          transition: isActive
+            ? `opacity 600ms ease-out ${wordsEnd + 120}ms, transform 700ms ${EASE} ${wordsEnd + 120}ms`
+            : 'opacity 220ms ease-in 0ms, transform 0s linear 240ms',
         }}
       >
         {subtext}
@@ -191,8 +225,7 @@ function DoorPanel({ side, imageSrc, alt, isOpen }) {
       }}
     >
       <div className={`absolute top-0 ${isLeft ? 'left-0' : 'right-0'} w-screen h-full pointer-events-none will-change-transform`}>
-        <img src={imageSrc} alt={alt} className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.96) contrast(1.04)' }} />
-        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+        <img src={imageSrc} alt={alt} className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.03)' }} />
       </div>
       <div
         className={`absolute inset-0 pointer-events-none ${isLeft ? 'bg-gradient-to-r from-transparent via-transparent to-black/85' : 'bg-gradient-to-l from-transparent via-transparent to-black/85'}`}
@@ -215,7 +248,7 @@ function Vignette() {
       aria-hidden="true"
       className="absolute inset-0 pointer-events-none z-[45]"
       style={{
-        background: 'radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.72) 100%)',
+        background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.22) 100%)',
       }}
     />
   );
@@ -244,6 +277,63 @@ function SceneDots({ step }) {
         />
       ))}
     </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   GOLD MOTES — a few slow-drifting specks of golden light (CSS only, transform/opacity).
+   Visible only during the lobby + reception scenes so the stationary shots feel alive.
+   ───────────────────────────────────────────────────────────────────────────── */
+const MOTE_SEED = Array.from({ length: 18 }, (_, i) => {
+  // deterministic pseudo-random so the layout is stable between renders
+  const r = (n) => { const x = Math.sin((i + 1) * 12.9898 + n * 78.233) * 43758.5453; return x - Math.floor(x); };
+  return { left: 4 + r(1) * 92, bottom: -4 + r(2) * 70, size: 2 + r(3) * 3.2, dur: 6 + r(4) * 6, delay: -r(5) * 8, drift: (r(6) - 0.5) * 60, rise: 90 + r(7) * 160 };
+});
+
+function GoldMotes({ active, count = 18 }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 z-[44] pointer-events-none overflow-hidden"
+      style={{ opacity: active ? 1 : 0, transition: 'opacity 900ms ease-out' }}
+    >
+      {MOTE_SEED.slice(0, count).map((m, i) => (
+        <span
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            left: `${m.left}%`,
+            bottom: `${m.bottom}%`,
+            width: m.size,
+            height: m.size,
+            background: 'radial-gradient(circle, #FFF3C4 0%, rgba(238,217,166,0.85) 45%, rgba(212,175,55,0) 72%)',
+            boxShadow: '0 0 8px 2px rgba(238,217,166,0.35)',
+            opacity: 0,
+            animation: `ss-mote ${m.dur}s ease-in-out ${m.delay}s infinite`,
+            ['--dx']: `${m.drift}px`,
+            ['--dy']: `-${m.rise}px`,
+            willChange: 'transform, opacity',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* Warm light that blooms over the chandeliers / lamps once a scene lands */
+function WarmBloom({ active, x = '50%', y = '30%', delay = 350 }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        mixBlendMode: 'screen',
+        background: `radial-gradient(ellipse 62% 48% at ${x} ${y}, rgba(255,210,130,0.34) 0%, rgba(255,190,100,0.12) 45%, transparent 72%)`,
+        opacity: active ? 1 : 0,
+        transition: `opacity 1600ms ease-out ${active ? delay : 0}ms`,
+        animation: active ? 'ss-bloom 4.5s ease-in-out infinite alternate' : 'none',
+      }}
+    />
   );
 }
 
@@ -346,9 +436,9 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
 
   /* ── confetti ── */
   const triggerReceptionConfetti = useCallback(() => {
-    try {
-      confetti({ particleCount: 50, spread: 100, origin: { y: 0.36 }, colors: ['#FFDF73','#D4AF37','#FFF9E6','#FFD700','#E63946'], gravity: 0.55, scalar: 1.05, ticks: 180, shapes: ['circle'] });
-    } catch (_) {}
+    setTimeout(() => { try {
+      confetti({ particleCount: 50, spread: 100, origin: { y: 0.36 }, colors: ['#FFDF73','#D4AF37','#FFF9E6','#FFD700','#E63946'], gravity: 0.55, scalar: 1.05, ticks: 180, shapes: ['circle'], zIndex: 100000 });
+    } catch (_) {} }, 450);
   }, []);
 
   /* ── step advance with fluid responsive debounces ── */
@@ -372,12 +462,12 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       isTransitioningRef.current = true;
       stepRef.current = 4; setStep(4);
       triggerReceptionConfetti();
-      setTimeout(() => { isTransitioningRef.current = false; }, 600);
+      setTimeout(() => { isTransitioningRef.current = false; }, WIPE_MS + 150);
     } else if (cur === 4) {
       isTransitioningRef.current = true;
       stepRef.current = 5; setStep(5);
       setContainerFading(true);
-      setTimeout(() => { unlockAndComplete(); }, 350);
+      setTimeout(() => { unlockAndComplete(); }, IRIS_MS + 60);
     }
   }, [triggerReceptionConfetti, unlockAndComplete]);
 
@@ -400,11 +490,11 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
           setTimeout(() => {
             if (isDismissedRef.current) return;
             stepRef.current = 5; setStep(5); setContainerFading(true);
-            setTimeout(() => { unlockAndComplete(); }, 400);
-          }, 1600);
-        }, 1600);
-      }, 1200);
-    }, 1800);
+            setTimeout(() => { unlockAndComplete(); }, IRIS_MS + 60);
+          }, 3400);   // scene 4 (reception) hold
+        }, 3200);     // scene 3 (lobby) hold
+      }, 1300);       // doors swing open
+    }, 3400);         // scene 2 (entrance) hold — headline needs ~2s on screen
   }, [triggerReceptionConfetti, unlockAndComplete]);
 
   /* ── scroll delta (supports mouse wheel, trackpad, and touch swipe) ── */
@@ -507,20 +597,11 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
     };
   }, [shouldRender, handleScrollDelta, advanceToNextScene, resetScrollToTop, unlockAndComplete]);
 
-  /* ── idle nudge: visitors who never scroll shouldn't be stuck on scene 0 ── */
-  useEffect(() => {
-    if (!shouldRender) return;
-    const t = setTimeout(() => {
-      if (!isDismissedRef.current && !isPlayingRef.current && stepRef.current === 0) {
-        playCinematicWalkthrough();
-      }
-    }, 9000);
-    return () => clearTimeout(t);
-  }, [shouldRender, playCinematicWalkthrough]);
-
   if (!shouldRender) return null;
 
   const entranceDoorsOpen = step >= 2;
+  // ring diameter = 2 × 75% of the clip-path reference length, so ring and iris edge close together
+  const irisRing = Math.round(1.5 * Math.hypot(window.innerWidth, window.innerHeight) / Math.SQRT2);
 
   /* ─────────────────────────── RENDER ─────────────────────────── */
   return (
@@ -529,8 +610,40 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
       aria-label="S.S. Convention Grand Cinematic Walkthrough"
       onClick={advanceToNextScene}
       onTouchMove={(e) => { e.preventDefault(); e.stopPropagation(); }}
-      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer bg-[#060106] transition-opacity duration-500 ease-out ${containerFading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+      className={`fixed inset-0 z-[99999] overflow-hidden select-none cursor-pointer bg-[#060106] ${containerFading ? 'pointer-events-none' : ''}`}
+      style={{
+        /* golden iris: the intro closes toward the centre, revealing the website underneath */
+        clipPath: containerFading ? 'circle(0% at 50% 50%)' : 'circle(75% at 50% 50%)',
+        transition: containerFading ? `clip-path ${IRIS_MS}ms ${IRIS_EASE}` : 'none',
+      }}
     >
+      {/* motes of golden light — lobby + reception only */}
+      <GoldMotes active={step === 3 || step === 4} count={isMobile ? 10 : 18} />
+
+      {/* light band that sweeps across during the lobby → reception wipe (keyed so it replays) */}
+      {step === 4 && (
+        <div aria-hidden="true" className="absolute inset-y-0 left-0 z-[44] pointer-events-none w-0" style={{ animation: `ss-wipe-band ${WIPE_MS}ms ${WIPE_EASE} forwards` }}>
+          <div className="absolute inset-y-0 -left-[150px] w-[300px]" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,226,160,0.10) 35%, rgba(255,240,200,0.55) 50%, rgba(255,226,160,0.10) 65%, transparent 100%)', mixBlendMode: 'screen' }} />
+          <div className="absolute inset-y-0 -left-px w-[2px]" style={{ background: 'linear-gradient(180deg, transparent, #FFF3C4 20%, #FFF3C4 80%, transparent)', boxShadow: '0 0 28px 6px rgba(255,226,150,0.65)' }} />
+        </div>
+      )}
+
+      {/* glowing ring that rides the iris edge as the intro closes */}
+      {containerFading && (
+        <div
+          aria-hidden="true"
+          className="absolute z-[60] pointer-events-none rounded-full"
+          style={{
+            left: '50%', top: '50%',
+            width: irisRing, height: irisRing,
+            marginLeft: -irisRing / 2, marginTop: -irisRing / 2,
+            border: '2px solid rgba(255,236,185,0.95)',
+            boxShadow: '0 0 36px 6px rgba(238,217,166,0.55), inset 0 0 36px 4px rgba(238,217,166,0.35)',
+            animation: `ss-iris-ring ${IRIS_MS}ms ${IRIS_EASE} forwards`,
+            willChange: 'transform',
+          }}
+        />
+      )}
 
       {/* ══════════════════════════════════════════════════════════════
           LAYER 1 — SCENE 4: GRAND RECEPTION (bottom)
@@ -539,23 +652,23 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         <div
           className="w-full h-full will-change-transform"
           style={{
-            transform: step >= 4 ? 'scale(1.0)' : 'scale(1.04)',
-            transition: 'transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)',
+            transform: step >= 4 ? 'scale(1.0)' : 'scale(1.12)',
+            transition: step >= 4 ? 'transform 2600ms cubic-bezier(0.16, 1, 0.3, 1)' : 'transform 800ms ease-out',
           }}
         >
-          <img src={receptionImage} alt="S.S. Convention Reception" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.9) contrast(1.06)' }} />
-          <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+          <img src={receptionImage} alt="S.S. Convention Reception" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+          <WarmBloom active={step === 4} x="50%" y="26%" delay={500} />
         </div>
         {/* scrims */}
-        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-56 sm:h-72 bg-gradient-to-t from-black/95 via-black/55 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-44 sm:h-56 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={4}
           headline={lang === 'te' ? 'మీ మధుర క్షణాలు. మా రాజప్రాంగణం.' : 'Your Moments. Our Space.'}
           subtext={lang === 'te' ? 'ప్రతి శుభకార్యం ఒక అద్భుత జ్ఞాపకంగా మారే పవిత్ర కల్యాణ వేదిక.' : 'Where grand occasions become beautiful memories, and every celebration finds its perfect setting.'}
           isActive={step === 4}
           position="bottom"
-          delay={300}
+          delay={250}
         />
       </div>
 
@@ -564,27 +677,36 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
           ════════════════════════════════════════════════════════════ */}
       <div
         className="absolute inset-0 z-20 overflow-hidden pointer-events-none"
-        style={{ opacity: step >= 4 ? 0 : 1, transition: 'opacity 800ms ease-in-out' }}
+        style={{
+          /* the lobby is wiped away left→right by a band of light, revealing the reception */
+          clipPath: step >= 4 ? 'inset(0 0 0 101%)' : 'inset(0 0 0 0%)',
+          transition: `clip-path ${WIPE_MS}ms ${WIPE_EASE}`,
+        }}
       >
         <div
           className="w-full h-full will-change-transform"
           style={{
-            transform: step >= 3 ? 'scale(1.0) translateY(0)' : 'scale(1.05) translateY(1%)',
-            transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1)',
+            /* step<3: settled start · step 3: slow forward walk-in · step 4: push through as the wipe passes */
+            transform: step >= 4 ? 'scale(1.22)' : step === 3 ? 'scale(1.085)' : 'scale(1.0) translateY(0)',
+            transition: step >= 4
+              ? `transform ${WIPE_MS + 200}ms cubic-bezier(0.5, 0, 0.75, 0)`
+              : step === 3
+                ? 'transform 7000ms cubic-bezier(0.22, 0.7, 0.4, 1)'
+                : 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
-          <img src={lobbyImage} alt="S.S. Convention Grand Lobby Lounge" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.9) contrast(1.06)' }} />
-          <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+          <img src={lobbyImage} alt="S.S. Convention Grand Lobby Lounge" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+          <WarmBloom active={step === 3} x="50%" y="34%" delay={600} />
         </div>
-        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={3}
           headline={lang === 'te' ? 'క్షణకాలం ఆగండి. వైభవం ఆహ్వానిస్తుంది.' : 'Pause Here. Let Elegance Welcome You.'}
           subtext={lang === 'te' ? 'ఘనమైన ఆతిథ్యం, ముందున్న గొప్ప సంబరానికి ఒక శుభారంభం మాత్రమే.' : 'A thoughtful welcome is only the beginning of everything waiting ahead.'}
           isActive={step === 3}
           position="bottom"
-          delay={300}
+          delay={250}
         />
       </div>
 
@@ -607,15 +729,15 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
           <DoorPanel side="left"  imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Left Door"  isOpen={entranceDoorsOpen} />
           <DoorPanel side="right" imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Right Door" isOpen={entranceDoorsOpen} />
         </div>
-        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={2}
           headline={lang === 'te' ? 'ఈ ప్రవేశద్వారం దాటితే, ఒక దివ్యమైన అనుభూతి.' : 'Beyond This Entrance, Something Beautiful Awaits.'}
           subtext={lang === 'te' ? 'అడుగు ముందుకు వేయండి. మీ రాచరిక అనుభవం ఇప్పుడే మొదలవుతోంది.' : 'Step inside. Your experience is just beginning.'}
           isActive={step === 1}
           position="bottom"
-          delay={1400}
+          delay={500}
         />
       </div>
 
@@ -626,7 +748,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         className="absolute inset-0 z-40 overflow-hidden pointer-events-none"
         style={{
           opacity: step >= 1 ? 0 : 1,
-          transition: step >= 1 ? 'opacity 1200ms ease-in-out 800ms' : 'opacity 500ms ease-out',
+          transition: step >= 1 ? 'opacity 900ms ease-in-out 450ms' : 'opacity 500ms ease-out',
         }}
       >
         <div
@@ -639,18 +761,17 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
             transition: 'transform 2000ms cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
-          <img src={exteriorImage} alt="S.S. Convention Building Exterior at Night" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(0.9) contrast(1.06)' }} />
-          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+          <img src={exteriorImage} alt="S.S. Convention Building Exterior at Night" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
         </div>
-        <div className="absolute top-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-48 sm:h-64 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={1}
           headline={lang === 'te' ? 'వైభవమైన వేడుకకు అద్భుతమైన ఆరంభం.' : 'A Celebration Begins With a First Impression.'}
           subtext={lang === 'te' ? 'ప్రతి మధురమైన సందర్భానికి ఒక చిరస్మరణీయమైన శుభారంభం.' : 'Every unforgettable occasion deserves an extraordinary beginning.'}
           isActive={step === 0}
           position="bottom"
-          delay={350}
+          delay={300}
         />
       </div>
 
@@ -672,7 +793,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         <div className="flex flex-col leading-none pointer-events-none">
           <span
             className="font-cinzel font-black tracking-[0.18em] uppercase"
-            style={{ fontSize: 'clamp(0.7rem, 2vw, 1rem)', color: '#D4AF37', letterSpacing: '0.22em' }}
+            style={{ fontSize: 'clamp(0.7rem, 2vw, 1rem)', color: '#D4AF37', letterSpacing: '0.22em', textShadow: '0 1px 10px rgba(0,0,0,0.85)' }}
           >
             S.S. Convention
           </span>
@@ -769,6 +890,25 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         @keyframes ss-scroll-pulse {
           0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
           50%       { opacity: 1;   transform: scaleY(1); }
+        }
+        @keyframes ss-mote {
+          0%   { opacity: 0;    transform: translate3d(0, 0, 0) scale(0.6); }
+          15%  { opacity: 0.95; }
+          60%  { opacity: 0.7; }
+          100% { opacity: 0;    transform: translate3d(var(--dx), var(--dy), 0) scale(1.1); }
+        }
+        @keyframes ss-bloom {
+          from { transform: scale(1); }
+          to   { transform: scale(1.08); }
+        }
+        @keyframes ss-wipe-band {
+          from { transform: translateX(-2px); opacity: 1; }
+          to   { transform: translateX(100vw); opacity: 1; }
+        }
+        @keyframes ss-iris-ring {
+          from { transform: scale(1); opacity: 1; }
+          80%  { opacity: 1; }
+          to   { transform: scale(0); opacity: 0; }
         }
       `}</style>
     </div>

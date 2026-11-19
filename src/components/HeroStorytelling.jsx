@@ -463,16 +463,15 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
                 transform: activeSlideIdx === idx ? 'scale(1.07)' : 'scale(1)',
                 transition: 'opacity 1000ms ease-in-out, transform 8000ms linear'
               }}
-              className={`absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.92] contrast-[1.08] saturate-[1.12] transition-opacity duration-1000 ease-in-out will-change-transform ${
+              className={`absolute inset-0 w-full h-full object-cover object-center filter brightness-100 contrast-[1.04] saturate-[1.1] transition-opacity duration-1000 ease-in-out will-change-transform ${
                 activeSlideIdx === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             />
           ))}
 
           {/* Symmetrical Palace Ambient Lighting Scrim */}
-          <div className="absolute inset-0 bg-black/25 z-10" />
-          <div className="absolute top-0 left-0 right-0 h-44 sm:h-52 bg-gradient-to-b from-black/85 via-black/40 to-transparent z-10" />
-          <div className="absolute bottom-0 left-0 right-0 h-56 sm:h-64 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10" />
+          <div className="absolute top-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-b from-black/50 via-black/15 to-transparent z-10" />
+          <div className="absolute bottom-0 left-0 right-0 h-48 sm:h-56 bg-gradient-to-t from-black/65 via-black/25 to-transparent z-10" />
         </div>
 
         {/* UPPER TIER: BRAND */}
