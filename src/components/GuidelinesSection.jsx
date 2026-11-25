@@ -1,46 +1,31 @@
 import React from 'react';
-import { ShieldAlert, Clock, CreditCard, Sparkles, Utensils, Globe } from 'lucide-react';
-import { venueData } from '../data/venueData';
-import { teluguTranslations } from '../data/teluguData';
+import { ShieldAlert, Clock, CreditCard, Sparkles, Utensils } from 'lucide-react';
 
-export default function GuidelinesSection({ lang, setLang }) {
-  const isTelugu = lang === 'te';
+export default function GuidelinesSection() {
 
   const policies = [
     {
       icon: Utensils,
-      title: isTelugu ? teluguTranslations.guidelines.foodTitle : "Food & Dining Guidelines",
-      teluguNotice: "ఆహార నిబంధనలు",
-      desc: isTelugu
-        ? teluguTranslations.guidelines.foodDesc
-        : "Food prepared for celebrations is to be consumed strictly within the venue premises. Packing and carrying leftover food outside is strictly prohibited to comply with health, hygiene, and venue norms. Hosts and guests are kindly requested to cooperate.",
+      title: "Food & Dining Guidelines",
+      desc: "Food prepared for celebrations is to be consumed strictly within the venue premises. Packing and carrying leftover food outside is strictly prohibited to comply with health, hygiene, and venue norms. Hosts and guests are kindly requested to cooperate.",
       badge: "Hygiene & Quality"
     },
     {
       icon: CreditCard,
-      title: isTelugu ? teluguTranslations.guidelines.paymentTitle : "Important Payment Policy",
-      teluguNotice: "ముఖ్యగమనిక - పేమెంట్ నిబంధనలు",
-      desc: isTelugu
-        ? teluguTranslations.guidelines.paymentDesc
-        : "The full payment for the event must be settled strictly 2 days before the scheduled event date. Note: This rule is strictly enforced by management with no exceptions entertained. Thank you for your cooperation.",
+      title: "Important Payment Policy",
+      desc: "The full payment for the event must be settled strictly 2 days before the scheduled event date. Note: This rule is strictly enforced by management with no exceptions entertained. Thank you for your cooperation.",
       badge: "Mandatory Term"
     },
     {
       icon: Sparkles,
-      title: isTelugu ? teluguTranslations.guidelines.decorTitle : "Decoration Policy",
-      teluguNotice: "డెకరేషన్ నిబంధన",
-      desc: isTelugu
-        ? teluguTranslations.guidelines.decorDesc
-        : "Outside decoration vendors are strictly NOT allowed. All stage, mandap, floral, balloon, and lighting arrangements are managed exclusively by our verified in-house decor teams to ensure safety and preserve hall aesthetics.",
+      title: "Decoration Policy",
+      desc: "Outside decoration vendors are strictly NOT allowed. All stage, mandap, floral, balloon, and lighting arrangements are managed exclusively by our verified in-house decor teams to ensure safety and preserve hall aesthetics.",
       badge: "In-House Only"
     },
     {
       icon: Clock,
-      title: isTelugu ? teluguTranslations.guidelines.timingsTitle : "Slot Vacation Timings",
-      teluguNotice: "ఈవెంట్ సమయాలు",
-      desc: isTelugu
-        ? teluguTranslations.guidelines.timingsDesc
-        : "Lunch party slots must be vacated strictly by 03:00 PM. Dinner party slots must be vacated strictly by 11:00 PM to facilitate sanitization and setup for subsequent bookings.",
+      title: "Slot Vacation Timings",
+      desc: "Lunch party slots must be vacated strictly by 03:00 PM. Dinner party slots must be vacated strictly by 11:00 PM to facilitate sanitization and setup for subsequent bookings.",
       badge: "Strictly Enforced"
     }
   ];
@@ -55,20 +40,11 @@ export default function GuidelinesSection({ lang, setLang }) {
             <span>Official Venue Rules</span>
           </div>
           <h2 className="font-cinzel text-2xl sm:text-4xl font-bold text-stone-100 tracking-tight mb-4">
-            {isTelugu ? teluguTranslations.guidelines.title : "Transparent Policies & Guidelines"}
+            {"Transparent Policies & Guidelines"}
           </h2>
           <p className="text-stone-300 text-sm sm:text-base leading-relaxed mb-6">
             For seamless coordination and high hospitality standards, we adhere strictly to the policies printed on our official agreements.
           </p>
-
-          {/* Quick Language Switcher */}
-          <button
-            onClick={() => setLang(isTelugu ? 'en' : 'te')}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-obsidian-900 border border-gold-500/40 text-gold-300 text-xs font-semibold hover:bg-gold-500/10 transition-colors"
-          >
-            <Globe className="w-3.5 h-3.5" />
-            <span>Switch to {isTelugu ? 'English Text' : 'తెలుగు వివరణ (Telugu)'}</span>
-          </button>
         </div>
 
         {/* 4 Policy Cards Grid */}

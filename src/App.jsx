@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
 import './styles/motion.css';
@@ -15,18 +15,43 @@ import CinematicEntranceLoader from './components/CinematicEntranceLoader';
 
 // Multi-Page Views
 import HomePage from './pages/HomePage';
-const AboutPage = lazy(() => import('./pages/AboutPage'));
-const SpacesPage = lazy(() => import('./pages/SpacesPage'));
-const HallDetailPage = lazy(() => import('./pages/HallDetailPage'));
-const FacilitiesPage = lazy(() => import('./pages/FacilitiesPage'));
-const MenusPage = lazy(() => import('./pages/MenusPage'));
-const GalleryPage = lazy(() => import('./pages/GalleryPage'));
-const PoliciesPage = lazy(() => import('./pages/PoliciesPage'));
-const ContactPage = lazy(() => import('./pages/ContactPage'));
+const loaders = {
+  about: () => import('./pages/AboutFacilitiesPage'),
+  spaces: () => import('./pages/SpacesPage'),
+  hall: () => import('./pages/HallDetailPage'),
+  menus: () => import('./pages/MenusPage'),
+  gallery: () => import('./pages/GalleryPage'),
+  policies: () => import('./pages/PoliciesPage'),
+  contact: () => import('./pages/ContactPage'),
+};
+const AboutFacilitiesPage = lazy(loaders.about);
+const SpacesPage = lazy(loaders.spaces);
+const HallDetailPage = lazy(loaders.hall);
+const MenusPage = lazy(loaders.menus);
+const GalleryPage = lazy(loaders.gallery);
+const PoliciesPage = lazy(loaders.policies);
+const ContactPage = lazy(loaders.contact);
+
+// Thin gold bar shown for the (rare) moment a page is still loading, so a click always gives visible feedback.
+function PageLoading() {
+  return (
+    <div className="min-h-screen bg-[#2A060E]" role="status" aria-label="Loading page">
+      <div className="fixed top-0 left-0 right-0 h-[3px] overflow-hidden z-[9999]">
+        <div className="h-full w-1/3 bg-gradient-to-r from-transparent via-amber-300 to-transparent ss-loadbar" />
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
-  const [lang, setLang] = useState('en'); // 'en' or 'te'
   const [isEntranceComplete, setIsEntranceComplete] = useState(false);
+
+  // Download the other pages quietly in the background once the browser is idle, so clicking is instant.
+  useEffect(() => {
+    const run = () => Object.values(loaders).forEach((load) => load().catch(() => {}));
+    const t = 'requestIdleCallback' in window ? window.requestIdleCallback(run, { timeout: 4000 }) : setTimeout(run, 2500);
+    return () => ('cancelIdleCallback' in window ? window.cancelIdleCallback(t) : clearTimeout(t));
+  }, []);
   const [lightbox, setLightbox] = useState({
     isOpen: false,
     items: [],
@@ -60,7 +85,7 @@ export default function App() {
 
         <div className="min-h-screen bg-gradient-to-b from-[#1C0409] via-[#24060C] to-[#120104] text-[#FAF6F0] flex flex-col selection:bg-[#C5A059] selection:text-[#0D0204] relative">
           {/* Scroll-Controlled First Load Entrance (Exterior Doors -> Reception Doors -> Hero Page) */}
-          <CinematicEntranceLoader lang={lang} onComplete={() => setIsEntranceComplete(true)} />
+          <CinematicEntranceLoader onComplete={() => setIsEntranceComplete(true)} />
 
           {/* Subtle Ambient Drifting Golden Dust Particles */}
           <GoldenDustCanvas />
@@ -70,39 +95,39 @@ export default function App() {
 
           {/* Global Fixed Header with Language Toggle */}
           <ScrollProgress />
-          <Navbar lang={lang} setLang={setLang} />
+          <Navbar />
 
         {/* Multi-Page Routes */}
         <main className="flex-1 relative z-10">
-          <Suspense fallback={<div className="min-h-screen" />}>
+          <Suspense fallback={<PageLoading />}>
           <Routes>
             <Route
               path="/"
-              element={<HomePage onOpenLightbox={openLightbox} lang={lang} isEntranceComplete={isEntranceComplete} />}
+              element={<HomePage onOpenLightbox={openLightbox} isEntranceComplete={isEntranceComplete} />}
             />
             <Route
               path="/about"
-              element={<AboutPage lang={lang} />}
+              element={<AboutFacilitiesPage />}
             />
             <Route
               path="/spaces"
-              element={<SpacesPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<SpacesPage onOpenLightbox={openLightbox} />}
             />
             <Route
               path="/halls"
-              element={<SpacesPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<SpacesPage onOpenLightbox={openLightbox} />}
             />
             <Route
               path="/halls/:id"
-              element={<HallDetailPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<HallDetailPage onOpenLightbox={openLightbox} />}
             />
             <Route
               path="/spaces/:id"
-              element={<HallDetailPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<HallDetailPage onOpenLightbox={openLightbox} />}
             />
             <Route
               path="/facilities"
-              element={<FacilitiesPage lang={lang} />}
+              element={<Navigate to="/about#facilities" replace />}
             />
             {/* Deprecated occasions routes redirect seamlessly to gallery */}
             <Route
@@ -115,38 +140,38 @@ export default function App() {
             />
             <Route
               path="/dining"
-              element={<MenusPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<MenusPage onOpenLightbox={openLightbox} />}
             />
             <Route
               path="/menus"
-              element={<MenusPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<MenusPage onOpenLightbox={openLightbox} />}
             />
             <Route
               path="/gallery"
-              element={<GalleryPage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<GalleryPage onOpenLightbox={openLightbox} />}
             />
             <Route
               path="/policies"
-              element={<PoliciesPage lang={lang} setLang={setLang} />}
+              element={<PoliciesPage />}
             />
             <Route
               path="/contact"
-              element={<ContactPage lang={lang} />}
+              element={<ContactPage />}
             />
             {/* Fallback route */}
             <Route
               path="*"
-              element={<HomePage onOpenLightbox={openLightbox} lang={lang} />}
+              element={<HomePage onOpenLightbox={openLightbox} />}
             />
           </Routes>
           </Suspense>
         </main>
 
         {/* Global Footer */}
-        <Footer lang={lang} />
+        <Footer />
 
         {/* Floating Quick Action Buttons (Gold Phone left, WhatsApp right) */}
-        <FloatingContactBar lang={lang} />
+        <FloatingContactBar />
 
         {/* High-Resolution Zoom Lightbox Modal */}
         <LightboxModal

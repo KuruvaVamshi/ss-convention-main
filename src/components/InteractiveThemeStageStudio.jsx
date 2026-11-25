@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SplitHeading from './SplitHeading';
-import { Sparkles, Sun, Moon, Flame, ArrowRight, CheckCircle2, Maximize2, Palette } from 'lucide-react';
+import { Sun, Moon, Flame, ArrowRight, CheckCircle2, Maximize2, Palette } from 'lucide-react';
 import { themesData } from '../data/themesData';
 
-export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
+export default function InteractiveThemeStageStudio({ onOpenLightbox }) {
   const [activeThemeId, setActiveThemeId] = useState(themesData[0]?.id || 'theme-vedic-kalyanam');
   const [lightingMode, setLightingMode] = useState('theatrical'); // 'day' | 'theatrical' | 'haldi'
 
@@ -17,14 +17,14 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
         return {
           filter: 'brightness(1.08) contrast(1.04) saturate(1.05)',
           overlayBg: 'from-amber-500/10 via-transparent to-transparent',
-          label: lang === 'te' ? 'సహజ పగటి కాంతి (ముహూర్తం)' : 'Natural Day Muhurtham Light',
+          label: 'Natural Day Muhurtham Light',
           tag: 'Daylight 5500K'
         };
       case 'haldi':
         return {
           filter: 'sepia(0.2) saturate(1.3) brightness(0.98)',
           overlayBg: 'from-yellow-500/15 via-transparent to-transparent',
-          label: lang === 'te' ? 'పసుపు & మెహందీ గోల్డెన్ గ్లో' : 'Haldi & Marigold Amber Glow',
+          label: 'Haldi & Marigold Amber Glow',
           tag: 'Amber Warm 2700K'
         };
       case 'theatrical':
@@ -32,7 +32,7 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
         return {
           filter: 'contrast(1.12) brightness(0.95) saturate(1.15)',
           overlayBg: 'from-purple-900/15 via-transparent to-transparent',
-          label: lang === 'te' ? 'థియేట్రికల్ స్టేజ్ పార్ లైట్స్' : 'Royal Evening Theatrical Glow',
+          label: 'Royal Evening Theatrical Glow',
           tag: 'Theatrical RGB + Edison'
         };
     }
@@ -47,18 +47,16 @@ export default function InteractiveThemeStageStudio({ onOpenLightbox, lang }) {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 border border-[#D4AF37]/40 text-amber-200 text-xs font-bold tracking-widest uppercase mb-3 shadow-md backdrop-blur-sm">
             <Palette className="w-3.5 h-3.5 text-amber-300" />
-            <span>{lang === 'te' ? 'స్టేజ్ డెకర్ & లైటింగ్ స్టూడియో' : 'Thematic Stage Artistry'}</span>
+            <span>{'Thematic Stage Artistry'}</span>
           </div>
           <SplitHeading
             as="h2"
             className="font-cinzel text-3xl sm:text-5xl font-bold text-white tracking-wide mb-3 drop-shadow"
           >
-            {lang === 'te' ? 'అలంకరణ & లైటింగ్ అనుకరణ' : 'Interactive Stage Décor & Lighting'}
+            {'Interactive Stage Décor & Lighting'}
           </SplitHeading>
           <p className="text-amber-100/80 text-xs sm:text-sm font-normal leading-relaxed max-w-2xl mx-auto">
-            {lang === 'te'
-              ? 'మీ వేడుకకు అనుగుణంగా లైటింగ్ మూడ్ మార్చండి. పగటి ముహూర్తం, రాయల్ ఈవినింగ్ సంగీత్, మరియు హల్దీ గోల్డెన్ కాంతులను ప్రత్యక్షంగా అనుభవించండి.'
-              : 'Toggle lighting modes below to experience how our stages transform under natural day muhurtham light, opulent royal theatrical stage pars, or golden haldi ambiance.'}
+            {'Toggle lighting modes below to experience how our stages transform under natural day muhurtham light, opulent royal theatrical stage pars, or golden haldi ambiance.'}
           </p>
 
           {/* Master Interactive Lighting Controller */}

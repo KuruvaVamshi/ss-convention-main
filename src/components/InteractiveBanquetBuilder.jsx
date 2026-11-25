@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { cateringMenus, extraItemCharges } from '../data/menusData';
 import { Utensils, Leaf, Drumstick, Sparkles, AlertCircle, Eye, Check } from 'lucide-react';
 
-export default function InteractiveBanquetBuilder({ onSelectMenu, onOpenLightbox, lang }) {
+export default function InteractiveBanquetBuilder({ onSelectMenu, onOpenLightbox }) {
   const [dietaryType, setDietaryType] = useState('nonVeg');
   const [selectedMenuIdx, setSelectedMenuIdx] = useState(1); // Premium Non-Veg default
 

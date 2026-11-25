@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Maximize2, Phone, Calendar, Film } from 'lucide-react';
+import { Maximize2, Calendar } from 'lucide-react';
+import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 import SEO from '../components/SEO';
-import { galleryItems, videoTours } from '../data/galleryData';
-import VideoReelsStory from '../components/VideoReelsStory';
+import { galleryItems } from '../data/galleryData';
 import Reveal from '../components/Reveal';
-import { venueData } from '../data/venueData';
 
 const categories = [
   { id: 'all', label: 'All' },
@@ -17,7 +16,7 @@ const categories = [
   { id: 'exterior', label: 'Facade & Lobby' },
 ];
 
-export default function GalleryPage({ onOpenLightbox, lang }) {
+export default function GalleryPage({ onOpenLightbox }) {
   const [active, setActive] = useState('all');
 
   // Filter bar hides when scrolling down and returns when scrolling up
@@ -68,7 +67,7 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
           alt="Traditional wedding mandap stage decorations at S.S. Convention Meerpet"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Authentic Visual Archive</p>
@@ -80,9 +79,9 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
             </h1>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
-              Every photo and video here was captured at real celebrations at S.S Convention A/C, Meerpet.
+              Every photograph here was captured at real celebrations at S.S Convention A/C, Meerpet.
               <span className="block mt-1 text-sm text-amber-300/90">
-                {galleryItems.length} photos · {videoTours.length} video tours
+                {galleryItems.length} authentic venue photos
               </span>
             </p>
           </Reveal>
@@ -127,23 +126,6 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
                 </button>
               );
             })}
-
-            <div className="h-5 w-px bg-[#D4AF37]/30 mx-1" />
-
-            <button
-              type="button"
-              onClick={() => {
-                document.getElementById('videos')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="relative flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-cinzel tracking-wider whitespace-nowrap text-amber-300 hover:text-white border border-[#D4AF37]/40 hover:border-amber-400 bg-black/40 hover:bg-[#3D0A14] transition-all cursor-pointer shadow-sm"
-              title="Jump to video walkthrough tours"
-            >
-              <Film className="w-3.5 h-3.5 text-amber-400" />
-              <span>Video Tours</span>
-              <span className="relative text-[10px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
-                {videoTours.length}
-              </span>
-            </button>
           </div>
         </div>
       </div>
@@ -189,9 +171,6 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
         </div>
       </section>
 
-      {/* Video tours */}
-      <VideoReelsStory lang={lang} onOpenLightbox={onOpenLightbox} />
-
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-center border-t border-[#D4AF37]/30">
         <Reveal className="max-w-3xl mx-auto px-4">
@@ -203,9 +182,8 @@ export default function GalleryPage({ onOpenLightbox, lang }) {
             <Link to="/contact" className="btn-gold">
               <Calendar className="w-4 h-4" /> Plan your visit
             </Link>
-            <a href={`tel:${venueData.phones[0].raw}`} className="btn-outline-gold">
-              <Phone className="w-4 h-4 text-amber-300" /> {venueData.phones[0].display}
-            </a>
+            <WhatsAppButton label="Enquire on WhatsApp" message="Hello SS Convention Hall, I saw your gallery and would like to plan a visit." />
+            <CallButton />
           </div>
         </Reveal>
       </section>

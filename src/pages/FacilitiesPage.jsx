@@ -1,30 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import {
-  Snowflake,
-  DoorClosed,
-  Zap,
-  Car,
-  UtensilsCrossed,
-  Droplets,
-  ShieldCheck,
-  Accessibility,
-  ArrowUpCircle,
-  Phone,
-  Calendar,
-  CheckCircle2
-} from 'lucide-react';
-import { venueData } from '../data/venueData';
+import { Snowflake, DoorClosed, Zap, Car, UtensilsCrossed, Droplets, ShieldCheck, Accessibility, ArrowUpCircle, Calendar, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
+import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 
 const facilitiesList = [
   {
     title: "Centralized Cassette Air Conditioning",
     shortTitle: "Central A/C",
-    teluguTitle: "సెంట్రలైజ్డ్ క్యాసెట్ ఎయిర్ కండిషనింగ్",
     category: "Climate & Comfort",
     desc: "Commercial Daikin multi-zone cassette cooling delivers continuous 22°C temperature throughout Hall Vasishta, Hall Agasthya, and Hall Koundinya, keeping guests cool and refreshed even during peak summer weddings.",
     icon: Snowflake,
@@ -36,7 +22,6 @@ const facilitiesList = [
   {
     title: "Two Executive VIP Bridal Green Suites",
     shortTitle: "VIP Bridal Suites",
-    teluguTitle: "రెండు ఎగ్జిక్యూటివ్ విఐపి గ్రీన్ రూమ్స్",
     category: "Bridal Privacy",
     desc: "Dedicated VIP suites (Bride Suite & Groom Suite) located directly behind the main stage. Features full-length illuminated vanity mirrors, comfortable plush sofas, attached private washrooms, and wardrobe storage.",
     icon: DoorClosed,
@@ -48,7 +33,6 @@ const facilitiesList = [
   {
     title: "Dedicated Banquet Dining Floor (250+ Seats)",
     shortTitle: "Banquet Dining Floor",
-    teluguTitle: "ప్రత్యేక డైనింగ్ హాల్ (250+ సీటింగ్)",
     category: "Dining Comfort",
     desc: "A completely separate banquet dining level featuring round tables and buffet counters. By keeping dining on a dedicated floor, zero food aroma or moisture reaches the sacred marriage mandap.",
     icon: UtensilsCrossed,
@@ -60,7 +44,6 @@ const facilitiesList = [
   {
     title: "100% Commercial DG Power Generator",
     shortTitle: "Power Backup",
-    teluguTitle: "100% ఆటోమేటిక్ జనరేటర్ బ్యాకప్",
     category: "Power Reliability",
     desc: "Heavy-duty soundproof diesel generator system with auto-transfer switch. In case of grid power interruption, backup activates in zero seconds, keeping crystal chandeliers, sound, and A/C uninterrupted.",
     icon: Zap,
@@ -72,7 +55,6 @@ const facilitiesList = [
   {
     title: "Ample On-Premises Car & Bike Parking",
     shortTitle: "Car & Bike Parking",
-    teluguTitle: "విశాలమైన పార్కింగ్ సదుపాయం",
     category: "Guest Convenience",
     desc: "Spacious on-premises parking capacity for 150+ vehicles. Dedicated security guards and CCTV cameras monitor entry and exit smoothly from Raghavendra Nagar Colony main road.",
     icon: Car,
@@ -84,7 +66,6 @@ const facilitiesList = [
   {
     title: "High-Speed Passenger Elevator",
     shortTitle: "Passenger Elevator",
-    teluguTitle: "హై-స్పీడ్ ప్యాసెంజర్ లిఫ్ట్",
     category: "Accessibility",
     desc: "A modern commercial elevator linking the main entrance foyer, marriage hall, and dining floor. Ensures elderly relatives and guests with mobility challenges transit comfortably with zero stairs.",
     icon: ArrowUpCircle,
@@ -96,7 +77,6 @@ const facilitiesList = [
   {
     title: "Industrial RO Water Purification Plant",
     shortTitle: "RO Pure Water",
-    teluguTitle: "ఆర్వో మంచినీటి ప్లాంట్",
     category: "Hygiene & Health",
     desc: "On-site multi-stage Reverse Osmosis (RO) water purification plant delivering tested, pure drinking water for all dining services, live counters, and guest hydration stations.",
     icon: Droplets,
@@ -108,7 +88,6 @@ const facilitiesList = [
   {
     title: "24/7 Perimeter CCTV & Security",
     shortTitle: "CCTV & Security",
-    teluguTitle: "24/7 సిసిటివి & భద్రత",
     category: "Security & Safety",
     desc: "Round-the-clock perimeter coverage with high-definition digital cameras across all entrances, aisles, stage areas, parking lots, and dining corridors, backed by trained on-site security guards.",
     icon: ShieldCheck,
@@ -120,7 +99,6 @@ const facilitiesList = [
   {
     title: "Wheelchair Accessible Ramps & Entrances",
     shortTitle: "Accessible Entry",
-    teluguTitle: "వీల్‌చైర్ యాక్సెసబుల్ ర్యాంప్",
     category: "Inclusivity",
     desc: "Thoughtfully engineered gentle-incline ramps at the grand entrance foyer allow effortless wheelchair and stroller access directly from the parking area into the air-conditioned hall.",
     icon: Accessibility,
@@ -138,7 +116,7 @@ const quickFacts = [
   { to: 0, suffix: ' sec', label: 'Blackout' },
 ];
 
-export default function FacilitiesPage({ lang }) {
+export default function FacilitiesPage({ embedded = false }) {
   const [active, setActive] = useState(0);
   const shouldReduce = useReducedMotion();
 
@@ -151,13 +129,13 @@ export default function FacilitiesPage({ lang }) {
   }, []);
 
   return (
-    <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
-      <SEO
+    <div id="facilities" className={`bg-[#450B17] text-latte overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204] ${embedded ? '' : 'min-h-screen'}`}>
+      {!embedded && <SEO
         title="Convention Hall Amenities & Facilities in Meerpet | S.S. Convention"
         description="Discover 5-star amenities at S.S. Convention Meerpet: Daikin central A/C, 150+ car parking, 100% DG power backup, 2 VIP bridal suites, RO drinking water, and 24/7 CCTV security."
         keywords="Convention Hall Facilities Meerpet, AC Function Hall Hyderabad, Wedding Hall with Parking Meerpet, Banquet Hall Amenities Hyderabad, AC Marriage Hall Meerpet"
         canonical="/facilities"
-      />
+      />}
 
       {/* Hero */}
       <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
@@ -166,21 +144,19 @@ export default function FacilitiesPage({ lang }) {
           alt="S.S. Convention Banquet Dining and 5-Star Facilities in Meerpet Hyderabad"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">5-Star Infrastructure</p>
             <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide leading-[1.1]">
-              {lang === 'te' ? 'రాయల్ సదుపాయాలు & సౌకర్యాలు' : 'Convention Hall Facilities & Amenities'}
+              {'Convention Hall Facilities & Amenities'}
             </h1>
             <p className="text-xs sm:text-sm font-cinzel text-amber-300/90 tracking-widest mt-2 uppercase">
-              {lang === 'te' ? 'మీర్పేట్, హైదరాబాద్ లో 5-స్టార్ సౌకర్యాలు' : '5-Star Event Infrastructure · Meerpet, Hyderabad'}
+              {'5-Star Event Infrastructure · Meerpet, Hyderabad'}
             </p>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
-              {lang === 'te'
-                ? 'సెంట్రల్ ఎసి, విఐపి గ్రీన్ రూమ్స్, ఆటోమేటిక్ జనరేటర్ మరియు విశాలమైన పార్కింగ్ – మీ అతిథులకు అత్యుత్తమ సౌకర్యాలు.'
-                : 'Engineered for seamless guest comfort, from Daikin central climate control and two VIP bridal suites to 100% generator backup and 150+ parking slots.'}
+              {'Engineered for seamless guest comfort, from Daikin central climate control and two VIP bridal suites to 100% generator backup and 150+ parking slots.'}
             </p>
           </Reveal>
         </div>
@@ -298,9 +274,7 @@ export default function FacilitiesPage({ lang }) {
                             <h3 className="mt-3 font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold leading-snug text-latte text-balance">
                               {item.title}
                             </h3>
-                            {lang === 'te' && (
-                              <p className="mt-1 text-sm text-amber-300/90 font-medium">{item.teluguTitle}</p>
-                            )}
+                            
 
                             {/* Facility Description */}
                             <p className="mt-3.5 text-sm sm:text-base text-mocha leading-relaxed">
@@ -389,9 +363,8 @@ export default function FacilitiesPage({ lang }) {
             <Link to="/contact" className="btn-gold">
               <Calendar className="w-4 h-4" /> Book a venue tour
             </Link>
-            <a href={`tel:${venueData.phones[0].raw}`} className="btn-outline-gold">
-              <Phone className="w-4 h-4 text-amber-300" /> {venueData.phones[0].display}
-            </a>
+            <WhatsAppButton label="Enquire on WhatsApp" message="Hello SS Convention Hall, I would like to know more about your facilities and book a venue tour." />
+            <CallButton />
           </div>
         </Reveal>
       </section>

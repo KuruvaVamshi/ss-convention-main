@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { spacesData } from '../data/spacesData';
 import { Users, Snowflake, Sparkles, Check, ArrowUpRight } from 'lucide-react';
 
-export default function SpacesExplorer3D({ onOpenLightbox, lang }) {
+export default function SpacesExplorer3D({ onOpenLightbox }) {
   const [activeSpaceId, setActiveSpaceId] = useState(spacesData[0].id);
   const [activeHotspot, setActiveHotspot] = useState(null);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });

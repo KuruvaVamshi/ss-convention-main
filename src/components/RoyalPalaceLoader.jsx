@@ -176,12 +176,12 @@ export default function RoyalPalaceLoader({ onComplete }) {
           
           {/* Auspicious Vedic Shloka Header */}
           <span className="font-serif text-xs sm:text-sm tracking-[0.3em] text-amber-200 uppercase drop-shadow block mb-2">
-            || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
+            || Sri Rastu • Shubhamastu • Avighnamastu ||
           </span>
 
           {/* Traditional Telugu & English Greeting */}
           <span className="font-cinzel text-xs font-bold tracking-[0.28em] text-amber-300 uppercase block mb-1">
-            నమస్కారం · NAMASTE
+            NAMASTE
           </span>
 
           <h1 className="font-cinzel text-2xl sm:text-3xl font-bold tracking-[0.14em] text-white uppercase drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] mb-2">

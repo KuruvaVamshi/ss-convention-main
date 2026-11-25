@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -44,8 +44,23 @@ export default function ScrollToTop() {
       ScrollTrigger.refresh();
     }, 120);
 
-    return () => clearTimeout(timer);
-  }, [pathname]);
+    // 5. "#section" links (e.g. /about#facilities): wait for the lazy page, then glide to the section
+    let tries = 0;
+    let hashTimer = null;
+    const goToHash = () => {
+      const el = hash ? document.getElementById(hash.slice(1)) : null;
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - 70;
+        if (window.lenis && typeof window.lenis.scrollTo === 'function') window.lenis.scrollTo(y, { duration: 1.1 });
+        else window.scrollTo({ top: y, behavior: 'smooth' });
+      } else if (hash && tries++ < 20) {
+        hashTimer = setTimeout(goToHash, 100);
+      }
+    };
+    if (hash) hashTimer = setTimeout(goToHash, 250);
+
+    return () => { clearTimeout(timer); clearTimeout(hashTimer); };
+  }, [pathname, hash]);
 
   return null;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Phone, Calendar } from 'lucide-react';
-import { venueData } from '../data/venueData';
+import { CheckCircle2, Calendar } from 'lucide-react';
+import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
@@ -41,12 +41,12 @@ const stats = [
   { to: 150, suffix: '+', label: 'Parking spots' },
 ];
 
-export default function AboutPage({ lang }) {
+export default function AboutPage({ hideCta = false }) {
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
       <SEO
-        title="About S.S. Convention | Premier Wedding Venue in Hyderabad"
-        description="Learn about S.S. Convention in Meerpet, Hyderabad: a premier wedding and banquet destination engineered for grand traditions, pillar-free sightlines, and 50 to 600 guest celebrations."
+        title="About & Facilities | S.S. Convention Meerpet, Hyderabad"
+        description="Learn about S.S. Convention in Meerpet, Hyderabad: a premier wedding and banquet destination engineered for grand traditions, pillar-free sightlines, and 100 to 600 guest celebrations."
         keywords="About S.S. Convention, Wedding Venue Hyderabad, Marriage Hall Meerpet History, Banquet Halls in Hyderabad, Best Function Halls Meerpet"
         canonical="/about"
       />
@@ -58,24 +58,22 @@ export default function AboutPage({ lang }) {
           alt="S.S. Convention Daytime Architectural Facade and Grand Entrance in Meerpet Hyderabad"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/70 to-[#1C0409]/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
 
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="font-serif text-xs sm:text-sm tracking-[0.3em] text-amber-300 mb-4">
-              || శ్రీ రస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
+              || Sri Rastu • Shubhamastu • Avighnamastu ||
             </p>
             <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-[0.1em] uppercase">
-              {lang === 'te' ? 'మా గురించి | S.S. కన్వెన్షన్' : 'About S.S. Convention'}
+              {'About S.S. Convention'}
             </h1>
             <p className="text-xs sm:text-sm font-cinzel text-amber-300/90 tracking-widest mt-2 uppercase">
-              {lang === 'te' ? 'మీర్పేట్, హైదరాబాద్ లో ప్రీమియర్ కళ్యాణ వేదిక' : 'Premier Wedding & Banquet Destination · Meerpet, Hyderabad'}
+              {'Premier Wedding & Banquet Destination · Meerpet, Hyderabad'}
             </p>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
-              {lang === 'te'
-                ? 'హైదరాబాద్ మీర్‌పేట్‌లో వైభవమైన శుభకార్యాలు మరియు వేడుకలకు రాయల్ వేదిక. సంప్రదాయం మరియు ఆధునిక సదుపాయాల కలయిక.'
-                : 'In Meerpet, Hyderabad, built on one commitment: every grand milestone deserves an unforgettable, royal setting.'}
+              {'In Meerpet, Hyderabad, built on one commitment: every grand milestone deserves an unforgettable, royal setting.'}
             </p>
           </Reveal>
         </div>
@@ -119,7 +117,7 @@ export default function AboutPage({ lang }) {
               Indian weddings and milestone ceremonies are sacred family legacies. Our venue in Raghavendra Nagar Colony,
               Jillelaguda (Meerpet) removes the usual pain points of function halls. Hall Vasishta seats up to 600 under
               double-tier golden chandeliers, while intimate Hall Koundinya suits birthdays and cradle ceremonies. Together
-              the three halls fit celebrations of 50 to 600 guests.
+              the three halls fit celebrations of 100 to 600 guests.
             </p>
 
             <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
@@ -178,7 +176,7 @@ export default function AboutPage({ lang }) {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-center">
+      {!hideCta && (<section className="py-20 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] text-center">
         <Reveal className="max-w-3xl mx-auto px-4">
           <h2 className="font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Ready to plan your event?</h2>
           <p className="mt-4 text-mocha leading-relaxed">
@@ -188,12 +186,11 @@ export default function AboutPage({ lang }) {
             <Link to="/contact" className="btn-gold">
               <Calendar className="w-4 h-4" /> Book a walkthrough
             </Link>
-            <a href={`tel:${venueData.phones[0].raw}`} className="btn-outline-gold">
-              <Phone className="w-4 h-4 text-amber-300" /> {venueData.phones[0].display}
-            </a>
+            <WhatsAppButton label="Enquire on WhatsApp" message="Hello SS Convention Hall, I would like to plan an event and book a walkthrough." />
+            <CallButton />
           </div>
         </Reveal>
-      </section>
+      </section>)}
     </div>
   );
 }

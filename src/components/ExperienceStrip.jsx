@@ -7,7 +7,7 @@ import SectionHeader from './SectionHeader';
 const tiles = [
   { to: '/gallery', title: 'Decor & Themes', text: 'Stages, mandaps and lighting for every occasion.', img: '/assets/09_reception_engagement_stages/stage_floral_ring_arch_royal_sofa_clean.jpeg' },
   { to: '/menus', title: 'Menus', text: 'Veg and non-veg feasts from 100 to 250 guests.', img: '/assets/03_food_and_catering_menus/menu_03_premium_veg_200pax.jpeg' },
-  { to: '/facilities', title: 'Facilities', text: 'Dining hall, parking, power backup and more.', img: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg' },
+  { to: '/about#facilities', title: 'Facilities', text: 'Dining hall, parking, power backup and more.', img: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg' },
   { to: '/gallery', title: 'Gallery', text: 'Real photos from real celebrations.', img: '/assets/08_wedding_mandap_and_rituals/traditional_wedding_mandap_wide_stage.jpeg' },
 ];
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, MapPin, Navigation, ExternalLink, ThumbsUp, ShieldCheck, Check, Copy, MessageSquare, Award } from 'lucide-react';
+import { Star, MapPin, Navigation, ExternalLink, ThumbsUp, ShieldCheck, Check, Copy, MessageSquare } from 'lucide-react';
 import { venueData } from '../data/venueData';
 import Reveal from './Reveal';
 
@@ -203,7 +203,7 @@ export default function GoogleReviewsMapSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {filteredReviews.map((rev) => (
             <Reveal key={rev.id}>
-              <div className="bg-[#350710] p-6 rounded-2xl border border-[#D4AF37]/35 shadow-xl hover:border-amber-400/70 transition-all flex flex-col justify-between h-full">
+              <div className="bg-[#4A0E1B] p-6 rounded-2xl border border-[#D4AF37]/35 shadow-xl hover:border-amber-400/70 transition-all flex flex-col justify-between h-full">
                 <div>
                   {/* Top user row */}
                   <div className="flex items-start justify-between gap-3 mb-3">

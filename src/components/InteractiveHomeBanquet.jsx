@@ -4,7 +4,7 @@ import SplitHeading from './SplitHeading';
 import { Utensils, Leaf, Drumstick, Users, ArrowRight, Maximize2 } from 'lucide-react';
 import { cateringMenus } from '../data/menusData';
 
-export default function InteractiveHomeBanquet({ onOpenLightbox, lang }) {
+export default function InteractiveHomeBanquet({ onOpenLightbox }) {
   const [dietaryType, setDietaryType] = useState('nonVeg');
   const [selectedTierIdx, setSelectedTierIdx] = useState(1); // Premium default
   const [guestCount, setGuestCount] = useState(250);
@@ -50,18 +50,16 @@ export default function InteractiveHomeBanquet({ onOpenLightbox, lang }) {
           <div className="max-w-3xl mb-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 border border-[#D4AF37]/40 text-amber-200 text-xs font-bold tracking-widest uppercase mb-3 shadow-md backdrop-blur-sm">
               <Utensils className="w-3.5 h-3.5 text-amber-300" />
-              <span>{lang === 'te' ? 'రాయల్ విందు భోజనం' : 'Interactive Banquet Feast Customizer'}</span>
+              <span>{'Interactive Banquet Feast Customizer'}</span>
             </div>
             <SplitHeading
               as="h2"
               className="font-cinzel text-3xl sm:text-5xl font-bold tracking-wide text-white leading-tight mb-3 drop-shadow"
             >
-              {lang === 'te' ? '7 రుచికరమైన క్యాటరింగ్ ప్యాకేజీలు' : '7 Tiered Catering Packages & Dedicated Dining'}
+              {'7 Tiered Catering Packages & Dedicated Dining'}
             </SplitHeading>
             <p className="text-amber-100/80 text-xs sm:text-sm font-normal leading-relaxed">
-              {lang === 'te'
-                ? 'ప్రత్యేక డైనింగ్ హాల్ (మండపంలో వాసన రాకుండా). ప్రామాణిక హైదరాబాదీ దమ్ బిర్యానీ, ప్యూర్ నెయ్యి స్వీట్లు మరియు వేడి వేడి రోటీలు.'
-                : 'Served in our separate banquet dining hall seating over 250 guests concurrently with zero food aroma in the ceremony hall. Customize your feast and guest count interactively.'}
+              {'Served in our separate banquet dining hall seating over 250 guests concurrently with zero food aroma in the ceremony hall. Customize your feast and guest count interactively.'}
             </p>
           </div>
 
@@ -140,7 +138,7 @@ export default function InteractiveHomeBanquet({ onOpenLightbox, lang }) {
                 </div>
                 <input
                   type="range"
-                  min="50"
+                  min="100"
                   max="600"
                   step="25"
                   value={guestCount}
@@ -148,7 +146,7 @@ export default function InteractiveHomeBanquet({ onOpenLightbox, lang }) {
                   className="w-full h-2 bg-[#3A0813] rounded-lg appearance-none cursor-pointer accent-amber-400"
                 />
                 <div className="flex justify-between text-[10px] text-amber-200/70 mt-1 font-mono">
-                  <span>50 Guests</span>
+                  <span>Minimum 100 Guests</span>
                   <span className="font-bold text-amber-300">250 Seats (Dedicated Hall)</span>
                   <span>600 Max Capacity</span>
                 </div>

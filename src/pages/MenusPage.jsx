@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Leaf, Drumstick, Eye, MessageSquare, AlertCircle, Users } from 'lucide-react';
+import { Leaf, Drumstick, Eye, AlertCircle, Users } from 'lucide-react';
 import SEO from '../components/SEO';
 import { cateringMenus } from '../data/menusData';
-import { venueData } from '../data/venueData';
 import Reveal from '../components/Reveal';
 import SectionHeader from '../components/SectionHeader';
+import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 
 
 const printedCards = [
@@ -52,7 +52,7 @@ export default function MenusPage({ onOpenLightbox }) {
           alt="Royal banquet dining hall with round tables at S.S. Convention Meerpet"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Banquet Catering & Menus</p>
@@ -197,7 +197,7 @@ export default function MenusPage({ onOpenLightbox }) {
                 key={c.title}
                 type="button"
                 onClick={() => onOpenLightbox(c.image, c.title)}
-                className="group snap-start flex-shrink-0 w-64 sm:w-72 text-left rounded-xl overflow-hidden border border-[#D4AF37]/30 hover:border-amber-400/70 bg-[#450B17] transition-colors"
+                className="group snap-start flex-shrink-0 w-64 sm:w-72 text-left rounded-xl overflow-hidden border border-[#D4AF37]/30 hover:border-amber-400/70 bg-[#5E1628] transition-colors"
               >
                 <div className="h-56 overflow-hidden bg-black">
                   <img src={c.image} alt={c.title} loading="lazy" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
@@ -236,14 +236,7 @@ export default function MenusPage({ onOpenLightbox }) {
             Our catering managers can adjust spice levels, substitute dishes or add live dessert counters to your package.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`https://wa.me/${venueData.whatsappNumber}?text=${encodeURIComponent('Hello SS Convention Hall, I would like to get a catering quote for my event.')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gold"
-            >
-              <MessageSquare className="w-4 h-4" /> Quote on WhatsApp
-            </a>
+            <WhatsAppButton variant="gold" label="Quote on WhatsApp" message="Hello SS Convention Hall, I would like to get a catering quote for my event." />
             <Link to="/contact" className="btn-outline-gold">Open booking studio</Link>
           </div>
         </Reveal>

@@ -12,13 +12,13 @@ export default function HomeStory() {
     <section className="py-20 lg:py-28 bg-[#350710] border-t border-[#D4AF37]/25">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader eyebrow="Meerpet, Hyderabad" title="A Venue Made for Celebrations">
-          Fully air-conditioned wedding and banquet halls for 50 to 600 guests, with an in-house dining hall,
+          Fully air-conditioned wedding and banquet halls for 100 to 600 guests, with an in-house dining hall,
           decor team and uninterrupted power backup, all under one roof.
         </SectionHeader>
 
         <div className="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-14 text-center">
           {[
-            { from: 50, to: 600, label: 'Guests' },
+            { from: 100, to: 600, label: 'Guests' },
             { to: 3, label: 'Halls' },
             { to: 250, suffix: '+', label: 'Dining seats' },
           ].map((stat, i) => (

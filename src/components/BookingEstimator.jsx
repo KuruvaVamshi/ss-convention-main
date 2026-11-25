@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Calendar, Users, Clock, Utensils, Send, Phone, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Calendar, Users, Utensils, Send, Phone } from 'lucide-react';
 import { venueData } from '../data/venueData';
 import AnimatedNumber from './AnimatedNumber';
 
-export default function BookingEstimator({ lang }) {
+export default function BookingEstimator() {
   const [eventType, setEventType] = useState('Wedding / Reception');
   const [guestCount, setGuestCount] = useState(250);
   const [slot, setSlot] = useState('Dinner (Till 11:00 PM)');
@@ -166,7 +166,7 @@ export default function BookingEstimator({ lang }) {
               </div>
               <input
                 type="range"
-                min="50"
+                min="100"
                 max="500"
                 step="25"
                 value={guestCount}
@@ -174,7 +174,7 @@ export default function BookingEstimator({ lang }) {
                 className="w-full h-2 bg-stone-800 rounded-lg appearance-none cursor-pointer accent-gold-500"
               />
               <div className="flex justify-between text-[10px] text-stone-400 mt-1">
-                <span>50 Pax (Mini Hall)</span>
+                <span>Minimum 100 Guests (Mini Hall)</span>
                 <span>250 Pax (Average)</span>
                 <span>500 Pax (Grand Full Hall)</span>
               </div>
@@ -211,7 +211,7 @@ export default function BookingEstimator({ lang }) {
 
               <a
                 href={`tel:${venueData.phones[1].raw}`}
-                className="w-full sm:w-auto py-4 px-6 rounded-2xl bg-obsidian-800 border border-gold-500/30 hover:bg-obsidian-750 text-gold-300 font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
+                className="md:hidden w-full sm:w-auto py-4 px-6 rounded-2xl bg-obsidian-800 border border-gold-500/30 hover:bg-obsidian-750 text-gold-300 font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
               >
                 <Phone className="w-4 h-4" />
                 <span>Call Manager Directly</span>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MapPin, Phone, Clock, Navigation, Car, Copy, Check, ExternalLink } from 'lucide-react';
 import { venueData } from '../data/venueData';
 
-export default function ContactLocationSection({ lang }) {
+export default function ContactLocationSection() {
   const [copied, setCopied] = useState(false);
 
   const handleCopyAddress = () => {

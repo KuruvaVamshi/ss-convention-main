@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Utensils, CreditCard, Sparkles, Clock, Plus, AlertCircle, Phone } from 'lucide-react';
-import { venueData } from '../data/venueData';
-import { teluguTranslations } from '../data/teluguData';
+import { Utensils, CreditCard, Sparkles, Clock, Plus, AlertCircle } from 'lucide-react';
+import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 
@@ -12,25 +11,19 @@ const rules = [
     icon: Utensils,
     badge: 'Hygiene standard',
     title: 'Food Consumption',
-    teluguTitle: teluguTranslations.guidelines.foodTitle,
     en: 'Food prepared for celebrations is to be consumed strictly within the venue premises. Packing and carrying leftover food outside is strictly prohibited to comply with health, hygiene, and venue norms. Hosts and guests are kindly requested to cooperate with management.',
-    te: teluguTranslations.guidelines.foodDesc,
   },
   {
     icon: CreditCard,
     badge: 'Mandatory term',
     title: 'Payment Settlement',
-    teluguTitle: teluguTranslations.guidelines.paymentTitle,
     en: 'The full payment for the event must be settled strictly 2 days before the scheduled event date. This rule is strictly enforced by management with no exceptions entertained. Thank you for your cooperation.',
-    te: teluguTranslations.guidelines.paymentDesc,
   },
   {
     icon: Sparkles,
     badge: 'In-house only',
     title: 'Decoration Exclusivity',
-    teluguTitle: teluguTranslations.guidelines.decorTitle,
     en: 'Outside decoration vendors are strictly NOT allowed. All stage, mandap, floral, balloon, and lighting arrangements are managed exclusively by our verified in-house decor teams to ensure safety and preserve hall aesthetics.',
-    te: teluguTranslations.guidelines.decorDesc,
   },
 ];
 
@@ -89,9 +82,9 @@ const faqSchema = {
   }))
 };
 
-export default function PoliciesPage({ lang }) {
+export default function PoliciesPage() {
   const [openFaq, setOpenFaq] = useState(0);
-  const te = lang === 'te';
+
 
   return (
     <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
@@ -109,10 +102,10 @@ export default function PoliciesPage({ lang }) {
         <Reveal className="relative max-w-3xl mx-auto px-4 text-center">
           <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Official Rules & Agreements</p>
           <h1 className="font-cinzel text-4xl sm:text-6xl font-bold tracking-wide">
-            {lang === 'te' ? 'నిబంధనలు & మార్గదర్శకాలు' : 'Booking Policies & Venue Guidelines'}
+            {'Booking Policies & Venue Guidelines'}
           </h1>
           <p className="text-xs sm:text-sm font-cinzel text-amber-300/90 tracking-widest mt-2 uppercase">
-            {lang === 'te' ? 'S.S. కన్వెన్షన్ మీర్పేట్, హైదరాబాద్' : 'S.S. Convention Hall · Meerpet, Hyderabad'}
+            {'S.S. Convention Hall · Meerpet, Hyderabad'}
           </p>
           <div className="mx-auto mt-5 h-px w-24 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
           <p className="mt-5 text-base sm:text-lg text-mocha leading-relaxed">
@@ -129,7 +122,7 @@ export default function PoliciesPage({ lang }) {
             const Icon = r.icon;
             return (
               <Reveal key={r.title} delay={i * 0.1} className="h-full">
-                <article className="group relative h-full rounded-2xl bg-[#450B17] border border-[#D4AF37]/30 hover:border-amber-400/70 p-7 sm:p-8 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(212,175,55,0.14)]">
+                <article className="group relative h-full rounded-2xl bg-[#5E1628] border border-[#D4AF37]/30 hover:border-amber-400/70 p-7 sm:p-8 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(212,175,55,0.14)]">
                   <span className="absolute top-5 right-6 font-cinzel text-5xl font-bold text-amber-300/10 group-hover:text-amber-300/20 transition-colors">
                     0{i + 1}
                   </span>
@@ -137,8 +130,8 @@ export default function PoliciesPage({ lang }) {
                     <Icon className="w-6 h-6 text-amber-300" />
                   </span>
                   <p className="mt-5 text-[11px] tracking-[0.25em] uppercase text-amber-300">{r.badge}</p>
-                  <h3 className="mt-1 font-cinzel text-xl font-bold">{te ? r.teluguTitle : r.title}</h3>
-                  <p className="mt-4 text-mocha leading-relaxed">{te ? r.te : r.en}</p>
+                  <h3 className="mt-1 font-cinzel text-xl font-bold">{r.title}</h3>
+                  <p className="mt-4 text-mocha leading-relaxed">{r.en}</p>
                 </article>
               </Reveal>
             );
@@ -154,13 +147,13 @@ export default function PoliciesPage({ lang }) {
               <Clock className="w-6 h-6 text-amber-300" />
             </span>
             <h2 className="mt-4 font-cinzel text-3xl sm:text-4xl font-bold tracking-wide">Slot Vacation Schedule</h2>
-            {te && <p className="mt-2 text-sm text-amber-300">{teluguTranslations.guidelines.timingsTitle}</p>}
+            
           </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#D4AF37]/25 rounded-2xl overflow-hidden border border-[#D4AF37]/25">
             {slots.map((s, i) => (
               <Reveal key={s.label} delay={i * 0.1}>
-                <div className="bg-[#450B17] p-8 sm:p-10 h-full">
+                <div className="bg-[#5E1628] p-8 sm:p-10 h-full">
                   <p className="text-[11px] tracking-[0.25em] uppercase text-amber-300">{s.label}</p>
                   <h3 className="mt-1 font-cinzel text-lg font-bold">{s.title}</h3>
                   <p className="mt-3 text-sm text-mocha leading-relaxed">{s.text}</p>
@@ -176,7 +169,7 @@ export default function PoliciesPage({ lang }) {
             <AlertCircle className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
             <span>
               <strong className="text-latte">Note to hosts:</strong> please plan rituals, cake cutting and banquet service to finish before these cut-off hours.
-              {te && <span className="block mt-2 text-amber-200">{teluguTranslations.guidelines.timingsDesc}</span>}
+              
             </span>
           </p>
         </div>
@@ -232,10 +225,9 @@ export default function PoliciesPage({ lang }) {
             We are happy to explain every detail before you place your booking.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a href={`tel:${venueData.phones[0].raw}`} className="btn-gold">
-              <Phone className="w-4 h-4" /> Speak to management
-            </a>
+            <WhatsAppButton variant="gold" label="Chat with management" message="Hello SS Convention Hall, I have a question about your booking policies." />
             <Link to="/contact" className="btn-outline-gold">Go to booking studio</Link>
+            <CallButton label="Call management" />
           </div>
         </Reveal>
       </section>

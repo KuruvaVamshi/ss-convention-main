@@ -1,33 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
-import {
-  Calendar,
-  Phone,
-  Sparkles,
-  MessageSquare,
-  Users,
-  Clock,
-  Utensils,
-  CheckCircle2,
-  ExternalLink,
-  ShieldCheck,
-  Building2,
-  Minus,
-  Plus,
-  User,
-  Check,
-  Compass,
-  Heart,
-  Crown,
-  Flower2,
-  Cake,
-  Baby,
-  Music
-} from 'lucide-react';
+import { Calendar, Phone, Sparkles, MessageSquare, Users, Clock, Utensils, ExternalLink, ShieldCheck, Minus, Plus, User, Check, Heart, Crown, Flower2, Cake, Baby, Music } from 'lucide-react';
 import { venueData } from '../data/venueData';
 
-export default function InteractiveBookingStudio({ lang }) {
+export default function InteractiveBookingStudio() {
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [eventType, setEventType] = useState('Wedding / Muhurtham');
@@ -38,12 +15,12 @@ export default function InteractiveBookingStudio({ lang }) {
 
   // Occasions with curated icons & descriptions
   const eventTypes = [
-    { id: 'Wedding / Muhurtham', label: 'Wedding / Muhurtham', telugu: 'కళ్యాణం / ముహూర్తం', icon: Heart, badge: 'Vedic Mandap' },
-    { id: 'Grand Reception', label: 'Grand Reception', telugu: 'రిసెప్షన్ వేడుక', icon: Crown, badge: 'Red Carpet' },
-    { id: 'Engagement Ceremony', label: 'Engagement / Ring Ceremony', telugu: 'నిశ్చితార్థం', icon: Flower2, badge: 'Floral Arch' },
-    { id: '1st Milestone Birthday', label: '1st Milestone Birthday', telugu: 'మొదటి పుట్టినరోజు', icon: Cake, badge: 'Theme Stage' },
-    { id: 'Cradle (Barasala)', label: 'Cradle (Barasala)', telugu: 'బారసాల / ఉయ్యాల', icon: Baby, badge: 'Lotus Swing' },
-    { id: 'Sangeet & Corporate', label: 'Sangeet & Corporate', telugu: 'సంగీత్ & సమ్మేళనం', icon: Music, badge: 'Truss Lighting' }
+    { id: 'Wedding / Muhurtham', label: 'Wedding / Muhurtham', icon: Heart, badge: 'Vedic Mandap' },
+    { id: 'Grand Reception', label: 'Grand Reception', icon: Crown, badge: 'Red Carpet' },
+    { id: 'Engagement Ceremony', label: 'Engagement / Ring Ceremony', icon: Flower2, badge: 'Floral Arch' },
+    { id: '1st Milestone Birthday', label: '1st Milestone Birthday', icon: Cake, badge: 'Theme Stage' },
+    { id: 'Cradle (Barasala)', label: 'Cradle (Barasala)', icon: Baby, badge: 'Lotus Swing' },
+    { id: 'Sangeet & Corporate', label: 'Sangeet & Corporate', icon: Music, badge: 'Truss Lighting' }
   ];
 
   // Party Slots
@@ -113,7 +90,7 @@ export default function InteractiveBookingStudio({ lang }) {
     currentHall = {
       name: 'Hall Koundinya',
       type: 'Intimate Milestone Banquet Hall',
-      capacityTag: '50 – 200 Guests',
+      capacityTag: '100 – 200 Guests',
       image: '/assets/06_main_hall_seating/mini_hall_seating_central_aisle_stage.jpeg',
       path: '/halls/hall-koundinya',
       description: 'Modern wood-slat architectural ceiling, custom milestone stage & private VIP lounge.'
@@ -133,7 +110,7 @@ export default function InteractiveBookingStudio({ lang }) {
   const todayStr = new Date().toISOString().split('T')[0];
 
   const handleGuestCountChange = (delta) => {
-    setGuestCount((prev) => Math.min(600, Math.max(50, prev + delta)));
+    setGuestCount((prev) => Math.min(600, Math.max(100, prev + delta)));
   };
 
   const handleWhatsAppInquiry = (e) => {
@@ -256,7 +233,7 @@ export default function InteractiveBookingStudio({ lang }) {
                             {item.label}
                           </p>
                           <p className="text-[10px] text-amber-200/60 font-medium mt-0.5">
-                            {lang === 'te' ? item.telugu : ''}
+                            {''}
                           </p>
                         </div>
                       </button>
@@ -292,7 +269,7 @@ export default function InteractiveBookingStudio({ lang }) {
                     <div className="flex-1 text-center">
                       <input
                         type="range"
-                        min="50"
+                        min="100"
                         max="600"
                         step="25"
                         value={guestCount}

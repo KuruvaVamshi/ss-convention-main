@@ -4,37 +4,8 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import SEO from '../components/SEO';
 import { spacesData } from '../data/spacesData';
-import { venueData } from '../data/venueData';
-import {
-  Sparkles,
-  Building,
-  Users,
-  Snowflake,
-  ArrowRight,
-  Eye,
-  Phone,
-  MessageSquare,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Maximize2,
-  Check,
-  ShieldCheck,
-  Zap,
-  UtensilsCrossed,
-  Car,
-  Volume2,
-  Lightbulb,
-  DoorClosed,
-  Layers,
-  Compass,
-  Calendar,
-  Play,
-  Pause,
-  LayoutGrid,
-  Film
-} from 'lucide-react';
+import { Sparkles, Building, Users, Snowflake, ArrowRight, Eye, ChevronLeft, ChevronRight, X, Maximize2, Check, ShieldCheck, Zap, UtensilsCrossed, Car, DoorClosed, Layers, Calendar } from 'lucide-react';
+import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 
 /**
  * Animated Counter Component for Luxury Capacity Numbers
@@ -704,7 +675,7 @@ function HallInteractiveShowcase({ hall, meta, hallNumber, onOpenLightbox }) {
   );
 }
 
-export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
+export default function SpacesPage({ onOpenLightbox }) {
   const shouldReduce = useReducedMotion();
   const [activeNav, setActiveNav] = useState('hall-vasishta');
 
@@ -861,24 +832,11 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
                   <span>Schedule Hall Visit</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
-                <a
-                  href={`https://wa.me/${venueData.whatsappNumber}?text=${encodeURIComponent(
-                    `Hello SS Convention, I would like to enquire about reserving ${hall.name} on the ${meta.floor}.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-outline-gold"
-                >
-                  <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>WhatsApp Venue</span>
-                </a>
-                <a
-                  href={`tel:${venueData.phones[0].raw}`}
-                  className="btn-outline-gold hidden sm:inline-flex"
-                >
-                  <Phone className="w-3.5 h-3.5 text-amber-300" />
-                  <span>Direct Call</span>
-                </a>
+                <WhatsAppButton
+                  label="WhatsApp Venue"
+                  message={`Hello SS Convention, I would like to enquire about reserving ${hall.name} on the ${meta.floor}.`}
+                />
+                <CallButton label="Direct Call" />
               </div>
             </div>
           </div>
@@ -972,7 +930,7 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
             description={meta.carouselText}
             images={hall.gallery}
             onOpenLightbox={openGalleryModal}
-            lang={lang}
+
           />
         </div>
       </motion.section>
@@ -997,7 +955,7 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
             ))}
           </div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}
@@ -1005,18 +963,16 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
             transition={{ duration: 0.8, ease: easeLuxury }}
           >
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">
-              {lang === 'te' ? 'మా వేదికను కనుగొనండి' : 'Wedding & Banquet Halls · Meerpet'}
+              {'Wedding & Banquet Halls · Meerpet'}
             </p>
             <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wide leading-[1.1]">
-              {lang === 'te' ? 'వివాహ & వేడుకల వేదికలు' : 'Wedding & Function Halls in Meerpet'}
+              {'Wedding & Function Halls in Meerpet'}
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#EED9A6] to-[#C5A059] text-xl sm:text-3xl lg:text-4xl mt-2">
-                {lang === 'te' ? 'ఎస్.ఎస్. కన్వెన్షన్, హైదరాబాద్' : 'Three Distinct Halls at S.S. Convention, Hyderabad'}
+                {'Three Distinct Halls at S.S. Convention, Hyderabad'}
               </span>
             </h1>
             <p className="mt-5 max-w-xl text-base sm:text-lg text-mocha leading-relaxed">
-              {lang === 'te'
-                ? 'మీ మరపురాని వేడుకలకు రూపకల్పన చేసిన వేదికలను అన్వేషించండి.'
-                : 'Explore the spaces designed to bring your most memorable celebrations to life.'}
+              {'Explore the spaces designed to bring your most memorable celebrations to life.'}
             </p>
           </motion.div>
         </div>
@@ -1119,19 +1075,8 @@ export default function SpacesPage({ onOpenLightbox, lang = 'en' }) {
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
             <Link to="/contact" className="btn-gold">Enquire about your event</Link>
-            <a
-              href={`https://wa.me/${venueData.whatsappNumber}?text=${encodeURIComponent(
-                'Hello SS Convention, I would like to enquire about hall availability and booking.'
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-outline-gold"
-            >
-              <MessageSquare className="w-4 h-4" /> WhatsApp
-            </a>
-            <a href={`tel:${venueData.phones[0].raw}`} className="btn-outline-gold">
-              <Phone className="w-4 h-4 text-amber-300" /> {venueData.phones[0].display}
-            </a>
+            <WhatsAppButton message="Hello SS Convention, I would like to enquire about hall availability and booking." />
+            <CallButton />
           </div>
 
           <ul className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-mocha pt-6 border-t border-[#D4AF37]/30 w-full">

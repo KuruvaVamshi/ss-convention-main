@@ -1,9 +1,8 @@
 import React from 'react';
 import ImageReveal from './ImageReveal';
-import { Award, HeartHandshake, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
-import { venueData } from '../data/venueData';
+import { CheckCircle2, Sparkles } from 'lucide-react';
 
-export default function AboutSection({ lang }) {
+export default function AboutSection() {
   return (
     <section id="about" className="py-20 lg:py-28 relative overflow-hidden">
       {/* Background radial glow */}
@@ -74,7 +73,7 @@ export default function AboutSection({ lang }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
               {[
                 "Strategic Meerpet / Jillelaguda Location",
-                "Spacious Layout: 50 to 500 Capacity",
+                "Spacious Layout: 100 to 500 Capacity",
                 "Pure Ghee & Authentic Catering Options",
                 "Separate Ceremony & Dining Levels",
                 "Dedicated Event Manager & Staff Support",

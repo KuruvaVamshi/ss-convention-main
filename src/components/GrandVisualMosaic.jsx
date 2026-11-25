@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Eye, Sparkles, Filter, Maximize2, Heart, Camera, ChevronRight } from 'lucide-react';
+import { Sparkles, Filter, Maximize2, Heart, Camera, ChevronRight } from 'lucide-react';
 import SplitHeading from './SplitHeading';
 
-export default function GrandVisualMosaic({ onOpenLightbox, lang }) {
+export default function GrandVisualMosaic({ onOpenLightbox }) {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = [
-    { id: 'all', label: lang === 'te' ? 'అన్ని ఫొటోలు' : 'All Moments', icon: Sparkles },
-    { id: 'mandap', label: lang === 'te' ? 'కళ్యాణ మండపం & పూజలు' : 'Mandap & Vedic Rituals', icon: Heart },
-    { id: 'reception', label: lang === 'te' ? 'రిసెప్షన్ స్టేజ్ డెకర్స్' : 'Reception & Stage Decor', icon: Sparkles },
-    { id: 'dining', label: lang === 'te' ? 'రాయల్ విందు & మెనూలు' : 'Royal Banquets & Feasts', icon: Camera },
-    { id: 'birthdays', label: lang === 'te' ? 'బారసాల & 1వ పుట్టినరోజులు' : 'Cradle & 1st Birthdays', icon: Camera },
-    { id: 'facade', label: lang === 'te' ? 'ఎంట్రన్స్ & లాబీ' : 'Entrance, Lobby & Facade', icon: Camera },
+    { id: 'all', label: 'All Moments', icon: Sparkles },
+    { id: 'mandap', label: 'Mandap & Vedic Rituals', icon: Heart },
+    { id: 'reception', label: 'Reception & Stage Decor', icon: Sparkles },
+    { id: 'dining', label: 'Royal Banquets & Feasts', icon: Camera },
+    { id: 'birthdays', label: 'Cradle & 1st Birthdays', icon: Camera },
+    { id: 'facade', label: 'Entrance, Lobby & Facade', icon: Camera },
   ];
 
   // 32 Authentic Real Photographs Only
@@ -301,20 +301,18 @@ export default function GrandVisualMosaic({ onOpenLightbox, lang }) {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/50 border border-[#D4AF37]/50 text-amber-300 text-xs font-bold tracking-widest uppercase mb-4 shadow-md backdrop-blur-sm">
             <Camera className="w-3.5 h-3.5 text-amber-400" />
-            <span>{lang === 'te' ? 'నిజమైన ఛాయాచిత్రాలు' : 'Verified Authentic Venue Photography'}</span>
+            <span>{'Verified Authentic Venue Photography'}</span>
           </div>
 
           <SplitHeading
             as="h2"
             className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wide text-white uppercase mb-4 drop-shadow"
           >
-            {lang === 'te' ? 'రాచరిక వేడుకల చిత్రమాలిక' : 'Moments of Grandeur'}
+            {'Moments of Grandeur'}
           </SplitHeading>
 
           <p className="text-amber-100/90 text-xs sm:text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
-            {lang === 'te'
-              ? 'ఎస్.ఎస్ కన్వెన్షన్‌లో జరిగిన వివాహాలు, రిసెప్షన్లు, విందులు మరియు వేడుకల వాస్తవిక దృశ్యాలు. ప్రతి చిత్రం మా నాణ్యతకు నిదర్శనం.'
-              : 'Every corner of S.S Convention is built to inspire wonder. Explore our authentic stage decor, crystal chandeliers, royal banquet dining, and serene foyers.'}
+            {'Every corner of S.S Convention is built to inspire wonder. Explore our authentic stage decor, crystal chandeliers, royal banquet dining, and serene foyers.'}
           </p>
 
           {/* Interactive Category Filter Pills */}

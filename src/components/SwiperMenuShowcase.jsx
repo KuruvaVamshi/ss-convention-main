@@ -1,7 +1,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
-import { Utensils, Eye, ArrowRight, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Utensils, Eye, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Swiper styles
@@ -10,7 +10,7 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-export default function SwiperMenuShowcase({ onOpenLightbox, lang }) {
+export default function SwiperMenuShowcase({ onOpenLightbox }) {
   const cards = [
     {
       id: 'm1',

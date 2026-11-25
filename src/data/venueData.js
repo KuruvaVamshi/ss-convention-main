@@ -2,13 +2,14 @@ export const venueData = {
   name: "S.S CONVENTION A/C",
   subTitle: "Wedding & Banquet Halls",
   tagline: "We Make your Celebrations Unforgettable",
-  teluguTagline: "మీ వేడుకలను మరుపురాని అనుభూతిగా మారుస్తాము",
   phones: [
     { display: "+91 89857 00044", raw: "918985700044", primary: true },
     { display: "+91 79816 66692", raw: "917981666692", primary: false }
   ],
   whatsappNumber: "918985700044",
   whatsapp: { raw: "918985700044", display: "+91 89857 00044" },
+  // Official Instagram profile URL shown in floating contact cluster, footer, and contact details.
+  instagramUrl: "https://www.instagram.com/ss_convention_hall/",
   address: {
     line1: "Raghavendra Nagar Colony",
     locality: "Jillelaguda, Meerpet",
@@ -125,14 +126,14 @@ export const venueData = {
     ]
   },
   capacity: {
-    min: 50,
+    min: 100,
     max: 500,
     mainHall: 500,
     miniHall: 150,
     diningHall: 250
   },
   highlights: [
-    { id: "capacity", label: "50 to 600 Guests", desc: "Three halls, from intimate to grand", icon: "Users" },
+    { id: "capacity", label: "Minimum 100 Guests", desc: "Three halls, from 100 to 600 guests", icon: "Users" },
     { id: "ac", label: "Central Cassette A/C", desc: "Even climate control throughout", icon: "Snowflake" },
     { id: "dining", label: "Separate Dining Hall", desc: "Round banquet tables & buffet counters", icon: "UtensilsCrossed" },
     { id: "parking", label: "Ample Car Parking", desc: "Spacious on-premises parking space", icon: "Car" },

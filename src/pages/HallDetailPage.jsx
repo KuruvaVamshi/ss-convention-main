@@ -6,34 +6,8 @@ import {
   getHallById
 } from '../data/spacesData';
 import { venueData } from '../data/venueData';
-import {
-  Users,
-  Snowflake,
-  Maximize2,
-  Calendar,
-  Phone,
-  CheckCircle2,
-  ArrowRight,
-  ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
-  Sparkles,
-  ShieldCheck,
-  DoorClosed,
-  Volume2,
-  Lightbulb,
-  Zap,
-  UtensilsCrossed,
-  Car,
-  Accessibility,
-  Flame,
-  Droplets,
-  HelpCircle,
-  Eye,
-  Building,
-  Clock,
-  Compass
-} from 'lucide-react';
+import { telLink } from '../lib/contact';
+import { Users, Snowflake, Maximize2, Calendar, Phone, CheckCircle2, ArrowRight, ChevronLeft, ChevronRight, Sparkles, ShieldCheck, DoorClosed, Volume2, Lightbulb, Zap, UtensilsCrossed, Car, Accessibility, Flame, Droplets, HelpCircle, Eye, Building, Compass } from 'lucide-react';
 
 // Icon Map for dynamic amenities
 const iconMap = {
@@ -53,7 +27,7 @@ const iconMap = {
   Sparkles
 };
 
-export default function HallDetailPage({ onOpenLightbox, lang }) {
+export default function HallDetailPage({ onOpenLightbox }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -160,7 +134,7 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
     },
     'hall-koundinya': {
       title: 'Hall Koundinya – Mini Banquet & Marriage Hall Meerpet | S.S. Convention',
-      description: 'Hall Koundinya at S.S. Convention Meerpet is an intimate mini banquet hall for cradle ceremonies, birthday parties, and compact weddings (50–150 guests).',
+      description: 'Hall Koundinya at S.S. Convention Meerpet is an intimate mini banquet hall for cradle ceremonies, birthday parties, and compact weddings (100–150 guests).',
       keywords: 'Hall Koundinya, Marriage Hall Meerpet, Mini Banquet Hall Hyderabad, Birthday Party Halls in Hyderabad, Engagement Halls in Hyderabad',
       h1Sub: 'Mini Banquet & Marriage Hall · Meerpet, Hyderabad'
     },
@@ -216,11 +190,11 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
           <img
             src={hall.coverImage || hall.image}
             alt={`${hall.name} luxury wedding & banquet hall interior at S.S. Convention Meerpet`}
-            className="w-full h-full object-cover object-center scale-105 animate-pulse-slow brightness-90"
+            className="w-full h-full object-cover object-center scale-105 animate-pulse-slow"
           />
           {/* Multi-layered Royal Velvet & Dark Vignette Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#450B17]/75 to-black/50" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#3A0813]/90 via-transparent to-[#3A0813]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/15" />
         </div>
 
         {/* Hero Content Container */}
@@ -289,8 +263,8 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
               </button>
 
               <a
-                href={`tel:${venueData.phones[0].raw}`}
-                className="px-6 py-4 rounded-full border border-white/30 hover:border-amber-400 text-white hover:text-amber-300 font-cinzel font-semibold text-xs sm:text-sm tracking-wider uppercase transition-all flex items-center gap-2"
+                href={telLink(0)}
+                className="md:hidden px-6 py-4 rounded-full border border-white/30 hover:border-amber-400 text-white hover:text-amber-300 font-cinzel font-semibold text-xs sm:text-sm tracking-wider uppercase transition-all flex items-center gap-2"
               >
                 <Phone className="w-4 h-4 text-amber-300" />
                 <span>Call Venue Manager</span>
@@ -750,7 +724,7 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
           </div>
 
           {/* Booking Card Form */}
-          <div className="bg-[#450B17] rounded-3xl p-6 sm:p-10 border-2 border-[#D4AF37]/50 shadow-2xl relative overflow-hidden">
+          <div className="bg-[#5E1628] rounded-3xl p-6 sm:p-10 border-2 border-[#D4AF37]/50 shadow-2xl relative overflow-hidden">
             {isSubmitted ? (
               <div className="text-center py-12 space-y-4">
                 <div className="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 text-emerald-400 flex items-center justify-center mx-auto mb-4">
@@ -892,8 +866,8 @@ export default function HallDetailPage({ onOpenLightbox, lang }) {
                   </button>
 
                   <a
-                    href={`tel:${venueData.phones[0].raw}`}
-                    className="w-full sm:w-auto px-6 py-4 rounded-full border border-amber-300/60 hover:bg-white/10 text-white font-cinzel font-bold text-xs sm:text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2"
+                    href={telLink(0)}
+                    className="md:hidden w-full sm:w-auto px-6 py-4 rounded-full border border-amber-300/60 hover:bg-white/10 text-white font-cinzel font-bold text-xs sm:text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2"
                   >
                     <Phone className="w-4 h-4 text-amber-300" />
                     <span>Call +91 89857 00044</span>

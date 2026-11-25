@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Sparkles, Calendar, Utensils, MapPin, Eye, Play, ShieldCheck } from 'lucide-react';
-import { venueData } from '../data/venueData';
-import { teluguTranslations } from '../data/teluguData';
+import { Sparkles, Calendar, Utensils, MapPin, Eye, Play } from 'lucide-react';
 
-export default function Hero({ lang }) {
+export default function Hero() {
   const [activeHeroView, setActiveHeroView] = useState('hall'); // 'hall' or 'facade'
 
   const heroImages = {
@@ -41,7 +39,7 @@ export default function Hero({ lang }) {
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
           <span className="text-xs font-semibold text-emerald-200 tracking-wide uppercase">
-            {lang === 'te' ? '2026 - 2027 బుకింగ్స్ ప్రారంభం' : 'Now Booking Auspicious Dates for 2026 - 2027'}
+            {'Now Booking Auspicious Dates for 2026 - 2027'}
           </span>
         </div>
 
@@ -53,21 +51,15 @@ export default function Hero({ lang }) {
 
         {/* Grand Headline (Serif Luxury) */}
         <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-stone-100 max-w-4xl leading-tight sm:leading-tight mb-5">
-          {lang === 'te' ? (
-            <span>{teluguTranslations.hero.title}</span>
-          ) : (
-            <>
+          {<>
               Where Grand Traditions Meet{' '}
               <span className="gold-gradient-text block sm:inline">Unforgettable Celebrations</span>
-            </>
-          )}
+            </>}
         </h1>
 
         {/* Tagline / Subtitle */}
         <p className="text-stone-300 text-sm sm:text-lg max-w-2xl font-normal leading-relaxed mb-8 text-stone-200/90">
-          {lang === 'te'
-            ? teluguTranslations.hero.subtitle
-            : "Hyderabad's premier central air-conditioned destination for Weddings, Receptions, 1st Birthdays, Cradle Ceremonies, and Grand Banquets for 50 to 500 guests."
+          {"Hyderabad's premier central air-conditioned destination for Weddings, Receptions, 1st Birthdays, Cradle Ceremonies, and Grand Banquets for 100 to 500 guests."
           }
         </p>
 
@@ -78,7 +70,7 @@ export default function Hero({ lang }) {
             className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-gold-shimmer text-obsidian-950 font-bold text-sm tracking-wider uppercase shadow-xl shadow-gold-500/25 hover:brightness-110 active:scale-95 transition-all duration-200"
           >
             <Calendar className="w-4 h-4" />
-            <span>{lang === 'te' ? teluguTranslations.hero.bookBtn : 'Book Your Date Today'}</span>
+            <span>{'Book Your Date Today'}</span>
           </a>
 
           <a
@@ -86,7 +78,7 @@ export default function Hero({ lang }) {
             className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-obsidian-900/80 hover:bg-obsidian-800 text-stone-100 font-semibold text-sm border border-gold-500/30 hover:border-gold-400 backdrop-blur-md transition-all duration-200"
           >
             <Utensils className="w-4 h-4 text-gold-400" />
-            <span>{lang === 'te' ? teluguTranslations.hero.menuBtn : 'Explore Catering Menus'}</span>
+            <span>{'Explore Catering Menus'}</span>
           </a>
 
           <a

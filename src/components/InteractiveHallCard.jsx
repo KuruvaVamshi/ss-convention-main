@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Users, Snowflake, ArrowRight, Maximize2, Sparkles, Building } from 'lucide-react';
 
-export default function InteractiveHallCard({ hall, onOpenLightbox, lang }) {
+export default function InteractiveHallCard({ hall, onOpenLightbox }) {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
   const [activeImage, setActiveImage] = useState(hall.hallImage || hall.image);
@@ -50,7 +50,7 @@ export default function InteractiveHallCard({ hall, onOpenLightbox, lang }) {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="bg-[#450B17] rounded-[26px] overflow-hidden border border-[#D4AF37]/35 flex flex-col group transition-all duration-300 shadow-2xl hover:border-amber-400 hover:shadow-[0_10px_35px_rgba(212,175,55,0.18)] relative text-white"
+      className="bg-[#5E1628] rounded-[26px] overflow-hidden border border-[#D4AF37]/35 flex flex-col group transition-all duration-300 shadow-2xl hover:border-amber-400 hover:shadow-[0_10px_35px_rgba(212,175,55,0.18)] relative text-white"
       style={{
         transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
         transition: rotate.x === 0 && rotate.y === 0 ? 'transform 0.5s ease-out' : 'none'

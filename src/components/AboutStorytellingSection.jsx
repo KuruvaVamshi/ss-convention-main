@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Sparkles, Building, UtensilsCrossed, Heart } from 'lucide-react';
+import { ArrowRight, Sparkles, Building, UtensilsCrossed } from 'lucide-react';
 
 /**
  * PHASE 4 – ABOUT S.S. CONVENTION
@@ -11,28 +11,18 @@ import { ArrowRight, Sparkles, Building, UtensilsCrossed, Heart } from 'lucide-r
  * Composition: Asymmetric two-column composition with two authentic venue photographs.
  * Animations: Exact timing and easing as specified (Mask reveal, line-by-line reveal, expanding gold rule, desktop parallax).
  */
-export default function AboutStorytellingSection({ lang = 'en', onOpenLightbox }) {
+export default function AboutStorytellingSection({ onOpenLightbox }) {
   const shouldReduceMotion = useReducedMotion();
 
   // Content configuration with verified venue facts
   const content = {
-    eyebrow: lang === 'te' 
-      ? 'ఎస్.ఎస్ కన్వెన్షన్ కథనం' 
-      : 'THE STORY OF S.S. CONVENTION',
-    headingLine1: lang === 'te' 
-      ? 'ప్రతి శుభకార్యం ఒక' 
-      : 'A Place Where Every Celebration',
-    headingLine2: lang === 'te' 
-      ? 'శాశ్వత మధుర జ్ఞాపకంగా మారుతుంది.' 
-      : 'Becomes a Timeless Memory.',
-    description: lang === 'te'
-      ? 'హైదరాబాద్ మీర్‌పేట్‌లో వైభవమైన శుభకార్యాలకు సంపూర్ణ చిరునామా ఎస్.ఎస్ కన్వెన్షన్. స్తంభాలు లేని విశాలమైన కళ్యాణ మండపాలు, విందు వాసనలు కలవకుండా ప్రత్యేకంగా నిర్మించిన బాంక్వెట్ డైనింగ్ ఫ్లోర్, మరియు నిరంతర సెంట్రల్ ఎయిర్ కండిషనింగ్‌తో మీ వివాహాలు, రిసెప్షన్లు మరియు కుటుంబ వేడుకలను రాచరిక వైభవంతో నిర్వహిస్తాము.'
-      : 'Nestled strategically in Meerpet, Hyderabad, S.S. Convention was designed with a singular devotion: turning sacred muhurthams and family milestones into grand royal memories. Built with pillarless architectural sightlines, our three specialized celebration halls allow every guest an unhindered view of the stage, while our dedicated separate dining level ensures pure ceremonial sanctity with zero food aroma in the sacred mandap.',
-    ctaText: lang === 'te' 
-      ? 'మా పూర్తి చరిత్ర & వేదికలను చూడండి' 
-      : 'EXPLORE OUR STORY & SPACES',
-    image1Title: lang === 'te' ? 'హాల్ వశిష్ట – ప్రధాన కళ్యాణ మండపం' : 'Hall Vasishta – Grand Kalyana Mandapam Interior',
-    image2Title: lang === 'te' ? 'లాబీ బుద్ధ వాటర్ ఫౌంటైన్' : 'Lobby Buddha Fountain Welcoming Foyer'
+    eyebrow: 'THE STORY OF S.S. CONVENTION',
+    headingLine1: 'A Place Where Every Celebration',
+    headingLine2: 'Becomes a Timeless Memory.',
+    description: 'Nestled strategically in Meerpet, Hyderabad, S.S. Convention was designed with a singular devotion: turning sacred muhurthams and family milestones into grand royal memories. Built with pillarless architectural sightlines, our three specialized celebration halls allow every guest an unhindered view of the stage, while our dedicated separate dining level ensures pure ceremonial sanctity with zero food aroma in the sacred mandap.',
+    ctaText: 'EXPLORE OUR STORY & SPACES',
+    image1Title: 'Hall Vasishta – Grand Kalyana Mandapam Interior',
+    image2Title: 'Lobby Buddha Fountain Welcoming Foyer'
   };
 
   const easeLuxury = [0.22, 1, 0.36, 1];

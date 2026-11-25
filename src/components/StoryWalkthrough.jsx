@@ -13,7 +13,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 
-export default function StoryWalkthrough({ onOpenLightbox, lang }) {
+export default function StoryWalkthrough({ onOpenLightbox }) {
   const [activeStep, setActiveStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [swappedImage, setSwappedImage] = useState(false);

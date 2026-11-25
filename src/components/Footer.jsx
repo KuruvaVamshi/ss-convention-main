@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { venueData } from '../data/venueData';
+import { WhatsAppIcon, InstagramIcon } from './BrandIcons';
+import { whatsappLink, telLink, instagramLink } from '../lib/contact';
 import { MapPin, Phone, Heart, Sparkles, CalendarCheck } from 'lucide-react';
 
-export default function Footer({ lang }) {
+export default function Footer() {
   const location = useLocation();
 
   const handleHomeClick = (e) => {
@@ -68,8 +70,8 @@ export default function Footer({ lang }) {
               <li><Link to="/" onClick={handleHomeClick} className="hover:text-amber-300 transition-colors">Home & Palace Overview</Link></li>
               <li><Link to="/about" className="hover:text-amber-300 transition-colors">About S.S Convention</Link></li>
               <li><Link to="/spaces" className="hover:text-amber-300 transition-colors">Our Halls & Spaces</Link></li>
-              <li><Link to="/facilities" className="hover:text-amber-300 transition-colors">Facilities & Amenities</Link></li>
-              <li><Link to="/gallery" className="hover:text-amber-300 transition-colors">Photo Gallery & 4K Tours</Link></li>
+              <li><Link to="/about#facilities" className="hover:text-amber-300 transition-colors">Facilities & Amenities</Link></li>
+              <li><Link to="/gallery" className="hover:text-amber-300 transition-colors">Photo Gallery & Celebrations</Link></li>
               <li><Link to="/menus" className="hover:text-amber-300 transition-colors">Dining & Catering Menus</Link></li>
               <li><Link to="/policies" className="hover:text-amber-300 transition-colors">Official Policies & Guidelines</Link></li>
               <li><Link to="/contact" className="hover:text-amber-300 transition-colors">Book Visit & Interactive Estimator</Link></li>
@@ -127,16 +129,30 @@ export default function Footer({ lang }) {
               </a>
               <p className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-amber-300 flex-shrink-0" />
-                <a href={`tel:${venueData.phones[0].raw}`} className="font-bold text-white hover:text-amber-200 hover:underline">
+                <a href={telLink(0)} className="font-bold text-white hover:text-amber-200 hover:underline">
                   +91 89857 00044 (Primary)
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-amber-300 flex-shrink-0" />
-                <a href={`tel:${venueData.phones[1].raw}`} className="font-bold text-white hover:text-amber-200 hover:underline">
+                <a href={telLink(1)} className="font-bold text-white hover:text-amber-200 hover:underline">
                   +91 79816 66692
                 </a>
               </p>
+              <p className="flex items-center gap-2">
+                <WhatsAppIcon className="w-4 h-4 text-[#25D366] flex-shrink-0" />
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-amber-200 hover:underline">
+                  Chat on WhatsApp
+                </a>
+              </p>
+              {instagramLink() && (
+                <p className="flex items-center gap-2">
+                  <InstagramIcon className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                  <a href={instagramLink()} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-amber-200 hover:underline">
+                    Follow on Instagram
+                  </a>
+                </p>
+              )}
               <div className="pt-2">
                 <Link
                   to="/contact"

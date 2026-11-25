@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { MapPin, Phone, Clock, Car, Navigation, Copy, Check, ExternalLink, MessageSquare, Minus, Plus } from 'lucide-react';
 import SEO from '../components/SEO';
 import { venueData } from '../data/venueData';
+import { instagramLink } from '../lib/contact';
+import { InstagramIcon } from '../components/BrandIcons';
 import Reveal from '../components/Reveal';
 import SectionHeader from '../components/SectionHeader';
 import GoogleReviewsMapSection from '../components/GoogleReviewsMapSection';
@@ -43,7 +45,7 @@ const travelDistances = [
 const maxKm = Math.max(...travelDistances.map((t) => parseFloat(t.dist)));
 
 function recommendHall(guests) {
-  if (guests <= 180) return { name: 'Hall Koundinya', capacity: '50 – 200 guests' };
+  if (guests <= 180) return { name: 'Hall Koundinya', capacity: '100 – 200 guests' };
   if (guests <= 320) return { name: 'Hall Agasthya', capacity: '200 – 350 guests' };
   return { name: 'Hall Vasishta', capacity: '300 – 600 seated' };
 }
@@ -99,7 +101,7 @@ export default function ContactPage() {
           alt="S.S. Convention royal entrance gates in Meerpet, Hyderabad"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#450B17] via-[#1C0409]/75 to-[#1C0409]/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Reservations & Location</p>
@@ -166,7 +168,7 @@ export default function ContactPage() {
                 <div>
                   <span className="text-xs tracking-[0.2em] uppercase text-amber-300">Guests</span>
                   <div className="mt-2 flex items-center justify-between rounded-xl border border-[#D4AF37]/35 bg-[#3D0A14] px-2 py-1.5">
-                    <button type="button" aria-label="Fewer guests" onClick={() => setGuests((g) => Math.max(50, g - 25))} className="w-10 h-10 rounded-lg hover:bg-[#5A1322] flex items-center justify-center">
+                    <button type="button" aria-label="Fewer guests" onClick={() => setGuests((g) => Math.max(100, g - 25))} className="w-10 h-10 rounded-lg hover:bg-[#5A1322] flex items-center justify-center">
                       <Minus className="w-4 h-4" />
                     </button>
                     <span className="font-cinzel text-xl font-bold tabular-nums">{guests}</span>
@@ -218,7 +220,7 @@ export default function ContactPage() {
 
           {/* Contact details */}
           <Reveal delay={0.1} className="lg:col-span-5">
-            <div className="lg:sticky lg:top-28 rounded-2xl bg-[#450B17] border border-[#D4AF37]/30 p-6 sm:p-8 space-y-6">
+            <div className="lg:sticky lg:top-28 rounded-2xl bg-[#5E1628] border border-[#D4AF37]/30 p-6 sm:p-8 space-y-6">
               <div>
                 <h2 className="font-cinzel text-2xl font-bold">S.S Convention A/C</h2>
                 <p className="text-xs tracking-[0.25em] uppercase text-amber-300 mt-1">Wedding & Banquet Halls</p>
@@ -265,6 +267,17 @@ export default function ContactPage() {
               <a href={venueData.googleMapsDirectionsUrl} target="_blank" rel="noopener noreferrer" className="btn-outline-gold w-full">
                 <Navigation className="w-4 h-4" /> Get directions
               </a>
+
+              {instagramLink() && (
+                <a
+                  href={instagramLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline-gold w-full"
+                >
+                  <InstagramIcon className="w-4 h-4 text-amber-300" /> Follow @ss_convention_hall
+                </a>
+              )}
             </div>
           </Reveal>
         </div>

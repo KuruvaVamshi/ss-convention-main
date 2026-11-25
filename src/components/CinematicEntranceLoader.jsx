@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import confetti from 'canvas-confetti';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 /**
  * S.S. CONVENTION — CINEMATIC VENUE WALKTHROUGH
@@ -340,7 +340,7 @@ function WarmBloom({ active, x = '50%', y = '30%', delay = 350 }) {
 /* ═══════════════════════════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════════════════ */
-export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
+export default function CinematicEntranceLoader({ onComplete }) {
   const [step, setStep]                   = useState(0);
   const [containerFading, setContainerFading] = useState(false);
   const [shouldRender, setShouldRender]   = useState(() => {
@@ -664,8 +664,8 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         <div className="absolute bottom-0 inset-x-0 h-44 sm:h-56 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={4}
-          headline={lang === 'te' ? 'మీ మధుర క్షణాలు. మా రాజప్రాంగణం.' : 'Your Moments. Our Space.'}
-          subtext={lang === 'te' ? 'ప్రతి శుభకార్యం ఒక అద్భుత జ్ఞాపకంగా మారే పవిత్ర కల్యాణ వేదిక.' : 'Where grand occasions become beautiful memories, and every celebration finds its perfect setting.'}
+          headline={'Your Moments. Our Space.'}
+          subtext={'Where grand occasions become beautiful memories, and every celebration finds its perfect setting.'}
           isActive={step === 4}
           position="bottom"
           delay={250}
@@ -702,8 +702,8 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={3}
-          headline={lang === 'te' ? 'క్షణకాలం ఆగండి. వైభవం ఆహ్వానిస్తుంది.' : 'Pause Here. Let Elegance Welcome You.'}
-          subtext={lang === 'te' ? 'ఘనమైన ఆతిథ్యం, ముందున్న గొప్ప సంబరానికి ఒక శుభారంభం మాత్రమే.' : 'A thoughtful welcome is only the beginning of everything waiting ahead.'}
+          headline={'Pause Here. Let Elegance Welcome You.'}
+          subtext={'A thoughtful welcome is only the beginning of everything waiting ahead.'}
           isActive={step === 3}
           position="bottom"
           delay={250}
@@ -733,8 +733,8 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={2}
-          headline={lang === 'te' ? 'ఈ ప్రవేశద్వారం దాటితే, ఒక దివ్యమైన అనుభూతి.' : 'Beyond This Entrance, Something Beautiful Awaits.'}
-          subtext={lang === 'te' ? 'అడుగు ముందుకు వేయండి. మీ రాచరిక అనుభవం ఇప్పుడే మొదలవుతోంది.' : 'Step inside. Your experience is just beginning.'}
+          headline={'Beyond This Entrance, Something Beautiful Awaits.'}
+          subtext={'Step inside. Your experience is just beginning.'}
           isActive={step === 1}
           position="bottom"
           delay={500}
@@ -767,8 +767,8 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
         <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={1}
-          headline={lang === 'te' ? 'వైభవమైన వేడుకకు అద్భుతమైన ఆరంభం.' : 'A Celebration Begins With a First Impression.'}
-          subtext={lang === 'te' ? 'ప్రతి మధురమైన సందర్భానికి ఒక చిరస్మరణీయమైన శుభారంభం.' : 'Every unforgettable occasion deserves an extraordinary beginning.'}
+          headline={'A Celebration Begins With a First Impression.'}
+          subtext={'Every unforgettable occasion deserves an extraordinary beginning.'}
           isActive={step === 0}
           position="bottom"
           delay={300}
@@ -820,7 +820,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
             textShadow: '0 1px 8px rgba(0,0,0,0.9)',
           }}
         >
-          {lang === 'te' ? 'దాటవేయండి' : 'Skip intro'}
+          {'Skip intro'}
         </button>
 
         {/* Enter Venue button right */}
@@ -852,7 +852,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
             e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
-          <span>{lang === 'te' ? 'వేదికలోకి ప్రవేశించండి' : 'Enter Venue'}</span>
+          <span>{'Enter Venue'}</span>
           <ArrowRight
             className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
             style={{ color: '#D4AF37' }}
@@ -881,7 +881,7 @@ export default function CinematicEntranceLoader({ lang = 'en', onComplete }) {
           className="font-cinzel tracking-[0.28em] uppercase"
           style={{ fontSize: '9px', color: 'rgba(212,175,55,0.65)' }}
         >
-          {lang === 'te' ? 'స్క్రోల్ చేయండి' : 'Scroll to continue'}
+          {'Scroll to continue'}
         </span>
       </div>
 

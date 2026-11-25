@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { cateringMenus, extraItemCharges } from '../data/menusData';
-import { Utensils, Leaf, Drumstick, Check, ArrowRight, FileText, Sparkles, AlertCircle } from 'lucide-react';
+import { Utensils, Leaf, Drumstick, ArrowRight, FileText, Sparkles, AlertCircle } from 'lucide-react';
 
-export default function MenuExplorer({ onSelectMenu, onOpenLightbox, lang }) {
+export default function MenuExplorer({ onSelectMenu, onOpenLightbox }) {
   const [dietaryType, setDietaryType] = useState('veg'); // 'veg' or 'nonVeg'
   const [selectedMenuIndex, setSelectedMenuIndex] = useState(0);
 

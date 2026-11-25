@@ -1,63 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SplitHeading from './SplitHeading';
 import confetti from 'canvas-confetti';
-import { 
-  Sparkles, 
-  CalendarCheck, 
-  ArrowRight, 
-  Phone, 
-  Volume2, 
-  VolumeX, 
-  Play, 
-  Pause,
-  Image as ImageIcon, 
-  Users, 
-  Snowflake, 
-  UtensilsCrossed, 
-  Car, 
-  Sun, 
-  Moon, 
-  Flame, 
-  Maximize2, 
-  Leaf, 
-  Drumstick, 
-  Check, 
-  MessageSquare,
-  Building,
-  Palette,
-  Eye,
-  ChevronDown,
-  FileText,
-  MapPin,
-  Clock,
-  Compass,
-  Music2
-} from 'lucide-react';
+import { Sparkles, CalendarCheck, ArrowRight, Phone, Users, Snowflake, UtensilsCrossed, Sun, Flame, Maximize2, Leaf, Drumstick, Check, Building, ChevronDown, FileText, MapPin, Clock, Music2 } from 'lucide-react';
 import { venueData } from '../data/venueData';
 import { spacesData } from '../data/spacesData';
 import { themesData } from '../data/themesData';
 import { cateringMenus } from '../data/menusData';
+import { WhatsAppIcon } from './BrandIcons';
+import { WhatsAppButton } from './ContactButtons';
+import { whatsappLink } from '../lib/contact';
 
 const CONSOLE_TOPICS = ['halls', 'banquet', 'themes', 'menus', 'contact'];
 
-export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceComplete = false }) {
+export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = false }) {
   // Master Single-View Console Active Tab: 'halls' | 'banquet' | 'themes' | 'menus' | 'contact'
   const [activeConsoleTab, setActiveConsoleTab] = useState('halls');
 
-  // Video / Visual Theater State: Initialized with the Flagship Kalyana Mandapam (Crystal Chandeliers & Bridal Aisle)
+  // Visual Theater State: Initialized with the Flagship Kalyana Mandapam (Crystal Chandeliers & Bridal Aisle)
   const [currentMedia, setCurrentMedia] = useState({
     type: 'image',
     src: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
-    title: lang === 'te' ? 'హాల్ వశిష్ట – గ్రాండ్ కళ్యాణ మండపం (రాయల్ షాండ్లియర్స్ & బ్రైడల్ ఐల్)' : 'Hall Vasishta – Grand Kalyana Mandapam',
-    caption: lang === 'te' ? 'డబుల్-టైర్ గోల్డెన్ క్రిస్టల్ షాండ్లియర్స్ • 70-అడుగుల బ్రైడల్ ఐల్ • ఇటాలియన్ మార్బుల్ ఫ్లోరింగ్' : 'Double-Tier Golden Crystal Chandeliers • 70-ft Center Bridal Aisle • 600 Seated Central A/C'
+    title: 'Hall Vasishta – Grand Kalyana Mandapam',
+    caption: 'Double-Tier Golden Crystal Chandeliers • 70-ft Center Bridal Aisle • 600 Seated Central A/C'
   });
 
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
   const [isTempleAudioActive, setIsTempleAudioActive] = useState(false);
-  const videoRef = useRef(null);
   const audioContextRef = useRef(null);
   const audioOscillatorsRef = useRef([]);
 
@@ -65,43 +34,43 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
   const banquetShowcaseOptions = [
     {
       id: 'hall-vasishta',
-      title: lang === 'te' ? 'హాల్ వశిష్ట – గ్రాండ్ కళ్యాణ మండపం (600 Pax)' : 'Hall Vasishta – Grand Kalyana Mandapam (600 Pax)',
+      title: 'Hall Vasishta – Grand Kalyana Mandapam (600 Pax)',
       shortTitle: 'Grand Kalyana Mandapam',
       badge: 'Premier Hall',
       src: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
-      desc: lang === 'te' ? 'డబుల్-టైర్ క్రిస్టల్ షాండ్లియర్స్, ఇటాలియన్ టైల్స్ & 70 అడుగుల బ్రైడల్ ఐల్.' : 'Double-tier crystal chandeliers, Italian vitrified reflections & 70-ft bridal walk.'
+      desc: 'Double-tier crystal chandeliers, Italian vitrified reflections & 70-ft bridal walk.'
     },
     {
       id: 'dining-hall',
-      title: lang === 'te' ? 'రాయల్ బాంక్వెట్ డైనింగ్ హాల్ (250+ సీట్లు)' : 'Royal Banquet Dining Hall (250+ Seats)',
+      title: 'Royal Banquet Dining Hall (250+ Seats)',
       shortTitle: 'Royal Banquet Floor',
       badge: '250+ Seats',
       src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
-      desc: lang === 'te' ? 'రాచరిక మెరూన్ & గోల్డ్ డామాస్క్ రౌండ్ టేబుల్స్ మరియు గోల్డ్ ఓర్గాంజా చైర్ బోస్.' : 'Round banquet tables in royal maroon & gold damask with golden organza chair ties.'
+      desc: 'Round banquet tables in royal maroon & gold damask with golden organza chair ties.'
     },
     {
       id: 'hall-agasthya',
-      title: lang === 'te' ? 'హాల్ అగస్త్య – ఈవెనింగ్ రిసెప్షన్ స్టేజ్ (350 Pax)' : 'Hall Agasthya – Royal Reception Stage (350 Pax)',
+      title: 'Hall Agasthya – Royal Reception Stage (350 Pax)',
       shortTitle: 'Royal Velvet Stage',
       badge: '350 Pax',
       src: '/assets/09_reception_engagement_stages/stage_floral_ring_arch_royal_sofa_clean.jpeg',
-      desc: lang === 'te' ? 'ఇంపీరియల్ వెల్వెట్ సోఫా, ఫ్లోరల్ రింగ్ ఆర్చ్ & డిజిటల్ స్టేజ్ లైటింగ్.' : 'Imperial velvet sofa, modern floral ring arch & intelligent stage lighting.'
+      desc: 'Imperial velvet sofa, modern floral ring arch & intelligent stage lighting.'
     },
     {
       id: 'entrance',
-      title: lang === 'te' ? 'ఎస్.ఎస్ కన్వెన్షన్ నైట్ ఫసాడ్ & గ్రాండ్ ఎంట్రన్స్' : 'Grand Illuminated Palace Entrance & Facade',
+      title: 'Grand Illuminated Palace Entrance & Facade',
       shortTitle: 'Illuminated Palace Entrance',
       badge: '40-ft Facade',
       src: '/assets/04_exterior_and_entrance/entrance_grand_steps_illuminated_night.jpeg',
-      desc: lang === 'te' ? 'రాత్రి వేళ వెలిగిపోయే రాయల్ మెట్లు, 40 అడుగుల ఫసాడ్ మరియు విశాలమైన పార్కింగ్.' : 'Illuminated marble grand steps, 40-foot palace facade, and on-premise car parking.'
+      desc: 'Illuminated marble grand steps, 40-foot palace facade, and on-premise car parking.'
     },
     {
       id: 'hall-koundinya',
-      title: lang === 'te' ? 'హాల్ కౌండిన్య – మైల్‌స్టోన్ సెలబ్రేషన్స్ హాల్ (200 Pax)' : 'Hall Koundinya – Celebrations Hall (200 Pax)',
+      title: 'Hall Koundinya – Celebrations Hall (200 Pax)',
       shortTitle: 'Cradle & Birthday Hall',
       badge: '200 Pax',
       src: '/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg',
-      desc: lang === 'te' ? '1వ పుట్టినరోజులు, బారసాల మరియు సన్నిహిత కుటుంబ వేడుకలకు వుడ్ స్లాట్ సీలింగ్ హాల్.' : 'Intimate boutique hall with wood slat ceiling, milestone stage & crisp acoustics.'
+      desc: 'Intimate boutique hall with wood slat ceiling, milestone stage & crisp acoustics.'
     }
   ];
 
@@ -193,27 +162,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
   const currentMenu = currentMenus[selectedMenuTier] || currentMenus[0];
   const currentMenuDishes = currentMenu.sections?.flatMap(s => s.items) || [];
 
-  // Sound toggle handler for video
-  const toggleSound = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
-    }
-  };
-
-  // Video play/pause toggle
-  const togglePlayPause = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play().then(() => setIsPlayingVideo(true)).catch(() => {});
-      } else {
-        videoRef.current.pause();
-        setIsPlayingVideo(false);
-      }
-    }
-  };
-
-  // Scroll-driven console: the topic in the middle of the screen drives the pinned viewer.
+  // Console: topic tabs drive the viewer.
   // Refs keep the observer callback pointing at the latest handler and media.
   const switchTabRef = useRef(null);
   const mediaRef = useRef(null);
@@ -226,8 +175,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
       setCurrentMedia({
         type: 'image',
         src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
-        title: lang === 'te' ? 'రాయల్ బాంక్వెట్ డైనింగ్ హాల్ (స్వర్ణ భోజనం - 250+ సీట్లు)' : 'Royal Banquet Dining Hall (Swarna Bhojanam)',
-        caption: lang === 'te' ? 'రాయల్ మెరూన్ & గోల్డ్ డామాస్క్ రౌండ్ టేబుల్స్ • ప్రత్యేక డైనింగ్ ఫ్లోర్ • జీరో మండప వాసన' : '250+ Concurrent Round-Table Seats • Maroon & Gold Damask Linens • Zero Aroma in Mandap'
+        title: 'Royal Banquet Dining Hall (Swarna Bhojanam)',
+        caption: '250+ Concurrent Round-Table Seats • Maroon & Gold Damask Linens • Zero Aroma in Mandap'
       });
     } else if (tab === 'halls') {
       const hall = spacesData[selectedHallIdx] || spacesData[0];
@@ -258,16 +207,16 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
         setCurrentMedia({
           type: 'image',
           src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
-          title: lang === 'te' ? 'ప్రత్యేక డైనింగ్ హాల్ (250+ సీట్లు)' : 'Dedicated Banquet Dining Hall',
-          caption: lang === 'te' ? 'రాయల్ రౌండ్ టేబుల్స్ & ప్రత్యేక విందు ఫ్లోర్' : '250+ Concurrent Seats • Zero Food Aroma in Ceremony Mandap'
+          title: 'Dedicated Banquet Dining Hall',
+          caption: '250+ Concurrent Seats • Zero Food Aroma in Ceremony Mandap'
         });
       }
     } else if (tab === 'contact') {
       setCurrentMedia({
         type: 'image',
         src: '/assets/04_exterior_and_entrance/entrance_grand_steps_illuminated_night.jpeg',
-        title: lang === 'te' ? 'ఎస్.ఎస్ కన్వెన్షన్ ప్రధాన ద్వారం' : 'Grand Welcoming Arch & Entrance',
-        caption: lang === 'te' ? 'రాఘవేంద్ర నగర్ కాలనీ, జిల్లెలగూడ, మీర్‌పేట్' : 'Raghavendra Nagar Colony, Meerpet, Hyderabad'
+        title: 'Grand Welcoming Arch & Entrance',
+        caption: 'Raghavendra Nagar Colony, Meerpet, Hyderabad'
       });
     }
   };
@@ -286,8 +235,8 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
       setCurrentMedia({
         type: 'image',
         src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
-        title: lang === 'te' ? 'ప్రత్యేక డైనింగ్ హాల్ (250+ సీట్లు)' : 'Dedicated Banquet Dining Hall',
-        caption: lang === 'te' ? 'రాయల్ రౌండ్ టేబుల్స్ & ప్రత్యేక విందు ఫ్లోర్' : '250+ Concurrent Seats • Zero Food Aroma in Ceremony Mandap'
+        title: 'Dedicated Banquet Dining Hall',
+        caption: '250+ Concurrent Seats • Zero Food Aroma in Ceremony Mandap'
       });
     }
   };
@@ -403,32 +352,13 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
   mediaRef.current = currentMedia;
   activeTabRef.current = activeConsoleTab;
 
-  // Page scroll drives the console: while the section is pinned, scrolling down slides
-  // the topics left (like the 3D photo scroll) and the viewer follows the topic in view.
-  const { scrollYProgress: consoleProgress } = useScroll({
-    target: consoleSectionRef,
-    offset: ['start start', 'end end']
-  });
-  const consoleX = useTransform(consoleProgress, [0, 1], ['0%', `-${(CONSOLE_TOPICS.length - 1) * 100}%`]);
-
-  useMotionValueEvent(consoleProgress, 'change', (v) => {
-    const idx = Math.max(0, Math.min(CONSOLE_TOPICS.length - 1, Math.round(v * (CONSOLE_TOPICS.length - 1))));
-    const id = CONSOLE_TOPICS[idx];
-    if (id === activeTabRef.current) return;
-    // Don't replace a video the visitor is watching; only move the highlight
-    if (mediaRef.current?.type === 'video') setActiveConsoleTab(id);
-    else switchTabRef.current?.(id);
-  });
-
-  // Dots and arrows scroll the page to the matching point of the pinned section
+  // The console is a normal (un-pinned) section: the dots, arrows and topic cards choose the topic,
+  // and the topic strip slides to match. No scroll-jacking.
+  const consoleIdx = Math.max(0, CONSOLE_TOPICS.indexOf(activeConsoleTab));
   const scrollConsoleTo = (i) => {
-    const section = consoleSectionRef.current;
-    if (!section) return;
-    const last = CONSOLE_TOPICS.length - 1;
     const next = (i + CONSOLE_TOPICS.length) % CONSOLE_TOPICS.length;
-    const travel = section.offsetHeight - window.innerHeight;
-    const top = section.getBoundingClientRect().top + window.scrollY + (next / last) * travel;
-    window.scrollTo({ top, behavior: 'smooth' });
+    const id = CONSOLE_TOPICS[next];
+    switchTabRef.current?.(id);
   };
 
   const triggerFlowerShower = () => {
@@ -477,7 +407,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
         {/* UPPER TIER: BRAND */}
         <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pt-4">
           <p className="font-serif text-xs sm:text-sm tracking-[0.3em] text-[#FFF6D1]/90 mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            || శ్రీరస్తు • శుభమస్తు • అవిఘ్నమస్తు ||
+            || Sri Rastu • Shubhamastu • Avighnamastu ||
           </p>
 
           <h1 className="font-cinzel text-4xl sm:text-6xl md:text-7xl font-bold tracking-[0.12em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] via-[#EED9A6] to-[#C5A059] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] leading-[1.05]">
@@ -494,9 +424,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
           </div>
 
           <p className="mt-4 font-serif italic text-sm sm:text-lg text-mocha tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
-            {lang === 'te'
-              ? '“మీ జీవితంలోని అత్యంత మధురమైన వేడుకలకు రాజభవనం వంటి వేదిక”'
-              : '“Where Grand Traditions Meet Timeless Luxury”'}
+            {'“Where Grand Traditions Meet Timeless Luxury”'}
           </p>
         </div>
 
@@ -506,7 +434,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
         <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pb-3 w-full">
           <ul className="flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-8 gap-y-1 text-xs sm:text-sm text-latte mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {[
-              [Users, '50–600 guests'],
+              [Users, 'Minimum 100 Guests'],
               [Snowflake, 'Central A/C'],
               [UtensilsCrossed, '250+ seat dining hall'],
               [Building, '3 halls'],
@@ -518,18 +446,29 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
             ))}
           </ul>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-            <Link to="/contact" className="btn-gold ss-shimmer">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6">
+            <Link to="/contact" className="btn-gold ss-shimmer !px-4 sm:!px-6 !text-[11px] sm:!text-xs whitespace-nowrap">
               <span className="ss-shimmer-sweep" aria-hidden="true" />
               <CalendarCheck className="w-4 h-4" />
-              <span>{lang === 'te' ? 'హాల్ విజిట్ బుక్ చేయండి' : 'Book a hall visit'}</span>
+              <span>{'Book a hall visit'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
+
+            <a
+              href={whatsappLink('Hello SS Convention Hall, I would like to book a hall visit and check date availability.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Enquire on WhatsApp"
+              title="Enquire on WhatsApp"
+              className="w-11 h-11 flex-shrink-0 inline-flex items-center justify-center rounded-full border border-[#25D366]/60 bg-black/30 text-[#25D366] backdrop-blur-md hover:bg-[#25D366] hover:text-white transition-colors"
+            >
+              <WhatsAppIcon className="w-5 h-5" />
+            </a>
 
             <button
               onClick={toggleTempleAudio}
               aria-label={isTempleAudioActive ? 'Mute palace ambience' : 'Play palace ambience'}
-              className={`w-11 h-11 inline-flex items-center justify-center rounded-full border backdrop-blur-md transition-all cursor-pointer ${
+              className={`w-11 h-11 flex-shrink-0 inline-flex items-center justify-center rounded-full border backdrop-blur-md transition-all cursor-pointer ${
                 isTempleAudioActive
                   ? 'bg-amber-400 text-[#3D0A14] border-amber-300 animate-pulse'
                   : 'bg-black/30 text-latte border-[#C5A059]/50 hover:border-[#C5A059]'
@@ -585,11 +524,10 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
 
       {/* ========================================================
           CHAPTER 2: EXPLORE THE VENUE (interactive console)
-          Scroll-driven: the viewer stays pinned on the left while the five
-          topics scroll past on the right and switch what the viewer shows.
+          Tabbed: the viewer on the left follows the topic chosen on the right.
           ======================================================== */}
-      <section ref={consoleSectionRef} id="interactive-console" className="relative z-10 bg-[#2A060E] border-t border-[#D4AF37]/30 h-[360vh]">
-        <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden pt-20 pb-6">
+      <section ref={consoleSectionRef} id="interactive-console" className="relative z-10 bg-[#2A060E] border-t border-[#D4AF37]/30">
+        <div className="flex flex-col justify-center overflow-hidden py-14 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-2xl">
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Take a closer look</p>
@@ -602,53 +540,22 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
           {/* Pinned viewer */}
           <div className="lg:col-span-6">
             <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black aspect-[16/10] max-h-[34vh] lg:max-h-[50vh] w-full">
-              {currentMedia.type === 'video' ? (
-                <video
-                  ref={videoRef}
+              <AnimatePresence mode="sync">
+                <motion.img
                   key={currentMedia.src}
                   src={currentMedia.src}
-                  autoPlay
-                  loop
-                  muted={isMuted}
-                  playsInline
-                  className="w-full h-full object-cover"
+                  alt={currentMedia.title}
+                  style={getLightingFilter()}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
-              ) : (
-                <AnimatePresence mode="sync">
-                  <motion.img
-                    key={currentMedia.src}
-                    src={currentMedia.src}
-                    alt={currentMedia.title}
-                    style={getLightingFilter()}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                </AnimatePresence>
-              )}
+              </AnimatePresence>
               <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/75 to-transparent pointer-events-none" />
 
               <div className="absolute top-3 right-3 flex items-center gap-2">
-                {currentMedia.type === 'video' && (
-                  <>
-                    <button
-                      onClick={togglePlayPause}
-                      aria-label={isPlayingVideo ? 'Pause video' : 'Play video'}
-                      className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
-                    >
-                      {isPlayingVideo ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
-                    </button>
-                    <button
-                      onClick={toggleSound}
-                      aria-label={isMuted ? 'Unmute' : 'Mute'}
-                      className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors"
-                    >
-                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                    </button>
-                  </>
-                )}
                 <button
                   onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
                   aria-label="View full screen"
@@ -665,10 +572,10 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
             </div>
           </div>
 
-          {/* Topics: slide left as the page scrolls; dots and arrows jump to a topic */}
+          {/* Topics: dots and arrows choose a topic */}
           <div className="lg:col-span-6 min-w-0">
             <div className="overflow-hidden">
-            <motion.div style={{ x: consoleX }} className="flex">
+            <motion.div animate={{ x: `-${consoleIdx * 100}%` }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} className="flex">
             {[
               ['halls', '01', 'Our Halls'],
               ['banquet', '02', 'Dining Floor'],
@@ -899,14 +806,7 @@ export default function HeroStorytelling({ lang, onOpenLightbox, isEntranceCompl
               </ul>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/contact" onClick={triggerFlowerShower} className="btn-gold"><CalendarCheck className="w-4 h-4" /> Check dates</Link>
-                <a
-                  href={`https://wa.me/${venueData.whatsappNumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-outline-gold"
-                >
-                  <MessageSquare className="w-4 h-4" /> WhatsApp
-                </a>
+                <WhatsAppButton />
               </div>
             </div>
           )}

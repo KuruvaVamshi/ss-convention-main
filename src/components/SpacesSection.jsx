@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { spacesData } from '../data/spacesData';
 import { Users, Check, ArrowRight } from 'lucide-react';
 
-export default function SpacesSection({ onSelectSpace, lang }) {
+export default function SpacesSection({ onSelectSpace }) {
   const [activeTab, setActiveTab] = useState(spacesData[0].id);
 
   const currentSpace = spacesData.find((s) => s.id === activeTab) || spacesData[0];
@@ -19,7 +19,7 @@ export default function SpacesSection({ onSelectSpace, lang }) {
             Designed for Intimate Rituals to Grand Receptions
           </h2>
           <p className="text-stone-300 text-sm sm:text-base leading-relaxed">
-            Whether welcoming 50 cherished family members or hosting a grand celebration of 500, SS Convention provides thoughtfully engineered spaces with independent air conditioning and dedicated amenities.
+            Whether welcoming 100 cherished family members or hosting a grand celebration of 500, SS Convention provides thoughtfully engineered spaces with independent air conditioning and dedicated amenities.
           </p>
 
           {/* Interactive Space Selectors (Tabs) */}

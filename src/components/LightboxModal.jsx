@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
+import { WhatsAppIcon } from './BrandIcons';
+import { whatsappLink } from '../lib/contact';
 
 export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev, onNext, index = 0, total = 1 }) {
   const touchStartX = React.useRef(null);
@@ -58,6 +60,16 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev
           )}
           <div className="flex items-center gap-2">
             <a
+              href={whatsappLink(`Hello SS Convention Hall, I liked this photo${title ? ` (${title})` : ''} and would like to enquire about booking.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-1.5 sm:p-2 rounded-full hover:bg-[#25D366]/15 text-[#25D366] transition-colors"
+              title="Enquire about this on WhatsApp"
+              aria-label="Enquire about this on WhatsApp"
+            >
+              <WhatsAppIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+            </a>
+            <a
               href={imageSrc}
               target="_blank"
               rel="noopener noreferrer"
@@ -98,21 +110,11 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev
               </button>
             </>
           )}
-          {imageSrc.endsWith('.mp4') ? (
-            <video
-              src={imageSrc}
-              controls
-              autoPlay
-              playsInline
-              className="max-h-[72vh] sm:max-h-[76vh] max-w-full rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30 bg-black"
-            />
-          ) : (
-            <img
-              src={imageSrc}
-              alt={title || 'Enlarged Preview'}
-              className="max-h-[72vh] sm:max-h-[76vh] max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30"
-            />
-          )}
+          <img
+            src={imageSrc}
+            alt={title || 'Enlarged Preview'}
+            className="max-h-[72vh] sm:max-h-[76vh] max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30"
+          />
         </div>
       </div>
     </div>,

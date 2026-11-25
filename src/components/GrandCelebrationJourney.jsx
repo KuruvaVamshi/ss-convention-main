@@ -1,24 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { 
-  Building, 
-  Heart, 
-  Utensils, 
-  Sparkles, 
-  Baby, 
-  ArrowRight, 
-  Maximize2, 
-  CheckCircle2, 
-  Clock, 
-  Compass,
-  RefreshCw
-} from 'lucide-react';
+import { Building, Heart, Utensils, Sparkles, Baby, ArrowRight, Maximize2, CheckCircle2, Clock } from 'lucide-react';
 import SplitHeading from './SplitHeading';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
+export default function GrandCelebrationJourney({ onOpenLightbox }) {
   const [activeChapter, setActiveChapter] = useState(0);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
   const sectionRef = useRef(null);
@@ -28,7 +16,6 @@ export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
       id: "arrival",
       time: "08:00 AM • CHAPTER I",
       title: "The Grand Royal Baraat Arrival",
-      teluguTitle: "రాచరిక స్వాగతం & గ్రాండ్ ఎంట్రన్స్",
       tagline: "First Impressions That Command Dignity",
       photos: [
         { src: "/assets/04_exterior_and_entrance/exterior_night_facade_parking_lighting.jpeg", title: "40-Foot Illuminated Architectural Facade & Parking" },
@@ -48,7 +35,6 @@ export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
       id: "vedic",
       time: "10:30 AM • CHAPTER II",
       title: "Sacred Vedic Muhurtham & Mandapam",
-      teluguTitle: "వేద కళ్యాణ వేదిక & ముహూర్తం",
       tagline: "Sacred Fire, Lord Balaji & Divine Mantras",
       photos: [
         { src: "/assets/08_wedding_mandap_and_rituals/traditional_wedding_mandap_carved_pillars.jpeg", title: "Hand-Carved Stone Pillars Traditional Mandap" },
@@ -68,7 +54,6 @@ export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
       id: "banquet",
       time: "01:00 PM • CHAPTER III",
       title: "250+ Seat Royal Vindhu Bhojanam",
-      teluguTitle: "రాయల్ విందు భోజనం (ప్రత్యేక ఫ్లోర్)",
       tagline: "Separate Floor • Zero Odor in Mandap",
       photos: [
         { src: "/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg", title: "Round Tables with Maroon & Gold Damask Linens" },
@@ -88,7 +73,6 @@ export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
       id: "reception",
       time: "07:00 PM • CHAPTER IV",
       title: "The Chandelier Grand Reception",
-      teluguTitle: "దివ్యమైన క్రిస్టల్ షాండ్లియర్స్ & రిసెప్షన్",
       tagline: "Crystal Chandeliers & Royal Velvet Throne",
       photos: [
         { src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_royal_sofa_clean.jpeg", title: "Violet Velvet Royal Throne & Floral Ring Arch" },
@@ -108,7 +92,6 @@ export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
       id: "milestone",
       time: "10:00 PM • CHAPTER V",
       title: "Joyous Barasala & 1st Birthday Wonderlands",
-      teluguTitle: "బారసాల (ఉయ్యాల) & 1వ పుట్టినరోజు వేడుకలు",
       tagline: "Suspended Lotus Swings to 3D ONE Marquee Letters",
       photos: [
         { src: "/assets/10_cradle_and_birthday_decor/stage_cradle_naming_ceremony_lotus_swing.jpeg", title: "Suspended Lotus Swing for Cradle Ceremony (Barasala)" },
@@ -148,13 +131,11 @@ export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
             tag="h2" 
             className="font-cinzel text-3xl sm:text-5xl font-bold text-white tracking-wide mb-4 drop-shadow"
           >
-            {lang === 'te' ? 'మీ వివాహ వేడుక ప్రయాణం' : 'The Grand Muhurtham Experience'}
+            {'The Grand Muhurtham Experience'}
           </SplitHeading>
 
           <p className="text-amber-100/80 text-xs sm:text-sm font-normal leading-relaxed max-w-2xl mx-auto">
-            {lang === 'te'
-              ? 'ఉదయం బారాత్ స్వాగతం నుండి రాత్రి రిసెప్షన్ వరకు మీ వేడుక ఒక రాయల్ నవల వలె సాగుతుంది. ప్రతి ఘట్టాన్ని లైవ్‌గా పరిశీలించండి.'
-              : 'Every milestone at S.S Convention is choreographed with regal grace. Step through the 5 chapters of your wedding day, from the morning Baraat to the midnight feast.'}
+            {'Every milestone at S.S Convention is choreographed with regal grace. Step through the 5 chapters of your wedding day, from the morning Baraat to the midnight feast.'}
           </p>
 
           {/* Interactive Chapter Quick Pills */}
@@ -263,10 +244,6 @@ export default function GrandCelebrationJourney({ onOpenLightbox, lang }) {
                 <h3 className="font-cinzel text-xl sm:text-2xl font-bold text-white mb-1 leading-tight">
                   {current.title}
                 </h3>
-
-                <p className="text-xs font-bold text-amber-300 mb-3">
-                  {current.teluguTitle}
-                </p>
 
                 <p className="text-amber-100/85 text-xs sm:text-sm font-normal leading-relaxed mb-4">
                   {current.desc}

@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import {
   Menu,
   X,
-  Globe,
   Phone,
   ChevronDown,
   Building,
@@ -12,9 +11,10 @@ import {
   Heart,
   ArrowRight
 } from 'lucide-react';
-import { venueData } from '../data/venueData';
+import { WhatsAppIcon } from './BrandIcons';
+import { whatsappLink, telLink } from '../lib/contact';
 
-export default function Navbar({ lang, setLang }) {
+export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -179,20 +179,20 @@ export default function Navbar({ lang, setLang }) {
   // The Venue sub-links (Strictly: About Us, Our Halls, Facilities)
   const venueSubLinks = [
     {
-      title: lang === 'te' ? 'మా గురించి' : 'About Us',
-      desc: lang === 'te' ? 'మా చరిత్ర, సంప్రదాయం & లొకేషన్' : 'Heritage story, Buddha foyer & architecture',
+      title: 'About Us',
+      desc: 'Heritage story, Buddha foyer & architecture',
       path: '/about',
       icon: Heart
     },
     {
-      title: lang === 'te' ? 'మా హాల్స్' : 'Our Halls',
-      desc: lang === 'te' ? 'వశిష్ట, అగస్త్య & కౌండిన్య హాల్స్' : 'Hall Vasishta, Agasthya, Koundinya & Dining',
+      title: 'Our Halls',
+      desc: 'Hall Vasishta, Agasthya, Koundinya & Dining',
       path: '/spaces',
       icon: Building
     },
     {
-      title: lang === 'te' ? 'సదుపాయాలు' : 'Facilities',
-      desc: lang === 'te' ? 'సెంట్రల్ ఎసి, విఐపి సూట్స్ & జనరేటర్' : 'Central Daikin A/C, 2 VIP suites, 100% DG backup',
+      title: 'Facilities',
+      desc: 'Central Daikin A/C, 2 VIP suites, 100% DG backup',
       path: '/facilities',
       icon: Sparkles
     }
@@ -223,11 +223,15 @@ export default function Navbar({ lang, setLang }) {
               className="flex items-center gap-3 group flex-shrink-0 cursor-pointer"
               title="SS Convention Hall - Return to Hero Section"
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#D4AF37] p-0.5 flex items-center justify-center bg-black/60 shadow-[0_0_14px_rgba(212,175,55,0.45)] group-hover:scale-105 transition-all overflow-hidden">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-[#D4AF37] flex items-center justify-center bg-black/60 shadow-[0_0_14px_rgba(212,175,55,0.45)] group-hover:scale-105 transition-transform overflow-hidden">
+                {/* Same image as the browser favicon (index.html), shown uncropped and undistorted */}
                 <img
-                  src="/assets/01_brand_and_logos/ss_convention_royal_gold_crest_emblem.jpeg"
-                  alt="SS Convention Royal Crest"
-                  className="w-full h-full object-cover rounded-full filter brightness-110"
+                  src="/assets/01_brand_and_logos/ss_convention_official_swan_logo.jpeg"
+                  alt="S.S. Convention logo"
+                  width="44"
+                  height="44"
+                  decoding="async"
+                  className="w-full h-full object-contain"
                 />
               </div>
               <div className="flex flex-col">
@@ -254,7 +258,7 @@ export default function Navbar({ lang, setLang }) {
               >
                 {({ isActive }) => (
                   <>
-                    <span>{lang === 'te' ? 'హోమ్' : 'HOME'}</span>
+                    <span>{'HOME'}</span>
                     {isActive && (
                       <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -262,91 +266,45 @@ export default function Navbar({ lang, setLang }) {
                 )}
               </NavLink>
 
-              {/* The Venue (Interactive Dropdown Flyout) */}
-              <div
-                className="relative py-2"
-                onMouseEnter={() => handleMouseEnter('venue')}
-                onMouseLeave={handleMouseLeave}
+              {/* /spaces */}
+              <NavLink
+                to="/spaces"
+                className={({ isActive }) =>
+                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
+                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
+                  }`
+                }
               >
-                <button
-                  type="button"
-                  onClick={() => setDesktopDropdown(desktopDropdown === 'venue' ? null : 'venue')}
-                  className={`font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 flex items-center gap-1.5 uppercase cursor-pointer ${
-                    isVenueActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
-                  }`}
-                  aria-haspopup="true"
-                  aria-expanded={desktopDropdown === 'venue'}
-                >
-                  <span>{lang === 'te' ? 'వేదిక' : 'THE VENUE'}</span>
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      desktopDropdown === 'venue' ? 'rotate-180 text-amber-400' : 'text-amber-300/70'
-                    }`}
-                  />
-                  {isVenueActive && (
-                    <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
-                  )}
-                </button>
-
-                {/* Dropdown Card (Solid Opaque Velvet Background, Centered under Trigger, Zero Hero Text Bleed) */}
-                {desktopDropdown === 'venue' && (
-                  <div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[360px] sm:w-[400px] rounded-2xl bg-[#140205] border border-[#D4AF37]/50 shadow-[0_25px_60px_rgba(0,0,0,0.95)] p-2.5 z-50 animate-dropdown-slide before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']"
-                    onMouseEnter={() => handleMouseEnter('venue')}
-                    onMouseLeave={handleMouseLeave}
-                  >
-
-                    <div className="divide-y divide-[#D4AF37]/15">
-                      {venueSubLinks.map((item) => {
-                        const IconComp = item.icon;
-                        return (
-                          <NavLink
-                            key={item.path}
-                            to={item.path}
-                            onClick={closeAllMenus}
-                            className={({ isActive }) =>
-                              `group flex items-center justify-between p-3 rounded-xl transition-all duration-200 ${
-                                isActive
-                                  ? 'bg-[#29050D] border-l-4 border-amber-400 pl-3.5'
-                                  : 'hover:bg-[#25050C] hover:border-l-4 hover:border-amber-400 hover:pl-3.5 text-amber-100/90'
-                              }`
-                            }
-                          >
-                            <div className="flex items-center gap-3.5">
-                              <div className="w-9 h-9 rounded-xl bg-black/60 border border-[#D4AF37]/35 flex items-center justify-center text-amber-400 group-hover:border-amber-400 group-hover:bg-[#3D0A14] transition-all flex-shrink-0 shadow-inner">
-                                <IconComp className="w-4 h-4" />
-                              </div>
-                              <div>
-                                <span className="font-cinzel text-xs sm:text-sm font-bold text-white group-hover:text-amber-200 block transition-colors">
-                                  {item.title}
-                                </span>
-                                <span className="text-[11px] text-amber-200/70 block leading-tight mt-0.5 font-normal">
-                                  {item.desc}
-                                </span>
-                              </div>
-                            </div>
-                            <ArrowRight className="w-3.5 h-3.5 text-amber-400/50 group-hover:text-amber-300 group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
-                          </NavLink>
-                        );
-                      })}
-                    </div>
-
-                    {/* Bottom Concierge Helper Strip */}
-                    <div className="mt-1.5 pt-2 border-t border-[#D4AF37]/20 px-3 flex items-center justify-between text-[10px] text-amber-200/80">
-                      <span>Need instant date confirmation?</span>
-                      <a
-                        href={`tel:${venueData.phones[0].raw}`}
-                        className="text-amber-300 hover:text-white font-bold flex items-center gap-1 transition-colors"
-                      >
-                        <Phone className="w-3 h-3 text-amber-400" />
-                        <span>Call Venue</span>
-                      </a>
-                    </div>
-                  </div>
+                {({ isActive }) => (
+                  <>
+                    <span>HALLS</span>
+                    {isActive && (
+                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                    )}
+                  </>
                 )}
-              </div>
+              </NavLink>
 
-              {/* Gallery */}
+              {/* /about */}
+              <NavLink
+                to="/about"
+                className={({ isActive }) =>
+                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
+                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <span className="xl:hidden">ABOUT</span><span className="hidden xl:inline">ABOUT &amp; FACILITIES</span>
+                    {isActive && (
+                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                    )}
+                  </>
+                )}
+              </NavLink>
+
+                            {/* Gallery */}
               <NavLink
                 to="/gallery"
                 className={({ isActive }) =>
@@ -357,7 +315,7 @@ export default function Navbar({ lang, setLang }) {
               >
                 {({ isActive }) => (
                   <>
-                    <span>{lang === 'te' ? 'గ్యాలరీ' : 'GALLERY'}</span>
+                    <span>{'GALLERY'}</span>
                     {isActive && (
                       <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -376,7 +334,7 @@ export default function Navbar({ lang, setLang }) {
               >
                 {({ isActive }) => (
                   <>
-                    <span>{lang === 'te' ? 'క్యాటరింగ్ & డైనింగ్' : 'DINING'}</span>
+                    <span>{'DINING'}</span>
                     {isActive && (
                       <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -395,7 +353,7 @@ export default function Navbar({ lang, setLang }) {
               >
                 {({ isActive }) => (
                   <>
-                    <span>{lang === 'te' ? 'సంప్రదించండి' : 'CONTACT'}</span>
+                    <span>{'CONTACT'}</span>
                     {isActive && (
                       <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -406,16 +364,17 @@ export default function Navbar({ lang, setLang }) {
 
             {/* 3. Desktop Right Action Controls (>= lg: 1024px) */}
             <div className="hidden lg:flex items-center gap-3.5 flex-shrink-0">
-              {/* Language Switcher (Refined, visually secondary) */}
-              <button
-                type="button"
-                onClick={() => setLang(lang === 'en' ? 'te' : 'en')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wider border border-[#D4AF37]/35 bg-black/40 text-amber-200/90 hover:border-amber-400 hover:text-white hover:bg-[#350710] transition-all cursor-pointer shadow-sm"
-                title="Toggle English / Telugu"
+              {/* WhatsApp enquiry (desktop never shows a call button) */}
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat with us on WhatsApp"
+                title="Chat on WhatsApp"
+                className="hidden xl:flex w-10 h-10 rounded-full border border-[#25D366]/50 bg-black/40 text-[#25D366] flex items-center justify-center hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
               >
-                <Globe className="w-3.5 h-3.5 text-amber-400" />
-                <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
-              </button>
+                <WhatsAppIcon className="w-5 h-5" />
+              </a>
 
               {/* Primary CTA: ENQUIRE NOW (Bespoke Champagne-Gold Treatment) */}
               <Link
@@ -429,16 +388,6 @@ export default function Navbar({ lang, setLang }) {
 
             {/* 4. Mobile & Tablet Right Controls (< lg: 1024px) */}
             <div className="flex lg:hidden items-center gap-2 sm:gap-2.5">
-              {/* Language Switcher */}
-              <button
-                type="button"
-                onClick={() => setLang(lang === 'en' ? 'te' : 'en')}
-                className="px-2.5 py-1.5 rounded-xl text-xs font-bold border border-[#D4AF37]/40 bg-black/40 text-amber-200 hover:bg-[#350710] transition-colors"
-                title="Toggle English / Telugu"
-              >
-                {lang === 'en' ? 'తె' : 'EN'}
-              </button>
-
               {/* Tablet Enquire Now Pill (>= sm) */}
               <Link
                 to="/contact"
@@ -489,52 +438,39 @@ export default function Navbar({ lang, setLang }) {
                     }`
                   }
                 >
-                  <span>{lang === 'te' ? 'హోమ్' : 'HOME'}</span>
+                  <span>{'HOME'}</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
-                {/* The Venue Accordion */}
-                <div className="pt-1">
-                  <button
-                    type="button"
-                    onClick={() => toggleMobileAccordion('venue')}
-                    className="w-full flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase text-amber-100/90 hover:text-white"
-                  >
-                    <span className={isVenueActive ? 'text-amber-300 font-black' : ''}>
-                      {lang === 'te' ? 'వేదిక' : 'THE VENUE'}
-                    </span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-amber-300 transition-transform duration-200 ${
-                        mobileExpanded.venue ? 'rotate-180 text-amber-400' : ''
-                      }`}
-                    />
-                  </button>
+                {/* HALLS */}
+                <NavLink
+                  to="/spaces"
+                  onClick={closeAllMenus}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
+                      isActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'
+                    }`
+                  }
+                >
+                  <span>HALLS</span>
+                  <span className="text-amber-400 text-xs">→</span>
+                </NavLink>
 
-                  {mobileExpanded.venue && (
-                    <div className="pl-3 pr-2 pb-2 space-y-1 bg-black/40 rounded-xl border border-[#D4AF37]/25 mt-1 divide-y divide-[#D4AF37]/10">
-                      {venueSubLinks.map((item) => (
-                        <NavLink
-                          key={item.path}
-                          to={item.path}
-                          onClick={closeAllMenus}
-                          className={({ isActive }) =>
-                            `flex items-center justify-between py-3 px-3 rounded-lg text-xs font-bold transition-all ${
-                              isActive ? 'bg-[#29050D] text-amber-300 border-l-2 border-amber-400' : 'text-amber-100/80 hover:text-white'
-                            }`
-                          }
-                        >
-                          <div className="flex items-center gap-2.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                            <span className="font-cinzel text-xs tracking-wider">{item.title}</span>
-                          </div>
-                          <span className="text-amber-400/70 text-[10px]">→</span>
-                        </NavLink>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                {/* ABOUT &amp; FACILITIES */}
+                <NavLink
+                  to="/about"
+                  onClick={closeAllMenus}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
+                      isActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'
+                    }`
+                  }
+                >
+                  <span>ABOUT &amp; FACILITIES</span>
+                  <span className="text-amber-400 text-xs">→</span>
+                </NavLink>
 
-                {/* Gallery */}
+                                {/* Gallery */}
                 <NavLink
                   to="/gallery"
                   onClick={closeAllMenus}
@@ -544,7 +480,7 @@ export default function Navbar({ lang, setLang }) {
                     }`
                   }
                 >
-                  <span>{lang === 'te' ? 'గ్యాలరీ' : 'GALLERY'}</span>
+                  <span>{'GALLERY'}</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
@@ -558,7 +494,7 @@ export default function Navbar({ lang, setLang }) {
                     }`
                   }
                 >
-                  <span>{lang === 'te' ? 'క్యాటరింగ్ & డైనింగ్' : 'DINING'}</span>
+                  <span>{'DINING'}</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
@@ -572,7 +508,7 @@ export default function Navbar({ lang, setLang }) {
                     }`
                   }
                 >
-                  <span>{lang === 'te' ? 'సంప్రదించండి' : 'CONTACT'}</span>
+                  <span>{'CONTACT'}</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
               </nav>
@@ -590,20 +526,21 @@ export default function Navbar({ lang, setLang }) {
                   <span>ENQUIRE NOW</span>
                 </Link>
 
-                <div className="grid grid-cols-2 gap-2.5 pt-1">
+                <div className="flex gap-2.5 pt-1">
                   <a
-                    href={`tel:${venueData.phones[0].raw}`}
-                    className="py-2.5 px-3 rounded-xl bg-black/50 border border-[#D4AF37]/35 text-amber-300 text-[11px] font-bold flex items-center justify-center gap-1.5"
+                    href={telLink(0)}
+                    className="md:hidden flex-1 py-2.5 px-3 rounded-xl bg-black/50 border border-[#D4AF37]/35 text-amber-300 text-[11px] font-bold flex items-center justify-center gap-1.5"
                   >
                     <Phone className="w-3.5 h-3.5 text-amber-400" />
                     <span>Call Primary</span>
                   </a>
                   <a
-                    href={`https://wa.me/${venueData.whatsappNumber}?text=${encodeURIComponent('Hello SS Convention Hall, I would like to inquire about booking availability.')}`}
+                    href={whatsappLink('Hello SS Convention Hall, I would like to inquire about booking availability.')}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2.5 px-3 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold flex items-center justify-center gap-1.5"
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold flex items-center justify-center gap-1.5"
                   >
+                    <WhatsAppIcon className="w-3.5 h-3.5 text-[#25D366]" />
                     <span>WhatsApp</span>
                   </a>
                 </div>

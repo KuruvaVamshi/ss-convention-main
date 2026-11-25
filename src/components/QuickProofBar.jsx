@@ -14,7 +14,7 @@ const iconMap = {
   Sparkles
 };
 
-export default function QuickProofBar({ lang }) {
+export default function QuickProofBar() {
   const shouldReduceMotion = useReducedMotion();
 
   const containerVariants = {
@@ -59,11 +59,11 @@ export default function QuickProofBar({ lang }) {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 border border-[#D4AF37]/40 mb-2 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span className="text-[10px] font-bold text-amber-300 tracking-[0.25em] uppercase font-cinzel">
-              {lang === 'te' ? 'ప్రీమియం సదుపాయాలు' : 'PREMIER VENUE AMENITIES'}
+              {'PREMIER VENUE AMENITIES'}
             </span>
           </div>
           <h3 className="font-cinzel text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow">
-            {lang === 'te' ? 'మీ వేడుకకు సంపూర్ణ వసతులు' : 'Engineered for Flawless Celebrations'}
+            {'Engineered for Flawless Celebrations'}
           </h3>
         </motion.div>
 

@@ -3,7 +3,7 @@ import { galleryItems } from '../data/galleryData';
 import { Camera, Maximize2 } from 'lucide-react';
 import Reveal from './Reveal';
 
-export default function GallerySection({ onOpenLightbox, lang }) {
+export default function GallerySection({ onOpenLightbox }) {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = [

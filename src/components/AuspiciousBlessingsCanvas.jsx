@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Sparkles, Flower2 } from 'lucide-react';
 
 export default function AuspiciousBlessingsCanvas() {
   const canvasRef = useRef(null);

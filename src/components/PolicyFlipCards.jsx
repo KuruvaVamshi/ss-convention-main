@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Utensils, CreditCard, Sparkles, Clock, RotateCw } from 'lucide-react';
-import { teluguTranslations } from '../data/teluguData';
 
-export default function PolicyFlipCards({ lang, setLang }) {
+export default function PolicyFlipCards() {
   const [flippedCards, setFlippedCards] = useState({});
 
   const toggleFlip = (id) => {
@@ -17,41 +16,33 @@ export default function PolicyFlipCards({ lang, setLang }) {
       id: "food",
       icon: Utensils,
       title: "Food Consumption Policy",
-      teluguTitle: "ఆహార నిబంధనలు",
       badge: "Hygiene Standard",
       frontDesc: "Strict on-premise consumption guidelines regarding catered meals and packaging.",
       backEn: "Food prepared for celebrations is to be consumed strictly within the venue premises. Packing and carrying leftover food outside is strictly prohibited to comply with health, hygiene, and venue norms. Hosts and guests are kindly requested to cooperate with management.",
-      backTe: teluguTranslations.guidelines.foodDesc
     },
     {
       id: "payment",
       icon: CreditCard,
       title: "Settlement Policy",
-      teluguTitle: "ముఖ్యగమనిక - పేమెంట్ నిబంధనలు",
       badge: "Mandatory Term",
       frontDesc: "Strict payment clearance schedule required prior to celebration date.",
       backEn: "The full payment for the event must be settled strictly 2 days before the scheduled event date. Note: This rule is strictly enforced by management with no exceptions entertained. Thank you for your cooperation.",
-      backTe: teluguTranslations.guidelines.paymentDesc
     },
     {
       id: "decor",
       icon: Sparkles,
       title: "Decoration Exclusivity",
-      teluguTitle: "డెకరేషన్ నిబంధన",
       badge: "In-House Only",
       frontDesc: "Policies regarding stage artists, mandap craftsmen, and lighting vendors.",
       backEn: "Outside decoration vendors are strictly NOT allowed. All stage, mandap, floral, balloon, and lighting arrangements are managed exclusively by our verified in-house decor teams to ensure safety and preserve hall aesthetics.",
-      backTe: teluguTranslations.guidelines.decorDesc
     },
     {
       id: "timings",
       icon: Clock,
       title: "Slot Vacation Hours",
-      teluguTitle: "ఈవెంట్ సమయాలు",
       badge: "Strict Schedule",
       frontDesc: "Prescribed hours for day and evening event transitions.",
       backEn: "Lunch party slots must be vacated strictly by 03:00 PM. Dinner party slots must be vacated strictly by 11:00 PM to facilitate sanitization and setup for subsequent bookings.",
-      backTe: teluguTranslations.guidelines.timingsDesc
     }
   ];
 
@@ -68,12 +59,12 @@ export default function PolicyFlipCards({ lang, setLang }) {
             Transparent Guidelines & Policies
           </h2>
           <p className="text-amber-100/80 text-xs sm:text-sm font-normal leading-relaxed mb-6">
-            To ensure every celebration runs smoothly without miscommunication, we maintain crystal-clear agreements. Click any card below to flip and read the exact English & Telugu terms.
+            To ensure every celebration runs smoothly without miscommunication, we maintain crystal-clear agreements. Click any card below to flip and read the exact terms.
           </p>
 
           <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-200 bg-[#3A0813] px-4 py-2 rounded-full border border-[#D4AF37]/40 shadow-sm">
             <RotateCw className="w-3.5 h-3.5 animate-spin text-amber-400" style={{ animationDuration: '6s' }} />
-            <span>Click or Tap Any Card to Flip & Read Official Telugu & English Terms</span>
+            <span>Click or Tap Any Card to Flip & Read the Official Terms</span>
           </div>
         </div>
 
@@ -120,10 +111,6 @@ export default function PolicyFlipCards({ lang, setLang }) {
                       <h3 className="font-cinzel text-lg font-bold text-white mb-1 leading-tight">
                         {p.title}
                       </h3>
-                      <p className="text-xs font-bold text-amber-300 mb-3">
-                        {p.teluguTitle}
-                      </p>
-
                       <p className="text-xs text-amber-100/80 font-normal leading-relaxed">
                         {p.frontDesc}
                       </p>
@@ -164,14 +151,6 @@ export default function PolicyFlipCards({ lang, setLang }) {
                             English:
                           </strong>
                           {p.backEn}
-                        </div>
-
-                        {/* Telugu Term */}
-                        <div className="p-2.5 rounded-xl bg-black/40 border border-amber-300/30 text-[11px] leading-relaxed text-amber-200 font-normal">
-                          <strong className="text-amber-300 block mb-0.5 font-bold">
-                            తెలుగు (ముఖ్య నిబంధన):
-                          </strong>
-                          {p.backTe}
                         </div>
                       </div>
                     </div>
