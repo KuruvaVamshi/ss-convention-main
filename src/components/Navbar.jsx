@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   Menu,
   X,
@@ -13,6 +12,8 @@ import {
 } from 'lucide-react';
 import { WhatsAppIcon } from './BrandIcons';
 import { whatsappLink, telLink } from '../lib/contact';
+import ResponsiveImage from './ResponsiveImage';
+import { prefetchHallsResources } from '../lib/prefetchHalls';
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -225,12 +226,11 @@ export default function Navbar() {
             >
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-[#D4AF37] flex items-center justify-center bg-black/60 shadow-[0_0_14px_rgba(212,175,55,0.45)] group-hover:scale-105 transition-transform overflow-hidden">
                 {/* Same image as the browser favicon (index.html), shown uncropped and undistorted */}
-                <img
+                <ResponsiveImage
                   src="/assets/01_brand_and_logos/ss_convention_official_swan_logo.jpeg"
                   alt="S.S. Convention logo"
-                  width="44"
-                  height="44"
-                  decoding="async"
+                  sizes="44px"
+                  priority
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -260,7 +260,7 @@ export default function Navbar() {
                   <>
                     <span>{'HOME'}</span>
                     {isActive && (
-                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -269,6 +269,9 @@ export default function Navbar() {
               {/* /spaces */}
               <NavLink
                 to="/spaces"
+                onMouseEnter={prefetchHallsResources}
+                onFocus={prefetchHallsResources}
+                onTouchStart={prefetchHallsResources}
                 className={({ isActive }) =>
                   `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
                     isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
@@ -279,7 +282,7 @@ export default function Navbar() {
                   <>
                     <span>HALLS</span>
                     {isActive && (
-                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -298,7 +301,7 @@ export default function Navbar() {
                   <>
                     <span className="xl:hidden">ABOUT</span><span className="hidden xl:inline">ABOUT &amp; FACILITIES</span>
                     {isActive && (
-                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -317,7 +320,7 @@ export default function Navbar() {
                   <>
                     <span>{'GALLERY'}</span>
                     {isActive && (
-                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -336,7 +339,7 @@ export default function Navbar() {
                   <>
                     <span>{'DINING'}</span>
                     {isActive && (
-                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -355,7 +358,7 @@ export default function Navbar() {
                   <>
                     <span>{'CONTACT'}</span>
                     {isActive && (
-                      <motion.span layoutId="ss-nav-underline" transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
@@ -446,6 +449,9 @@ export default function Navbar() {
                 <NavLink
                   to="/spaces"
                   onClick={closeAllMenus}
+                  onMouseEnter={prefetchHallsResources}
+                  onFocus={prefetchHallsResources}
+                  onTouchStart={prefetchHallsResources}
                   className={({ isActive }) =>
                     `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
                       isActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'

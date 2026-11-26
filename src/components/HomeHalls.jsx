@@ -6,6 +6,8 @@ import { spacesData } from '../data/spacesData';
 import Reveal from './Reveal';
 import SectionHeader from './SectionHeader';
 import { WhatsAppButton } from './ContactButtons';
+import ResponsiveImage from './ResponsiveImage';
+import { prefetchHallsResources } from '../lib/prefetchHalls';
 
 const ids = ['hall-vasishta', 'hall-agasthya', 'hall-koundinya'];
 
@@ -32,6 +34,7 @@ function HallCard({ hall, featured, order = 0 }) {
   const [hovered, setHovered] = useState(false);
   const [touching, setTouching] = useState(false);
   const [inView, setInView] = useState(false);
+  const [nearView, setNearView] = useState(false);
   const [tabVisible, setTabVisible] = useState(true);
 
   const width = () => trackRef.current?.clientWidth || 1;
@@ -92,13 +95,15 @@ function HallCard({ hall, featured, order = 0 }) {
     el.scrollTo({ left: (i + 1) * el.clientWidth, behavior: 'smooth' });
   };
 
-  // only animate while the card is on screen and the tab is visible
+  // only animate while the card is on screen and the tab is visible; defer cloned slide images until near viewport
   useEffect(() => {
     const el = articleRef.current;
-    if (!el || typeof IntersectionObserver === 'undefined') { setInView(true); return undefined; }
+    if (!el || typeof IntersectionObserver === 'undefined') { setInView(true); setNearView(true); return undefined; }
     const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.3 });
+    const ioNear = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setNearView(true); ioNear.disconnect(); } }, { rootMargin: '250px' });
     io.observe(el);
-    return () => io.disconnect();
+    ioNear.observe(el);
+    return () => { io.disconnect(); ioNear.disconnect(); };
   }, []);
   useEffect(() => {
     const onVis = () => setTabVisible(!document.hidden);
@@ -148,11 +153,15 @@ function HallCard({ hall, featured, order = 0 }) {
           {slides.map((src, i) => {
             const isClone = looped && (i === 0 || i === slides.length - 1);
             const real = looped ? (i - 1 + n) % n : i;
+            if (!nearView && real !== 0) {
+              return <div key={`${src}-${i}`} aria-hidden="true" className="w-full h-full flex-shrink-0 snap-center bg-black/40" />;
+            }
             return (
-              <img
+              <ResponsiveImage
                 key={`${src}-${i}`}
                 src={src}
                 alt={isClone ? '' : `${hall.name} - ${hall.role || 'Wedding & Function Hall'} at S.S. Convention Meerpet, Hyderabad (Photo ${real + 1})`}
+                sizes="(max-width: 768px) 92vw, (max-width: 1024px) 46vw, 400px"
                 aria-hidden={isClone || undefined}
                 loading="lazy"
                 draggable={false}
@@ -235,7 +244,7 @@ export default function HomeHalls() {
         </div>
 
         <Reveal className="mt-12 flex flex-wrap items-center justify-center gap-4">
-          <Link to="/spaces" className="btn-gold">Explore all halls & specs <ArrowRight className="w-4 h-4" /></Link>
+          <Link to="/spaces" onMouseEnter={prefetchHallsResources} onFocus={prefetchHallsResources} onTouchStart={prefetchHallsResources} className="btn-gold">Explore all halls & specs <ArrowRight className="w-4 h-4" /></Link>
           <Link to="/contact" className="btn-outline-gold">Enquire now</Link>
           <WhatsAppButton label="Chat on WhatsApp" message="Hello SS Convention Hall, I would like help choosing the right hall for my event." />
         </Reveal>

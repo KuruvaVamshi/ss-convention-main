@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
 import { WhatsAppIcon } from './BrandIcons';
 import { whatsappLink } from '../lib/contact';
+import ResponsiveImage from './ResponsiveImage';
 
 export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev, onNext, index = 0, total = 1 }) {
   const touchStartX = React.useRef(null);
@@ -110,9 +111,12 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev
               </button>
             </>
           )}
-          <img
+          <ResponsiveImage
             src={imageSrc}
             alt={title || 'Enlarged Preview'}
+            sizes="95vw"
+            loading="eager"
+            decoding="async"
             className="max-h-[72vh] sm:max-h-[76vh] max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30"
           />
         </div>

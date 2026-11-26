@@ -1,17 +1,54 @@
-import React from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarCheck } from 'lucide-react';
 import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 import SEO from '../components/SEO';
 import HeroStorytelling from '../components/HeroStorytelling';
-import HomeStory from '../components/HomeStory';
-import HomeHalls from '../components/HomeHalls';
-import ExperienceStrip from '../components/ExperienceStrip';
-import PhotoScroll3D from '../components/PhotoScroll3D';
-import GoogleReviewsMapSection from '../components/GoogleReviewsMapSection';
 import Reveal from '../components/Reveal';
 
+const loadHomeStory = () => import('../components/HomeStory');
+const loadHomeHalls = () => import('../components/HomeHalls');
+const loadPhotoScroll3D = () => import('../components/PhotoScroll3D');
+const loadExperienceStrip = () => import('../components/ExperienceStrip');
+const loadGoogleReviewsMapSection = () => import('../components/GoogleReviewsMapSection');
+
+const HomeStory = lazy(loadHomeStory);
+const HomeHalls = lazy(loadHomeHalls);
+const PhotoScroll3D = lazy(loadPhotoScroll3D);
+const ExperienceStrip = lazy(loadExperienceStrip);
+const GoogleReviewsMapSection = lazy(loadGoogleReviewsMapSection);
+
 export default function HomePage({ onOpenLightbox, isEntranceComplete = false }) {
+  useEffect(() => {
+    const conn = navigator.connection;
+    if (conn?.saveData || conn?.effectiveType === '2g' || conn?.effectiveType === 'slow-2g') return undefined;
+    let cancelled = false;
+    let timer = null;
+    const warmBelowFold = () => {
+      if (cancelled) return;
+      [loadHomeStory, loadHomeHalls, loadPhotoScroll3D, loadExperienceStrip, loadGoogleReviewsMapSection].forEach(
+        (load) => load().catch(() => {})
+      );
+    };
+    const schedule = () => {
+      if (cancelled) return;
+      timer = isEntranceComplete
+        ? setTimeout(warmBelowFold, 50)
+        : setTimeout(() => {
+            if (cancelled) return;
+            if ('requestIdleCallback' in window) window.requestIdleCallback(warmBelowFold, { timeout: 3000 });
+            else warmBelowFold();
+          }, 3500);
+    };
+    if (isEntranceComplete || document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', schedule);
+      if (timer) clearTimeout(timer);
+    };
+  }, [isEntranceComplete]);
+
   return (
     <div className="bg-[#450B17] text-latte min-h-screen">
       <SEO
@@ -21,11 +58,13 @@ export default function HomePage({ onOpenLightbox, isEntranceComplete = false })
         canonical="/"
       />
       <HeroStorytelling onOpenLightbox={onOpenLightbox} isEntranceComplete={isEntranceComplete} />
-      <HomeStory />
-      <HomeHalls />
-      <PhotoScroll3D onOpenLightbox={onOpenLightbox} />
-      <ExperienceStrip />
-      <GoogleReviewsMapSection />
+      <Suspense fallback={<div className="min-h-[420px] bg-[#450B17]" aria-hidden="true" />}>
+        <HomeStory />
+        <HomeHalls />
+        <PhotoScroll3D onOpenLightbox={onOpenLightbox} />
+        <ExperienceStrip />
+        <GoogleReviewsMapSection />
+      </Suspense>
 
       <section className="py-24 bg-gradient-to-br from-[#7A1F31] via-[#5F1524] to-[#450B17] border-t border-[#D4AF37]/35 relative overflow-hidden">
         {[[10,30,0,5],[24,72,1.4,6],[40,20,2.2,4.6],[60,76,0.8,5.6],[76,28,2.8,5],[90,60,1.9,6.2]].map((sp, i) => (

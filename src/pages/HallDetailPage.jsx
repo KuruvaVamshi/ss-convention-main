@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
+import ResponsiveImage from '../components/ResponsiveImage';
 import {
   spacesData,
   getHallById
@@ -187,9 +188,11 @@ export default function HallDetailPage({ onOpenLightbox }) {
       <section className="relative min-h-[75vh] lg:min-h-[82vh] flex items-end pb-16 pt-24 overflow-hidden border-b border-[#D4AF37]/35">
         {/* Full-width Real Interior Background Photo */}
         <div className="absolute inset-0 bg-black">
-          <img
+          <ResponsiveImage
             src={hall.coverImage || hall.image}
             alt={`${hall.name} luxury wedding & banquet hall interior at S.S. Convention Meerpet`}
+            sizes="100vw"
+            priority
             className="w-full h-full object-cover object-center scale-105 animate-pulse-slow"
           />
           {/* Multi-layered Royal Velvet & Dark Vignette Gradients */}
@@ -382,10 +385,13 @@ export default function HallDetailPage({ onOpenLightbox }) {
               onClick={() => onOpenLightbox(currentItem.src, `${hall.name} - ${currentItem.title}`)}
               className="relative w-full h-[380px] sm:h-[520px] lg:h-[640px] rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 bg-black shadow-2xl cursor-pointer group mb-6 select-none"
             >
-              <img
+              <ResponsiveImage
                 key={currentItem.src}
                 src={currentItem.src}
                 alt={currentItem.title}
+                sizes="(max-width: 1024px) 96vw, 1280px"
+                loading="eager"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-[0.97]"
               />
 
@@ -458,9 +464,11 @@ export default function HallDetailPage({ onOpenLightbox }) {
                       : 'border-[#D4AF37]/30 hover:border-amber-400/60 opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <img
+                  <ResponsiveImage
                     src={item.src}
                     alt={item.title}
+                    sizes="128px"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                   {isActive && (
@@ -911,9 +919,11 @@ export default function HallDetailPage({ onOpenLightbox }) {
                 className="bg-[#480E19] rounded-3xl overflow-hidden border-2 border-[#D4AF37]/35 flex flex-col group hover:border-amber-400 transition-all duration-300 shadow-xl"
               >
                 <div className="h-56 relative overflow-hidden bg-black">
-                  <img
+                  <ResponsiveImage
                     src={siblingHall.image}
                     alt={siblingHall.name}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />

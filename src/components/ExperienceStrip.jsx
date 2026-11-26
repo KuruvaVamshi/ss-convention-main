@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import Reveal from './Reveal';
 import SectionHeader from './SectionHeader';
+import ResponsiveImage from './ResponsiveImage';
 
 const tiles = [
   { to: '/gallery', title: 'Decor & Themes', text: 'Stages, mandaps and lighting for every occasion.', img: '/assets/09_reception_engagement_stages/stage_floral_ring_arch_royal_sofa_clean.jpeg' },
@@ -41,9 +42,10 @@ export default function ExperienceStrip() {
                     open ? 'lg:flex-[3.2] border-amber-400/70' : 'lg:flex-1 border-[#D4AF37]/25'
                   } ${open ? 'h-56 sm:h-64' : ''}`}
                 >
-                  <img
+                  <ResponsiveImage
                     src={t.img}
                     alt={t.title}
+                    sizes="(max-width: 1024px) 100vw, 40vw"
                     loading="lazy"
                     className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-out ${
                       open ? 'scale-105 brightness-100' : 'scale-100 brightness-[0.6] grayscale-[0.3]'

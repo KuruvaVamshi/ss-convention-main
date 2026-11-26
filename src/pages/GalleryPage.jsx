@@ -6,6 +6,7 @@ import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 import SEO from '../components/SEO';
 import { galleryItems } from '../data/galleryData';
 import Reveal from '../components/Reveal';
+import ResponsiveImage from '../components/ResponsiveImage';
 
 const categories = [
   { id: 'all', label: 'All' },
@@ -62,9 +63,11 @@ export default function GalleryPage({ onOpenLightbox }) {
       />
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
-        <img
+        <ResponsiveImage
           src="/assets/08_wedding_mandap_and_rituals/traditional_wedding_mandap_wide_stage.jpeg"
           alt="Traditional wedding mandap stage decorations at S.S. Convention Meerpet"
+          sizes="100vw"
+          priority
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
@@ -150,9 +153,10 @@ export default function GalleryPage({ onOpenLightbox }) {
                   aria-label={`View photo: ${item.title}`}
                   className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl border border-[#D4AF37]/25 hover:border-amber-400/70 bg-[#350710] text-left cursor-pointer transition-colors duration-300"
                 >
-                  <img
+                  <ResponsiveImage
                     src={item.image}
                     alt={item.title}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     loading="lazy"
                     className="w-full h-auto block transition-transform duration-[900ms] ease-out group-hover:scale-105"
                   />

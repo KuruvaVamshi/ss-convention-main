@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { venueData } from '../data/venueData';
 import { WhatsAppIcon, InstagramIcon } from './BrandIcons';
 import { whatsappLink, telLink, instagramLink } from '../lib/contact';
+import { prefetchHallsResources } from '../lib/prefetchHalls';
 import { MapPin, Phone, Heart, Sparkles, CalendarCheck } from 'lucide-react';
 
 export default function Footer() {
@@ -69,7 +70,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs font-normal text-amber-100/90">
               <li><Link to="/" onClick={handleHomeClick} className="hover:text-amber-300 transition-colors">Home & Palace Overview</Link></li>
               <li><Link to="/about" className="hover:text-amber-300 transition-colors">About S.S Convention</Link></li>
-              <li><Link to="/spaces" className="hover:text-amber-300 transition-colors">Our Halls & Spaces</Link></li>
+              <li><Link to="/spaces" onMouseEnter={prefetchHallsResources} onFocus={prefetchHallsResources} onTouchStart={prefetchHallsResources} className="hover:text-amber-300 transition-colors">Our Halls & Spaces</Link></li>
               <li><Link to="/about#facilities" className="hover:text-amber-300 transition-colors">Facilities & Amenities</Link></li>
               <li><Link to="/gallery" className="hover:text-amber-300 transition-colors">Photo Gallery & Celebrations</Link></li>
               <li><Link to="/menus" className="hover:text-amber-300 transition-colors">Dining & Catering Menus</Link></li>

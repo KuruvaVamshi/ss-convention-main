@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Clock, Car, Navigation, Copy, Check, ExternalLink, MessageSquare, Minus, Plus } from 'lucide-react';
@@ -10,6 +9,7 @@ import { InstagramIcon } from '../components/BrandIcons';
 import Reveal from '../components/Reveal';
 import SectionHeader from '../components/SectionHeader';
 import GoogleReviewsMapSection from '../components/GoogleReviewsMapSection';
+import ResponsiveImage from '../components/ResponsiveImage';
 
 const eventTypes = [
   'Wedding / Muhurtham',
@@ -75,11 +75,12 @@ export default function ContactPage() {
 
   const submit = (e) => {
     e.preventDefault();
-    try {
-      confetti({ particleCount: 90, spread: 95, origin: { y: 0.6 }, colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'] });
-    } catch (_) {
-      /* confetti is decorative */
-    }
+    import('canvas-confetti')
+      .then((m) => {
+        const confetti = m.default || m;
+        confetti({ particleCount: 90, spread: 95, origin: { y: 0.6 }, colors: ['#FFDF73', '#D4AF37', '#FFF9E6', '#FFD700', '#E63946'] });
+      })
+      .catch(() => {});
     const message = `Namaste SS Convention Hall Management,\n\nI would like to inquire about booking my event:\n• Host Name: ${name || 'Valued Guest'}\n• Contact Number: ${phone || 'Not provided'}\n• Occasion: ${eventType}\n• Expected Guests: ${guests} Pax\n• Selected Hall: ${hall.name} (${hall.capacity})\n• Preferred Date: ${date || 'Date to be discussed'}\n• Time Slot: ${slot}\n• Preferred Catering: ${menu}\n\nPlease verify auspicious date availability and provide the complete quotation and package brochure. Thank you!`;
     setTimeout(() => {
       window.open(`https://wa.me/${venueData.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
@@ -96,9 +97,11 @@ export default function ContactPage() {
       />
       {/* Hero */}
       <section className="relative min-h-[45vh] flex items-end pt-32 pb-12 border-b border-[#D4AF37]/30">
-        <img
+        <ResponsiveImage
           src="/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg"
           alt="S.S. Convention royal entrance gates in Meerpet, Hyderabad"
+          sizes="100vw"
+          priority
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />

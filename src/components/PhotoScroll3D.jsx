@@ -4,12 +4,12 @@ import { ArrowRight, Images } from 'lucide-react';
 import { useReducedMotion } from 'framer-motion';
 import { galleryItems } from '../data/galleryData';
 import SectionHeader from './SectionHeader';
+import ResponsiveImage from './ResponsiveImage';
 
-const COUNT = 6;
 const SPIN_SECONDS = 96; // one full turn (slow and stately)
 
 // Evenly sample photos across the whole gallery so every area of the venue appears.
-function pickPhotos() {
+function pickPhotos(COUNT) {
   const pool = galleryItems.filter((g) => !['edison_bulbs', 'official_brochure'].some((k) => g.image.includes(k)));
   const step = pool.length / COUNT;
   return Array.from({ length: COUNT }, (_, i) => pool[Math.floor(i * step)]);
@@ -20,17 +20,21 @@ const SPARKS = [[12,20,0,5],[22,70,1.2,6],[33,35,2.4,4.5],[45,15,0.6,6.5],[58,78
 export default function PhotoScroll3D({ onOpenLightbox }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
-  const photos = useMemo(pickPhotos, []);
+  const [count, setCount] = useState(8);
+  const photos = useMemo(() => pickPhotos(count), [count]);
   const [radius, setRadius] = useState(520);
   const [cardW, setCardW] = useState(280);
 
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      const cw = w < 640 ? 170 : w < 1024 ? 230 : 280;
+      // More and larger photos on wide screens so the ring fills the full width.
+      const n = w < 640 ? 6 : w < 1024 ? 8 : w < 1500 ? 10 : 12;
+      const cw = w < 640 ? 170 : w < 1024 ? 230 : w < 1500 ? 290 : 330;
+      setCount(n);
       setCardW(cw);
       // radius so neighbouring cards just touch: r = (w/2) / tan(pi/n), plus a small gap
-      setRadius(Math.round((cw / 2) / Math.tan(Math.PI / COUNT)) + 24);
+      setRadius(Math.round((cw / 2) / Math.tan(Math.PI / n)) + 28);
     };
     update();
     window.addEventListener('resize', update);
@@ -54,7 +58,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
   const onTouchStart = () => { clearTimeout(touchTimer.current); setTouching(true); };
   const onTouchEnd = () => { clearTimeout(touchTimer.current); touchTimer.current = setTimeout(() => setTouching(false), 2500); };
 
-  const step = 360 / COUNT;
+  const step = 360 / count;
   const cardH = Math.round(cardW * 1.3);
 
   return (
@@ -79,7 +83,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
 
         <div
           className="relative mt-6"
-          style={{ perspective: '1100px', height: cardH + 140 }}
+          style={{ perspective: '1100px', height: cardH + 100 }}
           onMouseMove={(e) => {
             // pause only while the pointer is over the middle (front) photo
             const r = e.currentTarget.getBoundingClientRect();
@@ -134,9 +138,10 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
                   WebkitBoxReflect: 'below 6px linear-gradient(transparent 72%, rgba(255,255,255,0.18))',
                 }}
               >
-                <img
+                <ResponsiveImage
                   src={p.image}
                   alt={p.title}
+                  sizes="(max-width: 640px) 185px, (max-width: 1024px) 225px, 310px"
                   loading="lazy"
                   draggable={false}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

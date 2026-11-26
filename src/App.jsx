@@ -1,17 +1,17 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { MotionConfig } from 'framer-motion';
 import './styles/motion.css';
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
-import GoldenDustCanvas from './components/GoldenDustCanvas';
-import AuspiciousBlessingsCanvas from './components/AuspiciousBlessingsCanvas';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingContactBar from './components/FloatingContactBar';
-import LightboxModal from './components/LightboxModal';
 import ScrollProgress from './components/ScrollProgress';
 import CinematicEntranceLoader from './components/CinematicEntranceLoader';
+
+const LightboxModal = lazy(() => import('./components/LightboxModal'));
+const GoldenDustCanvas = lazy(() => import('./components/GoldenDustCanvas'));
+const AuspiciousBlessingsCanvas = lazy(() => import('./components/AuspiciousBlessingsCanvas'));
 
 // Multi-Page Views
 import HomePage from './pages/HomePage';
@@ -46,11 +46,34 @@ function PageLoading() {
 export default function App() {
   const [isEntranceComplete, setIsEntranceComplete] = useState(false);
 
-  // Download the other pages quietly in the background once the browser is idle, so clicking is instant.
+  // Download the other pages quietly in the background once the initial load has settled, so clicking is instant.
   useEffect(() => {
-    const run = () => Object.values(loaders).forEach((load) => load().catch(() => {}));
-    const t = 'requestIdleCallback' in window ? window.requestIdleCallback(run, { timeout: 4000 }) : setTimeout(run, 2500);
-    return () => ('cancelIdleCallback' in window ? window.cancelIdleCallback(t) : clearTimeout(t));
+    const conn = navigator.connection;
+    if (conn?.saveData || conn?.effectiveType === '2g' || conn?.effectiveType === 'slow-2g') return undefined;
+    let cancelled = false;
+    let timer = null;
+    const timers = [];
+    const run = () => {
+      Object.values(loaders).forEach((load, i) => {
+        timers.push(setTimeout(() => { if (!cancelled) load().catch(() => {}); }, i * 160));
+      });
+    };
+    const schedule = () => {
+      if (cancelled) return;
+      timer = setTimeout(() => {
+        if (cancelled) return;
+        if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 2500 });
+        else run();
+      }, 3200);
+    };
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', schedule);
+      if (timer) clearTimeout(timer);
+      timers.forEach(clearTimeout);
+    };
   }, []);
   const [lightbox, setLightbox] = useState({
     isOpen: false,
@@ -76,7 +99,6 @@ export default function App() {
   const current = lightbox.items[lightbox.index];
 
   return (
-    <MotionConfig reducedMotion="user">
     <BrowserRouter>
       {/* Lenis + GSAP Smooth Virtual Momentum Scrolling */}
       <SmoothScroll>
@@ -88,10 +110,11 @@ export default function App() {
           <CinematicEntranceLoader onComplete={() => setIsEntranceComplete(true)} />
 
           {/* Subtle Ambient Drifting Golden Dust Particles */}
-          <GoldenDustCanvas />
-
-          {/* Auspicious Jasmine & Marigold Petal Physics Canvas */}
-          <AuspiciousBlessingsCanvas />
+          <Suspense fallback={null}>
+            <GoldenDustCanvas />
+            {/* Auspicious Jasmine & Marigold Petal Physics Canvas */}
+            <AuspiciousBlessingsCanvas />
+          </Suspense>
 
           {/* Global Fixed Header with Language Toggle */}
           <ScrollProgress />
@@ -174,19 +197,22 @@ export default function App() {
         <FloatingContactBar />
 
         {/* High-Resolution Zoom Lightbox Modal */}
-        <LightboxModal
-          isOpen={lightbox.isOpen}
-          imageSrc={current?.src}
-          title={current?.title}
-          index={lightbox.index}
-          total={lightbox.items.length}
-          onPrev={() => stepLightbox(-1)}
-          onNext={() => stepLightbox(1)}
-          onClose={closeLightbox}
-        />
+        {lightbox.isOpen && (
+          <Suspense fallback={null}>
+            <LightboxModal
+              isOpen={lightbox.isOpen}
+              imageSrc={current?.src}
+              title={current?.title}
+              index={lightbox.index}
+              total={lightbox.items.length}
+              onPrev={() => stepLightbox(-1)}
+              onNext={() => stepLightbox(1)}
+              onClose={closeLightbox}
+            />
+          </Suspense>
+        )}
       </div>
       </SmoothScroll>
     </BrowserRouter>
-    </MotionConfig>
   );
 }

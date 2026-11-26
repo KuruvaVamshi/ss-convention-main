@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import confetti from 'canvas-confetti';
 import { ArrowRight } from 'lucide-react';
+import ResponsiveImage from './ResponsiveImage';
+import { getPreferredWebp, getDprTargetWidth } from '../lib/imageSources';
 
 /**
  * S.S. CONVENTION — CINEMATIC VENUE WALKTHROUGH
@@ -225,7 +226,7 @@ function DoorPanel({ side, imageSrc, alt, isOpen }) {
       }}
     >
       <div className={`absolute top-0 ${isLeft ? 'left-0' : 'right-0'} w-screen h-full pointer-events-none will-change-transform`}>
-        <img src={imageSrc} alt={alt} className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.03)' }} />
+        <ResponsiveImage src={imageSrc} alt={alt} sizes="100vw" loading="eager" decoding="async" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.03)' }} />
       </div>
       <div
         className={`absolute inset-0 pointer-events-none ${isLeft ? 'bg-gradient-to-r from-transparent via-transparent to-black/85' : 'bg-gradient-to-l from-transparent via-transparent to-black/85'}`}
@@ -352,7 +353,11 @@ export default function CinematicEntranceLoader({ onComplete }) {
     } catch (_) {}
     return true;
   });
-  const [isMobile, setIsMobile]           = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' && (window.innerWidth < 768 || window.innerHeight > window.innerWidth)
+  );
+  const [scene1Ready, setScene1Ready] = useState(false);
+  const [mountLaterScenes, setMountLaterScenes] = useState(false);
 
   const stepRef              = useRef(0);
   const isPlayingRef         = useRef(false);
@@ -360,6 +365,9 @@ export default function CinematicEntranceLoader({ onComplete }) {
   const isTransitioningRef   = useRef(false);
   const scrollAccumulatorRef = useRef(0);
   const touchStartYRef       = useRef(0);
+  const scene1ImgRef         = useRef(null);
+  const readyScenesRef       = useRef({ 1: false, 2: false, 3: false, 4: false });
+  const scenePromisesRef     = useRef({});
   const listenersRef         = useRef({ wheel: null, touchMove: null, touchStart: null, touchEnd: null, keyDown: null, attached: false });
 
   const location = useLocation();
@@ -377,17 +385,74 @@ export default function CinematicEntranceLoader({ onComplete }) {
   const lobbyImage     = isMobile ? IMAGES.lobbyMobile     : IMAGES.lobbyDesktop;
   const receptionImage = isMobile ? IMAGES.receptionMobile : IMAGES.receptionDesktop;
 
-  /* ── preload ── */
+  const markScene1Ready = useCallback(() => {
+    readyScenesRef.current[1] = true;
+    setScene1Ready(true);
+  }, []);
+
+  const preloadScene = useCallback((sceneNum, rawUrl) => {
+    if (readyScenesRef.current[sceneNum]) return Promise.resolve();
+    if (scenePromisesRef.current[sceneNum]) return scenePromisesRef.current[sceneNum];
+    if (typeof window === 'undefined' || !rawUrl) return Promise.resolve();
+
+    const targetW = getDprTargetWidth(window.innerWidth || 1280);
+    const webpUrl = getPreferredWebp(rawUrl, targetW);
+    const p = new Promise((resolve) => {
+      const img = new Image();
+      img.decoding = 'async';
+      const done = () => {
+        readyScenesRef.current[sceneNum] = true;
+        resolve();
+      };
+      img.onload = () => {
+        if (typeof img.decode === 'function') {
+          img.decode().catch(() => {}).finally(done);
+        } else {
+          done();
+        }
+      };
+      img.onerror = done;
+      img.src = webpUrl;
+      if (img.complete) done();
+    });
+    scenePromisesRef.current[sceneNum] = p;
+    return p;
+  }, []);
+
+  const ensureSceneReady = useCallback(async (sceneNum, maxWaitMs = 2000) => {
+    setMountLaterScenes(true);
+    if (readyScenesRef.current[sceneNum]) return;
+    const rawUrl = sceneNum === 2 ? entranceImage : sceneNum === 3 ? lobbyImage : receptionImage;
+    await Promise.race([
+      preloadScene(sceneNum, rawUrl),
+      new Promise((r) => setTimeout(r, maxWaitMs))
+    ]);
+  }, [entranceImage, lobbyImage, receptionImage, preloadScene]);
+
+  /* ── wait for scene 1 (high priority), then stream scenes 2-4 in background ── */
   useEffect(() => {
-    if (!shouldRender) return;
-    const isMob = window.innerWidth < 768 || window.innerHeight > window.innerWidth;
-    const set = isMob
-      ? [IMAGES.exteriorMobile, IMAGES.entranceMobile, IMAGES.lobbyMobile, IMAGES.receptionMobile]
-      : [IMAGES.exteriorDesktop, IMAGES.entranceDesktop, IMAGES.lobbyDesktop, IMAGES.receptionDesktop];
-    const img0 = new Image(); img0.src = set[0];
-    const t = setTimeout(() => { set.slice(1).forEach(s => { const i = new Image(); i.src = s; }); }, 300);
-    return () => clearTimeout(t);
-  }, [shouldRender]);
+    if (!shouldRender) return undefined;
+    if (scene1ImgRef.current?.complete) {
+      markScene1Ready();
+      return undefined;
+    }
+    const fallback = setTimeout(markScene1Ready, 1800);
+    return () => clearTimeout(fallback);
+  }, [shouldRender, markScene1Ready]);
+
+  useEffect(() => {
+    if (!shouldRender || !scene1Ready) return undefined;
+    setMountLaterScenes(true);
+    let cancelled = false;
+    const t = setTimeout(() => {
+      if (cancelled) return;
+      preloadScene(2, entranceImage)
+        .then(() => { if (!cancelled) return preloadScene(3, lobbyImage); })
+        .then(() => { if (!cancelled) return preloadScene(4, receptionImage); })
+        .catch(() => {});
+    }, 900);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [shouldRender, scene1Ready, entranceImage, lobbyImage, receptionImage, preloadScene]);
 
   /* ── scroll reset helper ── */
   const resetScrollToTop = useCallback(() => {
@@ -436,22 +501,31 @@ export default function CinematicEntranceLoader({ onComplete }) {
 
   /* ── confetti ── */
   const triggerReceptionConfetti = useCallback(() => {
-    setTimeout(() => { try {
-      confetti({ particleCount: 50, spread: 100, origin: { y: 0.36 }, colors: ['#FFDF73','#D4AF37','#FFF9E6','#FFD700','#E63946'], gravity: 0.55, scalar: 1.05, ticks: 180, shapes: ['circle'], zIndex: 100000 });
-    } catch (_) {} }, 450);
+    setTimeout(() => {
+      import('canvas-confetti')
+        .then((m) => {
+          const confetti = m.default || m;
+          confetti({ particleCount: 50, spread: 100, origin: { y: 0.36 }, colors: ['#FFDF73','#D4AF37','#FFF9E6','#FFD700','#E63946'], gravity: 0.55, scalar: 1.05, ticks: 180, shapes: ['circle'], zIndex: 100000 });
+        })
+        .catch(() => {});
+    }, 450);
   }, []);
 
   /* ── step advance with fluid responsive debounces ── */
-  const advanceToNextScene = useCallback(() => {
+  const advanceToNextScene = useCallback(async () => {
     if (isDismissedRef.current || isTransitioningRef.current) return;
     const cur = stepRef.current;
 
     if (cur === 0) {
       isTransitioningRef.current = true;
+      await ensureSceneReady(2);
+      if (isDismissedRef.current) return;
       stepRef.current = 1; setStep(1);
       setTimeout(() => { isTransitioningRef.current = false; }, 650);
     } else if (cur === 1) {
       isTransitioningRef.current = true;
+      await ensureSceneReady(3);
+      if (isDismissedRef.current) return;
       stepRef.current = 2; setStep(2);
       setTimeout(() => {
         if (isDismissedRef.current) return;
@@ -460,6 +534,8 @@ export default function CinematicEntranceLoader({ onComplete }) {
       }, 700);
     } else if (cur === 2 || cur === 3) {
       isTransitioningRef.current = true;
+      await ensureSceneReady(4);
+      if (isDismissedRef.current) return;
       stepRef.current = 4; setStep(4);
       triggerReceptionConfetti();
       setTimeout(() => { isTransitioningRef.current = false; }, WIPE_MS + 150);
@@ -469,22 +545,28 @@ export default function CinematicEntranceLoader({ onComplete }) {
       setContainerFading(true);
       setTimeout(() => { unlockAndComplete(); }, IRIS_MS + 60);
     }
-  }, [triggerReceptionConfetti, unlockAndComplete]);
+  }, [ensureSceneReady, triggerReceptionConfetti, unlockAndComplete]);
 
   /* ── auto-walkthrough ── */
-  const playCinematicWalkthrough = useCallback(() => {
+  const playCinematicWalkthrough = useCallback(async () => {
     if (isPlayingRef.current || isDismissedRef.current) { unlockAndComplete(); return; }
     isPlayingRef.current = true;
     isTransitioningRef.current = true;
 
+    await ensureSceneReady(2);
+    if (isDismissedRef.current) return;
     stepRef.current = 1; setStep(1);
-    setTimeout(() => {
+    setTimeout(async () => {
+      if (isDismissedRef.current) return;
+      await ensureSceneReady(3);
       if (isDismissedRef.current) return;
       stepRef.current = 2; setStep(2);
       setTimeout(() => {
         if (isDismissedRef.current) return;
         stepRef.current = 3; setStep(3);
-        setTimeout(() => {
+        setTimeout(async () => {
+          if (isDismissedRef.current) return;
+          await ensureSceneReady(4);
           if (isDismissedRef.current) return;
           stepRef.current = 4; setStep(4); triggerReceptionConfetti();
           setTimeout(() => {
@@ -495,7 +577,7 @@ export default function CinematicEntranceLoader({ onComplete }) {
         }, 3200);     // scene 3 (lobby) hold
       }, 1300);       // doors swing open
     }, 3400);         // scene 2 (entrance) hold — headline needs ~2s on screen
-  }, [triggerReceptionConfetti, unlockAndComplete]);
+  }, [ensureSceneReady, triggerReceptionConfetti, unlockAndComplete]);
 
   /* ── scroll delta (supports mouse wheel, trackpad, and touch swipe) ── */
   const handleScrollDelta = useCallback((deltaY) => {
@@ -648,7 +730,7 @@ export default function CinematicEntranceLoader({ onComplete }) {
       {/* ══════════════════════════════════════════════════════════════
           LAYER 1 — SCENE 4: GRAND RECEPTION (bottom)
           ════════════════════════════════════════════════════════════ */}
-      <div className="absolute inset-0 z-10 overflow-hidden">
+      <div className="absolute inset-0 z-10 overflow-hidden" style={{ visibility: step >= 3 ? 'visible' : 'hidden' }}>
         <div
           className="w-full h-full will-change-transform"
           style={{
@@ -656,7 +738,9 @@ export default function CinematicEntranceLoader({ onComplete }) {
             transition: step >= 4 ? 'transform 2600ms cubic-bezier(0.16, 1, 0.3, 1)' : 'transform 800ms ease-out',
           }}
         >
-          <img src={receptionImage} alt="S.S. Convention Reception" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+          {mountLaterScenes && (
+            <ResponsiveImage src={receptionImage} alt="S.S. Convention Reception" sizes="100vw" loading="eager" decoding="async" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+          )}
           <WarmBloom active={step === 4} x="50%" y="26%" delay={500} />
         </div>
         {/* scrims */}
@@ -678,6 +762,7 @@ export default function CinematicEntranceLoader({ onComplete }) {
       <div
         className="absolute inset-0 z-20 overflow-hidden pointer-events-none"
         style={{
+          visibility: step >= 1 ? 'visible' : 'hidden',
           /* the lobby is wiped away left→right by a band of light, revealing the reception */
           clipPath: step >= 4 ? 'inset(0 0 0 101%)' : 'inset(0 0 0 0%)',
           transition: `clip-path ${WIPE_MS}ms ${WIPE_EASE}`,
@@ -695,7 +780,9 @@ export default function CinematicEntranceLoader({ onComplete }) {
                 : 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
-          <img src={lobbyImage} alt="S.S. Convention Grand Lobby Lounge" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+          {mountLaterScenes && (
+            <ResponsiveImage src={lobbyImage} alt="S.S. Convention Grand Lobby Lounge" sizes="100vw" loading="eager" decoding="async" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+          )}
           <WarmBloom active={step === 3} x="50%" y="34%" delay={600} />
         </div>
         <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
@@ -715,7 +802,7 @@ export default function CinematicEntranceLoader({ onComplete }) {
           ════════════════════════════════════════════════════════════ */}
       <div
         className="absolute inset-0 z-30 overflow-hidden pointer-events-none"
-        style={{ opacity: step >= 4 ? 0 : 1, transition: 'opacity 600ms ease-out' }}
+        style={{ visibility: step >= 1 ? 'visible' : 'hidden', opacity: step >= 4 ? 0 : 1, transition: 'opacity 600ms ease-out' }}
       >
         <div
           className="absolute inset-0 will-change-transform overflow-hidden pointer-events-none"
@@ -726,8 +813,12 @@ export default function CinematicEntranceLoader({ onComplete }) {
             transition: 'transform 2000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1500ms ease-out',
           }}
         >
-          <DoorPanel side="left"  imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Left Door"  isOpen={entranceDoorsOpen} />
-          <DoorPanel side="right" imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Right Door" isOpen={entranceDoorsOpen} />
+          {mountLaterScenes && (
+            <>
+              <DoorPanel side="left"  imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Left Door"  isOpen={entranceDoorsOpen} />
+              <DoorPanel side="right" imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Right Door" isOpen={entranceDoorsOpen} />
+            </>
+          )}
         </div>
         <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
         <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
@@ -761,7 +852,17 @@ export default function CinematicEntranceLoader({ onComplete }) {
             transition: 'transform 2000ms cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
-          <img src={exteriorImage} alt="S.S. Convention Building Exterior at Night" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+          <ResponsiveImage
+            imgRef={scene1ImgRef}
+            src={exteriorImage}
+            alt="S.S. Convention Building Exterior at Night"
+            sizes="100vw"
+            priority
+            onLoad={markScene1Ready}
+            onError={markScene1Ready}
+            className="w-full h-full object-cover object-center"
+            style={{ filter: 'brightness(1.02) contrast(1.04)' }}
+          />
         </div>
         <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
         <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
@@ -769,7 +870,7 @@ export default function CinematicEntranceLoader({ onComplete }) {
           sceneNum={1}
           headline={'A Celebration Begins With a First Impression.'}
           subtext={'Every unforgettable occasion deserves an extraordinary beginning.'}
-          isActive={step === 0}
+          isActive={step === 0 && scene1Ready}
           position="bottom"
           delay={300}
         />

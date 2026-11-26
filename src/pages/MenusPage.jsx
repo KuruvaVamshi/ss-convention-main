@@ -7,6 +7,7 @@ import { cateringMenus } from '../data/menusData';
 import Reveal from '../components/Reveal';
 import SectionHeader from '../components/SectionHeader';
 import { WhatsAppButton, CallButton } from '../components/ContactButtons';
+import ResponsiveImage from '../components/ResponsiveImage';
 
 
 const printedCards = [
@@ -47,9 +48,11 @@ export default function MenusPage({ onOpenLightbox }) {
       />
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
-        <img
+        <ResponsiveImage
           src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
           alt="Royal banquet dining hall with round tables at S.S. Convention Meerpet"
+          sizes="100vw"
+          priority
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
@@ -132,7 +135,7 @@ export default function MenusPage({ onOpenLightbox }) {
                   onClick={() => onOpenLightbox(menu.image, `${menu.title} - Official Printed Card`)}
                   className="group relative block w-full overflow-hidden rounded-xl border border-[#D4AF37]/30 hover:border-amber-400/70 transition-colors"
                 >
-                  <img src={menu.image} alt={`${menu.title} printed card`} loading="lazy" className="w-full h-40 object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                  <ResponsiveImage src={menu.image} alt={`${menu.title} printed card`} sizes="(max-width: 1024px) 100vw, 360px" loading="lazy" className="w-full h-40 object-cover object-top transition-transform duration-700 group-hover:scale-105" />
                   <span className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 to-transparent" />
                   <span className="absolute bottom-3 left-4 flex items-center gap-2 text-sm text-latte font-semibold">
                     <Eye className="w-4 h-4 text-amber-300" /> View printed menu card
@@ -200,7 +203,7 @@ export default function MenusPage({ onOpenLightbox }) {
                 className="group snap-start flex-shrink-0 w-64 sm:w-72 text-left rounded-xl overflow-hidden border border-[#D4AF37]/30 hover:border-amber-400/70 bg-[#5E1628] transition-colors"
               >
                 <div className="h-56 overflow-hidden bg-black">
-                  <img src={c.image} alt={c.title} loading="lazy" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                  <ResponsiveImage src={c.image} alt={c.title} sizes="288px" loading="lazy" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 <div className="p-4">
                   <h3 className="font-cinzel text-sm font-bold leading-snug">{c.title}</h3>

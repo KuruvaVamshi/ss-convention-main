@@ -12,6 +12,7 @@ export default function GoldenDustCanvas() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let animationFrameId;
+    let startTimer;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -75,9 +76,10 @@ export default function GoldenDustCanvas() {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    startTimer = setTimeout(render, 800);
 
     return () => {
+      if (startTimer) clearTimeout(startTimer);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();

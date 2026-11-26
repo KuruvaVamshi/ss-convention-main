@@ -5,6 +5,7 @@ import { WhatsAppButton, CallButton } from '../components/ContactButtons';
 import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
+import ResponsiveImage from '../components/ResponsiveImage';
 
 const pillars = [
   {
@@ -53,9 +54,11 @@ export default function AboutPage({ hideCta = false }) {
 
       {/* Hero */}
       <section className="relative min-h-[60vh] flex items-end pt-32 pb-16 border-b border-[#D4AF37]/30">
-        <img
+        <ResponsiveImage
           src="/assets/01_exterior/exterior_daytime_facade_entrance_02.png"
           alt="S.S. Convention Daytime Architectural Facade and Grand Entrance in Meerpet Hyderabad"
+          sizes="100vw"
+          priority
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
@@ -85,17 +88,19 @@ export default function AboutPage({ hideCta = false }) {
           <Reveal className="lg:col-span-6">
             <div className="relative pb-10 pr-6 sm:pr-10">
               <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black group">
-                <img
+                <ResponsiveImage
                   src="/assets/03_reception/reception_lord_balaji_buddha_foyer_10.jpeg"
                   alt="Auspicious Lord Balaji deity and Buddha water fountain foyer at S.S Convention Meerpet"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   loading="lazy"
                   className="w-full h-[360px] sm:h-[460px] object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                 />
               </div>
               <div className="absolute bottom-0 right-0 w-40 sm:w-52 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-[#3D0A14] shadow-xl">
-                <img
+                <ResponsiveImage
                   src="/assets/entrance/Warmly Lit Convention Hall Reception.png"
                   alt="S.S. Convention Grand Reception desk and illuminated Ganesha emblem"
+                  sizes="210px"
                   loading="lazy"
                   className="w-full h-full object-cover"
                 />

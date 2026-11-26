@@ -2,11 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/assets/01_brand_and_logos/ss_convention_official_swan_logo.jpeg" />
+    <link rel="icon" type="image/png" href="/assets/01_brand_and_logos/ss_convention_favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Preload Critical Opening Sequence Image -->
-    <link rel="preload" as="image" href="/assets/entrance/Illuminated Ganesha Convention Hall at Night.png" fetchpriority="high" />
+    <!-- Preload Critical Opening Sequence Image (Viewport-Matched WebP Only) -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/assets/entrance/exterior_mobile_portrait-800w.webp"
+      imagesrcset="/assets/entrance/exterior_mobile_portrait-640w.webp 640w, /assets/entrance/exterior_mobile_portrait-800w.webp 800w, /assets/entrance/exterior_mobile_portrait-1171w.webp 1171w"
+      imagesizes="100vw"
+      media="(max-width: 767px), (orientation: portrait)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/assets/entrance/Illuminated%20Ganesha%20Convention%20Hall%20at%20Night-1280w.webp"
+      imagesrcset="/assets/entrance/Illuminated%20Ganesha%20Convention%20Hall%20at%20Night-640w.webp 640w, /assets/entrance/Illuminated%20Ganesha%20Convention%20Hall%20at%20Night-800w.webp 800w, /assets/entrance/Illuminated%20Ganesha%20Convention%20Hall%20at%20Night-1280w.webp 1280w, /assets/entrance/Illuminated%20Ganesha%20Convention%20Hall%20at%20Night-1672w.webp 1672w"
+      imagesizes="100vw"
+      media="(min-width: 768px) and (orientation: landscape)"
+      fetchpriority="high"
+    />
 
     <!-- Primary SEO Metadata -->
     <title>S.S. Convention | Wedding & Function Halls in Meerpet, Hyderabad</title>
@@ -122,10 +141,18 @@
     }
     </script>
 
-    <!-- Google Fonts: Editorial Serif (Cinzel, Playfair), Sans (Plus Jakarta Sans), Telugu (Ramabhadra, Noto Sans Telugu) -->
+    <!-- Google Fonts: Editorial Serif (Cinzel, Playfair), Sans (Plus Jakarta Sans) — non-blocking load with swap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Ramabhadra&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    >
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
   </head>
   <body class="bg-[#1C0409] text-[#FAF6F0] font-sans selection:bg-[#C5A059] selection:text-[#0D0204] antialiased overflow-x-hidden">
     <div id="root"></div>

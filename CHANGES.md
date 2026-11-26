@@ -77,3 +77,6 @@ Not deployed. No git repo in the supplied zip, so there is no branch to commit t
 ## Round 5e — faster page switching
 - Other pages are now downloaded quietly in the background after the homepage loads, so clicking Halls/About/Gallery is instant.
 - If a page is still loading, a gold progress bar shows at the top instead of an unchanged screen.
+
+## Round 5f — full-width ring
+- The ring gallery now scales with the screen: 6 photos on phones, 8 on tablets, 10 on laptops, 12 on wide screens, with larger photos, so it fills the whole width instead of the middle half.

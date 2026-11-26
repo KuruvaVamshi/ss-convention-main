@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import { spacesData } from '../data/spacesData';
 import { Sparkles, Building, Users, Snowflake, ArrowRight, Eye, ChevronLeft, ChevronRight, X, Maximize2, Check, ShieldCheck, Zap, UtensilsCrossed, Car, DoorClosed, Layers, Calendar } from 'lucide-react';
 import { WhatsAppButton, CallButton } from '../components/ContactButtons';
+import ResponsiveImage from '../components/ResponsiveImage';
 
 /**
  * Animated Counter Component for Luxury Capacity Numbers
@@ -209,9 +210,12 @@ function HallDecorationLightbox({
             transition={{ duration: shouldReduce ? 0.1 : 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="max-h-[70vh] sm:max-h-[74vh] max-w-[94vw] sm:max-w-[85vw] flex items-center justify-center"
           >
-            <img
+            <ResponsiveImage
               src={currentImage.src}
               alt={currentImage.title}
+              sizes="92vw"
+              loading="eager"
+              decoding="async"
               className="max-h-[68vh] sm:max-h-[72vh] w-auto max-w-full object-contain rounded-xl sm:rounded-2xl border border-champagne-gold/30 shadow-[0_20px_50px_rgba(0,0,0,0.85)]"
             />
           </motion.div>
@@ -244,7 +248,7 @@ function HallDecorationLightbox({
                     : 'border-white/20 opacity-60 hover:opacity-90 hover:border-champagne-light'
                 }`}
               >
-                <img src={img.src} alt="" className="w-full h-full object-cover" />
+                <ResponsiveImage src={img.src} alt="" sizes="64px" loading="lazy" className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
@@ -306,9 +310,10 @@ function HallGalleryStrip({
                 open ? 'lg:flex-[4.5] border-amber-400/70' : 'lg:flex-1 border-[#D4AF37]/25'
               }`}
             >
-              <img
+              <ResponsiveImage
                 src={img.src}
                 alt={img.title}
+                sizes="(max-width: 1024px) 78vw, 45vw"
                 loading="lazy"
                 draggable={false}
                 className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-out ${
@@ -553,17 +558,22 @@ function HallInteractiveShowcase({ hall, meta, hallNumber, onOpenLightbox }) {
       <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 shadow-[0_20px_60px_rgba(0,0,0,0.85)] bg-[#100205] aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] w-full">
         {/* Animated Image with Subtle Ken Burns / Smooth Crossfade */}
         <AnimatePresence mode="wait">
-          <motion.img
+          <motion.div
             key={currentPhoto.src}
-            src={currentPhoto.src}
-            alt={currentPhoto.title}
             initial={{ opacity: 0, scale: shouldReduce ? 1 : 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: shouldReduce ? 1 : 0.98 }}
             transition={{ duration: shouldReduce ? 0.15 : 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full h-full object-cover select-none"
-            loading="lazy"
-          />
+            className="w-full h-full"
+          >
+            <ResponsiveImage
+              src={currentPhoto.src}
+              alt={currentPhoto.title}
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              loading="lazy"
+              className="w-full h-full object-cover select-none"
+            />
+          </motion.div>
         </AnimatePresence>
 
         {/* Cinematic Vignette & Gradient Overlays */}
@@ -639,9 +649,10 @@ function HallInteractiveShowcase({ hall, meta, hallNumber, onOpenLightbox }) {
                 }`}
                 title={`Switch view: ${photo.tag}`}
               >
-                <img
+                <ResponsiveImage
                   src={photo.src}
                   alt={photo.tag}
+                  sizes="(max-width: 640px) 25vw, 180px"
                   className={`w-full h-full object-cover transition-transform duration-500 ${
                     isActive ? 'scale-105 brightness-105' : 'group-hover/thumb:scale-105 brightness-90'
                   }`}
@@ -951,7 +962,7 @@ export default function SpacesPage({ onOpenLightbox }) {
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="flex h-full w-max animate-marquee-x">
             {[...HERO_PHOTOS, ...HERO_PHOTOS].map((src, i) => (
-              <img key={i} src={src} alt="S.S. Convention wedding and function hall interior view" loading={i < 4 ? 'eager' : 'lazy'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
+              <ResponsiveImage key={i} src={src} alt="S.S. Convention wedding and function hall interior view" sizes="(max-width: 640px) 70vw, (max-width: 1024px) 40vw, 28vw" loading={i < 4 ? 'eager' : 'lazy'} fetchPriority={i === 0 ? 'high' : undefined} decoding={i === 0 ? 'sync' : 'async'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
             ))}
           </div>
         </div>

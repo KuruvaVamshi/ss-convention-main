@@ -6,6 +6,8 @@ import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
 import { WhatsAppButton, CallButton } from '../components/ContactButtons';
+import ResponsiveImage from '../components/ResponsiveImage';
+import { getPreferredWebp, getDprTargetWidth } from '../lib/imageSources';
 
 const facilitiesList = [
   {
@@ -120,12 +122,23 @@ export default function FacilitiesPage({ embedded = false }) {
   const [active, setActive] = useState(0);
   const shouldReduce = useReducedMotion();
 
-  // Preload all facility images for instantaneous zero-lag switching
+  // Preload responsive WebP facility images during browser idle time for zero-lag switching
   useEffect(() => {
-    facilitiesList.forEach((facility) => {
-      const img = new Image();
-      img.src = facility.image;
-    });
+    const conn = navigator.connection;
+    if (conn?.saveData || conn?.effectiveType === '2g' || conn?.effectiveType === 'slow-2g') return undefined;
+    const run = () => {
+      const targetCssWidth = window.innerWidth < 768 ? window.innerWidth : Math.round(window.innerWidth * 0.42);
+      const targetW = getDprTargetWidth(targetCssWidth);
+      facilitiesList.forEach((facility) => {
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = getPreferredWebp(facility.image, targetW);
+      });
+    };
+    const timer = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(run, { timeout: 2000 })
+      : setTimeout(run, 800);
+    return () => ('cancelIdleCallback' in window ? window.cancelIdleCallback(timer) : clearTimeout(timer));
   }, []);
 
   return (
@@ -139,9 +152,11 @@ export default function FacilitiesPage({ embedded = false }) {
 
       {/* Hero */}
       <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
-        <img
+        <ResponsiveImage
           src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
           alt="S.S. Convention Banquet Dining and 5-Star Facilities in Meerpet Hyderabad"
+          sizes="100vw"
+          priority
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
@@ -305,9 +320,10 @@ export default function FacilitiesPage({ embedded = false }) {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/25 pointer-events-none z-10" />
 
                             {/* The Facility Image */}
-                            <img
+                            <ResponsiveImage
                               src={item.image}
                               alt={item.imageAlt || item.title}
+                              sizes="(max-width: 768px) 100vw, 42vw"
                               loading="lazy"
                               className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                             />
