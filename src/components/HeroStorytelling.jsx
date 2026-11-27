@@ -348,7 +348,7 @@ export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = 
       {/* ========================================================
           CHAPTER 2: EXPLORE THE VENUE (lazy interactive console)
           ======================================================== */}
-      <Suspense fallback={<div id="interactive-console" className="min-h-[560px] bg-[#2A060E] border-t border-[#D4AF37]/30" aria-hidden="true" />}>
+      <Suspense fallback={<div id="interactive-console" className="min-h-screen bg-[#2A060E] border-t border-[#D4AF37]/30" aria-hidden="true" />}>
         <HeroConsole onOpenLightbox={onOpenLightbox} externalSlide={selectedSlideOverride} />
       </Suspense>
     </div>
