@@ -47,15 +47,15 @@ export default function MenusPage({ onOpenLightbox }) {
         canonical="/dining"
       />
       {/* Hero */}
-      <section className="relative min-h-[50vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
+      <section className="relative min-h-[38vh] sm:min-h-[50vh] flex items-end pt-24 pb-10 sm:pt-32 sm:pb-14 border-b border-[#D4AF37]/30">
         <ResponsiveImage
           src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
           alt="Royal banquet dining hall with round tables at S.S. Convention Meerpet"
-          sizes="100vw"
+          sizes="(max-width: 767px) 140vw, 100vw"
           priority
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/35 sm:via-black/20 to-black/20 sm:to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Banquet Catering & Menus</p>
@@ -133,10 +133,10 @@ export default function MenusPage({ onOpenLightbox }) {
                 <button
                   type="button"
                   onClick={() => onOpenLightbox(menu.image, `${menu.title} - Official Printed Card`)}
-                  className="group relative block w-full overflow-hidden rounded-xl border border-[#D4AF37]/30 hover:border-amber-400/70 transition-colors"
+                  className="group relative block w-full overflow-hidden rounded-xl border border-[#D4AF37]/30 hover:border-amber-400/70 bg-[#180307] transition-colors"
                 >
-                  <ResponsiveImage src={menu.image} alt={`${menu.title} printed card`} sizes="(max-width: 1024px) 100vw, 360px" loading="lazy" className="w-full h-40 object-cover object-top transition-transform duration-700 group-hover:scale-105" />
-                  <span className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 to-transparent" />
+                  <ResponsiveImage src={menu.image} alt={`${menu.title} printed card`} sizes="(max-width: 1024px) 105vw, 360px" loading="lazy" className="w-full h-56 sm:h-48 object-contain sm:object-cover sm:object-top transition-transform duration-700 group-hover:scale-105" />
+                  <span className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#1C0409] via-[#1C0409]/70 to-transparent" />
                   <span className="absolute bottom-3 left-4 flex items-center gap-2 text-sm text-latte font-semibold">
                     <Eye className="w-4 h-4 text-amber-300" /> View printed menu card
                   </span>
@@ -202,8 +202,8 @@ export default function MenusPage({ onOpenLightbox }) {
                 onClick={() => onOpenLightbox(c.image, c.title)}
                 className="group snap-start flex-shrink-0 w-64 sm:w-72 text-left rounded-xl overflow-hidden border border-[#D4AF37]/30 hover:border-amber-400/70 bg-[#5E1628] transition-colors"
               >
-                <div className="h-56 overflow-hidden bg-black">
-                  <ResponsiveImage src={c.image} alt={c.title} sizes="288px" loading="lazy" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                <div className="aspect-[7/8] overflow-hidden bg-[#180307]">
+                  <ResponsiveImage src={c.image} alt={c.title} sizes="(max-width: 640px) 320px, 360px" loading="lazy" className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 <div className="p-4">
                   <h3 className="font-cinzel text-sm font-bold leading-snug">{c.title}</h3>

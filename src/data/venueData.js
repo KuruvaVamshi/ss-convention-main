@@ -133,14 +133,78 @@ export const venueData = {
     diningHall: 250
   },
   highlights: [
-    { id: "capacity", label: "Minimum 100 Guests", desc: "Three halls, from 100 to 600 guests", icon: "Users" },
-    { id: "ac", label: "Central Cassette A/C", desc: "Even climate control throughout", icon: "Snowflake" },
-    { id: "dining", label: "Separate Dining Hall", desc: "Round banquet tables & buffet counters", icon: "UtensilsCrossed" },
-    { id: "parking", label: "Ample Car Parking", desc: "Spacious on-premises parking space", icon: "Car" },
-    { id: "power", label: "100% DG Power Backup", desc: "Uninterrupted lighting & cooling", icon: "Zap" },
-    { id: "water", label: "RO Purified Water", desc: "Safe, tested pure drinking water", icon: "Droplets" },
-    { id: "security", label: "24/7 CCTV & Security", desc: "Complete perimeter surveillance", icon: "ShieldCheck" },
-    { id: "decor", label: "In-House Decor", desc: "Bespoke stage floral & theme lighting", icon: "Sparkles" }
+    {
+      id: "capacity",
+      label: "Minimum 100 Guests",
+      desc: "Three halls, from 100 to 600 guests",
+      icon: "Users",
+      hoverImage: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
+      hoverAlt: "Grand wedding banquet hall seating rows illuminated by double-tier crystal chandeliers",
+      hoverObjectPosition: "50% 48%"
+    },
+    {
+      id: "ac",
+      label: "Central Cassette A/C",
+      desc: "Even climate control throughout",
+      icon: "Snowflake",
+      hoverImage: "/assets/04_hall_agasthya/hall_agasthya_center_aisle_stage_view_03.jpeg",
+      hoverAlt: "Ceiling-mounted central cassette air conditioning unit integrated into modern banquet hall lighting",
+      hoverObjectPosition: "50% 10%"
+    },
+    {
+      id: "dining",
+      label: "Separate Dining Hall",
+      desc: "Round banquet tables & buffet counters",
+      icon: "UtensilsCrossed",
+      hoverImage: "/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg",
+      hoverAlt: "Dedicated banquet dining hall featuring round tables dressed in maroon and gold linens",
+      hoverObjectPosition: "50% 50%"
+    },
+    {
+      id: "parking",
+      label: "Ample Car Parking",
+      desc: "Spacious on-premises parking space",
+      icon: "Car",
+      hoverImage: "/assets/facilities/hover_parking.jpg",
+      hoverAlt: "Spacious paved convention venue parking area with neatly parked vehicles and illuminated entrance",
+      hoverObjectPosition: "50% 72%"
+    },
+    {
+      id: "power",
+      label: "100% DG Power Backup",
+      desc: "Uninterrupted lighting & cooling",
+      icon: "Zap",
+      hoverImage: "/assets/facilities/hover_power_backup.jpg",
+      hoverAlt: "Heavy-duty soundproof commercial diesel generator backup installation in clean utility bay",
+      hoverObjectPosition: "50% 55%"
+    },
+    {
+      id: "water",
+      label: "RO Purified Water",
+      desc: "Safe, tested pure drinking water",
+      icon: "Droplets",
+      hoverImage: "/assets/facilities/hover_ro_water.jpg",
+      hoverAlt: "Modern stainless-steel multi-stage RO water purification plant and drinking water dispenser",
+      hoverObjectPosition: "55% 48%"
+    },
+    {
+      id: "security",
+      label: "24/7 CCTV & Security",
+      desc: "Complete perimeter surveillance",
+      icon: "ShieldCheck",
+      hoverImage: "/assets/facilities/hover_cctv_security.jpg",
+      hoverAlt: "Commercial dome and bullet CCTV security cameras monitoring the banquet entrance corridor",
+      hoverObjectPosition: "60% 38%"
+    },
+    {
+      id: "decor",
+      label: "In-House Decor",
+      desc: "Bespoke stage floral & theme lighting",
+      icon: "Sparkles",
+      hoverImage: "/assets/08_wedding_mandap_and_rituals/traditional_wedding_mandap_carved_pillars.jpeg",
+      hoverAlt: "Luxurious in-house wedding mandap decor with lush floral walls, jasmine strands, and carved pillars",
+      hoverObjectPosition: "50% 35%"
+    }
   ],
   timings: {
     lunch: "Vacation strictly by 03:00 PM",

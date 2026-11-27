@@ -127,7 +127,7 @@ export default function FacilitiesPage({ embedded = false }) {
     const conn = navigator.connection;
     if (conn?.saveData || conn?.effectiveType === '2g' || conn?.effectiveType === 'slow-2g') return undefined;
     const run = () => {
-      const targetCssWidth = window.innerWidth < 768 ? window.innerWidth : Math.round(window.innerWidth * 0.42);
+      const targetCssWidth = window.innerWidth < 768 ? Math.round(window.innerWidth * 1.05) : Math.round(window.innerWidth * 0.45);
       const targetW = getDprTargetWidth(targetCssWidth);
       facilitiesList.forEach((facility) => {
         const img = new Image();
@@ -151,15 +151,15 @@ export default function FacilitiesPage({ embedded = false }) {
       />}
 
       {/* Hero */}
-      <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
+      <section className="relative min-h-[40vh] sm:min-h-[55vh] flex items-end pt-24 pb-10 sm:pt-32 sm:pb-14 border-b border-[#D4AF37]/30">
         <ResponsiveImage
           src="/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg"
           alt="S.S. Convention Banquet Dining and 5-Star Facilities in Meerpet Hyderabad"
-          sizes="100vw"
+          sizes="(max-width: 767px) 140vw, 100vw"
           priority
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/35 sm:via-black/20 to-black/20 sm:to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">5-Star Infrastructure</p>
@@ -239,7 +239,7 @@ export default function FacilitiesPage({ embedded = false }) {
 
             {/* Detail panel: Integrated Two-Column Facility Showcase Card */}
             <div className="lg:col-span-8 xl:col-span-8 lg:sticky lg:top-28">
-              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#4A0E1B] via-[#380A14] to-[#24050C] border border-[#D4AF37]/35 shadow-[0_24px_60px_rgba(0,0,0,0.55)] p-6 sm:p-8 lg:p-9 min-h-[490px]">
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#4A0E1B] via-[#380A14] to-[#24050C] border border-[#D4AF37]/35 shadow-[0_24px_60px_rgba(0,0,0,0.55)] p-4 sm:p-8 lg:p-9 min-h-[490px]">
                 {/* Subtle Decorative Background Watermark */}
                 {(() => {
                   const WatermarkIcon = facilitiesList[active].icon;
@@ -312,32 +312,29 @@ export default function FacilitiesPage({ embedded = false }) {
 
                         {/* Right portion – Facility Image (~42%) */}
                         <div className="md:col-span-5 flex items-center">
-                          <div className="relative w-full h-[280px] sm:h-[340px] md:h-full min-h-[280px] sm:min-h-[340px] md:min-h-[400px] rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-[0_16px_40px_rgba(0,0,0,0.6)] bg-[#190307] group flex flex-col justify-between">
-                            {/* Ambient illumination glow */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/10 via-transparent to-amber-200/5 pointer-events-none z-10" />
-
-                            {/* Subtle dark vignette gradient overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/25 pointer-events-none z-10" />
-
-                            {/* The Facility Image */}
+                          <div className="relative w-full aspect-square md:aspect-auto md:h-full md:min-h-[400px] rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-[0_16px_40px_rgba(0,0,0,0.6)] bg-[#190307] group flex flex-col justify-between">
+                            {/* The Facility Image — square 1:1 infographic/photo rendered uncropped on phones */}
                             <ResponsiveImage
                               src={item.image}
                               alt={item.imageAlt || item.title}
-                              sizes="(max-width: 768px) 100vw, 42vw"
+                              sizes="(max-width: 768px) 105vw, 45vw"
                               loading="lazy"
-                              className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                              className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                             />
 
+                            {/* Subtle top/bottom vignette */}
+                            <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none z-10" />
+
                             {/* Small, Elegant Facility Number Indicator (01-09) */}
-                            <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-1 px-3 py-1 rounded-full bg-[#1C0409]/90 backdrop-blur-md border border-[#D4AF37]/50 text-amber-300 shadow-md">
-                              <span className="font-cinzel text-xs font-bold tracking-widest">
+                            <div className="absolute top-3 right-3 z-20 flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full bg-[#1C0409]/90 backdrop-blur-md border border-[#D4AF37]/50 text-amber-300 shadow-md">
+                              <span className="font-cinzel text-[11px] sm:text-xs font-bold tracking-widest">
                                 0{active + 1}
                               </span>
                               <span className="text-[10px] text-mocha/70">/ 09</span>
                             </div>
 
-                            {/* Bottom Subtle Caption Tag */}
-                            <div className="relative z-20 p-3 mt-auto">
+                            {/* Bottom Caption Tag on tablet/desktop only so mobile square infographic text stays 100% uncovered */}
+                            <div className="hidden md:block absolute bottom-3 left-3 right-3 z-20 pointer-events-none">
                               <span className="inline-block px-2.5 py-1 rounded-md bg-black/65 backdrop-blur-sm border border-[#D4AF37]/35 text-[10px] font-cinzel font-semibold uppercase tracking-[0.2em] text-amber-200/90 truncate max-w-full drop-shadow">
                                 {item.shortTitle}
                               </span>

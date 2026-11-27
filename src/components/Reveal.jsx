@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 // Lightweight viewport-once scroll reveal matching luxury cubic-bezier(0.22, 1, 0.36, 1)
-export default function Reveal({ children, delay = 0, className = '' }) {
+export default function Reveal({ children, delay = 0, className = '', ...rest }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(() => {
     if (typeof window === 'undefined') return true;
@@ -35,6 +35,7 @@ export default function Reveal({ children, delay = 0, className = '' }) {
       className={`transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
       } ${className}`}
+      {...rest}
     >
       {children}
     </div>

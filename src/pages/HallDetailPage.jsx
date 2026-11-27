@@ -185,18 +185,18 @@ export default function HallDetailPage({ onOpenLightbox }) {
       {/* ========================================================
           1. CINEMATIC HALL HERO SECTION
           ======================================================== */}
-      <section className="relative min-h-[75vh] lg:min-h-[82vh] flex items-end pb-16 pt-24 overflow-hidden border-b border-[#D4AF37]/35">
+      <section className="relative min-h-[54vh] sm:min-h-[75vh] lg:min-h-[82vh] flex items-end pb-12 sm:pb-16 pt-20 sm:pt-24 overflow-hidden border-b border-[#D4AF37]/35">
         {/* Full-width Real Interior Background Photo */}
         <div className="absolute inset-0 bg-black">
           <ResponsiveImage
             src={hall.coverImage || hall.image}
             alt={`${hall.name} luxury wedding & banquet hall interior at S.S. Convention Meerpet`}
-            sizes="100vw"
+            sizes="(max-width: 767px) 140vw, 100vw"
             priority
-            className="w-full h-full object-cover object-center scale-105 animate-pulse-slow"
+            className="w-full h-full object-cover object-center sm:scale-105"
           />
           {/* Multi-layered Royal Velvet & Dark Vignette Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/35 sm:via-black/20 to-black/15 sm:to-black/10" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/15" />
         </div>
 
@@ -383,40 +383,40 @@ export default function HallDetailPage({ onOpenLightbox }) {
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
               onClick={() => onOpenLightbox(currentItem.src, `${hall.name} - ${currentItem.title}`)}
-              className="relative w-full h-[380px] sm:h-[520px] lg:h-[640px] rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 bg-black shadow-2xl cursor-pointer group mb-6 select-none"
+              className="relative w-full aspect-[4/3] sm:aspect-auto sm:h-[520px] lg:h-[640px] rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 bg-black shadow-2xl cursor-pointer group mb-6 select-none"
             >
               <ResponsiveImage
                 key={currentItem.src}
                 src={currentItem.src}
                 alt={currentItem.title}
-                sizes="(max-width: 1024px) 96vw, 1280px"
+                sizes="(max-width: 767px) 125vw, (max-width: 1024px) 96vw, 1280px"
                 loading="eager"
                 decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-[0.97]"
               />
 
               {/* Cinematic Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 sm:from-black/90 via-black/15 sm:via-black/25 to-black/15 sm:to-black/20 pointer-events-none" />
 
               {/* Floating Category Badge */}
-              <div className="absolute top-4 left-4 z-20">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-[#D4AF37]/40 text-amber-300 text-xs font-cinzel font-semibold tracking-wider">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20">
+                <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-[#D4AF37]/40 text-amber-300 text-[10px] sm:text-xs font-cinzel font-semibold tracking-wider">
                   <Sparkles className="w-3 h-3 text-amber-400" />
                   {currentItem.category}
                 </span>
               </div>
 
               {/* Fullscreen Magnifier Icon */}
-              <div className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/70 backdrop-blur-md border border-[#D4AF37]/50 text-amber-300 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 backdrop-blur-md border border-[#D4AF37]/50 text-amber-300 flex items-center justify-center opacity-85 sm:opacity-80 group-hover:opacity-100 transition-opacity">
                 <Maximize2 className="w-4 h-4" />
               </div>
 
               {/* Captions Overlay */}
-              <div className="absolute bottom-6 left-6 right-6 sm:left-10 sm:right-10 z-20 pointer-events-none">
-                <h3 className="font-cinzel text-xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
+              <div className="absolute bottom-3 left-4 right-4 sm:bottom-6 sm:left-10 sm:right-10 z-20 pointer-events-none">
+                <h3 className="font-cinzel text-sm sm:text-3xl lg:text-4xl font-bold text-white tracking-wide leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] line-clamp-2 sm:line-clamp-none">
                   {currentItem.title}
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-amber-200/90 font-light flex items-center gap-2 drop-shadow">
+                <p className="mt-1 sm:mt-2 text-[10px] sm:text-sm text-amber-200/90 font-light flex items-center gap-2 drop-shadow">
                   <span>{hall.name}</span>
                   <span>•</span>
                   <span>Swipe or click arrows to explore view</span>
@@ -431,9 +431,9 @@ export default function HallDetailPage({ onOpenLightbox }) {
                   handlePrevSlide();
                 }}
                 aria-label="Previous image"
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-[#7A1F31] border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30"
+                className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/60 hover:bg-[#7A1F31] border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-95 focus:opacity-100 z-30"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
               <button
                 type="button"
@@ -442,9 +442,9 @@ export default function HallDetailPage({ onOpenLightbox }) {
                   handleNextSlide();
                 }}
                 aria-label="Next image"
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-[#7A1F31] border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30"
+                className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/60 hover:bg-[#7A1F31] border border-[#D4AF37]/50 text-amber-200 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-95 focus:opacity-100 z-30"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
           )}
@@ -918,11 +918,11 @@ export default function HallDetailPage({ onOpenLightbox }) {
                 key={siblingHall.id}
                 className="bg-[#480E19] rounded-3xl overflow-hidden border-2 border-[#D4AF37]/35 flex flex-col group hover:border-amber-400 transition-all duration-300 shadow-xl"
               >
-                <div className="h-56 relative overflow-hidden bg-black">
+                <div className="aspect-[4/3] sm:aspect-auto sm:h-56 relative overflow-hidden bg-black">
                   <ResponsiveImage
                     src={siblingHall.image}
                     alt={siblingHall.name}
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 105vw, 33vw"
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

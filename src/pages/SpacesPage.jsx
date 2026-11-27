@@ -213,7 +213,7 @@ function HallDecorationLightbox({
             <ResponsiveImage
               src={currentImage.src}
               alt={currentImage.title}
-              sizes="92vw"
+              sizes="(max-width: 768px) 160vw, 95vw"
               loading="eager"
               decoding="async"
               className="max-h-[68vh] sm:max-h-[72vh] w-auto max-w-full object-contain rounded-xl sm:rounded-2xl border border-champagne-gold/30 shadow-[0_20px_50px_rgba(0,0,0,0.85)]"
@@ -306,33 +306,33 @@ function HallGalleryStrip({
                 else setActive(i);
               }}
               aria-label={`View photo ${i + 1} of ${images.length}: ${img.title}`}
-              className={`group relative flex-shrink-0 snap-center overflow-hidden rounded-2xl border text-left cursor-pointer h-[420px] lg:h-[520px] w-[78vw] sm:w-[52vw] lg:w-auto transition-[flex,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              className={`group relative flex-shrink-0 snap-center overflow-hidden rounded-2xl border text-left cursor-pointer aspect-[4/3] w-[86vw] sm:w-[68vw] lg:aspect-auto lg:h-[520px] lg:w-auto transition-[flex,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 open ? 'lg:flex-[4.5] border-amber-400/70' : 'lg:flex-1 border-[#D4AF37]/25'
               }`}
             >
               <ResponsiveImage
                 src={img.src}
                 alt={img.title}
-                sizes="(max-width: 1024px) 78vw, 45vw"
+                sizes="(max-width: 640px) 115vw, (max-width: 1024px) 75vw, 45vw"
                 loading="lazy"
                 draggable={false}
                 className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-out ${
                   open ? 'scale-105 brightness-100' : 'lg:scale-100 lg:brightness-[0.55] lg:grayscale-[0.35]'
                 }`}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409] via-[#1C0409]/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 via-[#1C0409]/15 to-transparent" />
 
-              <span className="absolute top-4 left-5 font-cinzel text-sm tracking-[0.3em] text-amber-300/90">
+              <span className="absolute top-3 left-4 sm:top-4 sm:left-5 font-cinzel text-xs sm:text-sm tracking-[0.3em] text-amber-300/90">
                 {String(i + 1).padStart(2, '0')}
               </span>
 
-              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
-                {/* Phones always show the caption; desktop shows it on the open panel */}
+              <div className="absolute bottom-0 left-0 right-0 p-3.5 sm:p-6">
+                {/* Phones always show the caption cleanly; desktop shows it on the open panel */}
                 <div className={`transition-all duration-700 ${open ? 'lg:opacity-100 lg:translate-y-0' : 'lg:opacity-0 lg:translate-y-3'}`}>
                   {img.category && (
-                    <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300">{img.category}</span>
+                    <span className="block text-[9px] sm:text-[10px] tracking-[0.22em] uppercase text-amber-300">{img.category}</span>
                   )}
-                  <span className="mt-1 block font-cinzel text-base sm:text-lg font-bold text-latte leading-snug lg:max-w-md">
+                  <span className="mt-0.5 sm:mt-1 block font-cinzel text-sm sm:text-lg font-bold text-latte leading-snug line-clamp-1 sm:line-clamp-2 lg:max-w-md">
                     {img.title}
                   </span>
                   <span className="mt-2 hidden lg:inline-flex items-center gap-1.5 text-xs text-mocha">
@@ -555,74 +555,87 @@ function HallInteractiveShowcase({ hall, meta, hallNumber, onOpenLightbox }) {
   return (
     <div className="relative group w-full flex flex-col">
       {/* Primary Dominant Showcase Frame */}
-      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 shadow-[0_20px_60px_rgba(0,0,0,0.85)] bg-[#100205] aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] w-full">
-        {/* Animated Image with Subtle Ken Burns / Smooth Crossfade */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentPhoto.src}
-            initial={{ opacity: 0, scale: shouldReduce ? 1 : 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: shouldReduce ? 1 : 0.98 }}
-            transition={{ duration: shouldReduce ? 0.15 : 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full h-full"
-          >
-            <ResponsiveImage
-              src={currentPhoto.src}
-              alt={currentPhoto.title}
-              sizes="(max-width: 1024px) 100vw, 55vw"
-              loading="lazy"
-              className="w-full h-full object-cover select-none"
-            />
-          </motion.div>
-        </AnimatePresence>
+      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#D4AF37]/45 shadow-[0_20px_60px_rgba(0,0,0,0.85)] bg-[#100205] w-full">
+        <div className="relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] w-full overflow-hidden">
+          {/* Animated Image with Subtle Ken Burns / Smooth Crossfade */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentPhoto.src}
+              initial={{ opacity: 0, scale: shouldReduce ? 1 : 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: shouldReduce ? 1 : 0.98 }}
+              transition={{ duration: shouldReduce ? 0.15 : 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full h-full"
+            >
+              <ResponsiveImage
+                src={currentPhoto.src}
+                alt={currentPhoto.title}
+                sizes="(max-width: 767px) 125vw, (max-width: 1024px) 100vw, 55vw"
+                loading="lazy"
+                className="w-full h-full object-cover select-none"
+              />
+            </motion.div>
+          </AnimatePresence>
 
-        {/* Cinematic Vignette & Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#100205] via-[#100205]/20 to-black/40 pointer-events-none" />
-        <div className="absolute inset-0 bg-radial-vignette opacity-40 pointer-events-none" />
+          {/* Cinematic Vignette & Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#100205]/50 sm:from-[#100205] via-transparent sm:via-[#100205]/20 to-black/35 pointer-events-none" />
+          <div className="hidden sm:block absolute inset-0 bg-radial-vignette opacity-40 pointer-events-none" />
 
-        {/* Architectural Gold Filigree Accent Corners */}
-        <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#D4AF37]/60 pointer-events-none" />
-        <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#D4AF37]/60 pointer-events-none" />
-        <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#D4AF37]/60 pointer-events-none" />
-        <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#D4AF37]/60 pointer-events-none" />
+          {/* Architectural Gold Filigree Accent Corners (desktop/tablet) */}
+          <div className="hidden sm:block absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#D4AF37]/60 pointer-events-none" />
+          <div className="hidden sm:block absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#D4AF37]/60 pointer-events-none" />
+          <div className="hidden sm:block absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#D4AF37]/60 pointer-events-none" />
+          <div className="hidden sm:block absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#D4AF37]/60 pointer-events-none" />
 
-        {/* Top Badges */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-auto gap-2">
-          {/* Hall Number & Floor Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#180307]/85 border border-[#D4AF37]/60 backdrop-blur-md shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#FFE57F] animate-pulse" />
-            <span className="font-cinzel text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E7] to-[#D4AF37] tracking-wider uppercase">
-              Hall 0{hallNumber} · {meta.floor}
-            </span>
+          {/* Top Badges */}
+          <div className="absolute top-2.5 left-2.5 right-2.5 sm:top-4 sm:left-4 sm:right-4 flex items-center justify-between pointer-events-auto gap-2">
+            {/* Hall Number & Floor Pill */}
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#180307]/85 border border-[#D4AF37]/60 backdrop-blur-md shadow-lg">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#FFE57F] animate-pulse" />
+              <span className="font-cinzel text-[10px] sm:text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E7] to-[#D4AF37] tracking-wider uppercase">
+                Hall 0{hallNumber} · {meta.floor}
+              </span>
+            </div>
+
+            {/* Quick Enlarge & Lightbox Trigger */}
+            <div className="flex items-center gap-2">
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#180307]/85 border border-[#D4AF37]/50 text-amber-200 backdrop-blur-md shadow-lg">
+                <Users className="w-3.5 h-3.5 text-[#D4AF37]" /> {meta.capacityPill}
+              </span>
+              <button
+                onClick={() => onOpenLightbox(showcasePhotos, activePhotoIdx, hall.name)}
+                aria-label={`Enlarge ${currentPhoto.title} in high resolution`}
+                className="group/btn flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-[#2C060F]/90 hover:bg-[#8A1828] border border-[#D4AF37]/70 text-amber-200 hover:text-white backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                <Maximize2 className="w-3.5 h-3.5 text-[#D4AF37] group-hover/btn:text-white transition-colors" />
+                <span className="text-[11px] font-bold uppercase tracking-wider hidden md:inline">Expand</span>
+              </button>
+            </div>
           </div>
 
-          {/* Quick Enlarge & Lightbox Trigger */}
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#180307]/85 border border-[#D4AF37]/50 text-amber-200 backdrop-blur-md shadow-lg">
-              <Users className="w-3.5 h-3.5 text-[#D4AF37]" /> {meta.capacityPill}
-            </span>
-            <button
-              onClick={() => onOpenLightbox(showcasePhotos, activePhotoIdx, hall.name)}
-              aria-label={`Enlarge ${currentPhoto.title} in high resolution`}
-              className="group/btn flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#2C060F]/90 hover:bg-[#8A1828] border border-[#D4AF37]/70 text-amber-200 hover:text-white backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
-            >
-              <Maximize2 className="w-3.5 h-3.5 text-[#D4AF37] group-hover/btn:text-white transition-colors" />
-              <span className="text-[11px] font-bold uppercase tracking-wider hidden md:inline">Expand</span>
-            </button>
+          {/* Bottom Editorial Caption — overlaid on sm+ screens */}
+          <div className="hidden sm:block absolute bottom-4 left-4 right-4 pointer-events-none">
+            <div className="max-w-xl p-3 sm:p-4 rounded-xl bg-[#140205]/85 border border-[#D4AF37]/35 backdrop-blur-md shadow-2xl">
+              <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
+                <Sparkles className="w-3 h-3 text-amber-300" />
+                <span>{currentPhoto.title}</span>
+              </div>
+              <p className="mt-1 font-cinzel text-xs sm:text-sm font-semibold text-[#FFFDF5] leading-snug drop-shadow line-clamp-2">
+                {currentPhoto.caption}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Editorial Caption */}
-        <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
-          <div className="max-w-xl p-3 sm:p-4 rounded-xl bg-[#140205]/85 border border-[#D4AF37]/35 backdrop-blur-md shadow-2xl">
-            <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
-              <Sparkles className="w-3 h-3 text-amber-300" />
-              <span>{currentPhoto.title}</span>
-            </div>
-            <p className="mt-1 font-cinzel text-xs sm:text-sm font-semibold text-[#FFFDF5] leading-snug drop-shadow line-clamp-2">
-              {currentPhoto.caption}
-            </p>
+        {/* Mobile Caption Strip Below Photo — keeps 100% of the photo unobstructed on phones */}
+        <div className="sm:hidden px-3.5 py-2.5 bg-[#140205] border-t border-[#D4AF37]/30">
+          <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37]">
+            <Sparkles className="w-3 h-3 text-amber-300 flex-shrink-0" />
+            <span className="truncate">{currentPhoto.title}</span>
           </div>
+          <p className="mt-0.5 font-cinzel text-xs font-semibold text-[#FFFDF5] leading-snug line-clamp-1">
+            {currentPhoto.caption}
+          </p>
         </div>
       </div>
 
@@ -957,16 +970,16 @@ export default function SpacesPage({ onOpenLightbox }) {
         canonical="/spaces"
       />
       {/* Hero */}
-      <section className="relative min-h-[55vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
+      <section className="relative min-h-[42vh] sm:min-h-[55vh] flex items-end pt-24 pb-10 sm:pt-32 sm:pb-14 border-b border-[#D4AF37]/30">
         {/* Slowly scrolling strip of venue photos */}
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="flex h-full w-max animate-marquee-x">
             {[...HERO_PHOTOS, ...HERO_PHOTOS].map((src, i) => (
-              <ResponsiveImage key={i} src={src} alt="S.S. Convention wedding and function hall interior view" sizes="(max-width: 640px) 70vw, (max-width: 1024px) 40vw, 28vw" loading={i < 4 ? 'eager' : 'lazy'} fetchPriority={i === 0 ? 'high' : undefined} decoding={i === 0 ? 'sync' : 'async'} draggable={false} className="h-full w-[70vw] sm:w-[40vw] lg:w-[28vw] flex-shrink-0 object-cover" />
+              <ResponsiveImage key={i} src={src} alt="S.S. Convention wedding and function hall interior view" sizes="(max-width: 640px) 130vw, (max-width: 1024px) 60vw, 28vw" loading={i < 4 ? 'eager' : 'lazy'} fetchPriority={i === 0 ? 'high' : undefined} decoding={i === 0 ? 'sync' : 'async'} draggable={false} className="h-full w-[86vw] sm:w-[46vw] lg:w-[28vw] flex-shrink-0 object-cover" />
             ))}
           </div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/40 sm:via-black/20 to-black/25 sm:to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}

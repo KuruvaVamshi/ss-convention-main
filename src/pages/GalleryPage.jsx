@@ -62,15 +62,15 @@ export default function GalleryPage({ onOpenLightbox }) {
         canonical="/gallery"
       />
       {/* Hero */}
-      <section className="relative min-h-[50vh] flex items-end pt-32 pb-14 border-b border-[#D4AF37]/30">
+      <section className="relative min-h-[38vh] sm:min-h-[50vh] flex items-end pt-24 pb-10 sm:pt-32 sm:pb-14 border-b border-[#D4AF37]/30">
         <ResponsiveImage
           src="/assets/08_wedding_mandap_and_rituals/traditional_wedding_mandap_wide_stage.jpeg"
           alt="Traditional wedding mandap stage decorations at S.S. Convention Meerpet"
-          sizes="100vw"
+          sizes="(max-width: 767px) 140vw, 100vw"
           priority
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/35 sm:via-black/20 to-black/20 sm:to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Authentic Visual Archive</p>
@@ -156,17 +156,17 @@ export default function GalleryPage({ onOpenLightbox }) {
                   <ResponsiveImage
                     src={item.image}
                     alt={item.title}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 115vw, (max-width: 1024px) 50vw, 33vw"
                     loading="lazy"
-                    className="w-full h-auto block transition-transform duration-[900ms] ease-out group-hover:scale-105"
+                    className="w-full h-auto max-h-[75vh] sm:max-h-none object-cover block transition-transform duration-[900ms] ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/55 border border-white/25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-85 transition-opacity duration-500" />
+                  <span className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/55 border border-white/25 flex items-center justify-center opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-90 transition-opacity duration-300">
                     <Maximize2 className="w-4 h-4 text-amber-200" />
                   </span>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    <span className="block text-[10px] tracking-[0.25em] uppercase text-amber-300">{item.categoryLabel}</span>
-                    <span className="block mt-1 text-sm font-semibold text-latte leading-snug">{item.title}</span>
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100 transition-all duration-500">
+                    <span className="block text-[9px] sm:text-[10px] tracking-[0.22em] uppercase text-amber-300">{item.categoryLabel}</span>
+                    <span className="block mt-0.5 sm:mt-1 text-xs sm:text-sm font-semibold text-latte leading-snug line-clamp-1 sm:line-clamp-2">{item.title}</span>
                   </div>
                 </button>
               ))}

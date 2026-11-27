@@ -28,9 +28,10 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      // More and larger photos on wide screens so the ring fills the full width.
+      // Mobile uses a landscape-balanced card so wide hall/stage photos are not heavily cropped;
+      // tablet/desktop keep tall editorial cards in a full-width ring.
       const n = w < 640 ? 6 : w < 1024 ? 8 : w < 1500 ? 10 : 12;
-      const cw = w < 640 ? 170 : w < 1024 ? 230 : w < 1500 ? 290 : 330;
+      const cw = w < 640 ? 216 : w < 1024 ? 230 : w < 1500 ? 290 : 330;
       setCount(n);
       setCardW(cw);
       // radius so neighbouring cards just touch: r = (w/2) / tan(pi/n), plus a small gap
@@ -59,7 +60,7 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
   const onTouchEnd = () => { clearTimeout(touchTimer.current); touchTimer.current = setTimeout(() => setTouching(false), 2500); };
 
   const step = 360 / count;
-  const cardH = Math.round(cardW * 1.3);
+  const cardH = Math.round(cardW * (cardW <= 220 ? 0.85 : 1.3));
 
   return (
     <section ref={ref} className="relative bg-[#2A060E] border-t border-[#D4AF37]/25">
@@ -141,13 +142,13 @@ export default function PhotoScroll3D({ onOpenLightbox }) {
                 <ResponsiveImage
                   src={p.image}
                   alt={p.title}
-                  sizes="(max-width: 640px) 185px, (max-width: 1024px) 225px, 310px"
+                  sizes="(max-width: 640px) 420px, (max-width: 1024px) 340px, 420px"
                   loading="lazy"
                   draggable={false}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/90 via-transparent to-transparent" />
-                <span className="absolute bottom-2 left-3 right-3 text-left text-[11px] sm:text-xs font-cinzel text-latte line-clamp-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1C0409]/85 via-transparent to-transparent" />
+                <span className="absolute bottom-2 left-2.5 right-2.5 text-left text-[11px] sm:text-xs font-cinzel text-latte line-clamp-1 sm:line-clamp-2">
                   {p.title}
                 </span>
               </button>

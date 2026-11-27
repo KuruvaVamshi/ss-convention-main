@@ -390,13 +390,13 @@ export default function HeroConsole({ onOpenLightbox, externalSlide = null }) {
       id="interactive-console"
       className={`relative z-10 bg-[#2A060E] border-t border-[#D4AF37]/30 ${shouldReduce ? '' : 'h-[360vh]'}`}
     >
-      <div className={`${shouldReduce ? 'py-14 sm:py-20' : 'sticky top-0 h-[100dvh] pt-20 sm:pt-24 pb-6'} flex flex-col justify-center overflow-hidden`}>
+      <div className={`${shouldReduce ? 'py-14 sm:py-20' : 'sticky top-0 h-[100dvh] pt-[74px] sm:pt-24 pb-3 sm:pb-6'} flex flex-col justify-center overflow-hidden`}>
         {/* TOP HEADER BAR WITH ACCESSIBLE LEFT/RIGHT SWITCHING CONTROLS UP TOP */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row md:items-end justify-between gap-2.5 sm:gap-4">
           <div className="max-w-2xl">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-1.5 sm:mb-2">Take a closer look</p>
+            <p className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-1 sm:mb-2">Take a closer look</p>
             <h2 className="font-cinzel text-2xl sm:text-4xl lg:text-5xl font-bold tracking-wide text-latte leading-tight">Explore the Venue</h2>
-            <div className="mt-2.5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
+            <div className="mt-2 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent hidden sm:block" />
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 self-start md:self-end" aria-label="Venue sections navigation">
@@ -453,7 +453,7 @@ export default function HeroConsole({ onOpenLightbox, externalSlide = null }) {
         >
           {/* Left Pinned Viewer */}
           <div className="lg:col-span-6">
-            <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black aspect-[16/10] max-h-[26vh] sm:max-h-[34vh] lg:max-h-[48vh] w-full">
+            <div className="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black aspect-[16/10] max-h-[27vh] sm:max-h-[34vh] lg:max-h-[48vh] w-full">
               <AnimatePresence mode="sync">
                 <motion.div
                   key={currentMedia.src}
@@ -466,30 +466,30 @@ export default function HeroConsole({ onOpenLightbox, externalSlide = null }) {
                   <ResponsiveImage
                     src={currentMedia.src}
                     alt={currentMedia.title}
-                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    sizes="(max-width: 1024px) 115vw, 50vw"
                     loading="eager"
                     decoding="async"
                     style={getLightingFilter()}
-                    className="w-full h-full object-cover"
+                    className={`w-full h-full ${currentMedia.src?.includes('/assets/facilities/') ? 'object-contain bg-[#180307]' : 'object-cover'}`}
                   />
                 </motion.div>
               </AnimatePresence>
-              <div className="absolute inset-x-0 bottom-0 h-28 sm:h-32 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-20 sm:h-32 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
 
-              <div className="absolute top-3 right-3 flex items-center gap-2">
+              <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => onOpenLightbox(currentMedia.src, currentMedia.title)}
                   aria-label="View full screen"
-                  className="w-9 h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors cursor-pointer"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 border border-white/25 text-white flex items-center justify-center hover:bg-[#7A1F31] transition-colors cursor-pointer"
                 >
-                  <Maximize2 className="w-4 h-4" />
+                  <Maximize2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
 
-              <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-5 right-4 sm:right-5">
-                <h3 className="font-cinzel text-sm sm:text-lg font-bold text-latte drop-shadow line-clamp-1">{currentMedia.title}</h3>
-                <p className="text-[11px] sm:text-xs text-mocha line-clamp-1">{currentMedia.caption}</p>
+              <div className="absolute bottom-2.5 sm:bottom-4 left-3.5 sm:left-5 right-3.5 sm:right-5">
+                <h3 className="font-cinzel text-xs sm:text-lg font-bold text-latte drop-shadow line-clamp-1">{currentMedia.title}</h3>
+                <p className="text-[10px] sm:text-xs text-mocha line-clamp-1">{currentMedia.caption}</p>
               </div>
             </div>
           </div>
@@ -538,15 +538,15 @@ export default function HeroConsole({ onOpenLightbox, externalSlide = null }) {
                               ))}
                             </div>
 
-                            <h3 className="mt-4 sm:mt-5 font-cinzel text-xl sm:text-2xl font-bold text-latte">{currentHall.name}</h3>
-                            <p className="mt-1 text-xs sm:text-sm text-amber-300 font-semibold">{currentHall.tagline}</p>
-                            <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-mocha leading-relaxed line-clamp-3">{currentHall.shortDescription || currentHall.description}</p>
-                            <p className="mt-2.5 text-xs sm:text-sm text-latte line-clamp-1">
+                            <h3 className="mt-3 sm:mt-5 font-cinzel text-lg sm:text-2xl font-bold text-latte">{currentHall.name}</h3>
+                            <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-amber-300 font-semibold line-clamp-1">{currentHall.tagline}</p>
+                            <p className="mt-1.5 sm:mt-3 text-xs sm:text-sm text-mocha leading-relaxed line-clamp-2 sm:line-clamp-3">{currentHall.shortDescription || currentHall.description}</p>
+                            <p className="mt-2 sm:mt-2.5 text-xs sm:text-sm text-latte line-clamp-1">
                               <span className="text-[10px] tracking-[0.25em] uppercase text-amber-300 mr-2">Ideal for</span>
                               {currentHall.bestFor}
                             </p>
 
-                            <div className="mt-3 sm:mt-4 flex items-center gap-2 text-xs text-mocha">
+                            <div className="mt-2.5 sm:mt-4 flex items-center gap-2 text-xs text-mocha">
                               <span>View:</span>
                               {[['hall', 'Hall'], ['foyer', 'Stage']].map(([angle, labelBtn]) => (
                                 <button
@@ -564,9 +564,9 @@ export default function HeroConsole({ onOpenLightbox, externalSlide = null }) {
                               ))}
                             </div>
 
-                            <div className="mt-4 sm:mt-5 flex flex-wrap gap-2.5 sm:gap-3">
-                              <Link to={`/halls/${currentHall.id}`} className="btn-gold">View hall <ArrowRight className="w-3.5 h-3.5" /></Link>
-                              <Link to="/spaces" className="btn-outline-gold">Compare halls</Link>
+                            <div className="mt-3 sm:mt-5 flex flex-wrap gap-2 sm:gap-3">
+                              <Link to={`/halls/${currentHall.id}`} className="btn-gold !px-4 !py-2.5 sm:!px-[1.625rem] sm:!py-3 !text-[10px] sm:!text-xs">View hall <ArrowRight className="w-3.5 h-3.5" /></Link>
+                              <Link to="/spaces" className="btn-outline-gold !px-4 !py-2.5 sm:!px-[1.625rem] sm:!py-3 !text-[10px] sm:!text-xs">Compare halls</Link>
                             </div>
                           </div>
                         )}

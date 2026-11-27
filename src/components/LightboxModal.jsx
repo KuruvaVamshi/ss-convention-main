@@ -114,7 +114,7 @@ export default function LightboxModal({ isOpen, imageSrc, title, onClose, onPrev
           <ResponsiveImage
             src={imageSrc}
             alt={title || 'Enlarged Preview'}
-            sizes="95vw"
+            sizes="(max-width: 768px) 160vw, 95vw"
             loading="eager"
             decoding="async"
             className="max-h-[72vh] sm:max-h-[76vh] max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-gold-500/30"

@@ -207,12 +207,12 @@ export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = 
                 key={item.id}
                 src={item.src}
                 alt={item.title}
-                sizes="100vw"
+                sizes="(max-width: 767px) 160vw, 100vw"
                 loading={idx === 0 ? 'eager' : 'lazy'}
                 decoding={idx === 0 && entranceDone ? 'sync' : 'async'}
                 fetchPriority={idx === 0 ? (entranceDone ? 'high' : 'low') : undefined}
                 style={{
-                  transform: activeSlideIdx === idx ? 'scale(1.07)' : 'scale(1)',
+                  transform: activeSlideIdx === idx ? 'scale(1.04)' : 'scale(1)',
                   transition: 'opacity 1000ms ease-in-out, transform 8000ms linear'
                 }}
                 className={`absolute inset-0 w-full h-full object-cover object-center filter brightness-100 contrast-[1.04] saturate-[1.1] transition-opacity duration-1000 ease-in-out will-change-transform ${
@@ -223,30 +223,30 @@ export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = 
           ))}
 
           {/* Symmetrical Palace Ambient Lighting Scrim */}
-          <div className="absolute top-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-b from-black/50 via-black/15 to-transparent z-10" />
-          <div className="absolute bottom-0 left-0 right-0 h-48 sm:h-56 bg-gradient-to-t from-black/65 via-black/25 to-transparent z-10" />
+          <div className="absolute top-0 left-0 right-0 h-48 sm:h-40 bg-gradient-to-b from-black/75 via-black/30 to-transparent z-10" />
+          <div className="absolute bottom-0 left-0 right-0 h-56 sm:h-56 bg-gradient-to-t from-black/80 via-black/35 to-transparent z-10" />
         </div>
 
         {/* UPPER TIER: BRAND */}
         <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pt-4">
-          <p className="font-serif text-xs sm:text-sm tracking-[0.3em] text-[#FFF6D1]/90 mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          <p className="font-serif text-[11px] sm:text-sm tracking-[0.22em] sm:tracking-[0.3em] text-[#FFF6D1]/95 mb-3 sm:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
             || Sri Rastu • Shubhamastu • Avighnamastu ||
           </p>
 
-          <h1 className="font-cinzel text-4xl sm:text-6xl md:text-7xl font-bold tracking-[0.12em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] via-[#EED9A6] to-[#C5A059] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] leading-[1.05]">
+          <h1 className="font-cinzel text-[clamp(1.7rem,8vw,2.5rem)] sm:text-6xl md:text-7xl font-bold tracking-[0.09em] sm:tracking-[0.12em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] via-[#EED9A6] to-[#C5A059] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] leading-[1.08] whitespace-nowrap sm:whitespace-normal">
             S.S CONVENTION
             <span className="sr-only"> – Wedding & Banquet Halls in Meerpet, Hyderabad</span>
           </h1>
 
-          <div className="flex items-center justify-center gap-3 mt-4" aria-hidden="true">
-            <span className="h-px w-10 sm:w-20 bg-gradient-to-r from-transparent to-[#C5A059]/80" />
-            <span className="text-[11px] sm:text-sm font-cinzel tracking-[0.28em] uppercase text-latte drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-4" aria-hidden="true">
+            <span className="h-px w-8 sm:w-20 bg-gradient-to-r from-transparent to-[#C5A059]/80" />
+            <span className="text-[10px] sm:text-sm font-cinzel tracking-[0.2em] sm:tracking-[0.28em] uppercase text-latte drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
               Wedding & Banquet Halls · Meerpet, Hyderabad
             </span>
-            <span className="h-px w-10 sm:w-20 bg-gradient-to-l from-transparent to-[#C5A059]/80" />
+            <span className="h-px w-8 sm:w-20 bg-gradient-to-l from-transparent to-[#C5A059]/80" />
           </div>
 
-          <p className="mt-4 font-serif italic text-sm sm:text-lg text-mocha tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+          <p className="mt-3 sm:mt-4 font-serif italic text-xs sm:text-lg text-[#FFF6D1]/95 tracking-wide drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
             {'“Where Grand Traditions Meet Timeless Luxury”'}
           </p>
         </div>

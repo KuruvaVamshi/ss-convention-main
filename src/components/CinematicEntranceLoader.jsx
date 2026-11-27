@@ -208,7 +208,7 @@ function LuxuryCaption({ sceneNum, headline = '', subtext = '', isActive, delay 
 /* ─────────────────────────────────────────────────────────────────────────────
    DOOR PANEL — 3-D perspective swing open
    ───────────────────────────────────────────────────────────────────────────── */
-function DoorPanel({ side, imageSrc, alt, isOpen }) {
+function DoorPanel({ side, imageSrc, alt, isOpen, objectPosition = 'center' }) {
   const isLeft = side === 'left';
   return (
     <div
@@ -226,7 +226,7 @@ function DoorPanel({ side, imageSrc, alt, isOpen }) {
       }}
     >
       <div className={`absolute top-0 ${isLeft ? 'left-0' : 'right-0'} w-screen h-full pointer-events-none will-change-transform`}>
-        <ResponsiveImage src={imageSrc} alt={alt} sizes="100vw" loading="eager" decoding="async" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.03)' }} />
+        <ResponsiveImage src={imageSrc} alt={alt} sizes="(max-width: 767px) 150vw, 100vw" loading="eager" decoding="async" className="w-full h-full object-cover" style={{ objectPosition, filter: 'brightness(1.02) contrast(1.03)' }} />
       </div>
       <div
         className={`absolute inset-0 pointer-events-none ${isLeft ? 'bg-gradient-to-r from-transparent via-transparent to-black/85' : 'bg-gradient-to-l from-transparent via-transparent to-black/85'}`}
@@ -395,7 +395,8 @@ export default function CinematicEntranceLoader({ onComplete }) {
     if (scenePromisesRef.current[sceneNum]) return scenePromisesRef.current[sceneNum];
     if (typeof window === 'undefined' || !rawUrl) return Promise.resolve();
 
-    const targetW = getDprTargetWidth(window.innerWidth || 1280);
+    const w = window.innerWidth || 1280;
+    const targetW = getDprTargetWidth(w < 768 ? Math.round(w * 1.5) : w);
     const webpUrl = getPreferredWebp(rawUrl, targetW);
     const p = new Promise((resolve) => {
       const img = new Image();
@@ -739,13 +740,13 @@ export default function CinematicEntranceLoader({ onComplete }) {
           }}
         >
           {mountLaterScenes && (
-            <ResponsiveImage src={receptionImage} alt="S.S. Convention Reception" sizes="100vw" loading="eager" decoding="async" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+            <ResponsiveImage src={receptionImage} alt="S.S. Convention Reception" sizes="(max-width: 767px) 150vw, 100vw" loading="eager" decoding="async" className="w-full h-full object-cover" style={{ objectPosition: isMobile ? '44% center' : 'center', filter: 'brightness(1.02) contrast(1.04)' }} />
           )}
           <WarmBloom active={step === 4} x="50%" y="26%" delay={500} />
         </div>
         {/* scrims */}
-        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-44 sm:h-56 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-28 sm:h-32 bg-gradient-to-b from-black/60 via-black/15 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-52 sm:h-56 bg-gradient-to-t from-black/75 via-black/30 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={4}
           headline={'Your Moments. Our Space.'}
@@ -781,12 +782,12 @@ export default function CinematicEntranceLoader({ onComplete }) {
           }}
         >
           {mountLaterScenes && (
-            <ResponsiveImage src={lobbyImage} alt="S.S. Convention Grand Lobby Lounge" sizes="100vw" loading="eager" decoding="async" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
+            <ResponsiveImage src={lobbyImage} alt="S.S. Convention Grand Lobby Lounge" sizes="(max-width: 767px) 150vw, 100vw" loading="eager" decoding="async" className="w-full h-full object-cover object-center" style={{ filter: 'brightness(1.02) contrast(1.04)' }} />
           )}
           <WarmBloom active={step === 3} x="50%" y="34%" delay={600} />
         </div>
-        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-28 sm:h-32 bg-gradient-to-b from-black/60 via-black/15 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-52 sm:h-52 bg-gradient-to-t from-black/75 via-black/30 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={3}
           headline={'Pause Here. Let Elegance Welcome You.'}
@@ -815,13 +816,13 @@ export default function CinematicEntranceLoader({ onComplete }) {
         >
           {mountLaterScenes && (
             <>
-              <DoorPanel side="left"  imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Left Door"  isOpen={entranceDoorsOpen} />
-              <DoorPanel side="right" imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Right Door" isOpen={entranceDoorsOpen} />
+              <DoorPanel side="left"  imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Left Door"  isOpen={entranceDoorsOpen} objectPosition={isMobile ? '46% center' : 'center'} />
+              <DoorPanel side="right" imageSrc={entranceImage} alt="S.S. Convention Grand Entrance Right Door" isOpen={entranceDoorsOpen} objectPosition={isMobile ? '46% center' : 'center'} />
             </>
           )}
         </div>
-        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-28 sm:h-32 bg-gradient-to-b from-black/60 via-black/15 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-52 sm:h-52 bg-gradient-to-t from-black/75 via-black/30 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={2}
           headline={'Beyond This Entrance, Something Beautiful Awaits.'}
@@ -856,16 +857,16 @@ export default function CinematicEntranceLoader({ onComplete }) {
             imgRef={scene1ImgRef}
             src={exteriorImage}
             alt="S.S. Convention Building Exterior at Night"
-            sizes="100vw"
+            sizes="(max-width: 767px) 150vw, 100vw"
             priority
             onLoad={markScene1Ready}
             onError={markScene1Ready}
-            className="w-full h-full object-cover object-center"
-            style={{ filter: 'brightness(1.02) contrast(1.04)' }}
+            className="w-full h-full object-cover"
+            style={{ objectPosition: isMobile ? '28% center' : 'center', filter: 'brightness(1.02) contrast(1.04)' }}
           />
         </div>
-        <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-black/45 via-black/12 to-transparent pointer-events-none z-[25]" />
-        <div className="absolute bottom-0 inset-x-0 h-40 sm:h-52 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute top-0 inset-x-0 h-28 sm:h-32 bg-gradient-to-b from-black/60 via-black/15 to-transparent pointer-events-none z-[25]" />
+        <div className="absolute bottom-0 inset-x-0 h-52 sm:h-52 bg-gradient-to-t from-black/75 via-black/30 to-transparent pointer-events-none z-[25]" />
         <LuxuryCaption
           sceneNum={1}
           headline={'A Celebration Begins With a First Impression.'}
@@ -889,34 +890,33 @@ export default function CinematicEntranceLoader({ onComplete }) {
       {/* ══════════════════════════════════════════════════════════════
           TOP BAR — brand wordmark + "Enter Venue" button
           ════════════════════════════════════════════════════════════ */}
-      <div className="absolute top-0 inset-x-0 z-50 flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6">
+      <div className="absolute top-0 inset-x-0 z-50 flex items-center justify-between gap-2 px-4 sm:px-10 py-4 sm:py-6">
         {/* Brand wordmark left */}
-        <div className="flex flex-col leading-none pointer-events-none">
+        <div className="flex flex-col leading-none pointer-events-none min-w-0">
           <span
-            className="font-cinzel font-black tracking-[0.18em] uppercase"
-            style={{ fontSize: 'clamp(0.7rem, 2vw, 1rem)', color: '#D4AF37', letterSpacing: '0.22em', textShadow: '0 1px 10px rgba(0,0,0,0.85)' }}
+            className="font-cinzel font-black tracking-[0.15em] sm:tracking-[0.22em] uppercase whitespace-nowrap"
+            style={{ fontSize: 'clamp(0.72rem, 2vw, 1rem)', color: '#D4AF37', textShadow: '0 1px 10px rgba(0,0,0,0.85)' }}
           >
             S.S. Convention
           </span>
           <span
-            className="font-sans font-light tracking-[0.3em] uppercase"
-            style={{ fontSize: 'clamp(0.42rem, 1vw, 0.55rem)', color: 'rgba(212,175,55,0.6)', marginTop: '3px', letterSpacing: '0.3em' }}
+            className="font-sans font-light tracking-[0.22em] sm:tracking-[0.3em] uppercase truncate"
+            style={{ fontSize: 'clamp(0.45rem, 1vw, 0.55rem)', color: 'rgba(212,175,55,0.72)', marginTop: '3px' }}
           >
-            Wedding &amp; Function Halls &mdash; Meerpet
+            Meerpet, Hyderabad
           </span>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
         {/* Skip intro — always visible so nobody is held behind the animation */}
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); unlockAndComplete(); }}
           aria-label="Skip intro"
-          className="ss-skip font-cinzel font-bold uppercase tracking-[0.2em] cursor-pointer"
+          className="ss-skip font-cinzel font-bold uppercase tracking-[0.14em] sm:tracking-[0.2em] whitespace-nowrap cursor-pointer px-2 sm:px-2.5 py-2"
           style={{
-            fontSize: 'clamp(0.5rem, 1.3vw, 0.66rem)',
-            color: 'rgba(238,217,166,0.8)',
-            padding: '10px 8px',
+            fontSize: 'clamp(0.55rem, 1.3vw, 0.66rem)',
+            color: 'rgba(238,217,166,0.85)',
             background: 'transparent',
             textShadow: '0 1px 8px rgba(0,0,0,0.9)',
           }}
@@ -929,13 +929,12 @@ export default function CinematicEntranceLoader({ onComplete }) {
           type="button"
           onClick={(e) => { e.stopPropagation(); playCinematicWalkthrough(); }}
           aria-label="Enter venue"
-          className="group inline-flex items-center gap-2.5 font-cinzel font-bold uppercase tracking-[0.2em] cursor-pointer"
+          className="group inline-flex items-center gap-1.5 sm:gap-2.5 font-cinzel font-bold uppercase tracking-[0.14em] sm:tracking-[0.2em] whitespace-nowrap cursor-pointer px-3.5 py-2 sm:px-5 sm:py-2.5"
           style={{
-            fontSize: 'clamp(0.55rem, 1.4vw, 0.72rem)',
+            fontSize: 'clamp(0.58rem, 1.4vw, 0.72rem)',
             color: '#EED9A6',
             border: '1px solid rgba(212,175,55,0.55)',
             borderRadius: '99px',
-            padding: '10px 20px',
             background: 'rgba(0,0,0,0.65)',
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',

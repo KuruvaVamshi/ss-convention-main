@@ -96,15 +96,15 @@ export default function ContactPage() {
         canonical="/contact"
       />
       {/* Hero */}
-      <section className="relative min-h-[45vh] flex items-end pt-32 pb-12 border-b border-[#D4AF37]/30">
+      <section className="relative min-h-[38vh] sm:min-h-[45vh] flex items-end pt-24 pb-10 sm:pt-32 sm:pb-12 border-b border-[#D4AF37]/30">
         <ResponsiveImage
           src="/assets/04_exterior_and_entrance/royal_palace_mahadwaram_doors.jpeg"
           alt="S.S. Convention royal entrance gates in Meerpet, Hyderabad"
-          sizes="100vw"
+          sizes="(max-width: 767px) 140vw, 100vw"
           priority
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/35 sm:via-black/20 to-black/20 sm:to-black/10" />
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <p className="text-[11px] tracking-[0.3em] uppercase text-amber-300 font-semibold mb-3">Reservations & Location</p>

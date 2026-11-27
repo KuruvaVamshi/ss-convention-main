@@ -53,15 +53,15 @@ export default function AboutPage({ hideCta = false }) {
       />
 
       {/* Hero */}
-      <section className="relative min-h-[60vh] flex items-end pt-32 pb-16 border-b border-[#D4AF37]/30">
+      <section className="relative min-h-[42vh] sm:min-h-[60vh] flex items-end pt-24 pb-12 sm:pt-32 sm:pb-16 border-b border-[#D4AF37]/30">
         <ResponsiveImage
           src="/assets/01_exterior/exterior_daytime_facade_entrance_02.png"
           alt="S.S. Convention Daytime Architectural Facade and Grand Entrance in Meerpet Hyderabad"
-          sizes="100vw"
+          sizes="(max-width: 767px) 140vw, 100vw"
           priority
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/20 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2A060E] via-black/35 sm:via-black/20 to-black/20 sm:to-black/10" />
 
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
@@ -86,21 +86,21 @@ export default function AboutPage({ hideCta = false }) {
       <section className="py-20 sm:py-28 bg-[#3D0A14] border-b border-[#D4AF37]/25">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <Reveal className="lg:col-span-6">
-            <div className="relative pb-10 pr-6 sm:pr-10">
-              <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black group">
+            <div className="relative pb-12 sm:pb-10 pr-4 sm:pr-10">
+              <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black group aspect-[3/2] sm:aspect-auto sm:h-[460px]">
                 <ResponsiveImage
                   src="/assets/03_reception/reception_lord_balaji_buddha_foyer_10.jpeg"
                   alt="Auspicious Lord Balaji deity and Buddha water fountain foyer at S.S Convention Meerpet"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes="(max-width: 1024px) 110vw, 50vw"
                   loading="lazy"
-                  className="w-full h-[360px] sm:h-[460px] object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                 />
               </div>
-              <div className="absolute bottom-0 right-0 w-40 sm:w-52 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-[#3D0A14] shadow-xl">
+              <div className="absolute bottom-0 right-0 w-36 sm:w-52 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-[#3D0A14] shadow-xl">
                 <ResponsiveImage
                   src="/assets/entrance/Warmly Lit Convention Hall Reception.png"
                   alt="S.S. Convention Grand Reception desk and illuminated Ganesha emblem"
-                  sizes="210px"
+                  sizes="220px"
                   loading="lazy"
                   className="w-full h-full object-cover"
                 />
