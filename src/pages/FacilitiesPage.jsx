@@ -14,7 +14,7 @@ const facilitiesList = [
     title: "Centralized Cassette Air Conditioning",
     shortTitle: "Central A/C",
     category: "Climate & Comfort",
-    desc: "Commercial Daikin multi-zone cassette cooling delivers continuous 22°C temperature throughout Hall Vasishta, Hall Agasthya, and Hall Koundinya, keeping guests cool and refreshed even during peak summer weddings.",
+    desc: "Commercial Daikin multi-zone cassette cooling delivers continuous 22°C temperature throughout Hall Agasthya, Hall Vasishta, and Hall Koundinya, keeping guests cool and refreshed even during peak summer weddings.",
     icon: Snowflake,
     badge: "Daikin Cassette",
     highlights: ["Multi-zone airflow control", "Silent operation (no fan noise)", "Continuous fresh air circulation"],

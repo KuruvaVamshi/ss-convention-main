@@ -358,91 +358,48 @@ const HERO_PHOTOS = (() => {
 })();
 
 const HALL_TABS = [
-  { 
-    id: 'hall-vasishta', 
+  {
+    id: 'hall-agasthya',
     number: '01',
-    label: 'Hall Vasishta', 
-    shortLabel: 'Vasishta',
-    floor: '2nd Floor',
-    capacity: '600 Seated (1,000 Floating)',
-    tag: 'Flagship Kalyana Mandapam'
-  },
-  { 
-    id: 'hall-agasthya', 
-    number: '02',
-    label: 'Hall Agasthya', 
+    label: 'Hall Agasthya',
     shortLabel: 'Agasthya',
     floor: '1st Floor',
-    capacity: '350 Seated (500 Floating)',
+    capacity: 'Maximum 400 Guests',
     tag: 'Reception & Sangeet'
   },
-  { 
-    id: 'hall-koundinya', 
+  {
+    id: 'hall-vasishta',
+    number: '02',
+    label: 'Hall Vasishta',
+    shortLabel: 'Vasishta',
+    floor: '2nd Floor',
+    capacity: 'Maximum 600 Guests',
+    tag: 'Grand Kalyana Mandapam'
+  },
+  {
+    id: 'hall-koundinya',
     number: '03',
-    label: 'Hall Koundinya', 
+    label: 'Hall Koundinya',
     shortLabel: 'Koundinya',
     floor: '3rd Floor',
-    capacity: '100–200 Guests',
+    capacity: 'Maximum 250 Guests',
     tag: 'Boutique Milestones'
   }
 ];
 
 // Per-hall rich metadata & companion interior photographs
 const HALL_META = {
-  'hall-vasishta': {
-    floor: '2nd Floor',
-    hallBadge: 'Crown Flagship Kalyana Mandapam · 2nd Floor',
-    capacityPill: '600 Seated · 1,000 Floating',
-    caption: 'Double-Tier Golden Crystal Chandeliers & 70-ft Auspicious Bridal Aisle',
-    chips: ['5,500+ Sq.Ft', 'Pillarless Span', 'Central Cassette A/C', '70-ft Bridal Aisle', '2 VIP Bride/Groom Suites'],
-    counters: [
-      { label: 'Theatre / Seated', target: 600, suffix: '', icon: Users },
-      { label: 'Floating Reception', target: 1000, suffix: '+', icon: Sparkles },
-      { label: 'Round-Table Banquet', target: 350, suffix: '', icon: UtensilsCrossed },
-      { label: 'Floor Area', target: 5500, suffix: ' sq.ft', icon: Building }
-    ],
-    area: '5,500+',
-    soundLabel: 'Power Backup & Sound',
-    specKey: 'powerBackup',
-    specFallback: {
-      ceilingHeight: '16 ft clear height with acoustic false ceiling',
-      stageDimensions: '38 ft (W) × 18 ft (D) × 3.5 ft (H) – fits 40-member photo groups',
-      cooling: 'Centralized Daikin Cassette A/C with high-CFM multi-point circulation',
-      flooring: 'High-gloss Italian vitrified mirror-finish tiles with zero glare',
-      greenRooms: '2 Executive VIP AC Suites (Bride & Groom) with vanity & attached washrooms',
-      sound: '100% DG Generator backup with 0-second blackout auto-transfer'
-    },
-    carouselEyebrow: 'HALL VASISHTA · WEDDING DECOR EXHIBITION',
-    carouselText: 'Explore authentic traditional mandaps, carved pillars, reception stages, chandeliers, and ceremonial settings designed in Hall Vasishta.',
-    companionPhotos: [
-      {
-        src: '/assets/05_hall_vasishta/hall_vasishta_stage_right_reflection_02.jpeg',
-        title: 'Stage & Reflections',
-        caption: 'High-gloss Italian vitrified reflections and Om mural'
-      },
-      {
-        src: '/assets/06_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg',
-        title: 'Lotus Stage Setup',
-        caption: 'Auspicious Lotus Stage Backdrop & Central Crystal Chandelier'
-      },
-      {
-        src: '/assets/06_main_hall_seating/main_hall_aisle_view_towards_stage.jpeg',
-        title: '70-Ft Bridal Walk',
-        caption: 'Regal central procession aisle looking towards the grand stage'
-      }
-    ]
-  },
   'hall-agasthya': {
     floor: '1st Floor',
     hallBadge: 'Royal Sangeet & Reception Hall · 1st Floor',
-    capacityPill: '200–350 Seated · 500 Floating',
+    capacityPill: 'Maximum 400 Guests',
     caption: 'Chandelier Perspective & Moving Head Theatrical Stage Lighting',
-    chips: ['3,800 Sq.Ft', 'Acoustic Ceiling', 'Theatrical Stage Lighting', 'Central Multi-Zone A/C', '1 VIP Green Room'],
+    chips: ['3,800 Sq.Ft', 'Maximum 400 Guests', 'Acoustic Ceiling', 'Central Multi-Zone A/C', '1 VIP Green Room'],
     counters: [
-      { label: 'Theatre / Seated', target: 350, suffix: '', icon: Users },
-      { label: 'Floating Reception', target: 500, suffix: '', icon: Sparkles },
-      { label: 'Banquet Round-Table', target: 200, suffix: '', icon: UtensilsCrossed },
-      { label: 'Floor Area', target: 3800, suffix: ' sq.ft', icon: Building }
+      { label: 'Maximum Capacity', target: 400, suffix: ' Guests', icon: Users },
+      { label: 'Floor Area', target: 3800, suffix: ' sq.ft', icon: Building },
+      { label: 'Stage Width', target: 28, suffix: ' ft', icon: Sparkles },
+      { label: 'Ceiling Height', target: 14, suffix: ' ft', icon: Layers }
     ],
     area: '3,800',
     soundLabel: 'Acoustics & Lighting',
@@ -475,17 +432,60 @@ const HALL_META = {
       }
     ]
   },
+  'hall-vasishta': {
+    floor: '2nd Floor',
+    hallBadge: 'Grand Kalyana Mandapam · 2nd Floor',
+    capacityPill: 'Maximum 600 Guests',
+    caption: 'Double-Tier Golden Crystal Chandeliers & 70-ft Auspicious Bridal Aisle',
+    chips: ['5,500+ Sq.Ft', 'Maximum 600 Guests', 'Central Cassette A/C', '70-ft Bridal Aisle', '2 VIP Bride/Groom Suites'],
+    counters: [
+      { label: 'Maximum Capacity', target: 600, suffix: ' Guests', icon: Users },
+      { label: 'Floor Area', target: 5500, suffix: '+ sq.ft', icon: Building },
+      { label: 'Stage Width', target: 38, suffix: ' ft', icon: Sparkles },
+      { label: 'Ceiling Height', target: 16, suffix: ' ft', icon: Layers }
+    ],
+    area: '5,500+',
+    soundLabel: 'Power Backup & Sound',
+    specKey: 'powerBackup',
+    specFallback: {
+      ceilingHeight: '16 ft clear height with acoustic false ceiling',
+      stageDimensions: '38 ft (W) × 18 ft (D) × 3.5 ft (H) – fits 40-member photo groups',
+      cooling: 'Centralized Daikin Cassette A/C with high-CFM multi-point circulation',
+      flooring: 'High-gloss Italian vitrified mirror-finish tiles with zero glare',
+      greenRooms: '2 Executive VIP AC Suites (Bride & Groom) with vanity & attached washrooms',
+      sound: '100% DG Generator backup with 0-second blackout auto-transfer'
+    },
+    carouselEyebrow: 'HALL VASISHTA · WEDDING DECOR EXHIBITION',
+    carouselText: 'Explore authentic traditional mandaps, carved pillars, reception stages, chandeliers, and ceremonial settings designed in Hall Vasishta.',
+    companionPhotos: [
+      {
+        src: '/assets/05_hall_vasishta/hall_vasishta_stage_right_reflection_02.jpeg',
+        title: 'Stage & Reflections',
+        caption: 'High-gloss Italian vitrified reflections and Om mural'
+      },
+      {
+        src: '/assets/06_main_hall_seating/main_hall_seating_lotus_stage_backdrop_07.jpeg',
+        title: 'Lotus Stage Setup',
+        caption: 'Auspicious Lotus Stage Backdrop & Central Crystal Chandelier'
+      },
+      {
+        src: '/assets/06_main_hall_seating/main_hall_aisle_view_towards_stage.jpeg',
+        title: '70-Ft Bridal Walk',
+        caption: 'Regal central procession aisle looking towards the grand stage'
+      }
+    ]
+  },
   'hall-koundinya': {
     floor: '3rd Floor',
     hallBadge: 'Milestone Celebrations & Boutique Banquet · 3rd Floor',
-    capacityPill: '100–200 Guests',
+    capacityPill: 'Maximum 250 Guests',
     caption: 'Vertical Wood Slat Ceilings & Dedicated Milestone Celebration Stage',
-    chips: ['2,200 Sq.Ft', 'Wood Slat Ceiling', 'Milestone Stage', 'Silent Cassette A/C', 'Family Waiting Lounge'],
+    chips: ['2,200 Sq.Ft', 'Maximum 250 Guests', 'Milestone Stage', 'Silent Cassette A/C', 'Family Waiting Lounge'],
     counters: [
-      { label: 'Theatre / Seated', target: 200, suffix: '', icon: Users },
-      { label: 'Floating Reception', target: 250, suffix: '', icon: Sparkles },
-      { label: 'Banquet Round-Table', target: 120, suffix: '', icon: UtensilsCrossed },
-      { label: 'Floor Area', target: 2200, suffix: ' sq.ft', icon: Building }
+      { label: 'Maximum Capacity', target: 250, suffix: ' Guests', icon: Users },
+      { label: 'Floor Area', target: 2200, suffix: ' sq.ft', icon: Building },
+      { label: 'Stage Width', target: 20, suffix: ' ft', icon: Sparkles },
+      { label: 'Stage Depth', target: 12, suffix: ' ft', icon: Layers }
     ],
     area: '2,200',
     soundLabel: 'Acoustics & Video',
@@ -701,7 +701,7 @@ function HallInteractiveShowcase({ hall, meta, hallNumber, onOpenLightbox }) {
 
 export default function SpacesPage({ onOpenLightbox }) {
   const shouldReduce = useReducedMotion();
-  const [activeNav, setActiveNav] = useState('hall-vasishta');
+  const [activeNav, setActiveNav] = useState('hall-agasthya');
 
   // Smart auto-hide on scroll down, show on scroll up for the hall switcher
   const [subnavVisible, setSubnavVisible] = useState(true);
@@ -772,7 +772,7 @@ export default function SpacesPage({ onOpenLightbox }) {
   const easeLuxury = [0.22, 1, 0.36, 1];
 
   const renderHall = (hall) => {
-    const meta = HALL_META[hall.id] || HALL_META['hall-vasishta'];
+    const meta = HALL_META[hall.id] || HALL_META['hall-agasthya'];
     const hallNumber = HALL_TABS.findIndex((t) => t.id === hall.id) + 1;
     const isReversed = hallNumber % 2 === 0;
 
@@ -965,7 +965,7 @@ export default function SpacesPage({ onOpenLightbox }) {
     <div className="bg-[#450B17] text-latte min-h-screen overflow-x-clip selection:bg-[#C5A059] selection:text-[#0D0204]">
       <SEO
         title="Wedding & Function Halls in Meerpet | S.S. Convention Hyderabad"
-        description="Explore 3 luxury air-conditioned halls at S.S. Convention in Meerpet, Hyderabad: Hall Vasishta (600 guests), Hall Agasthya (350 guests), and Hall Koundinya (150 guests) with separate dining."
+        description="Explore 3 luxury air-conditioned halls at S.S. Convention in Meerpet, Hyderabad: Hall Agasthya (Maximum 400 Guests), Hall Vasishta (Maximum 600 Guests), and Hall Koundinya (Maximum 250 Guests) with separate dining."
         keywords="Function Halls in Meerpet, Wedding Venue in Hyderabad, Wedding Halls in Meerpet, Marriage Halls in Hyderabad, Banquet Halls in Meerpet, AC Function Halls in Hyderabad, Function Halls in LB Nagar, Marriage Halls in Badangpet, Banquet Halls in Almasguda, Function Halls in Jillelaguda"
         canonical="/spaces"
       />
@@ -1057,7 +1057,7 @@ export default function SpacesPage({ onOpenLightbox }) {
                       {t.label}
                     </span>
                     <span className="hidden md:inline-block text-[9px] text-amber-200/70 tracking-normal font-sans mt-0.5">
-                      {t.floor} · {t.capacity.split(' ')[0]} guests
+                      {t.floor} · {t.capacity}
                     </span>
                   </span>
 

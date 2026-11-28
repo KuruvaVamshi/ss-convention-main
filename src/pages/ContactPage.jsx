@@ -44,10 +44,16 @@ const travelDistances = [
 
 const maxKm = Math.max(...travelDistances.map((t) => parseFloat(t.dist)));
 
-function recommendHall(guests) {
-  if (guests <= 180) return { name: 'Hall Koundinya', capacity: '100 – 200 guests' };
-  if (guests <= 320) return { name: 'Hall Agasthya', capacity: '200 – 350 guests' };
-  return { name: 'Hall Vasishta', capacity: '300 – 600 seated' };
+const HALL_OPTIONS = [
+  { id: 'hall-agasthya', name: 'Hall Agasthya', floor: '1st Floor', capacity: 'Maximum 400 Guests', max: 400 },
+  { id: 'hall-vasishta', name: 'Hall Vasishta', floor: '2nd Floor', capacity: 'Maximum 600 Guests', max: 600 },
+  { id: 'hall-koundinya', name: 'Hall Koundinya', floor: '3rd Floor', capacity: 'Maximum 250 Guests', max: 250 },
+];
+
+function recommendHallId(guests) {
+  if (guests <= 250) return 'hall-koundinya';
+  if (guests <= 400) return 'hall-agasthya';
+  return 'hall-vasishta';
 }
 
 const field =
@@ -60,11 +66,25 @@ export default function ContactPage() {
   const [date, setDate] = useState('');
   const [slot, setSlot] = useState(slots[1].id);
   const [guests, setGuests] = useState(300);
+  const [selectedHallId, setSelectedHallId] = useState('hall-agasthya');
   const [menu, setMenu] = useState(menus[2]);
   const [copied, setCopied] = useState(false);
 
-  const hall = recommendHall(guests);
+  const hall = HALL_OPTIONS.find((h) => h.id === selectedHallId) || HALL_OPTIONS[0];
   const today = new Date().toISOString().split('T')[0];
+
+  const handleGuestsDelta = (delta) => {
+    setGuests((prev) => {
+      const next = Math.min(600, Math.max(100, prev + delta));
+      setSelectedHallId(recommendHallId(next));
+      return next;
+    });
+  };
+
+  const handleSelectHall = (option) => {
+    setSelectedHallId(option.id);
+    setGuests((prev) => (prev > option.max ? option.max : prev));
+  };
 
   const copyAddress = () => {
     if (!navigator.clipboard) return;
@@ -171,19 +191,41 @@ export default function ContactPage() {
                 <div>
                   <span className="text-xs tracking-[0.2em] uppercase text-amber-300">Guests</span>
                   <div className="mt-2 flex items-center justify-between rounded-xl border border-[#D4AF37]/35 bg-[#3D0A14] px-2 py-1.5">
-                    <button type="button" aria-label="Fewer guests" onClick={() => setGuests((g) => Math.max(100, g - 25))} className="w-10 h-10 rounded-lg hover:bg-[#5A1322] flex items-center justify-center">
+                    <button type="button" aria-label="Fewer guests" onClick={() => handleGuestsDelta(-25)} className="w-10 h-10 rounded-lg hover:bg-[#5A1322] flex items-center justify-center">
                       <Minus className="w-4 h-4" />
                     </button>
                     <span className="font-cinzel text-xl font-bold tabular-nums">{guests}</span>
-                    <button type="button" aria-label="More guests" onClick={() => setGuests((g) => Math.min(600, g + 25))} className="w-10 h-10 rounded-lg hover:bg-[#5A1322] flex items-center justify-center">
+                    <button type="button" aria-label="More guests" onClick={() => handleGuestsDelta(25)} className="w-10 h-10 rounded-lg hover:bg-[#5A1322] flex items-center justify-center">
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
                   <p className="mt-2 text-xs text-mocha">
-                    Suggested: <strong className="text-latte">{hall.name}</strong> ({hall.capacity})
+                    Selected: <strong className="text-latte">{hall.name}</strong> ({hall.capacity})
                   </p>
                 </div>
               </div>
+
+              <fieldset>
+                <legend className="text-xs tracking-[0.2em] uppercase text-amber-300 mb-3">Preferred hall</legend>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {HALL_OPTIONS.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => handleSelectHall(option)}
+                      aria-pressed={selectedHallId === option.id}
+                      className={`text-left px-4 py-3 rounded-xl border transition-colors cursor-pointer ${
+                        selectedHallId === option.id
+                          ? 'bg-[#4A0E1B] border-amber-400/70'
+                          : 'border-[#D4AF37]/25 hover:border-[#D4AF37]/60'
+                      }`}
+                    >
+                      <span className="block font-cinzel text-sm font-bold text-latte">{option.name}</span>
+                      <span className="block text-xs text-amber-300/90 mt-0.5">{option.capacity}</span>
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
 
               <fieldset>
                 <legend className="text-xs tracking-[0.2em] uppercase text-amber-300 mb-3">Time slot</legend>

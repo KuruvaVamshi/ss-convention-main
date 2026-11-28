@@ -45,7 +45,7 @@ export default function HallDetailPage({ onOpenLightbox }) {
     phone: '',
     eventType: 'Wedding & Reception',
     eventDate: '',
-    guestCount: hall.capacity.split('–')[0] || '300',
+    guestCount: String(hall.maxCapacity || '400'),
     notes: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -59,7 +59,11 @@ export default function HallDetailPage({ onOpenLightbox }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsSubmitted(false);
     setActiveSlide(0);
-  }, [id]);
+    setFormData((prev) => ({
+      ...prev,
+      guestCount: String(hall.maxCapacity || '400')
+    }));
+  }, [id, hall.maxCapacity]);
 
   const galleryList = hall.gallery || [];
   const totalSlides = galleryList.length;
@@ -121,27 +125,27 @@ export default function HallDetailPage({ onOpenLightbox }) {
   };
 
   const seoConfig = {
-    'hall-vasishta': {
-      title: 'Hall Vasishta – Grand Wedding & Reception Hall in Meerpet | S.S. Convention',
-      description: 'Book Hall Vasishta at S.S. Convention Meerpet, Hyderabad. Ideal for grand weddings & receptions with 300–600 seated capacity, crystal chandeliers, central A/C.',
-      keywords: 'Hall Vasishta, Banquet Hall Meerpet, Wedding & Reception Hall, Kalyana Mandapam Hyderabad, Marriage Hall Meerpet, Wedding Venue Meerpet, Function Halls in Meerpet',
-      h1Sub: 'Grand Kalyana Mandapam & Wedding Hall · Meerpet, Hyderabad'
-    },
     'hall-agasthya': {
       title: 'Hall Agasthya – Luxury Banquet & Sangeet Hall Meerpet | S.S. Convention',
-      description: 'Hall Agasthya is premier banquet and function hall in Meerpet, Hyderabad for sangeet, engagements, and cocktail receptions with 150–350 guest capacity.',
+      description: 'Hall Agasthya is a premier banquet and function hall in Meerpet, Hyderabad for sangeet, engagements, and celebrations with a maximum capacity of 400 guests.',
       keywords: 'Hall Agasthya, Function Hall Meerpet, Banquet Hall Meerpet, Engagement Hall Hyderabad, Sangeet Venue Hyderabad, Marriage Halls in Hyderabad',
       h1Sub: 'Banquet & Sangeet Reception Hall · Meerpet, Hyderabad'
     },
+    'hall-vasishta': {
+      title: 'Hall Vasishta – Grand Wedding & Reception Hall in Meerpet | S.S. Convention',
+      description: 'Book Hall Vasishta at S.S. Convention Meerpet, Hyderabad. Ideal for grand weddings & receptions with a maximum capacity of 600 guests, crystal chandeliers, central A/C.',
+      keywords: 'Hall Vasishta, Banquet Hall Meerpet, Wedding & Reception Hall, Kalyana Mandapam Hyderabad, Marriage Hall Meerpet, Wedding Venue Meerpet, Function Halls in Meerpet',
+      h1Sub: 'Grand Kalyana Mandapam & Wedding Hall · Meerpet, Hyderabad'
+    },
     'hall-koundinya': {
       title: 'Hall Koundinya – Mini Banquet & Marriage Hall Meerpet | S.S. Convention',
-      description: 'Hall Koundinya at S.S. Convention Meerpet is an intimate mini banquet hall for cradle ceremonies, birthday parties, and compact weddings (100–150 guests).',
+      description: 'Hall Koundinya at S.S. Convention Meerpet is an intimate mini banquet hall for cradle ceremonies, birthday parties, and family celebrations with a maximum capacity of 250 guests.',
       keywords: 'Hall Koundinya, Marriage Hall Meerpet, Mini Banquet Hall Hyderabad, Birthday Party Halls in Hyderabad, Engagement Halls in Hyderabad',
       h1Sub: 'Mini Banquet & Marriage Hall · Meerpet, Hyderabad'
     },
-    'banquet-dining-hall': {
+    'dining-hall': {
       title: 'Royal Banquet Dining Hall in Meerpet | S.S. Convention Hyderabad',
-      description: 'Dedicated 250+ capacity banquet dining hall at S.S. Convention in Jillelaguda, Meerpet. Features round-table setup and zero aroma transfer into ceremony halls.',
+      description: 'Dedicated 250+ concurrent capacity banquet dining hall at S.S. Convention in Jillelaguda, Meerpet. Features round-table setup and zero aroma transfer into ceremony halls.',
       keywords: 'Banquet Dining Hall Meerpet, Dining Hall Hyderabad, Wedding Feast Meerpet, Banquet Catering Hyderabad',
       h1Sub: 'Dedicated Banquet Dining Hall · Meerpet, Hyderabad'
     }
@@ -286,12 +290,12 @@ export default function HallDetailPage({ onOpenLightbox }) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="p-4 rounded-2xl bg-black/30 border border-[#D4AF37]/20">
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-300/80 block mb-1">
-                Seating Capacity
+                Guest Capacity
               </span>
               <p className="font-cinzel text-xl sm:text-2xl font-bold text-white">
                 {hall.capacity}
               </p>
-              <span className="text-[11px] text-amber-100/70">Banquet & Theatre</span>
+              <span className="text-[11px] text-amber-100/70">Official Hall Limit</span>
             </div>
 
             <div className="p-4 rounded-2xl bg-black/30 border border-[#D4AF37]/20">
@@ -599,13 +603,14 @@ export default function HallDetailPage({ onOpenLightbox }) {
                       <Users className="w-6 h-6" />
                     </div>
                     <h3 className="font-cinzel text-lg font-bold text-amber-300 uppercase tracking-wider mb-2">
-                      {key === 'theatre' ? 'Theatre Layout' :
-                       key === 'floating' ? 'Floating Reception' :
+                      {key === 'maxCapacity' ? 'Maximum Capacity' :
+                       key === 'floorArea' ? 'Floor Area' :
+                       key === 'stageSize' ? 'Stage Platform' :
+                       key === 'cooling' ? 'Floor & Cooling' :
                        key === 'roundTable' ? 'Round Table Banquet' :
-                       key === 'mandapAudience' ? 'Ceremonial Mandap' :
-                       key === 'sangeetCluster' ? 'Sangeet Cluster' :
                        key === 'traditionalPanti' ? 'Panti Style Feast' :
                        key === 'buffetCapacity' ? 'Rolling Buffet' :
+                       key === 'serviceSpeed' ? 'Turnaround Speed' :
                        key.toUpperCase()}
                     </h3>
                     <p className="font-bold text-white text-base sm:text-lg mb-2">
@@ -832,7 +837,7 @@ export default function HallDetailPage({ onOpenLightbox }) {
                       name="guestCount"
                       value={formData.guestCount}
                       onChange={handleInputChange}
-                      placeholder="e.g. 500 Guests"
+                      placeholder={`e.g. ${hall.maxCapacity || 400} Guests`}
                       className="w-full px-4 py-3 rounded-xl bg-black/40 border border-[#D4AF37]/40 text-white placeholder-amber-100/40 focus:outline-none focus:border-amber-400 transition-colors text-sm"
                     />
                   </div>
@@ -843,7 +848,7 @@ export default function HallDetailPage({ onOpenLightbox }) {
                       Selected Hall
                     </label>
                     <div className="w-full px-4 py-3 rounded-xl bg-black/60 border border-amber-400/60 text-amber-300 font-bold text-sm">
-                      {hall.name} ({hall.capacityDisplay.split('(')[0]})
+                      {hall.name} ({hall.capacity})
                     </div>
                   </div>
                 </div>

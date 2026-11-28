@@ -27,7 +27,7 @@ const pillars = [
 ];
 
 const checklist = [
-  'Three halls, flagship to boutique',
+  'Hall Agasthya (max 400), Hall Vasishta (max 600), Hall Koundinya (max 250)',
   '250+ seat banquet dining level',
   'Centralized cassette A/C',
   '2 air-conditioned bridal suites',
@@ -36,7 +36,7 @@ const checklist = [
 ];
 
 const stats = [
-  { to: 600, label: 'Max guests' },
+  { to: 600, label: 'Max guests / hall' },
   { to: 3, label: 'Halls' },
   { to: 250, suffix: '+', label: 'Dining seats' },
   { to: 150, suffix: '+', label: 'Parking spots' },
@@ -47,7 +47,7 @@ export default function AboutPage({ hideCta = false }) {
     <div className="bg-[#450B17] text-latte min-h-screen overflow-hidden selection:bg-[#C5A059] selection:text-[#0D0204]">
       <SEO
         title="About & Facilities | S.S. Convention Meerpet, Hyderabad"
-        description="Learn about S.S. Convention in Meerpet, Hyderabad: a premier wedding and banquet destination engineered for grand traditions, pillar-free sightlines, and 100 to 600 guest celebrations."
+        description="Learn about S.S. Convention in Meerpet, Hyderabad: a premier wedding and banquet destination featuring Hall Agasthya (max 400 guests), Hall Vasishta (max 600 guests), and Hall Koundinya (max 250 guests)."
         keywords="About S.S. Convention, Wedding Venue Hyderabad, Marriage Hall Meerpet History, Banquet Halls in Hyderabad, Best Function Halls Meerpet"
         canonical="/about"
       />
@@ -120,9 +120,9 @@ export default function AboutPage({ hideCta = false }) {
 
             <p className="mt-5 text-mocha leading-relaxed">
               Indian weddings and milestone ceremonies are sacred family legacies. Our venue in Raghavendra Nagar Colony,
-              Jillelaguda (Meerpet) removes the usual pain points of function halls. Hall Vasishta seats up to 600 under
-              double-tier golden chandeliers, while intimate Hall Koundinya suits birthdays and cradle ceremonies. Together
-              the three halls fit celebrations of 100 to 600 guests.
+              Jillelaguda (Meerpet) removes the usual pain points of function halls: Hall Agasthya hosts up to 400 guests for
+              sangeet and reception celebrations, Hall Vasishta seats up to 600 guests under double-tier golden chandeliers,
+              and boutique Hall Koundinya welcomes up to 250 guests for birthdays, cradle ceremonies, and intimate rituals.
             </p>
 
             <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">

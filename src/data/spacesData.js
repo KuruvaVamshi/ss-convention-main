@@ -1,15 +1,134 @@
 /**
  * S.S Convention Hall - Master Spatial Architecture & Hall Data
- * 
- * Image Accuracy Policy:
- * - Only verified interior photographs of the respective halls are assigned as primary hall images.
- * - Hall Vasishta (2nd Floor): Flagship Grand Kalyana Mandapam with double-tier crystal chandeliers, Italian vitrified flooring, 70-ft bridal aisle & carved Vedic mandap.
- * - Hall Agasthya (1st Floor): Grand Reception & Sangeet Hall with contemporary stage, acoustic ceilings & dedicated green rooms.
- * - Hall Koundinya (3rd Floor): Intimate boutique banquet hall with modern linear wood ceiling, cradle & birthday stage setups.
- * - Banquet Dining Hall: Dedicated dining floor with round banquet tables dressed in maroon & gold linen, plus hygienic stainless steel buffet stations.
+ *
+ * Official Hall Sequence & Maximum Capacities:
+ * 1. Hall Agasthya (1st Floor) – Maximum 400 Guests
+ * 2. Hall Vasishta (2nd Floor) – Maximum 600 Guests
+ * 3. Hall Koundinya (3rd Floor) – Maximum 250 Guests
+ * 4. Banquet Dining Hall – Dedicated dining floor (250+ concurrent dining seats)
  */
 
 export const spacesData = [
+  {
+    id: "hall-agasthya",
+    slug: "hall-agasthya",
+    name: "Hall Agasthya",
+    title: "Hall Agasthya – Royal Sangeet & Reception Hall",
+    tagline: "Contemporary Sangeet, Engagement & Reception Hall",
+    subtitle: "Majestic Celebration Space with Modern Lighting, Acoustic Panels & Dynamic Stage",
+    shortDescription: "A versatile, high-energy luxury venue tailored for festive sangeet evenings, chic engagement galas, and wedding celebrations for up to 400 guests.",
+
+    // Accurate Real Interior Photography (Verified 1st Floor Hall Agasthya)
+    image: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+    hallImage: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+    coverImage: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+
+    // Comprehensive Gallery (Real Authentic Photos Only — Strictly No Cross-Hall Mixing)
+    gallery: [
+      {
+        src: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
+        title: "Hall Agasthya Grand Interior Overview with Mirrored Flooring & Crystal Chandeliers",
+        category: "Hall Architecture"
+      },
+      {
+        src: "/assets/04_hall_agasthya/hall_agasthya_center_aisle_stage_view_03.jpeg",
+        title: "Central Aisle Perspective Towards the Elevated Performance Stage",
+        category: "Center Aisle"
+      },
+      {
+        src: "/assets/04_hall_agasthya/hall_agasthya_glass_entrance_doors_01.jpeg",
+        title: "Toughened Glass Double Entrance Doors Entering Hall Agasthya",
+        category: "Hall Entrance"
+      },
+      {
+        src: "/assets/09_reception_engagement_stages/stage_better_together_neon_wide_shot.jpeg",
+        title: "Modern Neon Floral Ring Arch Stage for Sangeet & Receptions",
+        category: "Reception Stage"
+      },
+      {
+        src: "/assets/09_reception_engagement_stages/stage_triple_arch_boho_garden_front.jpeg",
+        title: "Pastel Boho Triple-Arch Engagement Stage Setup",
+        category: "Engagement Decor"
+      },
+      {
+        src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_candle_rods_wide.jpeg",
+        title: "Warm Romantic Candle Wall Stage Illumination",
+        category: "Stage Lighting"
+      },
+      {
+        src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_edison_bulbs.jpeg",
+        title: "Edison Vintage Bulb Hanging Chandelier Stage Design",
+        category: "Contemporary Decor"
+      },
+      {
+        src: "/assets/09_reception_engagement_stages/stage_haldi_mehendi_yellow_canopy_wisteria.jpeg",
+        title: "Festive Haldi & Mehendi Yellow Floral Stage",
+        category: "Haldi / Mehendi"
+      }
+    ],
+
+    // Official Capacity Matrix
+    maxCapacity: 400,
+    capacity: "Max 400 Guests",
+    capacityDisplay: "Capacity: Maximum 400 Guests",
+    capacities: {
+      maxCapacity: "Maximum 400 Guests",
+      floorArea: "3,800 sq. ft. Celebration Floor",
+      stageSize: "28 ft × 14 ft Elevated Stage",
+      cooling: "1st Floor · Central Multi-Zone A/C"
+    },
+
+    // Spatial & Technical Specifications
+    dimensions: "3,800 sq.ft • Max 400 Guests",
+    specs: {
+      floorArea: "3,800 sq. ft. thoughtfully partitioned celebration floor",
+      ceilingHeight: "14 ft clear height with linear LED profiles",
+      stageDimensions: "28 ft (Width) × 14 ft (Depth) × 2.5 ft (Height)",
+      cooling: "Central multi-zone climate control with continuous air circulation",
+      flooring: "Polished Italian-style vitrified tiles for seamless dance performances",
+      powerBackup: "100% continuous DG Generator backup system",
+      greenRooms: "1 Executive VIP Air-Conditioned Green Room with attached vanity",
+      acoustics: "Studio-tuned acoustic treatment optimized for live music and DJ sets",
+      lighting: "Multi-directional warm white LED wash fixtures and moving head stage lighting"
+    },
+
+    bestFor: "Sangeet Nights, Engagement Ceremonies, Cocktail Receptions, Weddings",
+    suitableEvents: [
+      { title: "Sangeet & Dance Celebrations", desc: "Generous dance floor space with soundproof acoustic environment." },
+      { title: "Engagement / Ring Ceremonies", desc: "Warm, photogenic backdrops with ambient Edison and candle lighting." },
+      { title: "Half-Saree / Langa Voni Functions", desc: "Festive traditional milestone rituals with family seating." },
+      { title: "Cocktail & Networking Evenings", desc: "Flexible lounge seating, high cocktail tables, and stage presentations." },
+      { title: "Corporate Awards & Galas", desc: "Audio-visual projection, speaker podium, and banquet dining." }
+    ],
+
+    highlights: [
+      "Optimized stage with professional DJ console wiring and performance sound capabilities",
+      "Contemporary interior architecture featuring warm wood accents and linear lighting",
+      "Seamless integration with modern decor concepts like neon signage and floral arches",
+      "Dedicated VIP Green Room for quick wardrobe changes during sangeet dance numbers",
+      "Direct transit corridor to the on-premise car parking and illuminated grand entrance"
+    ],
+    features: [
+      "Maximum capacity: 400 guests",
+      "Acoustic false ceiling with multi-directional lighting fixtures",
+      "Spacious performance stage for sangeet dance choreography",
+      "1 Executive VIP air-conditioned green room with attached vanity",
+      "Independent climate control and full generator backup",
+      "Seamless connectivity to on-premise car parking"
+    ],
+
+    amenities: [
+      { name: "Central Climate Control", desc: "Rapid cooling system tailored for active dance parties and gatherings", icon: "Snowflake" },
+      { name: "1 VIP Green Suite", desc: "Air-conditioned green room with private mirror and dress changing area", icon: "DoorClosed" },
+      { name: "Performance Audio", desc: "Surround sound infrastructure with digital mixer and dual wireless mics", icon: "Volume2" },
+      { name: "Party Stage Illumination", desc: "DMX controlled stage lighting with RGB washes and spotlighting", icon: "Lightbulb" },
+      { name: "100% Power Generator", desc: "Automatic generator backup keeping the music and A/C uninterrupted", icon: "Zap" },
+      { name: "Direct Dining Access", desc: "Effortless access to the dining floor for after-party buffets", icon: "UtensilsCrossed" },
+      { name: "Ample Guest Parking", desc: "Convenient parking facilities with security supervision", icon: "Car" }
+    ],
+
+    description: "Named after the venerated Sage Agasthya, this versatile hall blends ceremonial warmth with contemporary celebratory energy. With an open floor plan of 3,800 square feet on the first floor accommodating up to 400 guests, Hall Agasthya is designed for high-spirited celebrations where dance, music, and elegance coalesce. Featuring an acoustically treated ceiling, dynamic stage lighting, and flexible floor layouts for cabaret or theatre seating, it is the premier choice for memorable Sangeet dance parties, glamorous engagement ceremonies, and sophisticated evening banquets."
+  },
   {
     id: "hall-vasishta",
     slug: "hall-vasishta",
@@ -17,13 +136,13 @@ export const spacesData = [
     title: "Hall Vasishta – Grand Kalyana Mandapam",
     tagline: "Grand Kalyana Mandapam & Royal Marriage Hall",
     subtitle: "Regal Marriage Hall with Golden Crystal Chandeliers & Auspicious Central Aisle",
-    shortDescription: "Our crowning flagship marriage hall engineered for grand royal weddings, muhurthams, and mega receptions with centralized cassette air-conditioning and opulent crystal chandeliers.",
-    
+    shortDescription: "Our crowning flagship marriage hall engineered for grand royal weddings, muhurthams, and mega receptions for up to 600 guests with centralized cassette air-conditioning and opulent crystal chandeliers.",
+
     // Accurate Real Interior Photography
     image: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
     hallImage: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
     coverImage: "/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg",
-    
+
     // Comprehensive Gallery (Real Authentic Photos Only — Strictly No Cross-Hall Mixing)
     gallery: [
       {
@@ -88,18 +207,19 @@ export const spacesData = [
       }
     ],
 
-    // Capacity Matrix
-    capacity: "300–600",
-    capacityDisplay: "Capacity: 300–600 Seated (1,000 Floating)",
+    // Official Capacity Matrix
+    maxCapacity: 600,
+    capacity: "Max 600 Guests",
+    capacityDisplay: "Capacity: Maximum 600 Guests",
     capacities: {
-      theatre: "600 Guests Seated",
-      floating: "1,000+ Reception Guests",
-      roundTable: "350 Banquet Guests",
-      mandapAudience: "500 Guests with unobstructed sightlines"
+      maxCapacity: "Maximum 600 Guests",
+      floorArea: "5,500+ sq. ft. Clear-Span Hall",
+      stageSize: "38 ft × 18 ft Ceremonial Stage",
+      cooling: "2nd Floor · Central Daikin Cassette A/C"
     },
-    
+
     // Spatial & Technical Specifications
-    dimensions: "5,500+ sq.ft • 600 Seated",
+    dimensions: "5,500+ sq.ft • Max 600 Guests",
     specs: {
       floorArea: "5,500+ sq. ft. unobstructed pillar-free clear span",
       ceilingHeight: "16 ft clear height with acoustic false ceiling",
@@ -130,7 +250,7 @@ export const spacesData = [
       "Auspicious entrance foyer featuring the Lord Venkateswara and serene Buddha water fountain"
     ],
     features: [
-      "Seating capacity: 300 to 600 banquet guests (1,000+ floating)",
+      "Maximum capacity: 600 guests",
       "Centralized Daikin Cassette Air Conditioning throughout",
       "Double-tier crystal chandeliers & cove illumination",
       "Wide red-carpet center aisle for grand bridal walks",
@@ -149,126 +269,7 @@ export const spacesData = [
       { name: "Wheelchair Accessible", desc: "Ramp access at main entrance and elevator access to all levels", icon: "Accessibility" }
     ],
 
-    description: "Hall Vasishta is the crowning jewel of S.S Convention Hall. Named after the revered Vedic Sage Vasishta, this flagship venue represents the zenith of architectural grandeur and celebratory elegance. Spanning over 5,500 square feet of pillar-free space, it features magnificent double-tier crystal chandeliers, high-gloss Italian tile flooring with mirror reflections, and an expansive 70-foot central aisle for unforgettable bridal processions. Equipped with an expansive 38-foot stage, dedicated VIP bride & groom green suites, and centralized cassette air-conditioning, Hall Vasishta provides an unmatched royal sanctuary for life's most sacred vows."
-  },
-  {
-    id: "hall-agasthya",
-    slug: "hall-agasthya",
-    name: "Hall Agasthya",
-    title: "Hall Agasthya – Royal Sangeet & Reception Hall",
-    tagline: "Contemporary Sangeet, Engagement & Reception Hall",
-    subtitle: "Majestic Celebration Space with Modern Lighting, Acoustic Panels & Dynamic Stage",
-    shortDescription: "A versatile, high-energy luxury venue tailored for festive sangeet evenings, chic engagement galas, and medium-scale wedding receptions of 200 to 350 guests.",
-
-    // Accurate Real Interior Photography (Verified 1st Floor Hall Agasthya)
-    image: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
-    hallImage: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
-    coverImage: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
-
-    // Comprehensive Gallery (Real Authentic Photos Only — Strictly No Cross-Hall Mixing)
-    gallery: [
-      {
-        src: "/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg",
-        title: "Hall Agasthya Grand Interior Overview with Mirrored Flooring & Crystal Chandeliers",
-        category: "Hall Architecture"
-      },
-      {
-        src: "/assets/04_hall_agasthya/hall_agasthya_center_aisle_stage_view_03.jpeg",
-        title: "Central Aisle Perspective Towards the Elevated Performance Stage",
-        category: "Center Aisle"
-      },
-      {
-        src: "/assets/04_hall_agasthya/hall_agasthya_glass_entrance_doors_01.jpeg",
-        title: "Toughened Glass Double Entrance Doors Entering Hall Agasthya",
-        category: "Hall Entrance"
-      },
-      {
-        src: "/assets/09_reception_engagement_stages/stage_better_together_neon_wide_shot.jpeg",
-        title: "Modern Neon Floral Ring Arch Stage for Sangeet & Receptions",
-        category: "Reception Stage"
-      },
-      {
-        src: "/assets/09_reception_engagement_stages/stage_triple_arch_boho_garden_front.jpeg",
-        title: "Pastel Boho Triple-Arch Engagement Stage Setup",
-        category: "Engagement Decor"
-      },
-      {
-        src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_candle_rods_wide.jpeg",
-        title: "Warm Romantic Candle Wall Stage Illumination",
-        category: "Stage Lighting"
-      },
-      {
-        src: "/assets/09_reception_engagement_stages/stage_floral_ring_arch_edison_bulbs.jpeg",
-        title: "Edison Vintage Bulb Hanging Chandelier Stage Design",
-        category: "Contemporary Decor"
-      },
-      {
-        src: "/assets/09_reception_engagement_stages/stage_haldi_mehendi_yellow_canopy_wisteria.jpeg",
-        title: "Festive Haldi & Mehendi Yellow Floral Stage",
-        category: "Haldi / Mehendi"
-      }
-    ],
-
-    // Capacity Matrix
-    capacity: "200–350",
-    capacityDisplay: "Capacity: 200–350 Seated (500 Floating)",
-    capacities: {
-      theatre: "350 Guests Seated",
-      floating: "500 Reception Guests",
-      roundTable: "200 Banquet Guests",
-      sangeetCluster: "250 Guests with central dance floor"
-    },
-
-    // Spatial & Technical Specifications
-    dimensions: "3,800 sq.ft • 200–350 Guests",
-    specs: {
-      floorArea: "3,800 sq. ft. thoughtfully partitioned celebration floor",
-      ceilingHeight: "14 ft clear height with linear LED profiles",
-      stageDimensions: "28 ft (Width) × 14 ft (Depth) × 2.5 ft (Height)",
-      cooling: "Central multi-zone climate control with continuous air circulation",
-      flooring: "Polished Italian-style vitrified tiles for seamless dance performances",
-      powerBackup: "100% continuous DG Generator backup system",
-      greenRooms: "1 Executive VIP Air-Conditioned Green Room with attached vanity",
-      acoustics: "Studio-tuned acoustic treatment optimized for live music and DJ sets",
-      lighting: "Multi-directional warm white LED wash fixtures and moving head stage lighting"
-    },
-
-    bestFor: "Sangeet Nights, Engagement Ceremonies, Cocktail Receptions, Intimate Weddings",
-    suitableEvents: [
-      { title: "Sangeet & Dance Celebrations", desc: "Generous dance floor space with soundproof acoustic environment." },
-      { title: "Engagement / Ring Ceremonies", desc: "Warm, photogenic backdrops with ambient Edison and candle lighting." },
-      { title: "Half-Saree / Langa Voni Functions", desc: "Festive traditional milestone rituals with family seating." },
-      { title: "Cocktail & Networking Evenings", desc: "Flexible lounge seating, high cocktail tables, and stage presentations." },
-      { title: "Corporate Awards & Galas", desc: "Audio-visual projection, speaker podium, and banquet dining." }
-    ],
-
-    highlights: [
-      "Optimized stage with professional DJ console wiring and performance sound capabilities",
-      "Contemporary interior architecture featuring warm wood accents and linear lighting",
-      "Seamless integration with modern decor concepts like neon signage and floral arches",
-      "Dedicated VIP Green Room for quick wardrobe changes during sangeet dance numbers",
-      "Direct transit corridor to the on-premise car parking and illuminated grand entrance"
-    ],
-    features: [
-      "Comfortable capacity for 200 to 350 guests (500 floating)",
-      "Acoustic false ceiling with multi-directional lighting fixtures",
-      "Spacious performance stage for sangeet dance choreography",
-      "1 Executive VIP air-conditioned green room with attached vanity",
-      "Independent climate control and full generator backup",
-      "Seamless connectivity to on-premise car parking"
-    ],
-
-    amenities: [
-      { name: "Central Climate Control", desc: "Rapid cooling system tailored for active dance parties and gatherings", icon: "Snowflake" },
-      { name: "1 VIP Green Suite", desc: "Air-conditioned green room with private mirror and dress changing area", icon: "DoorClosed" },
-      { name: "Performance Audio", desc: "Surround sound infrastructure with digital mixer and dual wireless mics", icon: "Volume2" },
-      { name: "Party Stage Illumination", desc: "DMX controlled stage lighting with RGB washes and spotlighting", icon: "Lightbulb" },
-      { name: "100% Power Generator", desc: "Automatic generator backup keeping the music and A/C uninterrupted", icon: "Zap" },
-      { name: "Direct Dining Access", desc: "Effortless access to the dining floor for after-party buffets", icon: "UtensilsCrossed" },
-      { name: "Ample Guest Parking", desc: "Convenient parking facilities with security supervision", icon: "Car" }
-    ],
-
-    description: "Named after the venerated Sage Agasthya, this versatile hall blends ceremonial warmth with contemporary celebratory energy. With an open floor plan of 3,800 square feet on the first floor, Hall Agasthya is designed for high-spirited celebrations where dance, music, and elegance coalesce. Featuring an acoustically treated ceiling, dynamic stage lighting, and flexible floor layouts for cabaret or theatre seating, it is the premier choice for memorable Sangeet dance parties, glamorous engagement ceremonies, and sophisticated evening banquets."
+    description: "Hall Vasishta is the crowning jewel of S.S Convention Hall. Named after the revered Vedic Sage Vasishta, this venue represents architectural grandeur and celebratory elegance for up to 600 guests. Spanning over 5,500 square feet of pillar-free space on the second floor, it features magnificent double-tier crystal chandeliers, high-gloss Italian tile flooring with mirror reflections, and an expansive 70-foot central aisle for unforgettable bridal processions. Equipped with an expansive 38-foot stage, dedicated VIP bride & groom green suites, and centralized cassette air-conditioning, Hall Vasishta provides a royal sanctuary for life's most sacred vows."
   },
   {
     id: "hall-koundinya",
@@ -277,7 +278,7 @@ export const spacesData = [
     title: "Hall Koundinya – Celebrations & Mini Banquet Hall",
     tagline: "Intimate Banquet Hall for Milestones & Family Ceremonies",
     subtitle: "Modern Intimate Hall with Designer Wood Slat Ceilings & Dedicated Milestone Stage",
-    shortDescription: "A chic, warm, and air-conditioned boutique venue crafted specifically for 1st birthdays, cradle ceremonies (Barasala), upanayanam, dhoti functions, and corporate meetings of 100 to 200 guests.",
+    shortDescription: "A chic, warm, and air-conditioned boutique venue crafted specifically for 1st birthdays, cradle ceremonies (Barasala), upanayanam, dhoti functions, and family celebrations for up to 250 guests.",
 
     // Accurate Real Interior Photography (Verified 3rd Floor Hall Koundinya)
     image: "/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg",
@@ -323,18 +324,19 @@ export const spacesData = [
       }
     ],
 
-    // Capacity Matrix
-    capacity: "100–200",
-    capacityDisplay: "Capacity: 100–200 Guests",
+    // Official Capacity Matrix
+    maxCapacity: 250,
+    capacity: "Max 250 Guests",
+    capacityDisplay: "Capacity: Maximum 250 Guests",
     capacities: {
-      theatre: "200 Guests Seated",
-      floating: "250 Guests",
-      roundTable: "120 Banquet Guests",
-      familyCluster: "150 Guests with dedicated play/photo area"
+      maxCapacity: "Maximum 250 Guests",
+      floorArea: "2,200 sq. ft. Boutique Hall",
+      stageSize: "20 ft × 12 ft Milestone Stage",
+      cooling: "3rd Floor · Silent Cassette A/C"
     },
 
     // Spatial & Technical Specifications
-    dimensions: "2,200 sq.ft • 100–200 Guests",
+    dimensions: "2,200 sq.ft • Max 250 Guests",
     specs: {
       floorArea: "2,200 sq. ft. intimate boutique floor",
       ceilingHeight: "12.5 ft clear height with architectural wood slat styling",
@@ -347,7 +349,7 @@ export const spacesData = [
       lighting: "Warm architectural downlights, adjustable track spots & cake spotlight"
     },
 
-    bestFor: "1st Birthdays, Cradle Ceremonies (Barasala), Dhoti Functions, Upanayanam, Small Gatherings",
+    bestFor: "1st Birthdays, Cradle Ceremonies (Barasala), Dhoti Functions, Upanayanam, Family Gatherings",
     suitableEvents: [
       { title: "Milestone 1st Birthdays", desc: "Dedicated stage platform for 3D ONE marquee letters, balloon arches, and cake cutting." },
       { title: "Cradle Ceremonies (Barasala)", desc: "Auspicious setups for golden cradle swings, lotus swings, and family blessings." },
@@ -364,7 +366,7 @@ export const spacesData = [
       "Direct adjacent access to the reception lounge and assistance helpdesk"
     ],
     features: [
-      "Optimized for intimate gatherings of 100 to 200 guests",
+      "Maximum capacity: 250 guests",
       "Modern wood slat ceiling with architectural linear lighting",
       "Dedicated stage area for cake cutting, cradles, and sound",
       "Separate VIP waiting lounge with plush seating",
@@ -382,7 +384,7 @@ export const spacesData = [
       { name: "Dedicated Helpdesk", desc: "Staff assistance counter right outside the hall for guest queries", icon: "HelpCircle" }
     ],
 
-    description: "Hall Koundinya is an intimate and stylish boutique banquet space named after the revered Sage Koundinya. Crafted specifically for heartwarming family milestones, this 2,200 square foot venue features contemporary vertical wood slat ceilings, warm linear chandeliers, and custom acoustic dampening. Whether you are welcoming a newborn in a traditional Cradle Ceremony (Barasala), celebrating a child's milestone 1st birthday with vibrant marquee decor, or hosting an auspicious Upanayanam, Hall Koundinya envelops your loved ones in intimacy, comfort, and luxury."
+    description: "Hall Koundinya is an intimate and stylish boutique banquet space named after the revered Sage Koundinya. Crafted specifically for heartwarming family milestones on the third floor for up to 250 guests, this 2,200 square foot venue features contemporary vertical wood slat ceilings, warm linear chandeliers, and custom acoustic dampening. Whether you are welcoming a newborn in a traditional Cradle Ceremony (Barasala), celebrating a child's milestone 1st birthday with vibrant marquee decor, or hosting an auspicious Upanayanam, Hall Koundinya envelops your loved ones in intimacy, comfort, and luxury."
   },
   {
     id: "dining-hall",
@@ -421,7 +423,7 @@ export const spacesData = [
         category: "Pure Veg Feasts"
       },
       {
-        src: "/assets/03_food_and_catering_menus/menu_01_regular_veg_100pax.jpeg",
+        src: "/assets/03_food_and_catering_menus/menu_02_standard_veg_100pax_with_policies.jpeg",
         title: "Standard Vegetarian Banquet Feast Configuration",
         category: "Banquet Menus"
       }
@@ -429,11 +431,11 @@ export const spacesData = [
 
     // Capacity Matrix
     capacity: "250+ Concurrent",
-    capacityDisplay: "Capacity: 250+ Seated Simultaneously (1,500+ Rolling Feasts)",
+    capacityDisplay: "Capacity: 250+ Concurrent Dining Seats",
     capacities: {
       roundTable: "250+ Guests Seated Concurrently",
       traditionalPanti: "200 Guests Traditional Banana Leaf / Panti Style",
-      buffetCapacity: "Continuous rolling buffet servicing 1,500+ guests without waiting queues",
+      buffetCapacity: "Continuous rolling buffet service",
       serviceSpeed: "Average banquet turnaround under 25 minutes per batch"
     },
 
@@ -484,7 +486,7 @@ export const spacesData = [
       { name: "Catering Service Elevator", desc: "Heavy service lift directly linking kitchen to the dining buffet zones", icon: "ArrowUpCircle" }
     ],
 
-    description: "Food is the soul of any Indian celebration, and Swarna Bhojanam provides the royal banquet setting it deserves. Spanning 3,500 square feet on an independent floor, this dedicated dining sanctuary comfortably seats over 250 guests concurrently, allowing you to feed over 1,500 attendees smoothly in rolling batches. Featuring beautifully dressed round banquet tables in royal maroon and gold linen, clean stainless steel buffet stations, industrial odor-evacuating ventilation, and a spacious 12-tap granite handwash station, your guests will cherish every morsel of your hospitality."
+    description: "Food is the soul of any Indian celebration, and Swarna Bhojanam provides the royal banquet setting it deserves. Spanning 3,500 square feet on an independent floor, this dedicated dining sanctuary comfortably seats over 250 guests concurrently in rolling batches. Featuring beautifully dressed round banquet tables in royal maroon and gold linen, clean stainless steel buffet stations, industrial odor-evacuating ventilation, and a spacious 12-tap granite handwash station, your guests will cherish every morsel of your hospitality."
   }
 ];
 

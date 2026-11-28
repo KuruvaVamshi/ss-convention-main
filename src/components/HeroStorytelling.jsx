@@ -16,12 +16,20 @@ export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = 
 
   const banquetShowcaseOptions = [
     {
+      id: 'hall-agasthya',
+      title: 'Hall Agasthya – Royal Sangeet & Reception Hall (Max 400 Guests)',
+      shortTitle: 'Hall Agasthya',
+      badge: 'Max 400 Guests',
+      src: '/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg',
+      desc: 'Contemporary chandeliers, acoustic false ceiling & stage lighting for up to 400 guests.'
+    },
+    {
       id: 'hall-vasishta',
-      title: 'Hall Vasishta – Grand Kalyana Mandapam (600 Pax)',
-      shortTitle: 'Grand Kalyana Mandapam',
-      badge: 'Premier Hall',
+      title: 'Hall Vasishta – Grand Kalyana Mandapam (Max 600 Guests)',
+      shortTitle: 'Hall Vasishta',
+      badge: 'Max 600 Guests',
       src: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
-      desc: 'Double-tier crystal chandeliers, Italian vitrified reflections & 70-ft bridal walk.'
+      desc: 'Double-tier crystal chandeliers, Italian vitrified reflections & 70-ft bridal walk for up to 600 guests.'
     },
     {
       id: 'dining-hall',
@@ -30,14 +38,6 @@ export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = 
       badge: '250+ Seats',
       src: '/assets/07_dining_hall/dining_hall_round_tables_maroon_gold.jpeg',
       desc: 'Round banquet tables in royal maroon & gold damask with golden organza chair ties.'
-    },
-    {
-      id: 'hall-agasthya',
-      title: 'Hall Agasthya – Royal Reception Stage (350 Pax)',
-      shortTitle: 'Royal Velvet Stage',
-      badge: '350 Pax',
-      src: '/assets/09_reception_engagement_stages/stage_floral_ring_arch_royal_sofa_clean.jpeg',
-      desc: 'Imperial velvet sofa, modern floral ring arch & intelligent stage lighting.'
     },
     {
       id: 'entrance',
@@ -49,11 +49,11 @@ export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = 
     },
     {
       id: 'hall-koundinya',
-      title: 'Hall Koundinya – Celebrations Hall (200 Pax)',
-      shortTitle: 'Cradle & Birthday Hall',
-      badge: '200 Pax',
+      title: 'Hall Koundinya – Celebrations Hall (Max 250 Guests)',
+      shortTitle: 'Hall Koundinya',
+      badge: 'Max 250 Guests',
       src: '/assets/06_hall_koundinya/hall_koundinya_mini_hall_aisle_stage_01.jpeg',
-      desc: 'Intimate boutique hall with wood slat ceiling, milestone stage & crisp acoustics.'
+      desc: 'Intimate boutique hall with wood slat ceiling, milestone stage & crisp acoustics for up to 250 guests.'
     }
   ];
 
@@ -257,10 +257,10 @@ export default function HeroStorytelling({ onOpenLightbox, isEntranceComplete = 
         <div className="max-w-4xl mx-auto px-4 relative z-20 text-center pb-3 w-full">
           <ul className="flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-8 gap-y-1 text-xs sm:text-sm text-latte mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {[
-              [Users, 'Minimum 100 Guests'],
+              [Users, 'Up to 600 Guests / Hall'],
               [Snowflake, 'Central A/C'],
               [UtensilsCrossed, '250+ seat dining hall'],
-              [Building, '3 halls'],
+              [Building, '3 purpose-built halls'],
             ].map(([Icon, text], i) => (
               <li key={text} className={`flex items-center gap-2 ${i > 2 ? 'hidden sm:flex' : ''}`}>
                 <Icon className="w-4 h-4 text-amber-300" />

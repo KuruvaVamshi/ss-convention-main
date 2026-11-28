@@ -48,7 +48,7 @@ const DINING_VIEWS = [
   {
     id: 'buffet',
     label: 'Live Buffet',
-    sublabel: '1,500+ Guests',
+    sublabel: 'Rolling Buffet',
     src: '/assets/07_dining_hall/dining_hall_buffet_counter_chafing_dishes_01.jpeg',
     title: 'Stainless Steel Live Buffet Stations',
     caption: 'Twin Parallel Chafing Counters • Italian Marble Wall • Zero Queue Rolling Service'
@@ -87,9 +87,9 @@ export default function HeroConsole({ onOpenLightbox, externalSlide = null }) {
 
   const [currentMedia, setCurrentMedia] = useState({
     type: 'image',
-    src: '/assets/06_main_hall_seating/main_hall_grand_overview_chandeliers_aisle.jpeg',
-    title: 'Hall Vasishta – Grand Kalyana Mandapam',
-    caption: 'Double-Tier Golden Crystal Chandeliers • 70-ft Center Bridal Aisle • 600 Seated Central A/C'
+    src: '/assets/04_hall_agasthya/hall_agasthya_grand_hall_overview_02.jpeg',
+    title: 'Hall Agasthya – Royal Sangeet & Reception Hall',
+    caption: 'Chandeliers & Mirrored Marble Flooring • Acoustic False Ceiling • Max 400 Guests'
   });
 
   useEffect(() => {
@@ -598,7 +598,7 @@ export default function HeroConsole({ onOpenLightbox, externalSlide = null }) {
                                 ['Zero mandap aroma', 'A separate floor with its own exhaust'],
                                 ['12-tap granite handwash', 'Pure RO purified water'],
                                 ['Catering service lift', 'Fast, hot food delivery'],
-                                ['1,500+ feast capacity', 'Rolling batches of about 25 minutes'],
+                                ['Continuous buffet service', 'Rolling batches without waiting queues'],
                               ].map(([t, d]) => (
                                 <li key={t} className="flex gap-2.5 text-xs sm:text-sm">
                                   <Check className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />

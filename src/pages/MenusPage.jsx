@@ -11,7 +11,6 @@ import ResponsiveImage from '../components/ResponsiveImage';
 
 
 const printedCards = [
-  { title: 'Menu 01 • Regular Veg (Min 100 Pax)', image: '/assets/03_food_and_catering_menus/menu_01_regular_veg_100pax.jpeg', desc: 'Authentic South Indian spread with Bagara Rice, Paneer Curry, Sambar & Sweet.' },
   { title: 'Menu 02 • Standard Veg (Min 100 Pax)', image: '/assets/03_food_and_catering_menus/menu_02_standard_veg_100pax_with_policies.jpeg', desc: 'Includes Veg Biryani, Mirchi Ka Salan, Paneer Butter Masala, Roti & Dessert.' },
   { title: 'Menu 03 • Premium Veg (Min 200 Pax)', image: '/assets/03_food_and_catering_menus/menu_03_premium_veg_200pax.jpeg', desc: 'Expansive 14-item vegetarian feast with Ghee Sweets, Paneer Delicacies & Live Curries.' },
   { title: 'Menu 04 • Special Veg with Noodles (Min 250 Pax)', image: '/assets/03_food_and_catering_menus/menu_04_special_veg_250pax_noodles.jpeg', desc: 'Grand feast featuring Veg Hakka Noodles, Manchurian, Biryani & Ice Cream.' },
@@ -67,7 +66,7 @@ export default function MenusPage({ onOpenLightbox }) {
             </h1>
             <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#C5A059] to-transparent" />
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-mocha leading-relaxed">
-              Seven official catering packages with transparent dish lists, from pure ghee South Indian meals to royal Hyderabadi Dum Biryani.
+              Six official catering packages with transparent dish lists, from Standard Vegetarian meals to royal Hyderabadi Dum Biryani.
             </p>
           </Reveal>
         </div>

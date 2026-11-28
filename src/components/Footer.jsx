@@ -58,7 +58,7 @@ export default function Footer() {
             </p>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-[#C5A059]/30 text-amber-200 text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>Hall Vasishta • Hall Agasthya • Hall Koundinya</span>
+              <span>Hall Agasthya • Hall Vasishta • Hall Koundinya</span>
             </div>
           </div>
 
@@ -73,7 +73,8 @@ export default function Footer() {
               <li><Link to="/spaces" onMouseEnter={prefetchHallsResources} onFocus={prefetchHallsResources} onTouchStart={prefetchHallsResources} className="hover:text-amber-300 transition-colors">Our Halls & Spaces</Link></li>
               <li><Link to="/about#facilities" className="hover:text-amber-300 transition-colors">Facilities & Amenities</Link></li>
               <li><Link to="/gallery" className="hover:text-amber-300 transition-colors">Photo Gallery & Celebrations</Link></li>
-              <li><Link to="/menus" className="hover:text-amber-300 transition-colors">Dining & Catering Menus</Link></li>
+              <li><Link to="/dining" className="hover:text-amber-300 transition-colors">Dining & Catering Menus</Link></li>
+              <li><Link to="/reviews" className="hover:text-amber-300 transition-colors">Guest Reviews</Link></li>
               <li><Link to="/policies" className="hover:text-amber-300 transition-colors">Official Policies & Guidelines</Link></li>
               <li><Link to="/contact" className="hover:text-amber-300 transition-colors">Book Visit & Interactive Estimator</Link></li>
             </ul>
@@ -86,27 +87,27 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 text-xs font-normal text-amber-100/90">
               <li>
-                <Link to="/halls/hall-vasishta" className="group block">
-                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Vasishta (300–600 Pax) →</strong>
-                  <span className="text-[11px] text-amber-200/80">Grand Weddings, Sangeet & Large Receptions</span>
+                <Link to="/halls/hall-agasthya" className="group block">
+                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Agasthya (Max 400 Guests) →</strong>
+                  <span className="text-[11px] text-amber-200/80">Sangeet, Engagements &amp; Weddings</span>
                 </Link>
               </li>
               <li>
-                <Link to="/halls/hall-agasthya" className="group block">
-                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Agasthya (200–350 Pax) →</strong>
-                  <span className="text-[11px] text-amber-200/80">Weddings, Receptions & Engagements</span>
+                <Link to="/halls/hall-vasishta" className="group block">
+                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Vasishta (Max 600 Guests) →</strong>
+                  <span className="text-[11px] text-amber-200/80">Grand Weddings, Muhurthams &amp; Receptions</span>
                 </Link>
               </li>
               <li>
                 <Link to="/halls/hall-koundinya" className="group block">
-                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Koundinya (100–200 Pax) →</strong>
-                  <span className="text-[11px] text-amber-200/80">1st Birthdays, Cradle (Barasala) & Corporate</span>
+                  <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Hall Koundinya (Max 250 Guests) →</strong>
+                  <span className="text-[11px] text-amber-200/80">1st Birthdays, Cradle (Barasala) &amp; Family Events</span>
                 </Link>
               </li>
               <li>
                 <Link to="/halls/dining-hall" className="group block">
                   <strong className="text-white group-hover:text-amber-300 transition-colors block font-bold">Banquet Dining Hall (250+ Pax) →</strong>
-                  <span className="text-[11px] text-amber-200/80">Separate Floor for Royal Feasts & Buffets</span>
+                  <span className="text-[11px] text-amber-200/80">Separate Floor for Royal Feasts &amp; Buffets</span>
                 </Link>
               </li>
             </ul>

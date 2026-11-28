@@ -187,7 +187,7 @@ export default function Navbar() {
     },
     {
       title: 'Our Halls',
-      desc: 'Hall Vasishta, Agasthya, Koundinya & Dining',
+      desc: 'Hall Agasthya, Vasishta, Koundinya & Dining',
       path: '/spaces',
       icon: Building
     },
@@ -199,15 +199,20 @@ export default function Navbar() {
     }
   ];
 
-  // Check if current route is within "The Venue"
+  // Check active paths that map to top-level navigation items
   const isVenueActive = ['/about', '/spaces', '/halls', '/facilities'].some((p) =>
     location.pathname.startsWith(p)
   );
+  const isHallsRouteActive =
+    location.pathname.startsWith('/spaces') || location.pathname.startsWith('/halls');
+  const isDiningRouteActive =
+    location.pathname.startsWith('/dining') || location.pathname.startsWith('/menus');
+  const isReviewsRouteActive = location.pathname.startsWith('/reviews');
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 h-[68px] sm:h-[72px] transform transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none will-change-transform ${
+        className={`fixed top-0 left-0 right-0 z-50 h-[68px] sm:h-[72px] transform transition-transform duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none will-change-transform ${
           isVisible ? 'translate-y-0 pointer-events-auto' : '-translate-y-full pointer-events-none'
         } ${
           scrolled || mobileMenuOpen
@@ -245,20 +250,21 @@ export default function Navbar() {
             </Link>
 
             {/* 2. Desktop Navigation Links (>= lg: 1024px) */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 flex-shrink-0" aria-label="Main Navigation">
+            <nav className="hidden lg:flex items-center gap-5 xl:gap-6 2xl:gap-7 flex-shrink-0" aria-label="Main Navigation">
               {/* Home */}
               <NavLink
                 to="/"
+                end
                 onClick={handleHomeClick}
                 className={({ isActive }) =>
-                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
+                  `font-cinzel text-[11px] xl:text-xs tracking-[0.14em] xl:tracking-[0.16em] 2xl:tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
                     isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <span>{'HOME'}</span>
+                    <span>HOME</span>
                     {isActive && (
                       <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -266,40 +272,40 @@ export default function Navbar() {
                 )}
               </NavLink>
 
-              {/* /spaces */}
+              {/* Halls */}
               <NavLink
                 to="/spaces"
                 onMouseEnter={prefetchHallsResources}
                 onFocus={prefetchHallsResources}
                 onTouchStart={prefetchHallsResources}
-                className={({ isActive }) =>
-                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
-                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
+                className={() =>
+                  `font-cinzel text-[11px] xl:text-xs tracking-[0.14em] xl:tracking-[0.16em] 2xl:tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
+                    isHallsRouteActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
-                {({ isActive }) => (
+                {() => (
                   <>
                     <span>HALLS</span>
-                    {isActive && (
+                    {isHallsRouteActive && (
                       <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
                 )}
               </NavLink>
 
-              {/* /about */}
+              {/* About */}
               <NavLink
                 to="/about"
                 className={({ isActive }) =>
-                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
+                  `font-cinzel text-[11px] xl:text-xs tracking-[0.14em] xl:tracking-[0.16em] 2xl:tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
                     isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <span className="xl:hidden">ABOUT</span><span className="hidden xl:inline">ABOUT &amp; FACILITIES</span>
+                    <span>ABOUT</span>
                     {isActive && (
                       <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -307,18 +313,18 @@ export default function Navbar() {
                 )}
               </NavLink>
 
-                            {/* Gallery */}
+              {/* Gallery */}
               <NavLink
                 to="/gallery"
                 className={({ isActive }) =>
-                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
+                  `font-cinzel text-[11px] xl:text-xs tracking-[0.14em] xl:tracking-[0.16em] 2xl:tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
                     isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <span>{'GALLERY'}</span>
+                    <span>GALLERY</span>
                     {isActive && (
                       <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -329,16 +335,35 @@ export default function Navbar() {
               {/* Dining */}
               <NavLink
                 to="/dining"
+                className={() =>
+                  `font-cinzel text-[11px] xl:text-xs tracking-[0.14em] xl:tracking-[0.16em] 2xl:tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
+                    isDiningRouteActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
+                  }`
+                }
+              >
+                {() => (
+                  <>
+                    <span>DINING</span>
+                    {isDiningRouteActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                    )}
+                  </>
+                )}
+              </NavLink>
+
+              {/* Reviews */}
+              <NavLink
+                to="/reviews"
                 className={({ isActive }) =>
-                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
-                    isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
+                  `font-cinzel text-[11px] xl:text-xs tracking-[0.14em] xl:tracking-[0.16em] 2xl:tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
+                    isActive || isReviewsRouteActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <span>{'DINING'}</span>
-                    {isActive && (
+                    <span>REVIEWS</span>
+                    {(isActive || isReviewsRouteActive) && (
                       <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
                   </>
@@ -349,14 +374,14 @@ export default function Navbar() {
               <NavLink
                 to="/contact"
                 className={({ isActive }) =>
-                  `font-cinzel text-xs tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase ${
+                  `font-cinzel text-[11px] xl:text-xs tracking-[0.14em] xl:tracking-[0.16em] 2xl:tracking-[0.2em] font-bold transition-all duration-200 relative py-2 uppercase whitespace-nowrap ${
                     isActive ? 'text-amber-300' : 'ss-navlink text-amber-100/80 hover:text-white'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <span>{'CONTACT'}</span>
+                    <span>CONTACT</span>
                     {isActive && (
                       <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                     )}
@@ -434,6 +459,7 @@ export default function Navbar() {
                 {/* Home */}
                 <NavLink
                   to="/"
+                  end
                   onClick={handleHomeClick}
                   className={({ isActive }) =>
                     `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
@@ -441,7 +467,7 @@ export default function Navbar() {
                     }`
                   }
                 >
-                  <span>{'HOME'}</span>
+                  <span>HOME</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
@@ -452,9 +478,9 @@ export default function Navbar() {
                   onMouseEnter={prefetchHallsResources}
                   onFocus={prefetchHallsResources}
                   onTouchStart={prefetchHallsResources}
-                  className={({ isActive }) =>
+                  className={() =>
                     `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
-                      isActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'
+                      isHallsRouteActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'
                     }`
                   }
                 >
@@ -462,7 +488,7 @@ export default function Navbar() {
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
-                {/* ABOUT &amp; FACILITIES */}
+                {/* ABOUT */}
                 <NavLink
                   to="/about"
                   onClick={closeAllMenus}
@@ -472,11 +498,11 @@ export default function Navbar() {
                     }`
                   }
                 >
-                  <span>ABOUT &amp; FACILITIES</span>
+                  <span>ABOUT</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
-                                {/* Gallery */}
+                {/* Gallery */}
                 <NavLink
                   to="/gallery"
                   onClick={closeAllMenus}
@@ -486,7 +512,7 @@ export default function Navbar() {
                     }`
                   }
                 >
-                  <span>{'GALLERY'}</span>
+                  <span>GALLERY</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
@@ -494,13 +520,27 @@ export default function Navbar() {
                 <NavLink
                   to="/dining"
                   onClick={closeAllMenus}
-                  className={({ isActive }) =>
+                  className={() =>
                     `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
-                      isActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'
+                      isDiningRouteActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'
                     }`
                   }
                 >
-                  <span>{'DINING'}</span>
+                  <span>DINING</span>
+                  <span className="text-amber-400 text-xs">→</span>
+                </NavLink>
+
+                {/* Reviews */}
+                <NavLink
+                  to="/reviews"
+                  onClick={closeAllMenus}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between py-3.5 px-3 rounded-xl font-cinzel font-bold tracking-[0.16em] text-sm uppercase transition-all ${
+                      isActive || isReviewsRouteActive ? 'bg-[#29050D] text-amber-300 border-l-4 border-amber-400 pl-4' : 'text-amber-100/90'
+                    }`
+                  }
+                >
+                  <span>REVIEWS</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
 
@@ -514,7 +554,7 @@ export default function Navbar() {
                     }`
                   }
                 >
-                  <span>{'CONTACT'}</span>
+                  <span>CONTACT</span>
                   <span className="text-amber-400 text-xs">→</span>
                 </NavLink>
               </nav>

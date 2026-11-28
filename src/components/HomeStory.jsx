@@ -127,19 +127,18 @@ export default function HomeStory() {
     <section className="py-20 lg:py-28 bg-[#350710] border-t border-[#D4AF37]/25">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader eyebrow="Meerpet, Hyderabad" title="A Venue Made for Celebrations">
-          Fully air-conditioned wedding and banquet halls for 100 to 600 guests, with an in-house dining hall,
-          decor team and uninterrupted power backup, all under one roof.
+          Three air-conditioned halls—Hall Agasthya (max 400 guests), Hall Vasishta (max 600 guests) and
+          Hall Koundinya (max 250 guests)—with a separate dining hall, in-house decor team and uninterrupted power backup.
         </SectionHeader>
 
         <div className="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-14 text-center">
           {[
-            { from: 100, to: 600, label: 'Guests' },
+            { to: 600, label: 'Max Capacity / Hall' },
             { to: 3, label: 'Halls' },
             { to: 250, suffix: '+', label: 'Dining seats' },
           ].map((stat, i) => (
             <Reveal key={stat.label} delay={i * 0.1}>
               <div className="font-cinzel text-3xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8E7] to-[#C5A059] tabular-nums">
-                {stat.from !== undefined && <>{stat.from}–</>}
                 <CountUp to={stat.to} suffix={stat.suffix} duration={stat.to > 100 ? 2.2 : 1.4} />
               </div>
               <div className="mt-1 text-[11px] sm:text-xs tracking-[0.25em] uppercase text-mocha">{stat.label}</div>

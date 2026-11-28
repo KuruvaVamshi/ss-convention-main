@@ -9,7 +9,7 @@ import { WhatsAppButton } from './ContactButtons';
 import ResponsiveImage from './ResponsiveImage';
 import { prefetchHallsResources } from '../lib/prefetchHalls';
 
-const ids = ['hall-vasishta', 'hall-agasthya', 'hall-koundinya'];
+const ids = ['hall-agasthya', 'hall-vasishta', 'hall-koundinya'];
 
 const AUTOPLAY_MS = 3000;
 
@@ -199,7 +199,9 @@ function HallCard({ hall, featured, order = 0 }) {
         </span>
 
         <div className="absolute bottom-4 left-5 right-20 pointer-events-none">
-          {featured && <span className="text-[10px] tracking-[0.25em] uppercase text-amber-300 font-semibold">Flagship</span>}
+          <span className="text-[10px] tracking-[0.25em] uppercase text-amber-300 font-semibold">
+            {hall.id === 'hall-agasthya' ? '1st Floor · Hall 01' : hall.id === 'hall-vasishta' ? '2nd Floor · Hall 02' : '3rd Floor · Hall 03'}
+          </span>
           <h3 className="font-cinzel text-2xl font-bold text-latte drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">{hall.name}</h3>
         </div>
       </div>
@@ -217,7 +219,7 @@ function HallCard({ hall, featured, order = 0 }) {
           <WhatsAppButton
             iconOnly
             label={`Enquire about ${hall.name} on WhatsApp`}
-            message={`Hello SS Convention Hall, I would like to enquire about ${hall.name} (${hall.capacity} guests).`}
+            message={`Hello SS Convention Hall, I would like to enquire about ${hall.name} (${hall.capacity}).`}
             className="!px-4"
           />
         </div>

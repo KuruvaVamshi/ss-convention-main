@@ -15,25 +15,6 @@ export const extraItemCharges = [
 export const cateringMenus = {
   veg: [
     {
-      id: "regular-veg-100",
-      title: "Regular Veg Menu",
-      minPax: 100,
-      badge: "Popular for Small Events",
-      image: "/assets/03_food_and_catering_menus/menu_01_regular_veg_100pax.jpeg",
-      sections: [
-        { name: "Welcome Drinks (Any 1)", items: ["Watermelon Juice", "Muskmelon Juice", "Soft Drinks", "Butter Milk"] },
-        { name: "Veg Starter (Any 1)", items: ["Veg Bullet", "Veg Manchurian", "Veg 65", "Crispy Vegetable"] },
-        { name: "Hot Fry (Any 1)", items: ["Cut Mirchi", "Palak Pakoda", "Gobi Pakoda", "Onion Pakkoda"] },
-        { name: "Veg Curries (Any 1)", items: ["Paneer Butter Masala", "Kadai Paneer", "Kadai Veg", "Veg Chatpat", "Paneer Chatpat", "Nizami Handi"] },
-        { name: "Flavoured Rice (Any 1)", items: ["Veg Pulao", "Jeera Pulao", "Bagara Rice", "Corn Pulao"] },
-        { name: "Bread (Any 1)", items: ["Rumali Roti"] },
-        { name: "Dal (Any 1)", items: ["Palak Dal", "Tomato Dal", "Dosakaya Pappu", "Mango Dal*"] },
-        { name: "Accompaniments", items: ["Plain Rice", "Sambar", "Raitha", "Papad", "Fryms", "Curd Chilly"] },
-        { name: "Pickles & Chutneys (Any 1 each)", items: ["Mango / Tomato Pickle", "Tomato / Gongura Chutney", "Putnala Podi / Kandi Podi"] },
-        { name: "Dessert & Ice Cream (Any 1 each)", items: ["Gulab Jamun / Kala Jamun", "Vanilla / Strawberry Ice Cream"] }
-      ]
-    },
-    {
       id: "standard-veg-100",
       title: "Standard Veg Menu",
       minPax: 100,
@@ -143,4 +124,3 @@ export const cateringMenus = {
     }
   ]
 };
-

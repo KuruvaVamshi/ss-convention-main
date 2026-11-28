@@ -20,6 +20,7 @@ const loaders = {
   spaces: () => import('./pages/SpacesPage'),
   hall: () => import('./pages/HallDetailPage'),
   menus: () => import('./pages/MenusPage'),
+  reviews: () => import('./pages/ReviewsPage'),
   gallery: () => import('./pages/GalleryPage'),
   policies: () => import('./pages/PoliciesPage'),
   contact: () => import('./pages/ContactPage'),
@@ -28,6 +29,7 @@ const AboutFacilitiesPage = lazy(loaders.about);
 const SpacesPage = lazy(loaders.spaces);
 const HallDetailPage = lazy(loaders.hall);
 const MenusPage = lazy(loaders.menus);
+const ReviewsPage = lazy(loaders.reviews);
 const GalleryPage = lazy(loaders.gallery);
 const PoliciesPage = lazy(loaders.policies);
 const ContactPage = lazy(loaders.contact);
@@ -168,6 +170,10 @@ export default function App() {
             <Route
               path="/menus"
               element={<MenusPage onOpenLightbox={openLightbox} />}
+            />
+            <Route
+              path="/reviews"
+              element={<ReviewsPage />}
             />
             <Route
               path="/gallery"
